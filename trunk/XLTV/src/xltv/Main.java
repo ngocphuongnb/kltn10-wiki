@@ -16,7 +16,6 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        String s = "TÃ¬nh yÃªu cÃ²n Ä‘Ã¢u";
         boolean resultTCVN = VNString.checkTCVN(s);
     }
 
