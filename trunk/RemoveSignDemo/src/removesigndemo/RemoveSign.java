@@ -46,13 +46,13 @@ public String removeVNIWindowsSign(String s) {
             {"ñ"},
             {"Ñ"},
 
-            {"eù", "eø", "eû", "eõ", "eï", "eê", "eá", "eà", "eå", "eã", "eä"},
+            {"eù", "eø", "eû", "eõ", "eï", "eâ", "eá", "eà", "eå", "eã", "eä", "eâ"},
             {"EÙ", "EØ", "EÛ", "EÕ", "EÏ", "EÊ", "EÁ", "EÀ", "EÅ", "EÃ", "EÄ", "Eù", "Eø", "Eû", "Eõ", "Eï", "Eê"},
             
             { "í", "ì", "æ", "ó", "ò"},
             {"Í", "Ì", "Æ", "Ó","Ò"},
 
-            {"où", "oø", "oû", "oõ", "oï", "ô", "oâ", "ôù", "ôø", "ôû", "ôõ", "ôï", "oá", "oà", "oã", "oä", "oå"},
+            {"où", "oø", "oû", "oõ", "oï", "oâ", "ôù", "ôø", "ôû", "ôõ", "ôï", "oá", "oà", "oã", "oä", "oå", "ô"},
             {"OÙ", "OØ", "OÛ", "OÕ", "OÏ", "Ô", "OÂ", "ÔÙ", "ÔØ", "OÅ", "ÔÕ", "ÔÏ", "OÁ", "OÀ", "OÅ", "OÃ", "OÄ", "Où", "Oø", "Oû", "Oõ", "Oï", "Oâ"},
             
             {"uù", "uø", "uû", "uõ", "uï", "öù", "öø", "öû", "öõ", "öï", "ö"},
@@ -104,7 +104,7 @@ public String removeTCVNSign(String s) {
         return s;
     }
 public String removeVIQRSign(String s) {
-        char[] arrChar = {'a', 'A',  'd', 'D', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U', 'y', 'Y'};
+        CharSequence[] arrChar = {"a", "A",  "d", "D", "e", "E", "i", "I","o", "O", "u", "U", "y", "Y", ".", "?"};
         CharSequence[][] uniChar = {
             {"a('", "a(`", "a(?", "a(~", "a(.", "a^'", "a^`", "a^?", "a^~", "a^.", "a'", "a`", "a?", "a~", "a.", "a(", "a^"},
             {"A('", "A(`", "A(?", "A(~", "A(.", "A^'", "A^`", "A^?", "A^~", "A^.", "A'", "A`", "A?", "A~", "A.", "A(", "A^"},
@@ -115,8 +115,10 @@ public String removeVIQRSign(String s) {
             {"e^'", "e^`", "e^?", "e^~", "e^.", "e'", "e`", "e?", "e~", "e.", "e^"},
             {"E^'", "E^`", "E^?", "E^~", "E^.", "E'", "E`", "E?", "E~", "E.", "E^"},
 
+          
             { "i'", "i`", "i?", "i~", "i."},
             { "I'", "I`", "I?", "I~", "I."},
+
 
             {"o+'", "o+`", "o+?", "o+~", "o+.", "o^'", "o^`", "o^?", "o^~", "o^.", "o'", "o`", "o?", "o~", "o.", "o+", "o^"},
             {"O+'", "O+`", "O+?", "O+~", "O+.", "O^'", "o^`", "O^?", "O^~", "O^.", "O'", "O`", "O?", "O~", "O.", "O+", "O^"},
@@ -126,12 +128,14 @@ public String removeVIQRSign(String s) {
 
             {"y'", "y`", "y?", "y~", "y."},
             {"Y'", "Y`", "Y?", "Y~", "Y."},
+            {"\\."},
+             {"\\?"},
             };
 
         for (int i = 0; i < uniChar.length; i++) {
             for (int j = 0; j < uniChar[i].length; j++) {
                 CharSequence src = uniChar[i][j].toString();
-                CharSequence des = Character.toString(arrChar[i]);
+                CharSequence des = arrChar[i].toString();
                 s = s.replace(src, des);
             }
         }
