@@ -174,7 +174,7 @@ public class RemoveSignDemoView extends FrameView {
                     .addComponent(jButton2)
                     .addComponent(jButton3)
                     .addComponent(jButton4))
-                .addContainerGap(124, Short.MAX_VALUE))
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
