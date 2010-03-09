@@ -609,7 +609,7 @@ public static boolean checkVIQR(String src){
             case VN_CIR:
                 return true;
             case VN_CDB:    // xem co phai dấu 3 chấm (...) hay ko
-                if(src.charAt(i+1)=='.')
+                if((i+1==cnt) && (src.charAt(i+1)=='.'))
                     return false;
                 else return true;
           default: i--;break;
@@ -677,7 +677,7 @@ case 'i':
         case VN_CTD:
             return true;
         case VN_CDB:    // xem co phai dấu 3 chấm (...) hay ko
-            if(src.charAt(i+1)=='.')
+            if(((i+1)<cnt) && (src.charAt(i+1)=='.'))
                 return false;
             else return true;
         default: i--;break;

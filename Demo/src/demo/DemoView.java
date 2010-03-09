@@ -1,7 +1,6 @@
 /*
  * DemoView.java
  */
-
 package demo;
 
 import org.jdesktop.application.Action;
@@ -31,6 +30,7 @@ public class DemoView extends FrameView {
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 statusMessageLabel.setText("");
             }
@@ -41,6 +41,7 @@ public class DemoView extends FrameView {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
@@ -53,6 +54,7 @@ public class DemoView extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
@@ -69,11 +71,11 @@ public class DemoView extends FrameView {
                     progressBar.setVisible(false);
                     progressBar.setValue(0);
                 } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
+                    String text = (String) (evt.getNewValue());
                     statusMessageLabel.setText((text == null) ? "" : text);
                     messageTimer.restart();
                 } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
+                    int value = (Integer) (evt.getNewValue());
                     progressBar.setVisible(true);
                     progressBar.setIndeterminate(false);
                     progressBar.setValue(value);
@@ -303,21 +305,22 @@ public class DemoView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private String KiemTraBangMa(String src)
-    {
-        if(VIQRHelper.checkVIQR(src)==true)
+    private String KiemTraBangMa(String src) {
+
+        if(src.length()>200)
+            src = src.substring(0, 200);
+
+        if (VIQRHelper.checkVIQR(src) == true) {
             return "VIQR";
-        else
-            if(VNIWindowsHelper.checkVNIWindow(src)==true)
-                return "VNI Windows";
-            else
-                if(UnicodeHelper.checkUnicode(src)==true)
-                    return "Unicode";
-                else
-                    if(TCVNHelper.checkTCVN(src)==true)
-                        return "TCVN";
-                    else
-                        return "Cannot found!";
+        } else if (VNIWindowsHelper.checkVNIWindow(src) == true) {
+            return "VNI Windows";
+        }else if (UnicodeHelper.checkUnicode(src) == true) {
+            return "Unicode";
+        } else if (TCVNHelper.checkTCVN(src) == true) {
+            return "TCVN";
+        } else {
+            return "Cannot found!";
+        }
     }
     // To Lower
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -325,20 +328,20 @@ public class DemoView extends FrameView {
         String des = UnicodeHelper.toLower(str);
         JOptionPane.showMessageDialog(mainPanel, des);
         this.jTextArea2.setText(des);
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // To Upper
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         String str = this.jTextArea1.getText();
+        String str = this.jTextArea1.getText();
         String des = UnicodeHelper.toUpper(str);
         JOptionPane.showMessageDialog(mainPanel, des);
         this.jTextArea2.setText(des);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-         String str = this.jTextArea1.getText();
-        String des =KiemTraBangMa(str);
+        String str = this.jTextArea1.getText();
+        String des = KiemTraBangMa(str);
         JOptionPane.showMessageDialog(mainPanel, des);
         this.jTextArea2.setText(des);
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -346,18 +349,20 @@ public class DemoView extends FrameView {
     // Bỏ dấu
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String str = this.jTextArea1.getText();
-        String BangMa =KiemTraBangMa(str);
-        String des="";
+        String BangMa = KiemTraBangMa(str);
+        String des = "";
 
-        if(BangMa.compareTo("VIQR")==0)
+        if (BangMa.compareTo("VIQR") == 0) {
             des = VIQRHelper.removeVIQRSign(str);
-        else if(BangMa.compareTo("VNI Windows")==0)
+        } else if (BangMa.compareTo("VNI Windows") == 0) {
             des = VNIWindowsHelper.removeVNIWindowsSign(str);
-        else if(BangMa.compareTo("TCVN")==0)
+        } else if (BangMa.compareTo("TCVN") == 0) {
             des = TCVNHelper.removeTCVNSign(str);
-        else if(BangMa.compareTo("Unicode")==0)
+        } else if (BangMa.compareTo("Unicode") == 0) {
             des = UnicodeHelper.removeUnicodeSign(str);
-        else des = "Không thể nhận dạng được bảng mã";
+        } else {
+            des = "Không thể nhận dạng được bảng mã";
+        }
 
         JOptionPane.showMessageDialog(mainPanel, des);
         this.jTextArea2.setText(des);
@@ -365,24 +370,25 @@ public class DemoView extends FrameView {
 
     // Chuyen ve Unicode
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-         String str = this.jTextArea1.getText();
-        String BangMa =KiemTraBangMa(str);
-        String des="";
+        String str = this.jTextArea1.getText();
+        String BangMa = KiemTraBangMa(str);
+        String des = "";
 
-        if(BangMa.compareTo("VIQR")==0)
+        if (BangMa.compareTo("VIQR") == 0) {
             des = VIQRHelper.VIQR2Unicode(str);
-        else if(BangMa.compareTo("VNI Windows")==0)
+        } else if (BangMa.compareTo("VNI Windows") == 0) {
             des = VNIWindowsHelper.VNI2Unicode(str);
-        else if(BangMa.compareTo("TCVN")==0)
+        } else if (BangMa.compareTo("TCVN") == 0) {
             des = TCVNHelper.TCVN2Unicode(str);
-        else if(BangMa.compareTo("Unicode")==0)
+        } else if (BangMa.compareTo("Unicode") == 0) {
             des = "Đã là Unicode";
-        else des = "Không thể nhận dạng được bảng mã";
+        } else {
+            des = "Không thể nhận dạng được bảng mã";
+        }
 
         JOptionPane.showMessageDialog(mainPanel, des);
         this.jTextArea2.setText(des);
     }//GEN-LAST:event_jButton5ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -402,12 +408,10 @@ public class DemoView extends FrameView {
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
-
     private final Timer messageTimer;
     private final Timer busyIconTimer;
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
 }

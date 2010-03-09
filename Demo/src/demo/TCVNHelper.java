@@ -29,7 +29,7 @@ public class TCVNHelper {
                     if(specChar[j] == s.charAt(i))
                         break;
                 }
-                // Neu ko co trong TCVN
+                // Neu ko co trong TCVN thi thoat luon
                 if(j == specChar.length)
                     return false;
             }
