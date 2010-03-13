@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrInputDocument;
@@ -26,16 +27,26 @@ public class MySolrJ {
     public SolrServer getSolrServer() throws MalformedURLException {
         String url = "http://localhost:8983/solr";
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-        server.setSoTimeout(1000);  // socket read timeout
-        server.setConnectionTimeout(100);
-        server.setDefaultMaxConnectionsPerHost(100);
-        server.setMaxTotalConnections(100);
-        server.setFollowRedirects(false);  // defaults to false
-        // allowCompression defaults to false.
-        // Server side must support gzip or deflate for this to have any effect.
-        server.setAllowCompression(true);
-        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
+//        server.setSoTimeout(1000);  // socket read timeout
+//        server.setConnectionTimeout(100);
+//        server.setDefaultMaxConnectionsPerHost(100);
+//        server.setMaxTotalConnections(100);
+//        server.setFollowRedirects(false);  // defaults to false
+//        // allowCompression defaults to false.
+//        // Server side must support gzip or deflate for this to have any effect.
+//        server.setAllowCompression(true);
+//        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
         return server;
+    }
+
+    public void EmptyData() throws MalformedURLException, SolrServerException, IOException
+    {
+        SolrServer server = getSolrServer();
+        server.deleteByQuery( "*:*" );
+        //server.commit();
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        UpdateResponse rsp = req.process(server);
     }
 
     public void Import2Solr(ArrayList<ViwikiPageDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
@@ -60,13 +71,12 @@ public class MySolrJ {
 
 
         SolrServer server = getSolrServer();
-        server.add(docs);
-        server.commit();
+        //server.add(docs);
+       // server.commit();
 
         UpdateRequest req = new UpdateRequest();
-        req.setAction(UpdateRequest.ACTION.COMMIT, false, false);
+        req.setAction(ACTION.COMMIT, false, false);
         req.add(docs);
         UpdateResponse rsp = req.process(server);
-
     }
 }
