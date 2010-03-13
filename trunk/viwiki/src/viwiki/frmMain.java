@@ -105,9 +105,9 @@ public class frmMain extends javax.swing.JDialog {
         ms.EmptyData();
         int start = 0;
         while (start < numRecord) {
-            ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 100);
+            ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 1000);
             ms.Import2Solr(list);
-            start += 100;
+            start += 1000;
         }
 
     }
