@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DAO;
 
 import DTO.ViwikiPageDTO;
@@ -22,8 +21,8 @@ import java.util.Locale;
  * @author VinhPham
  */
 public class ViwikiPageDAO {
-    public static ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException
-    {
+
+    public static ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException {
         ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
         Connection cn = DataProvider.getConnection();
         Statement st = cn.createStatement();
@@ -32,8 +31,7 @@ public class ViwikiPageDAO {
 
         ViwikiPageDTO page;
 
-        while(rs.next())
-        {
+        while (rs.next()) {
             page = new ViwikiPageDTO();
             page.setComment(rs.getString("comment"));
             page.setIp(rs.getString("ip"));
@@ -57,5 +55,21 @@ public class ViwikiPageDAO {
         rs.close();
         cn.close();
         return list;
+    }
+
+    public static int CountRecord() throws SQLException {
+        int iCount = 0;
+        Connection cn = DataProvider.getConnection();
+        Statement st = cn.createStatement();
+        String query = "SELECT count(*) as NumRow FROM viwiki";
+        ResultSet rs = st.executeQuery(query);
+
+        if (rs.next()) {
+            iCount = rs.getInt("NumRow");
+        }
+
+        rs.close();
+        cn.close();
+        return iCount;
     }
 }
