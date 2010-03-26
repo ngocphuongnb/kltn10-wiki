@@ -13,7 +13,6 @@ package viwiki;
 
 import BUS.ViwikiPageBUS;
 import DTO.ViwikiPageDTO;
-import com.sun.jmx.snmp.tasks.Task;
 import java.awt.Cursor;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -83,6 +82,7 @@ public class frmMain extends javax.swing.JDialog {
         try {
             int numOfRecords = ViwikiPageBUS.CountRecord();
             // TODO add your handling code here:
+            //importData(1);
             importData(numOfRecords);
         } catch (SQLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
