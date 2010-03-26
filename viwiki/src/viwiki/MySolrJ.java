@@ -49,6 +49,24 @@ public class MySolrJ {
         UpdateResponse rsp = req.process(server);
     }
 
+    String RemoveSignVN(String src){
+        if(src == null)
+            return null;
+
+//        if (VIQRHelper.checkVIQR(src) == true) {
+//            return VIQRHelper.removeVIQRSign(src);
+//        } else if (VNIWindowsHelper.checkVNIWindow(src) == true) {
+//            return VNIWindowsHelper.removeVNIWindowsSign(src);
+//        }else if (UnicodeHelper.checkUnicode(src) == true) {
+//            return UnicodeHelper.removeUnicodeSign(src);
+//        } else if (TCVNHelper.checkTCVN(src) == true) {
+//            return TCVNHelper.removeTCVNSign(src);
+//        } else {
+//            return src;
+//        }
+        return UnicodeHelper.removeUnicodeSign(src);
+    }
+
     public void Import2Solr(ArrayList<ViwikiPageDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -58,14 +76,18 @@ public class MySolrJ {
             pagedto = iter.next();
             doc = new SolrInputDocument();
             doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("comment", pagedto.getComment());
+            doc.addField("comment_unsigned", RemoveSignVN(pagedto.getComment()));
             doc.addField("ip", pagedto.getIp());
             doc.addField("minor", pagedto.getMinor());
             doc.addField("redirect", pagedto.getRedirect());
             doc.addField("restrictions", pagedto.getRestrictions());
             doc.addField("text", pagedto.getText());
+            doc.addField("text_unsigned", RemoveSignVN(pagedto.getText()));
             doc.addField("timestamp", pagedto.getTimestamp().getTime());
             doc.addField("username", pagedto.getUsername());
+            doc.addField("username_unsigned", RemoveSignVN(pagedto.getUsername()));
             docs.add(doc);
         }
 
