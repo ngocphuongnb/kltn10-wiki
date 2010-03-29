@@ -42,8 +42,8 @@ public class SynonymWordDAO {
             list.add(synWord);
         }
 
-        st.executeUpdate("Delete from Synonym");
-        query = "Insert into Synonym values";
+//        st.executeUpdate("Delete from Synonym");
+//        query = "Insert into Synonym values";
 //        int i = 0;
         ArrayList<ArrayList<String>> lstTu = new ArrayList<ArrayList<String>>();
         boolean bhas = false;
@@ -108,8 +108,9 @@ public class SynonymWordDAO {
                 writer.write(",");
             }
             writer.write(arrayList.get(arrayList.size() - 1));
-            writer.write("\n");
+            writer.write("\r\n");
         }
+        writer.close();
         st.close();
         rs.close();
         cn.close();

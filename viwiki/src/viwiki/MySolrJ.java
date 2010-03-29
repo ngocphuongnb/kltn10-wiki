@@ -101,4 +101,5 @@ public class MySolrJ {
         req.add(docs);
         UpdateResponse rsp = req.process(server);
     }
+    
 }
