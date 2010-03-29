@@ -7,6 +7,7 @@ package BUS;
 
 import DAO.SynonymWordDAO;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  * @author VinhPham
  */
 public class SynonymWordBUS {
-    public static void generateSynonym() throws SQLException, ParseException, java.text.ParseException{
+    public static void generateSynonym() throws SQLException, ParseException, java.text.ParseException, IOException{
         SynonymWordDAO.generateSynonym();
     }
 }

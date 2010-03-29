@@ -115,7 +115,11 @@ public class frmMain extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             jButton2.setEnabled(false);
-            SynonymWordBUS.generateSynonym();
+            try {
+                SynonymWordBUS.generateSynonym();
+            } catch (IOException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
             jButton2.setEnabled(true);
         } catch (SQLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
