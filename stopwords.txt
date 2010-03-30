@@ -1,0 +1,287 @@
+﻿# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#-----------------------------------------------------------------------
+# a couple of test stopwords to test that the words are really being
+# configured from this file:
+stopworda
+stopwordb
+
+#Standard english stop words taken from Lucene's StopAnalyzer
+á
+à
+ai
+ái
+alo
+âu
+ấy
+ấy
+bằng
+bao nhiêu
+bất chấp
+bất luận
+bất quá
+bất quá
+bất tất
+bèn
+bị
+bó tay
+bởi
+bởi vậy
+bởi vì
+bỗng nhiên
+cái gì
+cái mà
+cái này
+cám ơn
+chăng
+chào
+chỉ
+chỉ có
+chính là
+cho
+chớ
+cho là
+chưa
+chừng
+chung quanh
+chuyên
+có
+cơ
+cơ hồ
+có kẻ
+có lẽ
+có người
+cớ sao
+còn
+cứ
+của
+của anh
+của bạn
+của họ
+của người ấy
+của nó
+cực
+cùng
+cũng
+đã
+dạ vâng
+đang
+đâu
+đây
+để
+đến
+đều
+đi
+dĩ nhiên
+điều đúng
+điều mà
+điều phải
+điều trái
+do
+đó
+độc
+đối với
+đối vu
+đột nhiên
+dù
+dùng
+dụng
+đúng
+đừng
+được
+dưới
+đương
+đương nhiên
+dường như
+duy
+ề
+êu
+êu ôi
+gần
+giá
+giá như
+giả sử
+giữa
+gớm chửa
+há
+hay
+hãy
+hay là
+hễ
+hết thảy
+hiển nhiên
+họ
+hoặc
+hoặc là
+hoàn toàn
+hỡi ôi
+hơn
+hốt  nhiên
+hú vía
+kẻ kia
+khả
+khỉ gió
+khổ quá
+khoan đã
+khỏi
+không
+không ai
+không người nào
+không việc gì
+kia
+kìa
+kịp
+ko
+là
+là vì
+lại
+lại còn
+lắm
+làm sao
+lẫn
+lập tức
+lấy
+lẽ nào
+lên
+lêu
+mà
+mặc dù
+mải
+mải miết
+mất
+mày
+may là
+mới
+nào
+này
+này đó
+nên
+nếu
+nếu mà
+nghiêm
+ngoài
+ngươi
+nha
+nhằm
+nhân
+nhất định
+nhất luật
+nhất nhất
+nhé
+như
+như thế
+như vậy
+nhưng
+nhưng mà
+nhưng mà
+nơi nào
+nỡm
+nữa
+ô
+ồ
+ơ
+ở
+ở
+ở đâu
+ở đó
+ôi
+ối
+phải
+phải gió
+phi
+qua
+quá
+quả
+quái
+quấy
+quyết
+ra
+rằng
+rất
+riệt
+rồi
+sai
+sặn dịp
+sao
+sao cho
+sắp
+sẽ
+sở dĩ
+song
+song le
+tái
+tại
+tận
+tất nhiên
+thậm
+thành
+thành thử
+thay
+thế
+thế mà
+thế mới chết
+thế thì
+thế với chết
+thì
+thí dụ
+thì mới
+thí như
+thôi
+thuần
+thực
+thường
+thường thường
+tối
+trái
+trên
+trong
+trừ
+trừ phi
+từ
+tự
+tựa
+tức khắc
+tức là
+từng
+tuy
+tuy nhiên
+tuyệt
+ụ
+ủa
+và
+vả lại
+vẫn
+vâng
+vào
+vậy
+về
+ví
+vì
+vị
+ví như
+vì sao
+vị tất
+ví thử
+việc ấy
+vô luận
+với
+vốn
+vừa mới
+xong
+xung quanh
+xuống
+
+
