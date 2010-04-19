@@ -84,7 +84,7 @@
 
 
                         kq += "<div>Results " + (start + 1) + " - " + end + " of " + total + ":</div>";
-                        for (int i = 0; i < limit; i++) {
+                        for (int i = 0; i < docs.size(); i++) {
                             kq += "<li><table style='border: 1px solid black; text-align: left'>";
 
                             // Lay danh sach tat ca cac field
