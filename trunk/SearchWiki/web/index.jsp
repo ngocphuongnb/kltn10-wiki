@@ -66,7 +66,7 @@
                         // Them vao thu
                         query.setFacet(true);
                         query.setHighlight(true);
-                        query.setStart(10);
+                        query.setStart(start);
                         // query.set
 
                         //query.addSortField("price", SolrQuery.ORDER.asc);
