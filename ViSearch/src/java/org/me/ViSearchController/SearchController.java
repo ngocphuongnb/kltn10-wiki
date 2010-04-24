@@ -4,8 +4,10 @@
  */
 package org.me.ViSearchController;
 
+import com.sun.xml.internal.fastinfoset.Decoder;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -55,9 +57,13 @@ public class SearchController extends HttpServlet {
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
+                keySearch = URLDecoder.decode(keySearch, "UTF-8");
 
                 SolrServer server = SolrJConnection.getSolrServer();
-                SolrQuery solrQuery = new SolrQuery(keySearch);
+                SolrQuery solrQuery = new SolrQuery();
+                solrQuery.setQueryType("dismax");
+
+                solrQuery.setQuery(keySearch);
 
                 //solrQuery.setFacet(true);
                 solrQuery.setHighlight(true);
@@ -84,7 +90,7 @@ public class SearchController extends HttpServlet {
                 sPaging = getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchController");
                 request.setAttribute("Docs", docs);
                 request.setAttribute("HighLight", highLight);
-                request.setAttribute("KeySearch", keySearch);
+                request.setAttribute("KeySearch", URLEncoder.encode(keySearch, "UTF-8"));
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
@@ -93,15 +99,9 @@ public class SearchController extends HttpServlet {
                 RequestDispatcher rd = sc.getRequestDispatcher(url);
                 rd.forward(request, response);
             }
-            else
-            {
-                String url = "/index.jsp";
-                ServletContext sc = getServletContext();
-                RequestDispatcher rd = sc.getRequestDispatcher(url);
-
-            }
-
         } finally {
+            String url = "/ViSearch/index.jsp";
+            response.sendRedirect(url);
             out.close();
         }
     }
