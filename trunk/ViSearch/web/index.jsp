@@ -20,6 +20,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Demo Search with SolrJ</title>
+        <script language="javascript" type="text/javascript">
+            function CheckInput()
+            {
+                var keysearch = document.getElementsByName("KeySearch")[0];
+                if(keysearch.value == "")
+                    return;
+                else
+                {
+                    var url = "SearchController?KeySearch=";
+                    url += encodeURIComponent(keysearch.value);
+                    window.location = url;
+                }
+            }
+        </script>
     </head>
     <body>
         <img src="logo_ViSearch.png" >
@@ -28,9 +42,11 @@
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getParameter("KeySearch");
+                        strQuery = URLDecoder.decode(strQuery, "UTF-8");
+                        strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
         %>
-        <form action="SearchController" method="POST">
+        <form action="javascript:CheckInput()" method="GET">
             <label for="searchbox">Search:</label>
             <input id="searchbox" name="KeySearch" type="text" value="<% if (strQuery != null) {
                             out.print(strQuery);
@@ -59,10 +75,12 @@
                             String text = (listdocs.get(i).getFieldValue("text")).toString();
                             String url = title.replace(' ', '_');
                             List<String> highlightText = highLight.get(title).get("text");
-                            if(!highlightText.isEmpty())
+                            if (!highlightText.isEmpty()) {
                                 text = highlightText.get(0) + "...";
-                            else
-                                text = text.substring(0, 100) + "...";
+                            } else {
+                                if(text.length()>100)
+                                    text = text.substring(0, 100) + "...";
+                            }
                             url = "<td><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title + "</a></td>";
                             result += "<tr>";
                             result += "<th>Tiêu đề: </th>";
