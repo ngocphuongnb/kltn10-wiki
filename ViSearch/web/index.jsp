@@ -75,12 +75,18 @@
                             String text = (listdocs.get(i).getFieldValue("text")).toString();
                             String url = title.replace(' ', '_');
                             List<String> highlightText = highLight.get(title).get("text");
+                            //List<String> highlightTitle = highLight.get(title).get("title");
                             if (!highlightText.isEmpty()) {
                                 text = highlightText.get(0) + "...";
                             } else {
                                 if(text.length()>100)
                                     text = text.substring(0, 100) + "...";
                             }
+
+                            //if (!highlightTitle.isEmpty()) {
+                            //    title = highlightTitle.get(0);
+                            //}
+
                             url = "<td><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title + "</a></td>";
                             result += "<tr>";
                             result += "<th>Tiêu đề: </th>";

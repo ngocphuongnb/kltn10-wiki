@@ -4,7 +4,6 @@
  */
 package org.me.ViSearchController;
 
-import com.sun.xml.internal.fastinfoset.Decoder;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
@@ -61,7 +60,7 @@ public class SearchController extends HttpServlet {
 
                 SolrServer server = SolrJConnection.getSolrServer();
                 SolrQuery solrQuery = new SolrQuery();
-                solrQuery.setQueryType("dismax");
+                //solrQuery.setQueryType("dismax");
 
                 solrQuery.setQuery(keySearch);
 
@@ -69,6 +68,9 @@ public class SearchController extends HttpServlet {
                 solrQuery.setHighlight(true);
                 solrQuery.addHighlightField("title");
                 solrQuery.addHighlightField("text");
+                solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+                solrQuery.setHighlightSimplePost("</em>");
+                solrQuery.setHighlightRequireFieldMatch(false);
                 int start = (currentpage - 1) * pagesize;
                 solrQuery.setStart(start);
                 solrQuery.setRows(pagesize);
