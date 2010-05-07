@@ -28,7 +28,8 @@
                     return;
                 else
                 {
-                    var url = "SearchController?KeySearch=";
+                    var url = "SearchController?type=0&KeySearch=";
+                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch.value);
                     window.location = url;
                 }
@@ -42,7 +43,7 @@
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getParameter("KeySearch");
-                        strQuery = URLDecoder.decode(strQuery, "UTF-8");
+                        //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
         %>
@@ -58,9 +59,6 @@
                     Map<String, Map<String, List<String>>> highLight = null;
                     if (request.getAttribute("Docs") != null) {
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
-                        if (request.getAttribute("HighLight") != null) {
-                            highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                        }
                         String result = "";
 
                         for (int i = 0; i < listdocs.size(); i++) {
@@ -74,20 +72,30 @@
                             String title = (listdocs.get(i).getFieldValue("title")).toString();
                             String text = (listdocs.get(i).getFieldValue("text")).toString();
                             String url = title.replace(' ', '_');
-                            List<String> highlightText = highLight.get(title).get("text");
-                            //List<String> highlightTitle = highLight.get(title).get("title");
-                            if (!highlightText.isEmpty()) {
-                                text = highlightText.get(0) + "...";
+                            String title_hl = title;
+
+                            if (request.getAttribute("HighLight") != null) {
+                                highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
+                                List<String> highlightText = highLight.get(title).get("text");
+                                List<String> highlightTitle = highLight.get(title).get("title");
+                                if (highlightText != null && !highlightText.isEmpty()) {
+                                    text = highlightText.get(0) + "...";
+                                } else {
+                                    if (text.length() > 100) {
+                                        text = text.substring(0, 100) + "...";
+                                    }
+                                }
+                                if (highlightTitle != null && !highlightTitle.isEmpty()) {
+                                    title_hl = highlightTitle.get(0);
+                                }
                             } else {
-                                if(text.length()>100)
+                                if (text.length() > 100) {
                                     text = text.substring(0, 100) + "...";
+                                }
                             }
 
-                            //if (!highlightTitle.isEmpty()) {
-                            //    title = highlightTitle.get(0);
-                            //}
 
-                            url = "<td><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title + "</a></td>";
+                            url = "<td><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title_hl + "</a></td>";
                             result += "<tr>";
                             result += "<th>Tiêu đề: </th>";
                             result += url;
@@ -95,6 +103,11 @@
                             result += "<tr>";
                             result += "<th>Nội dung: </th>";
                             result += "<td>" + text + "</td>";
+                            result += "</tr>";
+                            result += "<tr>";
+                            result += "<td colspan='2'";
+                            result += "<a href = 'SearchController?type=1&KeySearch=" + title + "'>Trang tương tự...</a>";
+                            result += "</td>";
                             result += "</tr>";
                             result += "</table></li>";
                         }
