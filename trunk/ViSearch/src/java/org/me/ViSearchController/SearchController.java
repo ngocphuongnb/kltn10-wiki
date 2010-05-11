@@ -4,11 +4,14 @@
  */
 package org.me.ViSearchController;
 
+import com.ctc.wstx.util.StringUtil;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,6 +22,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.JSONStringer;
+import net.sf.json.util.JSONUtils;
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.util.URIUtil;
+import org.apache.el.parser.JJTELParserState;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -27,6 +43,8 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
+import org.apache.solr.common.params.StatsParams;
+import org.apache.solr.common.util.ConcurrentLRUCache.Stats;
 import org.me.SolrConnection.SolrJConnection;
 
 /**
@@ -63,6 +81,52 @@ public class SearchController extends HttpServlet {
         return rsp;
     }
 
+    public String convertStreamToString(InputStream is, String encode) throws IOException {
+        if (is != null) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, encode));
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+            } finally {
+                is.close();
+            }
+            return sb.toString();
+        } else {
+            return "";
+        }
+    }
+
+    public void cluster(String query, int rows) throws SolrServerException, IOException {
+
+        HttpClient client = new HttpClient();
+        String url = "http://localhost:8983/solr" + "/clustering?q=" + query + "&rows=" + rows + "&wt=json";
+        url = URIUtil.encodeQuery(url);
+        GetMethod get = new GetMethod(url);
+
+        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
+        //RequestResult result=new RequestResult();
+        int status = client.executeMethod(get);
+        String charSet = get.getResponseCharSet();
+        if (charSet == null) {
+            charSet = "UTF-8";
+        }
+        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
+
+        JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
+
+        JSONArray cluster = json.getJSONArray("clusters");
+        for (int i = 0; i < cluster.size(); i++) {
+            String label = cluster.getJSONObject(i).getString("labels");
+            String docs = cluster.getJSONObject(i).getString("docs");
+            StringUtil Su = new StringUtil();
+        }
+        get.releaseConnection();
+
+    }
+
     void OnCheckSpelling(String q) throws SolrServerException {
         ModifiableSolrParams params = new ModifiableSolrParams();
         params.set("qt", "/spell");
@@ -70,6 +134,8 @@ public class SearchController extends HttpServlet {
         params.set("spellcheck", "on");
         params.set("spellcheck.build", "true");
         QueryResponse response = server.query(params);
+
+
     }
 
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
@@ -80,7 +146,8 @@ public class SearchController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
-        query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
+        //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
+        query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
@@ -89,7 +156,11 @@ public class SearchController extends HttpServlet {
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         QueryResponse rsp = server.query(query);
+
+
         return rsp;
+
+
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -99,56 +170,100 @@ public class SearchController extends HttpServlet {
         PrintWriter out = response.getWriter();
         SolrDocumentList docs = new SolrDocumentList();
         String keySearch = "";
+
+
         int pagesize = 10;
+
+
         int currentpage = 1;
+
+
         long numRow = 0;
         String sPaging = "";
+
+
         int type = -1;
+
+
+        int QTime = 0;
+
+
         try {
 
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
+
+
             }
 
             server = SolrJConnection.getSolrServer();
+
+
             int start = (currentpage - 1) * pagesize;
+
+
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
+
+
             }
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
+
+
                 switch (type) {
                     case 0:
+                        cluster(keySearch, 10);
                         //OnCheckSpelling(keySearch);
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+
+
                         break;
+
+
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+
+
                         break;
+
+
                     default:
                         break;
+
+
 
                 }
             }
 
 
             numRow = docs.getNumFound();
+
+
             int numpage = (int) (numRow / pagesize);
+
+
 
             if (numRow % pagesize > 0) {
                 numpage++;
+
+
             }
 
             sPaging = getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchController", type);
             request.setAttribute("Docs", docs);
+            request.setAttribute("QTime", String.valueOf(QTime));
             request.setAttribute("KeySearch", keySearch);
             request.setAttribute("Pagging", sPaging);
             request.setAttribute("NumRow", numRow);
@@ -157,18 +272,28 @@ public class SearchController extends HttpServlet {
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
+
+
         } catch (Exception e) {
             out.print(e.getMessage());
             //String url = "/ViSearch/index.jsp";
             //response.sendRedirect(url);
+
+
         } finally {
             out.close();
+
+
         }
     }
 
     public String getPaging(int numpage, int pagesize, int currentpage, String keysearch, String URL, int type) {
         String Paging;
+
+
         int page = 0;
+
+
 
 
         if (currentpage > 1) {
@@ -177,9 +302,13 @@ public class SearchController extends HttpServlet {
             Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">[Previous]</a> ";
 
 
+
+
         } else {
             Paging = "[First]";
             Paging += "[Previous]";
+
+
 
 
         }
@@ -187,8 +316,12 @@ public class SearchController extends HttpServlet {
             page = currentpage - 2;
 
 
+
+
         } else {
             page = 1;
+
+
 
 
         }
@@ -198,8 +331,12 @@ public class SearchController extends HttpServlet {
                 Paging += "<font color='#FF0000'>" + page + "</font> ";
 
 
+
+
             } else {
                 Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">" + page + "</a> ";
+
+
             }
         }
 
@@ -209,11 +346,17 @@ public class SearchController extends HttpServlet {
             Paging += "<a href=\"" + URL + "?currentpage=" + numpage + "&type=" + type + "&KeySearch=" + keysearch + "\">[Last]</a> ";
 
 
+
+
         } else {
             Paging += "[Next]";
             Paging += "[Last]";
+
+
         }
         return Paging;
+
+
 
 
     }
@@ -234,9 +377,14 @@ public class SearchController extends HttpServlet {
 
 
 
+
+
+
         } catch (SolrServerException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
 
 
     }
@@ -256,9 +404,14 @@ public class SearchController extends HttpServlet {
 
 
 
+
+
+
         } catch (SolrServerException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
 
 
     }
@@ -270,6 +423,7 @@ public class SearchController extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
+
 
     }// </editor-fold>
 }
