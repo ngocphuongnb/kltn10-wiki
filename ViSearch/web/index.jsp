@@ -59,10 +59,12 @@
                     Map<String, Map<String, List<String>>> highLight = null;
                     if (request.getAttribute("Docs") != null) {
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
-                        String result = "";
+                        String QTime = request.getAttribute("QTime").toString();
+
+                        String result = String.format("<div align = 'center'>Tổng số kết quả tìm được: %d - Thời gian tìm kiếm: %s ms</div>", listdocs.getNumFound(), QTime);
 
                         for (int i = 0; i < listdocs.size(); i++) {
-                            result += "<li><table style='border: 1px solid black; text-align: left'>";
+                            result += "<ul><table style='border: none; text-align: left'>";
 
                             // Lay danh sach tat ca cac field
                             Collection<String> fieldNames = listdocs.get(i).getFieldNames();
@@ -71,13 +73,14 @@
                             // Lay noi dung cua moi field
                             String title = (listdocs.get(i).getFieldValue("title")).toString();
                             String text = (listdocs.get(i).getFieldValue("text")).toString();
+                            String id = (listdocs.get(i).getFieldValue("id")).toString();
                             String url = title.replace(' ', '_');
                             String title_hl = title;
 
                             if (request.getAttribute("HighLight") != null) {
                                 highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                List<String> highlightText = highLight.get(title).get("text");
-                                List<String> highlightTitle = highLight.get(title).get("title");
+                                List<String> highlightText = highLight.get(id).get("text");
+                                List<String> highlightTitle = highLight.get(id).get("title");
                                 if (highlightText != null && !highlightText.isEmpty()) {
                                     text = highlightText.get(0) + "...";
                                 } else {
@@ -109,7 +112,7 @@
                             result += "<a href = 'SearchController?type=1&KeySearch=" + title + "'>Trang tương tự...</a>";
                             result += "</td>";
                             result += "</tr>";
-                            result += "</table></li>";
+                            result += "</table></ul>";
                         }
                         out.println(result);
 
