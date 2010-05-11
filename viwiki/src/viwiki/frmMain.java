@@ -135,9 +135,9 @@ public class frmMain extends javax.swing.JDialog {
         MySolrJ ms = new MySolrJ();
         ms.EmptyData();
         int start = 0;
-        while (start < numRecord) {
+        while (start < 5000) {
             ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 1000);
-            ms.Import2Solr(list);
+            ms.Import2Solr(list, start);
             start += 1000;
         }
 

@@ -67,14 +67,16 @@ public class MySolrJ {
         return UnicodeHelper.removeUnicodeSign(src);
     }
 
-    public void Import2Solr(ArrayList<ViwikiPageDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
+    public void Import2Solr(ArrayList<ViwikiPageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
         Iterator<ViwikiPageDTO> iter = listpage.iterator();
         while (iter.hasNext()) {
+            start++;
             pagedto = iter.next();
             doc = new SolrInputDocument();
+            doc.addField("id", String.valueOf(start));
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("comment", pagedto.getComment());
