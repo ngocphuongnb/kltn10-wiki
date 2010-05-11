@@ -22,7 +22,7 @@ public class DataProvider {
             Properties pros = new Properties();
             pros.setProperty("characterEncoding", "utf8");
             pros.setProperty("user", "root");
-            pros.setProperty("password", "");
+            pros.setProperty("password", "admin");
             connection = (Connection) DriverManager.getConnection(connectionString, pros);
         } catch (Exception ex) {
             ex.printStackTrace();
