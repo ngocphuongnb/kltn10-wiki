@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,9 +36,12 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.el.parser.JJTELParserState;
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
@@ -68,13 +72,13 @@ public class SearchController extends HttpServlet {
 
         solrQuery.setQuery(keySearch);
 
-        //solrQuery.setFacet(true);
+        solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
         solrQuery.addHighlightField("text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
-        //solrQuery.setHighlightRequireFieldMatch(false);
+        solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
         QueryResponse rsp = server.query(solrQuery);
@@ -121,11 +125,12 @@ public class SearchController extends HttpServlet {
         for (int i = 0; i < cluster.size(); i++) {
             String label = cluster.getJSONObject(i).getString("labels");
             String docs = cluster.getJSONObject(i).getString("docs");
-            StringUtil Su = new StringUtil();
         }
         get.releaseConnection();
 
     }
+
+   
 
     void OnCheckSpelling(String q) throws SolrServerException {
         ModifiableSolrParams params = new ModifiableSolrParams();
@@ -159,8 +164,21 @@ public class SearchController extends HttpServlet {
 
 
         return rsp;
+    }
 
+    public void OnStats(ArrayList<String> fields, String facet) throws SolrServerException, IOException, Exception {
 
+        SolrQuery query = new SolrQuery();
+        query.setQuery("*:*");
+        query.setRows(0);
+        query.set(StatsParams.STATS, true);
+        query.set(StatsParams.STATS_FIELD, "id");
+        query.set(StatsParams.STATS_FACET, "timestamp");
+        query.setParam("indent", true);
+     
+            QueryResponse rsp = server.query(query);
+
+            Map<String, FieldStatsInfo> map = rsp.getFieldStatsInfo();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -216,7 +234,10 @@ public class SearchController extends HttpServlet {
 
                 switch (type) {
                     case 0:
-                        cluster(keySearch, 10);
+                        ArrayList<String> list = new ArrayList<String>();
+                        list.add("comment");
+                        OnStats(list, "username");
+                        //cluster(keySearch, 10);
                         //OnCheckSpelling(keySearch);
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
