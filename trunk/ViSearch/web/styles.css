@@ -1,0 +1,18 @@
+.lst {
+-moz-box-sizing:content-box;
+border-color:#CCCCCC;
+border-style:solid;
+border-width:1px;
+font:18px arial,sans-serif;
+height:26px;
+padding:4px 10px 0 6px;
+vertical-align:top;
+width:50%;
+}
+
+.lsb {
+font:15px arial,sans-serif;
+height:30px;
+margin:0;
+vertical-align:top;
+}
