@@ -4,9 +4,17 @@
         <servlet-name>SearchController</servlet-name>
         <servlet-class>org.me.ViSearchController.SearchController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RaoVatController</servlet-name>
+        <servlet-class>org.me.ViSearchController.RaoVatController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
         <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RaoVatController</servlet-name>
+        <url-pattern>/RaoVatController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

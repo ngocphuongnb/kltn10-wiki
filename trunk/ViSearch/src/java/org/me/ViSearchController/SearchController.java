@@ -4,6 +4,7 @@
  */
 package org.me.ViSearchController;
 
+import com.sun.org.apache.xerces.internal.parsers.XMLDocumentParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +42,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.Paging;
 
 /**
  *
@@ -124,7 +126,8 @@ public class SearchController extends HttpServlet {
     String OnCheckSpelling(String q) throws SolrServerException, URIException, HttpException, IOException {
         String result = "";
         HttpClient client = new HttpClient();
-        String url = "http://localhost:8983/solr/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.build=true&wt=json";
+        //&spellcheck.build=true
+        String url = "http://localhost:8983/solr/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -137,14 +140,20 @@ public class SearchController extends HttpServlet {
         }
         String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
 
-        JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
-        JSONObject ob = json.getJSONObject("spellcheck");
-        JSONArray cluster = ob.getJSONArray("suggestions");
-        if (cluster.size() > 0) {
-            result = cluster.getString(cluster.size() - 1);
+        try {
+            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
+            JSONObject ob = json.getJSONObject("spellcheck");
+            JSONArray cluster = ob.getJSONArray("suggestions");
+            if (cluster.size() > 0) {
+                result = cluster.getString(cluster.size() - 1);
+            }
+            get.releaseConnection();
+            return result;
         }
-        get.releaseConnection();
-        return result;
+        catch(Exception x)
+        {
+            return null;
+        }
     }
 
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
@@ -222,11 +231,12 @@ public class SearchController extends HttpServlet {
 //                        list.add("comment");
                         //OnStats(list, "username");
                         //cluster(keySearch, 10);
-                        //OnCheckSpelling(keySearch);
-                        String sCollation = OnCheckSpelling(keySearch);
+                        if (request.getParameter("sp") != null) {
+                            String sCollation = OnCheckSpelling(keySearch);
 
-                        if (sCollation != "") {
-                            request.setAttribute("Collation", sCollation);
+                            if (sCollation != "") {
+                                request.setAttribute("Collation", sCollation);
+                            }
                         }
 
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
@@ -259,7 +269,7 @@ public class SearchController extends HttpServlet {
                     numpage++;
                 }
 
-                sPaging = getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchController", type);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
@@ -276,46 +286,6 @@ public class SearchController extends HttpServlet {
         } finally {
             out.close();
         }
-    }
-
-    public String getPaging(int numpage, int pagesize, int currentpage, String keysearch, String URL, int type) {
-        String Paging;
-        int page = 0;
-
-        if (currentpage > 1) {
-            page = currentpage - 1;
-            Paging = "<a href=\"" + URL + "?currentpage=1&type=" + type + "&KeySearch=" + keysearch + "\">[Trang đầu]</a> ";
-            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang trước]</a> ";
-        } else {
-            Paging = "[Trang đầu]";
-            Paging += "[Trang trước]";
-        }
-
-        if (currentpage > 2) {
-            page = currentpage - 2;
-        } else {
-            page = 1;
-        }
-
-        for (int tam = page + 5; page <= numpage && page < tam; page++) {
-
-            if (page == currentpage) {
-                Paging += "<font color='#FF0000'>" + page + "</font> ";
-            } else {
-                Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">" + page + "</a> ";
-            }
-        }
-
-        if (currentpage < numpage) {
-            page = currentpage + 1;
-            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang kế]</a> ";
-            Paging += "<a href=\"" + URL + "?currentpage=" + numpage + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang cuối]</a> ";
-        } else {
-            Paging += "[Trang kế]";
-            Paging += "[Trang cuối]";
-        }
-
-        return Paging;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

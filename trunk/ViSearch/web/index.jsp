@@ -32,6 +32,7 @@
                     var url = "SearchController?type=0&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch.value);
+                    url += "&sp=1";
                     window.location = url;
                 }
             }
