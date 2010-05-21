@@ -14,11 +14,11 @@ import java.util.Properties;
  */
 public class DataProvider {
 
-    public static Connection getConnection() {
+    public static Connection getConnection(String database) {
         Connection connection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            String connectionString = "jdbc:mysql://localhost/kltn";
+            String connectionString = "jdbc:mysql://localhost/" + database;
             Properties pros = new Properties();
             pros.setProperty("characterEncoding", "utf8");
             pros.setProperty("user", "root");

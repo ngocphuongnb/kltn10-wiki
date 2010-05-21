@@ -24,7 +24,7 @@ public class SynonymWordDAO {
 
     public static void generateSynonym() throws SQLException, ParseException, IOException {
         ArrayList<SynonymWordDTO> list = new ArrayList<SynonymWordDTO>();
-        Connection cn = (Connection) DataProvider.getConnection();
+        Connection cn = (Connection) DataProvider.getConnection("kltn");
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT title, text FROM viwiki Where text like '%#redirect [[%'";
         ResultSet rs = st.executeQuery(query);

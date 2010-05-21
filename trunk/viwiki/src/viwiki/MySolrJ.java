@@ -4,6 +4,7 @@
  */
 package viwiki;
 
+import DTO.RaoVatDTO;
 import DTO.ViwikiPageDTO;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -67,7 +68,7 @@ public class MySolrJ {
         return UnicodeHelper.removeUnicodeSign(src);
     }
 
-    public void Import2Solr(ArrayList<ViwikiPageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
+    public void ImportWiki2Solr(ArrayList<ViwikiPageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
@@ -90,6 +91,44 @@ public class MySolrJ {
             doc.addField("timestamp", pagedto.getTimestamp().getTime());
             doc.addField("username", pagedto.getUsername());
             doc.addField("username_unsigned", RemoveSignVN(pagedto.getUsername()));
+            docs.add(doc);
+        }
+
+
+        SolrServer server = getSolrServer();
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
+    public void ImportRaoVat2Solr(ArrayList<RaoVatDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        RaoVatDTO pagedto = new RaoVatDTO();
+        Iterator<RaoVatDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            start++;
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", String.valueOf(start));
+            doc.addField("body", pagedto.getBody());
+            doc.addField("body_unsigned", RemoveSignVN(pagedto.getBody()));
+            doc.addField("category", pagedto.getCategory());
+            doc.addField("contact", pagedto.getContact());
+            doc.addField("last_update", pagedto.getLastUpdate().getTime());
+            doc.addField("link_id", pagedto.getLinkId());
+            doc.addField("location", pagedto.getLocation());
+            doc.addField("photo", pagedto.getPhoto());
+            doc.addField("price", pagedto.getPrice());
+            doc.addField("score", pagedto.getScore());
+            doc.addField("site", pagedto.getSite());
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+            doc.addField("url", pagedto.getUrl());
             docs.add(doc);
         }
 
