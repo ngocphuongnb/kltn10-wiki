@@ -24,7 +24,7 @@ public class ViwikiPageDAO {
 
     public static ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException {
         ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-        Connection cn = DataProvider.getConnection();
+        Connection cn = DataProvider.getConnection("kltn");
         Statement st = cn.createStatement();
         String query = String.format("SELECT * FROM viwiki LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
@@ -59,7 +59,7 @@ public class ViwikiPageDAO {
 
     public static int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = DataProvider.getConnection();
+        Connection cn = DataProvider.getConnection("kltn");
         Statement st = cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM viwiki";
         ResultSet rs = st.executeQuery(query);
