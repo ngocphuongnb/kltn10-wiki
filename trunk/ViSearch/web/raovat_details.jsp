@@ -81,6 +81,8 @@
                             }
                             if (listdocs.get(i).getFieldValue("price") != null) {
                                 price = (listdocs.get(i).getFieldValue("price")).toString();
+                                if(Float.parseFloat(price) == 0)
+                                    price = "Call";
                             }
                             if (listdocs.get(i).getFieldValue("location") != null) {
                                 location = (listdocs.get(i).getFieldValue("location")).toString();
@@ -116,62 +118,29 @@
                         if (request.getAttribute("Docs_Category") != null) {
                             listdocs2 = (SolrDocumentList) request.getAttribute("Docs_Category");
 
-                            result2 += "<table style=\"font-size:13px\">";
+                            result2 += "<div style=\"font-size:13px\">";
                             for (int i = 0; i < listdocs2.size(); i++) {
                                 
 
                                 // Lay noi dung cua moi field
                                 String title = "";
                                 if((listdocs2.get(i).getFieldValue("rv_title")).toString()!=null)
-                                    title = listdocs2.get(i).getFieldValue("rv_title").toString();
+                                    title = listdocs2.get(i).getFirstValue("rv_title").toString();
                                 
                                 String id = (listdocs2.get(i).getFieldValue("id")).toString();
                                 String url;
-                                String title_hl = title.replaceAll("\\<.*?\\>", "");
 
-                                url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title_hl + "</a></b></td>";
-                                result2 += "<tr>";
+                                url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
                                 result2 += url;
-                                result2 += "</tr>";
+                                
                             }
-                            result2 += "</table>";
+                            result2 += "</div>";
                         }
                     //end Cùng chuyên mục Category
 %>
         <%
                     // Get Facet
-                    String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
-                    facet += "<tr>";
-
-                    List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
-                    if (listFacet != null) {
-                        for (int i = 0; i < listFacet.size(); i++) {
-                            facet += "<td>";
-                            String fieldName = listFacet.get(i).getName();
-                            facet += "Facet: " + fieldName;
-                            facet += "<br>";
-                            List<FacetField.Count> listCount = listFacet.get(i).getValues();
-                            if (listCount != null) {
-                                for (int j = 0; j < listCount.size(); j++) {
-                                    String fieldText = listCount.get(j).getName();
-                                    String newStrQuery = fieldName + ":";
-                                    newStrQuery += "\"";
-                                    newStrQuery += fieldText;
-                                    newStrQuery += "\""  + " and " +  strQuery;
-
-                                    facet += "Name: " + "<a href = 'RaoVatController?type=2&KeySearch=" + newStrQuery + "'>" + fieldText + "</a>";
-                                    facet += "(Count: " + listCount.get(j).getCount() + ")";
-                                    facet += "<br>";
-                                }
-                            } else {
-                                facet += "Không tìm ra Facet<br>";
-                            }
-                            facet += "</td>";
-                        }
-                    }
-                    facet += "</table>";
-
+                    
                     // End get Facet
         %>
         <div id="wrap_left" align="center">
@@ -193,7 +162,7 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">
-                            <%  out.print(facet);%>
+                            <%  //out.print(facet);%>
                              <table>
                                 <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
                                 <tr><td><a href="">aaa</a></td></tr>
