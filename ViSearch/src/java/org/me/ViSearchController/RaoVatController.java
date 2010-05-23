@@ -192,7 +192,7 @@ public class RaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         if (faceName != "" && faceName != null) {
-            keySearch = "+(rv_title:(" + keySearch + ") || rv_body:(" + keySearch + ")) +" + faceName + ":\"" + faceValue + "\"";
+            keySearch = "+(rv_title:(" + keySearch + ") || rv_body:(" + keySearch + ")) +(" + faceName + ":\"" + faceValue + "\")";
         }
         solrQuery.setQuery(keySearch);
 
