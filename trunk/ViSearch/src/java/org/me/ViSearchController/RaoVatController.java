@@ -176,7 +176,7 @@ public class RaoVatController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        solrQuery.setFacet(true);
+        //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
         //solrQuery.addHighlightField("body");

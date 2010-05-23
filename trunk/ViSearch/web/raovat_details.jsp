@@ -111,7 +111,7 @@
         <%
                     // Get Facet
                     String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Suggest keywords</div></th></tr>";
+                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
                     facet += "<tr>";
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
@@ -128,7 +128,7 @@
                                     String newStrQuery = fieldName + ":";
                                     newStrQuery += "\"";
                                     newStrQuery += fieldText;
-                                    newStrQuery += "\""  + " AND " +  strQuery;
+                                    newStrQuery += "\""  + " and " +  strQuery;
 
                                     facet += "Name: " + "<a href = 'RaoVatController?type=2&KeySearch=" + newStrQuery + "'>" + fieldText + "</a>";
                                     facet += "(Count: " + listCount.get(j).getCount() + ")";

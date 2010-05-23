@@ -147,7 +147,7 @@
         <%
                     // Get Facet
                     String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Suggest keywords</div></th></tr>";
+                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
                     facet += "<tr>";
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
@@ -161,7 +161,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    String newStrQuery = strQuery + " AND " + fieldName + ":";
+                                    String newStrQuery = strQuery + " and " + fieldName + ":";
                                     newStrQuery += "\"";
                                     newStrQuery += fieldText;
                                     newStrQuery += "\"";
