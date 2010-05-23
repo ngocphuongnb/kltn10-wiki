@@ -108,6 +108,36 @@
 
                      //get SolrDocumentList
 %>
+<%
+                    //get Cùng chuyên mục Category
+                    SolrDocumentList listdocs2 = new SolrDocumentList();
+                    String result2 = "";
+
+                        if (request.getAttribute("Docs_Category") != null) {
+                            listdocs2 = (SolrDocumentList) request.getAttribute("Docs_Category");
+
+                            result2 += "<table style=\"font-size:13px\">";
+                            for (int i = 0; i < listdocs2.size(); i++) {
+                                
+
+                                // Lay noi dung cua moi field
+                                String title = "";
+                                if((listdocs2.get(i).getFieldValue("rv_title")).toString()!=null)
+                                    title = listdocs2.get(i).getFieldValue("rv_title").toString();
+                                
+                                String id = (listdocs2.get(i).getFieldValue("id")).toString();
+                                String url;
+                                String title_hl = title.replaceAll("\\<.*?\\>", "");
+
+                                url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title_hl + "</a></b></td>";
+                                result2 += "<tr>";
+                                result2 += url;
+                                result2 += "</tr>";
+                            }
+                            result2 += "</table>";
+                        }
+                    //end Cùng chuyên mục Category
+%>
         <%
                     // Get Facet
                     String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
@@ -183,11 +213,10 @@
                                 <tr>
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
-
                                         <table>
                                             <tr><td><div class="title_content">Bài viết cùng chuyên mục</div></td></tr>
                                         </table>
-
+                                         <% out.print(result2);%>
                                     </td>
                                 </tr>
                             </table>

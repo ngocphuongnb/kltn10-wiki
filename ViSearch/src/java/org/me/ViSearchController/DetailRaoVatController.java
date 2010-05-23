@@ -42,21 +42,30 @@ public class DetailRaoVatController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String keySearchId = "";
         SolrDocumentList docs = new SolrDocumentList();
+        SolrDocumentList docs_Category = new SolrDocumentList();
         try {
             server = SolrJConnection.getSolrServer();
 
             if (request.getParameter("id") != null) {
                 keySearchId = request.getParameter("id");
                 QueryResponse rsp;
+                QueryResponse rsp_Category;
                 try {
                     rsp = OnSearchSubmit(keySearchId);
                     docs = rsp.getResults();
+                    if (docs != null) {
+                        String category = (docs.get(0).getFieldValue("category")).toString();
+                        String strQr = "category:\""+category+"\"";
+                        rsp_Category = Category(strQr);
+                        docs_Category = rsp_Category.getResults();
+                    }
                 } catch (SolrServerException ex) {
                     Logger.getLogger(DetailRaoVatController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             String url = "/raovat_details.jsp";
             request.setAttribute("Docs", docs);
+            request.setAttribute("Docs_Category", docs_Category);
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
@@ -68,22 +77,28 @@ public class DetailRaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmit(String id) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
-        solrQuery.setQuery("id:"+id);
+        solrQuery.setQuery("id:" + id);
 
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("username");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
+        //addFacetQuery("price:[* TO 150]");
+        //addFacetQuery("price:[151 TO 300]");
+
+
         // End Facet
 
-//        solrQuery.setHighlight(true);
-//        solrQuery.addHighlightField("title");
-//        solrQuery.addHighlightField("body");
-//        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-//        solrQuery.setHighlightSimplePost("</em>");
-//        solrQuery.setHighlightRequireFieldMatch(true);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse Category(String query) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        solrQuery.setQuery(query);
+
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
