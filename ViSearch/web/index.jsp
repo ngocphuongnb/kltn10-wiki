@@ -61,8 +61,7 @@
                         if (request.getAttribute("Docs") != null) {
                             listdocs = (SolrDocumentList) request.getAttribute("Docs");
 
-                            search_stats = String.format("<div>Số kết quả tìm được: %d - Thời gian tìm kiếm: %s giây</div>", listdocs.getNumFound(), QTime);
-
+                            search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
                                 result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
@@ -138,7 +137,7 @@
         <%
 // Get Facet
                     String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Suggest keywords</div></th></tr>";
+                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
                     facet += "<tr>";
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
@@ -152,7 +151,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    String newStrQuery = strQuery + " AND " + fieldName + ":";
+                                    String newStrQuery = strQuery + " and " + fieldName + ":";
                                     newStrQuery += "\"";
                                     newStrQuery += fieldText;
                                     newStrQuery += "\"";
