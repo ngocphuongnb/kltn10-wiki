@@ -170,7 +170,7 @@ public class frmMain extends javax.swing.JDialog {
         MySolrJ ms = new MySolrJ();
         ms.EmptyData();
         int start = 0;
-        while (start < numRecord) {
+        while (start < 10000) {
             ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 1000);
             ms.ImportWiki2Solr(list, start);
             start += 1000;
@@ -181,7 +181,7 @@ public class frmMain extends javax.swing.JDialog {
     public void importDataRaoVat(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         // TODO code application logic here
         MySolrJ ms = new MySolrJ();
-        ms.EmptyData();
+        //ms.EmptyData();
         int start = 0;
         while (start < numRecord) {
             ArrayList<RaoVatDTO> list = RaoVatBUS.getDataList(start, 1000);

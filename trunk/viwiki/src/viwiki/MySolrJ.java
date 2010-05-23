@@ -77,17 +77,17 @@ public class MySolrJ {
             start++;
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", String.valueOf(start));
-            doc.addField("title", pagedto.getTitle());
-            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+            doc.addField("id", "wk" + String.valueOf(start));
+            doc.addField("wk_title", pagedto.getTitle());
+            doc.addField("wk_title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("comment", pagedto.getComment());
             doc.addField("comment_unsigned", RemoveSignVN(pagedto.getComment()));
             doc.addField("ip", pagedto.getIp());
             doc.addField("minor", pagedto.getMinor());
             doc.addField("redirect", pagedto.getRedirect());
             doc.addField("restrictions", pagedto.getRestrictions());
-            doc.addField("text", pagedto.getText());
-            doc.addField("text_unsigned", RemoveSignVN(pagedto.getText()));
+            doc.addField("wk_text", pagedto.getText());
+            doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText()));
             doc.addField("timestamp", pagedto.getTimestamp().getTime());
             doc.addField("username", pagedto.getUsername());
             doc.addField("username_unsigned", RemoveSignVN(pagedto.getUsername()));
@@ -114,9 +114,9 @@ public class MySolrJ {
             start++;
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", String.valueOf(start));
-            doc.addField("body", pagedto.getBody());
-            doc.addField("body_unsigned", RemoveSignVN(pagedto.getBody()));
+            doc.addField("id", "rv" + String.valueOf(start));
+            doc.addField("rv_body", pagedto.getBody());
+            doc.addField("rv_body_unsigned", RemoveSignVN(pagedto.getBody()));
             doc.addField("category", pagedto.getCategory());
             doc.addField("contact", pagedto.getContact());
             doc.addField("last_update", pagedto.getLastUpdate().getTime());
@@ -126,8 +126,8 @@ public class MySolrJ {
             doc.addField("price", pagedto.getPrice());
             doc.addField("score", pagedto.getScore());
             doc.addField("site", pagedto.getSite());
-            doc.addField("title", pagedto.getTitle());
-            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+            doc.addField("rv_title", pagedto.getTitle());
+            doc.addField("rv_title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("url", pagedto.getUrl());
             docs.add(doc);
         }
