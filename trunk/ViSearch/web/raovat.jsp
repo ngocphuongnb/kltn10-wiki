@@ -74,8 +74,8 @@
                                 result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFieldValue("rv_title")).toString();
-                                String body = (listdocs.get(i).getFieldValue("rv_body")).toString();
+                                String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
+                                String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url;
                                 String title_hl = title.replaceAll("\\<.*?\\>", "");

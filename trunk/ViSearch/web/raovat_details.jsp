@@ -90,8 +90,8 @@
                             result += url;
                             photo = "<td rowspan='7' width='200'><img src='" + photo + "' alt='No image' width='200'/></td>";
 
-                            result += "<tr><td width='auto'>" + "Contact: "+ "<a href = 'RaoVatController?type=2&KeySearch=contact:"+contact+"'>" + contact+ "</a></td>" + photo +"</tr>";
-                            result += "<tr><td>" + "Category: "+ "<a href = 'RaoVatController?type=2&KeySearch=category:"+category+"'>" + category+ "</a></td></tr>";
+                            result += "<tr><td width='auto'>" + "Contact: "+ contact+ "</td>" + photo +"</tr>";
+                            result += "<tr><td>" + "Category: "+ "<a href = 'RaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
                             result += "<tr><td>" + "Location: "+ "<a href = 'RaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
                             result += "<tr><td>" + "Score: "+score + "</td></tr>";
                             result += "<tr><td>" + "Site: "+ "<a href = 'RaoVatController?type=2&KeySearch=site:"+site+"'>" + site+ "</a></td></tr>";
