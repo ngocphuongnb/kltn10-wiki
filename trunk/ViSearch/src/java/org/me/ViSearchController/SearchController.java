@@ -69,6 +69,9 @@ public class SearchController extends HttpServlet {
 
          // Facet
         solrQuery.setFacet(true);
+
+        // Cái này chắc ko cần, nhưng cứ để cho chắc
+        solrQuery.addFacetQuery("wk_title:(\""+keySearch + "\")^3 (\""+keySearch + "\")^2 wk_title:(\""+keySearch + "\")^1.5 ("+keySearch + ")");
         solrQuery.addFacetField("wk_title");
         //solrQuery.addFacetField("username");
         solrQuery.setFacetLimit(10);

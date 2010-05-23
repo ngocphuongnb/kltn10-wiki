@@ -79,10 +79,12 @@ function MM_swapImage() { //v3.0
                 <tr>
 
                     <td>
-
+                        <div style="margin:0; border:0; padding:0; float:left"><img src="images/magnifying_glass.gif" width="26" /></div>
+                        <div id="" style="float:right">
                         <input id="txtSearch" type="text" value="<% if (strQuery != null) {
                                         out.print(strQuery);
                                     }%>"/>
+                        </div>
                     </td>
                     <td>
                         <img src="images/spacer.gif" width="1" height="33" alt=""></td>

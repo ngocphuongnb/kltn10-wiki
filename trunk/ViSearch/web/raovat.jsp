@@ -155,14 +155,14 @@
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "Facet: " + fieldName;
+                            facet += "<b>Facet: " + fieldName+"</b>";
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
                                     facet += "Name: " + "<a href = 'RaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
-                                    facet += "(Count: " + listCount.get(j).getCount() + ")";
+                                    facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
                             } else {
