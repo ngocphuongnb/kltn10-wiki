@@ -63,22 +63,49 @@ public class SearchController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("dismax");
+        //solrQuery.setQueryType("dismax");
 
-        solrQuery.setQuery(keySearch);
+        solrQuery.setQuery("wk_title:(\""+keySearch + "\")^3 (\""+keySearch + "\")^2 wk_title:(\""+keySearch + "\")^1.5 ("+keySearch + ")");
 
          // Facet
         solrQuery.setFacet(true);
-        solrQuery.addFacetField("title");
+        solrQuery.addFacetField("wk_title");
         //solrQuery.addFacetField("username");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        solrQuery.setFacet(true);
+        //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("text");
+        solrQuery.addHighlightField("wk_title");
+        solrQuery.addHighlightField("wk_text");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse OnSearchSubmitStandard(String keySearch, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+        //solrQuery.setQueryType("dismax");
+
+        solrQuery.setQuery(keySearch);
+
+         // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("wk_title");
+        //solrQuery.addFacetField("username");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        //solrQuery.setFacet(true);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("wk_title");
+        solrQuery.addHighlightField("wk_text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -107,10 +134,12 @@ public class SearchController extends HttpServlet {
         }
     }
 
-    public void cluster(String query, int rows) throws SolrServerException, IOException {
+    public List<ClusterRecord> cluster(String query, int rows) throws SolrServerException, IOException {
+
+        List<ClusterRecord> result = new ArrayList<ClusterRecord>();
 
         HttpClient client = new HttpClient();
-        String url = "http://localhost:8983/solr" + "/clustering?q=" + query + "&rows=" + rows + "&wt=json";
+        String url = "http://localhost:8983/solr" + "/clusteringWiKi?q=" + query + "&rows=" + rows + "&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -129,8 +158,15 @@ public class SearchController extends HttpServlet {
         for (int i = 0; i < cluster.size(); i++) {
             String label = cluster.getJSONObject(i).getString("labels");
             String docs = cluster.getJSONObject(i).getString("docs");
+
+            ClusterRecord cr = new ClusterRecord();
+            cr.setLabel(label);
+            cr.setDocs(docs);
+
+            result.add(cr);
         }
         get.releaseConnection();
+        return result;
 
     }
 
@@ -138,7 +174,7 @@ public class SearchController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/spellWiKi?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -174,14 +210,14 @@ public class SearchController extends HttpServlet {
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "wk_title");
         //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
         query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
-        query.addHighlightField("title");
-        query.addHighlightField("text");
+        query.addHighlightField("wk_title");
+        query.addHighlightField("wk_text");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
@@ -268,6 +304,14 @@ public class SearchController extends HttpServlet {
                             request.setAttribute("HighLight", highLight);
                         }
                         QTime = rsp.getQTime();
+                        break;
+                    case 2:
+                        rsp = OnSearchSubmitStandard(keySearch, start, pagesize);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+                        listFacet = rsp.getFacetFields();
                         break;
                     default:
                         break;

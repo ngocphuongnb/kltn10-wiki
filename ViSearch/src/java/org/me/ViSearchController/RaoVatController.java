@@ -4,18 +4,30 @@
  */
 package org.me.ViSearchController;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
+import javax.print.URIException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -76,6 +88,12 @@ public class RaoVatController extends HttpServlet {
 
                 switch (type) {
                     case 0:
+                        if (request.getParameter("sp") != null) {
+                            String sCollation = OnCheckSpelling(keySearch);
+                            if (sCollation != "") {
+                                request.setAttribute("Collation", sCollation);
+                            }
+                        }
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -153,7 +171,7 @@ public class RaoVatController extends HttpServlet {
 
         solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("rv_title");
         //solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
@@ -178,7 +196,7 @@ public class RaoVatController extends HttpServlet {
 
         //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("rv_title");
         //solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
@@ -196,19 +214,69 @@ public class RaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
         //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
         query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
-        query.addHighlightField("title");
-        query.addHighlightField("body");
+        query.addHighlightField("rv_title");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
         QueryResponse rsp = server.query(query);
         return rsp;
+    }
+
+    String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
+        String result = "";
+        HttpClient client = new HttpClient();
+        //&spellcheck.build=true
+        String url = "http://localhost:8983/solr/spellRaoVat?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        url = URIUtil.encodeQuery(url);
+        GetMethod get = new GetMethod(url);
+
+        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
+
+        int status = client.executeMethod(get);
+        String charSet = get.getResponseCharSet();
+        if (charSet == null) {
+            charSet = "UTF-8";
+        }
+        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
+
+        try {
+            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
+            JSONObject ob = json.getJSONObject("spellcheck");
+            JSONArray cluster = ob.getJSONArray("suggestions");
+            if (cluster.size() > 0) {
+                result = cluster.getString(cluster.size() - 1);
+            }
+            get.releaseConnection();
+            return result;
+        }
+        catch(Exception x)
+        {
+            return null;
+        }
+    }
+
+     public String convertStreamToString(InputStream is, String encode) throws IOException {
+        if (is != null) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, encode));
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+            } finally {
+                is.close();
+            }
+            return sb.toString();
+        } else {
+            return "";
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

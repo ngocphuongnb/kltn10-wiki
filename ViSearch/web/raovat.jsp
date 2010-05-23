@@ -26,7 +26,7 @@
                     return;
                 else
                 {
-                    var url = "RaoVatController?type=0&KeySearch=";
+                    var url = "RaoVatController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -67,15 +67,15 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"RaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
                                 result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFieldValue("title")).toString();
-                                String body = (listdocs.get(i).getFieldValue("body")).toString();
+                                String title = (listdocs.get(i).getFieldValue("rv_title")).toString();
+                                String body = (listdocs.get(i).getFieldValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url;
                                 String title_hl = title.replaceAll("\\<.*?\\>", "");
@@ -88,7 +88,7 @@
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                     //List<String> highlightText = highLight.get(id).get("body");
-                                    List<String> highlightTitle = highLight.get(id).get("title");
+                                    List<String> highlightTitle = highLight.get(id).get("rv_title");
                                     /*if (highlightText != null && !highlightText.isEmpty()) {
                                     body = highlightText.get(0) + "...";
                                     } else {
