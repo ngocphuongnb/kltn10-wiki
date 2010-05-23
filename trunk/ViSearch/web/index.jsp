@@ -149,12 +149,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    String newStrQuery = strQuery + " and " + fieldName + ":";
-                                    newStrQuery += "\"";
-                                    newStrQuery += fieldText;
-                                    newStrQuery += "\"";
-
-                                    facet += "Name: " + "<a href = 'SearchController?type=2&KeySearch=" + newStrQuery + "'>" + fieldText + "</a>";
+                                    facet += "Name: " + "<a href = 'SearchController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += "(Count: " + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }

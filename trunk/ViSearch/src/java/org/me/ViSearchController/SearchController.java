@@ -88,12 +88,13 @@ public class SearchController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        //solrQuery.setQueryType("dismax");
+        if (faceName != "" && faceName != null) {
+            keySearch = "+(wk_title:(" + keySearch + ") || wk_text:(" + keySearch + ")) +(" + faceName + ":\"" + faceValue + "\")";
+        }
 
         solrQuery.setQuery(keySearch);
-
          // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("wk_title");
@@ -306,7 +307,13 @@ public class SearchController extends HttpServlet {
                         QTime = rsp.getQTime();
                         break;
                     case 2:
-                        rsp = OnSearchSubmitStandard(keySearch, start, pagesize);
+                        String faceName = "";
+                        String faceValue = "";
+                        if (request.getParameter("FaceName") != null) {
+                            faceName = request.getParameter("FaceName");
+                            faceValue = request.getParameter("FaceValue");
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);

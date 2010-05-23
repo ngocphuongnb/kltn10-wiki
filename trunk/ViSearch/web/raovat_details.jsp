@@ -60,8 +60,8 @@
 
                             // Lay noi dung cua moi field
                             String id = (listdocs.get(i).getFieldValue("id")).toString();
-                            String title = (listdocs.get(i).getFieldValue("rv_title")).toString();
-                            String body = (listdocs.get(i).getFieldValue("rv_body")).toString();
+                            String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
+                            String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
                             String score = (listdocs.get(i).getFieldValue("score")).toString();
