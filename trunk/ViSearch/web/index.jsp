@@ -25,7 +25,7 @@
                     return;
                 else
                 {
-                    var url = "SearchController?type=0&KeySearch=";
+                    var url = "SearchController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -71,16 +71,16 @@
                                 result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFieldValue("title")).toString();
-                                String text = (listdocs.get(i).getFieldValue("text")).toString();
+                                String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
+                                String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    List<String> highlightText = highLight.get(id).get("text");
-                                    List<String> highlightTitle = highLight.get(id).get("title");
+                                    List<String> highlightText = highLight.get(id).get("wk_text");
+                                    List<String> highlightTitle = highLight.get(id).get("wk_title");
                                     if (highlightText != null && !highlightText.isEmpty()) {
                                         text = highlightText.get(0) + "...";
                                     } else {
@@ -98,14 +98,12 @@
                                 }
 
 
-                                url = "<td><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title_hl + "</a></td>";
+                                url = "<td><font size=\"+2\"><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title_hl + "</a></font></td>";
                                 result += "<tr>";
-                                result += "<td>Tiêu đề: </td>";
                                 result += url;
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>Nội dung: </td>";
                                 result += "<td>" + text + "</td>";
                                 result += "</tr>";
 
@@ -156,7 +154,7 @@
                                     newStrQuery += fieldText;
                                     newStrQuery += "\"";
 
-                                    facet += "Name: " + "<a href = 'SearchController?type=0&KeySearch=" + newStrQuery + "'>" + fieldText + "</a>";
+                                    facet += "Name: " + "<a href = 'SearchController?type=2&KeySearch=" + newStrQuery + "'>" + fieldText + "</a>";
                                     facet += "(Count: " + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
