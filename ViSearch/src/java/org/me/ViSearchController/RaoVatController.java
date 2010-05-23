@@ -112,13 +112,20 @@ public class RaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         break;
                     case 2:
-                        rsp = OnSearchSubmitStandard(keySearch, start, pagesize);
+                        String faceName = "";
+                        String faceValue = "";
+                        if (request.getParameter("FaceName") != null) {
+                            faceName = request.getParameter("FaceName");
+                            faceValue = request.getParameter("FaceValue");
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
+
                         break;
                     default:
                         break;
@@ -182,8 +189,11 @@ public class RaoVatController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
+        if (faceName != "" && faceName != null) {
+            keySearch = "(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ")) and " + faceName + ":\"" + faceValue + "\"";
+        }
         solrQuery.setQuery(keySearch);
 
         // Facet
@@ -254,14 +264,12 @@ public class RaoVatController extends HttpServlet {
             }
             get.releaseConnection();
             return result;
-        }
-        catch(Exception x)
-        {
+        } catch (Exception x) {
             return null;
         }
     }
 
-     public String convertStreamToString(InputStream is, String encode) throws IOException {
+    public String convertStreamToString(InputStream is, String encode) throws IOException {
         if (is != null) {
             StringBuilder sb = new StringBuilder();
             String line;
