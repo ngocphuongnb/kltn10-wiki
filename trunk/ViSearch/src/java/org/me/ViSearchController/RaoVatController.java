@@ -171,7 +171,8 @@ public class RaoVatController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("username");
+        solrQuery.addFacetField("site");
+        solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
