@@ -17,12 +17,14 @@
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
 
             <tr>
-                <td id="footer" width="600" height="40" valign="top"><p align="left"><a href=""><b>ViSearch</b></a><br/>
+                <td class="footer" width="600" height="40" valign="top"><p align="left"><a href=""><b>ViSearch</b></a><br/>
                         Copyright 2010 by:<br/>
                         <b>Đỗ Minh Tuấn</b> - 0612513 - Email: <a href="mailto:fcmtuan@gmail.com">fcmtuan@gmail.com</a><br/>
                         <b>Phạm Thế Vinh</b> - 0612577 - Email: <a href="mailto:vinhpham.it@gmail.com">vinhpham.it@gmail.com</a><br/>
+                        GVHD: <b>Nguyễn Tuấn Khang</b>
                     </p>
                 </td>
+                <td class="footer"><a href="">Hướng dẫn tìm kiếm</a></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
         </table>

@@ -12,7 +12,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Rao vặt - ViSearch</title>
+        <title>ViSearch - Rao vặt</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script language="javascript">
             function setText()
@@ -47,7 +47,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -135,46 +135,47 @@
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
                         }
-                        result += "Số kết quả tìm được là: " + numrow + "<br/>";
+                        //result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         result += "Tổng số trang là: " + numpage + "<br/>";
-                        if(numpage > 1)
-                            {
-                        result += strpaging + "<br/><br/>";
+                        if (numpage > 1) {
+                            result += strpaging + "<br/><br/>";
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
-                    String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
-                    facet += "<tr>";
-
+                    String facet = "";
+                    
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
+                        facet += "<div class=\"title_content\" align=\"left\"><b>Facet</b></div>";
                         for (int i = 0; i < listFacet.size(); i++) {
+                            facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
+                            facet += "<tr>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName+"</b>";
+                            facet += "<b>Facet: " + fieldName + "</b>";
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "Name: " + "<a href = 'RaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'RaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
                             } else {
                                 facet += "Không tìm ra Facet<br>";
                             }
-                            facet += "</td>";
+                            facet += "</td></tr>";
+                            facet += "</table>";
                         }
                     }
-                    facet += "</table>";
+                    
 
                     // End get Facet
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

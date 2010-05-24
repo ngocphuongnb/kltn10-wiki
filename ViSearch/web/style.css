@@ -42,7 +42,7 @@ A:hover {text-decoration: underline; color: red;}
 #btSearch{
 
 }
-#footer {
+.footer {
 text-align:center;
 clear:both;
 font-size:11px;
