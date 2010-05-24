@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Trang chủ - ViSearch</title>
+        <title>ViSearch - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script language="javascript">
             function setText()
@@ -122,7 +122,7 @@
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
                         }
-                        result += "Số kết quả tìm được là: " + numrow + "<br/>";
+                       // result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         result += "Tổng số trang là: " + numpage + "<br/>";
                         if (numpage > 1) {
                             result += strpaging + "<br/><br/>";
@@ -134,13 +134,16 @@
 
         <%
 // Get Facet
-                    String facet = "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                    facet += "<tr><th><div class=\"title_content\" align=\"left\">Facet</div></th></tr>";
-                    facet += "<tr>";
+                     String facet = "";
+      
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
+                        facet += "<div class=\"title_content\" align=\"left\"><b>Facet</b></div>";
                         for (int i = 0; i < listFacet.size(); i++) {
+                            facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
+                            facet += "<tr>";
+                            facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
                             facet += "<b>Facet: " + fieldName+"</b>";
@@ -149,17 +152,18 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "Name: " + "<a href = 'SearchController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
                             } else {
                                 facet += "Không tìm ra Facet<br>";
                             }
-                            facet += "</td>";
+                            facet += "</td></tr>";
+                            facet += "</table>";
                         }
                     }
-                    facet += "</table>";
+                    
                     // End Get Facet
 %>
         <div id="wrap_left" align="center">

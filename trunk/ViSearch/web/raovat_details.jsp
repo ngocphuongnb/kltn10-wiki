@@ -12,7 +12,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Rao vặt - ViSearch</title>
+        <title>ViSearch - Rao vặt</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script language="javascript">
             function setText()
@@ -93,8 +93,8 @@
                             photo = "<td rowspan='7' width='200'><img src='" + photo + "' alt='No image' width='200'/></td>";
 
                             result += "<tr><td width='auto'>" + "Contact: "+ contact+ "</td>" + photo +"</tr>";
-                            result += "<tr><td>" + "Category: "+ "<a href = 'RaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
-                            result += "<tr><td>" + "Location: "+ "<a href = 'RaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
+                            if(contact!=null || contact!="") result += "<tr><td>" + "Category: "+ "<a href = 'RaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
+                            if(location!=null || location!="") result += "<tr><td>" + "Location: "+ "<a href = 'RaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
                             result += "<tr><td>" + "Score: "+score + "</td></tr>";
                             result += "<tr><td>" + "Site: "+ "<a href = 'RaoVatController?type=2&KeySearch=site:"+site+"'>" + site+ "</a></td></tr>";
                             result += "<tr><td>" + "Price: "+price + "</td></tr>";
@@ -183,7 +183,7 @@
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
                                         <table>
-                                            <tr><td><div class="title_content">Bài viết cùng chuyên mục</div></td></tr>
+                                            <tr><td><div class="title_content">Bài viết cùng chuyên mục --> Đổi thành MLT</div></td></tr>
                                         </table>
                                          <% out.print(result2);%>
                                     </td>
