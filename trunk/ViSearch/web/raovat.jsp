@@ -17,7 +17,9 @@
         <script language="javascript">
             function setText()
             {
-                document.getElementById('txtSearch').focus();
+                var keysearch = document.getElementById('txtSearch').value;
+                if(keysearch=="")
+                    document.getElementById('txtSearch').focus();
             }
             function CheckInput()
             {
