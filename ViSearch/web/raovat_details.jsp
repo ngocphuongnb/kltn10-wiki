@@ -15,10 +15,6 @@
         <title>ViSearch - Rao vặt</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script language="javascript">
-            function setText()
-            {
-                document.getElementById('txtSearch').focus();
-            }
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -36,7 +32,7 @@
         </script>
     </head>
 
-    <body onload="setText();">
+    <body>
 
         <%
                     // get String query
