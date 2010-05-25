@@ -6,6 +6,10 @@ package org.me.ViSearchController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -18,7 +22,10 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 
 /**
@@ -42,22 +49,25 @@ public class DetailRaoVatController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String keySearchId = "";
         SolrDocumentList docs = new SolrDocumentList();
-        SolrDocumentList docs_Category = new SolrDocumentList();
+        //SolrDocumentList docs_Category = new SolrDocumentList();
+        SolrDocumentList docs_MoreLikeThis = new SolrDocumentList();
         try {
             server = SolrJConnection.getSolrServer("raovat");
 
             if (request.getParameter("id") != null) {
                 keySearchId = request.getParameter("id");
                 QueryResponse rsp;
-                QueryResponse rsp_Category;
                 try {
                     rsp = OnSearchSubmit(keySearchId);
                     docs = rsp.getResults();
                     if (docs != null) {
-                        String category = (docs.get(0).getFieldValue("category")).toString();
-                        String strQr = "category:\""+category+"\"";
-                        rsp_Category = Category(strQr);
-                        docs_Category = rsp_Category.getResults();
+                        //String category = (docs.get(0).getFieldValue("category")).toString();
+                        String title = (docs.get(0).getFieldValue("rv_title")).toString();
+                        //String strQr = "category:\""+category+"\"";
+                        //rsp = Category(strQr);
+                        //docs_Category = rsp.getResults();
+                        rsp = OnMoreLikeThis(title);
+                        docs_MoreLikeThis = rsp.getResults();
                     }
                 } catch (SolrServerException ex) {
                     Logger.getLogger(DetailRaoVatController.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,7 +75,8 @@ public class DetailRaoVatController extends HttpServlet {
             }
             String url = "/raovat_details.jsp";
             request.setAttribute("Docs", docs);
-            request.setAttribute("Docs_Category", docs_Category);
+            //request.setAttribute("Docs_Category", docs_Category);
+            request.setAttribute("Docs_MoreLikeThis", docs_MoreLikeThis);
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
@@ -100,6 +111,27 @@ public class DetailRaoVatController extends HttpServlet {
         solrQuery.setQuery(query);
 
         QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
+    {
+       SolrQuery query = new SolrQuery();
+        query.setQueryType("/" + MoreLikeThisParams.MLT);
+        query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
+        query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
+        query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
+        //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
+        query.setQuery(ClientUtils.escapeQueryChars(strquery));
+        query.setStart(0);
+        query.setRows(10);
+        query.setHighlight(true);
+        query.addHighlightField("rv_title");
+        query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        query.setHighlightSimplePost("</em>");
+        query.setHighlightRequireFieldMatch(true);
+        QueryResponse rsp = server.query(query);
         return rsp;
     }
 

@@ -39,7 +39,7 @@
     <body onload="setText();">
 
         <%
-       // get String query
+                    // get String query
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getAttribute("KeySearch");
@@ -47,7 +47,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -56,8 +56,6 @@
                     if (request.getAttribute("Docs") != null) {
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
                         for (int i = 0; i < listdocs.size(); i++) {
-                            result += "<table style=\"font-size:13px\">";
-
                             // Lay noi dung cua moi field
                             String id = (listdocs.get(i).getFieldValue("id")).toString();
                             String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
@@ -72,7 +70,7 @@
                             String url = title;
                             String photo = "";
 
-                             if (listdocs.get(i).getFieldValue("contact") != null) {
+                            if (listdocs.get(i).getFieldValue("contact") != null) {
                                 contact = (listdocs.get(i).getFieldValue("contact")).toString();
                             }
 
@@ -81,68 +79,69 @@
                             }
                             if (listdocs.get(i).getFieldValue("price") != null) {
                                 price = (listdocs.get(i).getFieldValue("price")).toString();
-                                if(Float.parseFloat(price) == 0)
+                                if (Float.parseFloat(price) == 0) {
                                     price = "Call";
+                                }
                             }
                             if (listdocs.get(i).getFieldValue("location") != null) {
                                 location = (listdocs.get(i).getFieldValue("location")).toString();
                             }
 
-                            url = "<tr><td><div class=\"title_content\">" + title + "</div></td></tr>";
+                            url = "<div class=\"title_content\" id='divtop'>" + title + "</div>";
                             result += url;
-                            photo = "<td rowspan='7' width='200'><img src='" + photo + "' alt='No image' width='200'/></td>";
-
-                            result += "<tr><td width='auto'>" + "Contact: "+ contact+ "</td>" + photo +"</tr>";
-                            if(contact!=null || contact!="") result += "<tr><td>" + "Category: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
-                            if(location!=null || location!="") result += "<tr><td>" + "Location: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
-                            result += "<tr><td>" + "Score: "+score + "</td></tr>";
-                            result += "<tr><td>" + "Site: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=site:"+site+"'>" + site+ "</a></td></tr>";
-                            result += "<tr><td>" + "Price: "+price + "</td></tr>";
-                            result += "<tr><td>" + "Last update: "+ last_update + "</td></tr>";
-
-                            result += "<tr>";
-                            result += "<td>" + body + "</td>";
-                            result += "</tr>";
-
-                            result += "</table>";
+                            result += "<div id='divleft'>";
+                            if (contact != null && contact.trim() != "") {
+                                result += "<ul>" + "Category: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></ul>";
+                            }
+                            if (location != null && location.trim() != "") {
+                                result += "<ul>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></ul>";
+                            }
+                            result += "<ul>" + "Score: " + score + "</ul>";
+                            result += "<ul>" + "Site: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
+                            result += "<ul>" + "Price: " + price + "</ul>";
+                            result += "<ul>" + "Last update: " + last_update + "</ul></div>";
+                            photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/></div>";
+                            result += photo;
+                            result += "<div id='divbottom'>" + body + "</div>";
                         }
                     }
 
-                     //get SolrDocumentList
-%>
-<%
+                    //get SolrDocumentList
+        %>
+        <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
                     String result2 = "";
 
-                        if (request.getAttribute("Docs_Category") != null) {
-                            listdocs2 = (SolrDocumentList) request.getAttribute("Docs_Category");
+                    if (request.getAttribute("Docs_MoreLikeThis") != null) {
+                        listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
-                            result2 += "<div style=\"font-size:13px\">";
-                            for (int i = 0; i < listdocs2.size(); i++) {
-                                
+                        result2 += "<div style=\"font-size:13px\">";
+                        for (int i = 0; i < listdocs2.size(); i++) {
 
-                                // Lay noi dung cua moi field
-                                String title = "";
-                                if((listdocs2.get(i).getFieldValue("rv_title")).toString()!=null)
-                                    title = listdocs2.get(i).getFirstValue("rv_title").toString();
-                                
-                                String id = (listdocs2.get(i).getFieldValue("id")).toString();
-                                String url;
 
-                                url = "<li><b><a href=\"DetailSearchRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
-                                result2 += url;
-                                
+                            // Lay noi dung cua moi field
+                            String title = "";
+                            if ((listdocs2.get(i).getFieldValue("rv_title")).toString() != null) {
+                                title = listdocs2.get(i).getFirstValue("rv_title").toString();
                             }
-                            result2 += "</div>";
+
+                            String id = (listdocs2.get(i).getFieldValue("id")).toString();
+                            String url;
+
+                            url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
+                            result2 += url;
+
                         }
+                        result2 += "</div>";
+                    }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <%
                     // Get Facet
-                    
+
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -163,7 +162,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <%  //out.print(facet);%>
-                             <table>
+                            <table>
                                 <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
                                 <tr><td><a href="">aaa</a></td></tr>
                                 <tr><td><a href="">bbb</a></td></tr>
@@ -172,23 +171,22 @@
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
+                            <!--
                             <table>
 
                                 <tr><td id="result_search">thong ke</td></tr><tr></tr>
                             </table>
-                            <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
+                            -->
 
-
-                                <tr>
-                                    <td  valign="top" id="content">
-                                        <% out.print(result);%>
-                                        <table>
-                                            <tr><td><div class="title_content">Bài viết cùng chuyên mục --> Đổi thành MLT</div></td></tr>
-                                        </table>
-                                         <% out.print(result2);%>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div  valign="top" id="content">
+                                <%
+                                            out.print(result);
+                                            if (result2 != "") {
+                                                out.print("<div class=\"title_content\">Bài viết liên quan</div>");
+                                                out.print(result2);
+                                            }
+                                %>
+                            </div>
                         </td>
                     </tr>
 

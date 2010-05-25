@@ -118,3 +118,23 @@ height:33px;
 width:506px;
 vertical-align:middle;
 }
+
+#divtop
+{
+ clear: both;
+}
+
+#divleft
+{
+ float: left;
+}
+
+#divright
+{
+ float: right;
+}
+
+#divbottom
+{
+ clear: both;
+}
