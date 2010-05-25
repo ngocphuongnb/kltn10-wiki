@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import org.apache.solr.common.util.ContentStreamBase.FileStream;
 
 /**
  *
