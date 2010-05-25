@@ -26,7 +26,7 @@
                     return;
                 else
                 {
-                    var url = "RaoVatController?type=0&KeySearch=";
+                    var url = "SearchRaoVatController?type=0&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -93,10 +93,10 @@
                             photo = "<td rowspan='7' width='200'><img src='" + photo + "' alt='No image' width='200'/></td>";
 
                             result += "<tr><td width='auto'>" + "Contact: "+ contact+ "</td>" + photo +"</tr>";
-                            if(contact!=null || contact!="") result += "<tr><td>" + "Category: "+ "<a href = 'RaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
-                            if(location!=null || location!="") result += "<tr><td>" + "Location: "+ "<a href = 'RaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
+                            if(contact!=null || contact!="") result += "<tr><td>" + "Category: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\""+category+"\"'>" + category+ "</a></td></tr>";
+                            if(location!=null || location!="") result += "<tr><td>" + "Location: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=location:"+location+"'>" + location+ "</a></td></tr>";
                             result += "<tr><td>" + "Score: "+score + "</td></tr>";
-                            result += "<tr><td>" + "Site: "+ "<a href = 'RaoVatController?type=2&KeySearch=site:"+site+"'>" + site+ "</a></td></tr>";
+                            result += "<tr><td>" + "Site: "+ "<a href = 'SearchRaoVatController?type=2&KeySearch=site:"+site+"'>" + site+ "</a></td></tr>";
                             result += "<tr><td>" + "Price: "+price + "</td></tr>";
                             result += "<tr><td>" + "Last update: "+ last_update + "</td></tr>";
 
@@ -130,7 +130,7 @@
                                 String id = (listdocs2.get(i).getFieldValue("id")).toString();
                                 String url;
 
-                                url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
+                                url = "<li><b><a href=\"DetailSearchRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
                                 result2 += url;
                                 
                             }

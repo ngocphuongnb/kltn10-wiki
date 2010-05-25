@@ -26,7 +26,7 @@
                     return;
                 else
                 {
-                    var url = "RaoVatController?type=0&sp=1&KeySearch=";
+                    var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -67,7 +67,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"RaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchRaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
@@ -122,7 +122,7 @@
 
                                 result += "<tr>";
                                 result += "<td>";
-                                result += "<a href=\"RaoVatController?type=1&KeySearch=" + title_hl.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchRaoVatController?type=1&KeySearch=" + title_hl.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
@@ -161,7 +161,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'RaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }

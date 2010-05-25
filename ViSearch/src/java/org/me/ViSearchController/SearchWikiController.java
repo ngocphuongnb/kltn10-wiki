@@ -49,10 +49,10 @@ import org.me.Utils.Paging;
  *
  * @author VinhPham
  */
-public class SearchController extends HttpServlet {
+public class SearchWikiController extends HttpServlet {
 
 
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -65,7 +65,7 @@ public class SearchController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
         //solrQuery.setQueryType("dismax");
 
-        solrQuery.setQuery("wk_title:(\""+keySearch + "\")^3 (\""+keySearch + "\")^2 wk_title:(\""+keySearch + "\")^1.5 ("+keySearch + ")");
+        solrQuery.setQuery("wk_title:(\""+keySearch + "\")^3 (\""+keySearch + "\")^2 wk_title:("+keySearch + ")^1.5 ("+keySearch + ")");
 
          // Facet
         solrQuery.setFacet(true);
@@ -143,7 +143,7 @@ public class SearchController extends HttpServlet {
         List<ClusterRecord> result = new ArrayList<ClusterRecord>();
 
         HttpClient client = new HttpClient();
-        String url = "http://localhost:8983/solr" + "/clusteringWiKi?q=" + query + "&rows=" + rows + "&wt=json";
+        String url = "http://localhost:8983/solr/wikipedia/clustering?q=" + query + "&rows=" + rows + "&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -178,7 +178,7 @@ public class SearchController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/spellWiKi?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/wikipedia/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -264,7 +264,7 @@ public class SearchController extends HttpServlet {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
 
-            server = SolrJConnection.getSolrServer();
+            server = SolrJConnection.getSolrServer("wikipedia");
             int start = (currentpage - 1) * pagesize;
 
             if (request.getParameter("type") != null) {
@@ -279,10 +279,6 @@ public class SearchController extends HttpServlet {
 
                 switch (type) {
                     case 0:
-//                        ArrayList<String> list = new ArrayList<String>();
-//                        list.add("comment");
-                        //OnStats(list, "username");
-                        //cluster(keySearch, 10);
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
 
@@ -359,7 +355,7 @@ public class SearchController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -378,7 +374,7 @@ public class SearchController extends HttpServlet {
 
 
         } catch (SolrServerException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -386,7 +382,7 @@ public class SearchController extends HttpServlet {
 
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -405,7 +401,7 @@ public class SearchController extends HttpServlet {
 
 
         } catch (SolrServerException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -413,7 +409,7 @@ public class SearchController extends HttpServlet {
 
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

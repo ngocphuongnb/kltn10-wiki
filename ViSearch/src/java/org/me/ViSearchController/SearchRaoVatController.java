@@ -43,7 +43,7 @@ import org.me.Utils.Paging;
  *
  * @author VinhPham
  */
-public class RaoVatController extends HttpServlet {
+public class SearchRaoVatController extends HttpServlet {
 
     SolrServer server;
 
@@ -73,7 +73,7 @@ public class RaoVatController extends HttpServlet {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
 
-            server = SolrJConnection.getSolrServer();
+            server = SolrJConnection.getSolrServer("raovat");
             int start = (currentpage - 1) * pagesize;
 
             if (request.getParameter("type") != null) {
@@ -164,7 +164,7 @@ public class RaoVatController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("raovat");
+        solrQuery.setQueryType("dismax");
 
         solrQuery.setQuery(keySearch);
 
@@ -243,7 +243,7 @@ public class RaoVatController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/spellRaoVat?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/raovat/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
