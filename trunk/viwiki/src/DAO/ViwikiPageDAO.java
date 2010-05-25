@@ -41,11 +41,11 @@ public class ViwikiPageDAO {
             page.setText(rs.getString("text"));
             page.setTitle(rs.getString("title"));
             page.setUsername(rs.getString("username"));
-            String timestamp = rs.getString("timestamp");
-            timestamp = timestamp.replace('T', ' ');
-            timestamp = timestamp.replace('Z', ' ');
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-            Date d = sdf.parse(timestamp);
+            Date d = rs.getDate("timestamp");
+//            timestamp = timestamp.replace('T', ' ');
+//            timestamp = timestamp.replace('Z', ' ');
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            //Date d = sdf.parse(timestamp);
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
             page.setTimestamp(cl);
