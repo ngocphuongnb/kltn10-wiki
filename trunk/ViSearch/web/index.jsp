@@ -25,7 +25,7 @@
                     return;
                 else
                 {
-                    var url = "SearchController?type=0&sp=1&KeySearch=";
+                    var url = "SearchWikiController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -64,7 +64,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchWikiController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
@@ -109,7 +109,7 @@
 
                                 result += "<tr>";
                                 result += "<td colspan='2'>";
-                                result += "<a href=\"SearchController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
@@ -152,7 +152,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }

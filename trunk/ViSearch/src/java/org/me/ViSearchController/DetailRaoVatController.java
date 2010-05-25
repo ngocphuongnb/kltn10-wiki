@@ -44,7 +44,7 @@ public class DetailRaoVatController extends HttpServlet {
         SolrDocumentList docs = new SolrDocumentList();
         SolrDocumentList docs_Category = new SolrDocumentList();
         try {
-            server = SolrJConnection.getSolrServer();
+            server = SolrJConnection.getSolrServer("raovat");
 
             if (request.getParameter("id") != null) {
                 keySearchId = request.getParameter("id");
