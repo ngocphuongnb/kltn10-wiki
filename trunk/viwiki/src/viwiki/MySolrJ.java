@@ -40,9 +40,24 @@ public class MySolrJ {
         return server;
     }
 
-    public void EmptyData() throws MalformedURLException, SolrServerException, IOException
+    public SolrServer getSolrServer(String core) throws MalformedURLException {
+        String url = "http://localhost:8983/solr/" + core;
+        CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
+//        server.setSoTimeout(1000);  // socket read timeout
+//        server.setConnectionTimeout(100);
+//        server.setDefaultMaxConnectionsPerHost(100);
+//        server.setMaxTotalConnections(100);
+//        server.setFollowRedirects(false);  // defaults to false
+//        // allowCompression defaults to false.
+//        // Server side must support gzip or deflate for this to have any effect.
+//        server.setAllowCompression(true);
+//        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
+        return server;
+    }
+
+    public void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException
     {
-        SolrServer server = getSolrServer();
+        SolrServer server = getSolrServer(core);
         server.deleteByQuery( "*:*" );
         //server.commit();
         UpdateRequest req = new UpdateRequest();
@@ -95,7 +110,7 @@ public class MySolrJ {
         }
 
 
-        SolrServer server = getSolrServer();
+        SolrServer server = getSolrServer("wikipedia");
         //server.add(docs);
        // server.commit();
 
@@ -133,7 +148,7 @@ public class MySolrJ {
         }
 
 
-        SolrServer server = getSolrServer();
+        SolrServer server = getSolrServer("raovat");
         //server.add(docs);
        // server.commit();
 
