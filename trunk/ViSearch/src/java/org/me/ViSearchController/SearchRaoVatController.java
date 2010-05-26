@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.print.URIException;
@@ -35,9 +36,11 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.Paging;
+import org.me.dto.FacetDateDTO;
 
 /**
  *
@@ -81,6 +84,7 @@ public class SearchRaoVatController extends HttpServlet {
             }
 
             List<FacetField> listFacet = null;
+            ArrayList<FacetDateDTO> listFacetDate = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 QueryResponse rsp;
@@ -94,6 +98,8 @@ public class SearchRaoVatController extends HttpServlet {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
+                        
+                        //NewestDocument22(keySearch, "25");
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -101,6 +107,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -110,6 +117,10 @@ public class SearchRaoVatController extends HttpServlet {
                             request.setAttribute("HighLight", highLight);
                         }
                         QTime = rsp.getQTime();
+
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String faceName = "";
@@ -125,6 +136,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
 
                         break;
                     default:
@@ -141,9 +153,9 @@ public class SearchRaoVatController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchRaoVatController", type);
                 request.setAttribute("Docs", docs);
+                request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
@@ -177,7 +189,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        solrQuery.setFacet(true);
+
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("rv_title");
         solrQuery.addHighlightField("rv_body");
@@ -190,14 +202,85 @@ public class SearchRaoVatController extends HttpServlet {
         return rsp;
     }
 
+    void NewestDocument22(String keySearch, String numDays) throws SolrServerException {
+
+        ModifiableSolrParams params = new ModifiableSolrParams();
+        params.set("q", keySearch);
+        params.set("facet", true);
+        params.set("field", "last_update");
+        params.set("field", "site");
+        params.set("facet.date.start", "NOW/DAY-5DAYS");
+        params.set("facet.date.end", "NOW/DAY%2B1DAY");
+        params.set("facet.date.gap", "%2B1DAY");
+
+
+        QueryResponse rsp = server.query(params);
+
+        Map<String, Integer> sdl = rsp.getFacetQuery();
+        List<FacetField> lfc1 = rsp.getFacetFields();
+        List<FacetField> lfc = rsp.getFacetDates();
+        FacetField fc = rsp.getFacetDate("last_update");
+        SolrDocumentList dl = rsp.getResults();
+        int a = 8;
+    }
+
+    // Lay nhung bai viet moi nhat --> Test OK
+    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
+        HttpClient client = new HttpClient();
+
+        String url = "http://localhost:8983/solr/raovat/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=last_update&facet.limit=10&wt=json";
+        url = URIUtil.encodeQuery(url);
+        GetMethod get = new GetMethod(url);
+
+        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
+
+        int status = client.executeMethod(get);
+        String charSet = get.getResponseCharSet();
+        if (charSet == null) {
+            charSet = "UTF-8";
+        }
+        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
+
+
+        try {
+            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
+            JSONObject ob = json.getJSONObject("facet_counts");
+            JSONObject location = ob.getJSONObject("facet_fields");
+
+            // Vi moi chi xai 1 field Location nen lay luon
+            JSONArray last_update = location.getJSONArray("last_update");
+            ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
+
+            if (last_update.size() > 0) {
+                FacetDateDTO fD = null;
+                for (int i = 0; i < last_update.size(); i++) {
+                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
+                    {
+                        fD = new FacetDateDTO();
+                        fD.setDateTime(last_update.get(i).toString());
+                    } else //  Phan tu le là số (Count)
+                    {
+                        fD.setCount(last_update.get(i).toString());
+                        myArr.add(fD);
+                    }
+                }
+            }
+            get.releaseConnection();
+            return myArr;
+        } catch (Exception x) {
+            return null;
+        }
+
+    }
+
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-       if (!faceName.equals("") && faceName != null) {
+        if (!faceName.equals("") && faceName != null) {
             keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
-        // Facet
+       // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.addFacetField("site");
@@ -206,7 +289,6 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("rv_title");
         //solrQuery.addHighlightField("body");
@@ -222,6 +304,16 @@ public class SearchRaoVatController extends HttpServlet {
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
+
+        // Facet
+        query.setFacet(true);
+        query.addFacetField("category");
+        query.addFacetField("site");
+        query.addFacetField("location");
+        query.setFacetLimit(10);
+        query.setFacetMinCount(1);
+        // End Facet
+        
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);

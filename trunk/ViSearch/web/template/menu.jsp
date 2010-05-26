@@ -17,7 +17,7 @@
             <tr>
                 <td align="center" width="20%"><a href="index.jsp" onMouseOver="MM_effectShake('')">Wikipedia</a></td>
                 <td align="center" width="20%"><a href="raovat.jsp">Rao vặt</a></td>
-                <td align="center" width="20%"><a href="">Nhạc</a></td>
+                <td align="center" width="20%"><a href="music.jsp">Nhạc</a></td>
                 <td align="center" width="20%"><a href="">Hình ảnh</a></td>
                 <td align="center" width="20%"><a href="">Video</a></td>
             </tr>
