@@ -8,6 +8,7 @@
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
+<%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -168,6 +169,32 @@
                     
                     // End Get Facet
 %>
+
+ <%
+                    // Get Facet date
+                    String facetD = "";
+                    facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
+
+                    ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
+                    if (listFacetDate != null) {
+                        facetD += "<tr><td><b>Facet: last_update</b>";
+                        facetD += "<br>";
+                        if (listFacetDate.size() > 0) {
+                            for (int i = 0; i < listFacetDate.size(); i++) {
+
+                                String fieldText = listFacetDate.get(i).getDateTime();
+                                facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                facetD += " (" + listFacetDate.get(i).getCount() + ")";
+                                facetD += "<br>";
+                            }
+                        } else {
+                            facetD += "Không tìm ra Facet<br>";
+                        }
+                        facetD += "</td></tr>";
+                    }
+                    facetD += "</table>";
+                    // End get Facet Date
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -191,7 +218,7 @@
                         <td width="200" height="33" valign="top">
 
                             <% out.print(facet);%>
-
+                            <% out.print(facetD);%>
                             <table>
                                 <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
                                 <tr><td><a href="">aaa</a></td></tr>
@@ -208,6 +235,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
                                 <tr>
+                                    
                                     <td valign="top" id="content">
                                         <% out.print(result);%>
 

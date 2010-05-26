@@ -44,6 +44,7 @@ import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.Paging;
+import org.me.dto.FacetDateDTO;
 
 /**
  *
@@ -78,7 +79,6 @@ public class SearchWikiController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("wk_title");
         solrQuery.addHighlightField("wk_text");
@@ -119,6 +119,53 @@ public class SearchWikiController extends HttpServlet {
         return rsp;
     }
 
+    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
+        HttpClient client = new HttpClient();
+
+        String url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=timestamp&facet.limit=10&wt=json";
+        url = URIUtil.encodeQuery(url);
+        GetMethod get = new GetMethod(url);
+
+        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
+
+        int status = client.executeMethod(get);
+        String charSet = get.getResponseCharSet();
+        if (charSet == null) {
+            charSet = "UTF-8";
+        }
+        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
+
+
+        try {
+            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
+            JSONObject ob = json.getJSONObject("facet_counts");
+            JSONObject location = ob.getJSONObject("facet_fields");
+
+            // Vi moi chi xai 1 field Location nen lay luon
+            JSONArray last_update = location.getJSONArray("timestamp");
+            ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
+
+            if (last_update.size() > 0) {
+                FacetDateDTO fD = null;
+                for (int i = 0; i < last_update.size(); i++) {
+                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
+                    {
+                        fD = new FacetDateDTO();
+                        fD.setDateTime(last_update.get(i).toString());
+                    } else //  Phan tu le là số (Count)
+                    {
+                        fD.setCount(last_update.get(i).toString());
+                        myArr.add(fD);
+                    }
+                }
+            }
+            get.releaseConnection();
+            return myArr;
+        } catch (Exception x) {
+            return null;
+        }
+
+    }
 
     public String convertStreamToString(InputStream is, String encode) throws IOException {
         if (is != null) {
@@ -272,6 +319,7 @@ public class SearchWikiController extends HttpServlet {
             }
 
              List<FacetField> listFacet = null;
+              ArrayList<FacetDateDTO> listFacetDate = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 QueryResponse rsp;
@@ -295,6 +343,7 @@ public class SearchWikiController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -304,6 +353,10 @@ public class SearchWikiController extends HttpServlet {
                             request.setAttribute("HighLight", highLight);
                         }
                         QTime = rsp.getQTime();
+
+                         // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String faceName = "";
@@ -317,7 +370,10 @@ public class SearchWikiController extends HttpServlet {
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
                         QTime = rsp.getQTime();
+
+                         // Get Facet
                         listFacet = rsp.getFacetFields();
+                        listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     default:
                         break;
@@ -336,6 +392,7 @@ public class SearchWikiController extends HttpServlet {
 
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchWikiController", type);
                 request.setAttribute("Docs", docs);
+                request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
