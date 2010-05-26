@@ -334,7 +334,7 @@ public class SearchWikiController extends HttpServlet {
                     numpage++;
                 }
 
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchWikiController", type);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
