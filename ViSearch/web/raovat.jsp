@@ -49,7 +49,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -80,7 +80,7 @@
                                 String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url;
-                                String title_hl = title.replaceAll("\\<.*?\\>", "");
+                                String title_hl = title;
                                 String photo = "";
                                 if (listdocs.get(i).getFieldValue("photo") != null) {
 
@@ -89,16 +89,15 @@
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    //List<String> highlightText = highLight.get(id).get("body");
+                                    List<String> highlightBody = highLight.get(id).get("rv_body");
                                     List<String> highlightTitle = highLight.get(id).get("rv_title");
-                                    /*if (highlightText != null && !highlightText.isEmpty()) {
-                                    body = highlightText.get(0) + "...";
+                                    if (highlightBody != null && !highlightBody.isEmpty()) {
+                                        body = highlightBody.get(0) + "...";
                                     } else {
-                                    if (body.length() > 100) {
-                                    body = body.substring(0, 100) + "...";
+                                        if (body.length() > 100) {
+                                            body = body.substring(0, 100) + "...";
+                                        }
                                     }
-                                    }
-                                     */
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
@@ -107,11 +106,7 @@
                                         title = title.substring(0, 100) + "...";
                                     }
                                 }
-
-                                body = body.replaceAll("\\<.*?\\>", "");
-                                if (body.length() > 100) {
-                                    body = body.substring(0, 100) + "...";
-                                }
+                                
                                 url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title_hl + "</a></b></td>";
                                 result += "<tr>";
                                 result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" alt=\"No image\" width=\"150\" align=\"left\" /></td>";
@@ -144,11 +139,11 @@
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
-                    
+
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
                         facet += "<div class=\"title_content\" align=\"left\"><b>Facet</b></div>";
@@ -174,10 +169,10 @@
                             facet += "</table>";
                         }
                     }
-                    
+
 
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

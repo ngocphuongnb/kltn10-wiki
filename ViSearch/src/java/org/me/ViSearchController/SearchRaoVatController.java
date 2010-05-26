@@ -142,7 +142,7 @@ public class SearchRaoVatController extends HttpServlet {
                     numpage++;
                 }
 
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/RaoVatController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchRaoVatController", type);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
@@ -180,7 +180,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("rv_title");
-        //solrQuery.addHighlightField("body");
+        solrQuery.addHighlightField("rv_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -193,14 +193,15 @@ public class SearchRaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
        if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
+            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("username");
+        solrQuery.addFacetField("site");
+        solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -232,6 +233,7 @@ public class SearchRaoVatController extends HttpServlet {
         query.setRows(pagesize);
         query.setHighlight(true);
         query.addHighlightField("rv_title");
+        query.addHighlightField("rv_body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);

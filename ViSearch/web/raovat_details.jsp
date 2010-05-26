@@ -6,7 +6,7 @@
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
-<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
+<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -55,14 +55,18 @@
                             // Lay noi dung cua moi field
                             String id = (listdocs.get(i).getFieldValue("id")).toString();
                             String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
-                            String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
+                            String body = (listdocs.get(i).getFirstValue("body")).toString();
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
                             String score = (listdocs.get(i).getFieldValue("score")).toString();
                             String site = (listdocs.get(i).getFieldValue("site")).toString();
                             String location = "";
                             String contact = "";
-                            String last_update = (listdocs.get(i).getFieldValue("last_update")).toString();
+                            Date last_update = (Date)(listdocs.get(i).getFieldValue("last_update"));
+                            Calendar cl = Calendar.getInstance();
+                            cl.setTime(last_update);
+                            SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+
                             String url = title;
                             String photo = "";
 
@@ -95,7 +99,7 @@
                             result += "<ul>" + "Score: " + score + "</ul>";
                             result += "<ul>" + "Site: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
                             result += "<ul>" + "Price: " + price + "</ul>";
-                            result += "<ul>" + "Last update: " + last_update + "</ul></div>";
+                            result += "<ul>" + "Last update: " + sf.format(last_update) + "</ul></div>";
                             photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/></div>";
                             result += photo;
                             result += "<div id='divbottom'>" + body + "</div>";
