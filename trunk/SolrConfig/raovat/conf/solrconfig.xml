@@ -37,10 +37,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-       rv_title^2 rv_body^2 rv_title_unsigned rv_body_unsigned category location
+       rv_title^2.5 rv_body^2 rv_title_unsigned rv_body_unsigned category_index^0.7 category_index_unsigned^0.5
      </str>
      <str name="pf">
-        rv_title^2 rv_body^2 rv_title_unsigned^0.7 rv_body_unsigned^0.7 category^1.5 location^1
+        rv_title^2.5 rv_body^2 rv_title_unsigned^1 rv_body_unsigned^0.7 category_index^0.6 category_index_unsigned^0.5
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
