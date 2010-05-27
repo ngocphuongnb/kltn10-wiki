@@ -24,7 +24,7 @@ public class RaoVatDAO {
 
     public static ArrayList<RaoVatDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-        Connection cn = DataProvider.getConnection("raovat");
+        Connection cn = DataProvider.getConnection("raovatdb");
         Statement st = (Statement) cn.createStatement();
         String query = String.format("SELECT * FROM ads_posts LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
@@ -63,7 +63,7 @@ public class RaoVatDAO {
 
     public static int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = DataProvider.getConnection("raovat");
+        Connection cn = DataProvider.getConnection("raovatdb");
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM ads_posts";
         ResultSet rs = st.executeQuery(query);

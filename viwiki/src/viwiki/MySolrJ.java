@@ -4,6 +4,7 @@
  */
 package viwiki;
 
+import DTO.MusicDTO;
 import DTO.RaoVatDTO;
 import DTO.ViwikiPageDTO;
 import java.io.IOException;
@@ -113,6 +114,77 @@ public class MySolrJ {
         SolrServer server = getSolrServer("wikipedia");
         //server.add(docs);
        // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
+     public void ImportMusic2Solr(ArrayList<MusicDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        MusicDTO pagedto = new MusicDTO();
+        Iterator<MusicDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            start++;
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+
+//            doc.addField("id",String.valueOf(start));
+//            doc.addField("ms_title", pagedto.getTitle());
+//            doc.addField("ms_title_unsigned", RemoveSignVN(pagedto.getTitle()));
+//
+//            doc.addField("album", pagedto.getAlbum());
+//            doc.addField("album_index", pagedto.getAlbum());
+//            doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
+//
+//            doc.addField("artist", pagedto.getSinger());
+//            doc.addField("artist_index", pagedto.getSinger());
+//            doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getSinger()));
+//
+//            doc.addField("singer", pagedto.getSinger());
+//            doc.addField("singer_index", pagedto.getSinger());
+//            doc.addField("singer_index_unsigned", RemoveSignVN(pagedto.getSinger()));
+//
+//            doc.addField("category", pagedto.getCategory());
+//            doc.addField("category_index", pagedto.getCategory());
+//            doc.addField("categoryr_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+//
+//            doc.addField("url", pagedto.getUrl());
+//            doc.addField("lyric", pagedto.getLyric());
+//            doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
+//            doc.addField("dayUpload", pagedto.getDayUpload().getTime());
+
+            doc.addField("id","1");
+            doc.addField("ms_title","2");
+            doc.addField("ms_title_unsigned", "3");
+
+            doc.addField("album", "1");
+            doc.addField("album_index","1");
+            doc.addField("album_index_unsigned", "1");
+
+            doc.addField("artist", "1");
+            doc.addField("artist_index", "1");
+            doc.addField("artist_index_unsigned", "1");
+
+            doc.addField("singer", "1");
+            doc.addField("singer_index", "1");
+            doc.addField("singer_index_unsigned", "1");
+
+            doc.addField("category", "1");
+            doc.addField("category_index", "1");
+            doc.addField("categoryr_index_unsigned", "1");
+
+            doc.addField("url", "1");
+            doc.addField("lyric", "1");
+            doc.addField("lyric_unsigned", "1");
+            //doc.addField("dayUpload", "1");
+
+            docs.add(doc);
+        }
+
+        SolrServer server = getSolrServer("music");
 
         UpdateRequest req = new UpdateRequest();
         req.setAction(ACTION.COMMIT, false, false);

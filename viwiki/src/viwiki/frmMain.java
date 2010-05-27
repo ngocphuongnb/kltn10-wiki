@@ -10,9 +10,11 @@
  */
 package viwiki;
 
+import BUS.MusicBUS;
 import BUS.RaoVatBUS;
 import BUS.SynonymWordBUS;
 import BUS.ViwikiPageBUS;
+import DTO.MusicDTO;
 import DTO.RaoVatDTO;
 import DTO.ViwikiPageDTO;
 import java.awt.Cursor;
@@ -49,6 +51,7 @@ public class frmMain extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,31 +76,42 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
+        jButton4.setText("Import Data Music");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jButton2)
+                .addContainerGap(243, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(138, 138, 138)
-                .addComponent(jButton2)
-                .addContainerGap(133, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -165,17 +179,48 @@ public class frmMain extends javax.swing.JDialog {
         jButton3.setEnabled(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    // Import data music
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+         int numOfRecords;
+        try {
+            numOfRecords = MusicBUS.CountRecord();
+            importDataMusic(numOfRecords);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     public void importDataWiki(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         // TODO code application logic here
         MySolrJ ms = new MySolrJ();
         ms.EmptyData("wikipedia");
         int start = 0;
         while (start < 10000) {
-            ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 1000);
+            ArrayList<ViwikiPageDTO> list = ViwikiPageBUS.getDataList(start, 2000);
             ms.ImportWiki2Solr(list, start);
-            start += 1000;
+            start += 2000;
         }
-
+    }
+    public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+        // TODO code application logic here
+        MySolrJ ms = new MySolrJ();
+        ms.EmptyData("music");
+        int start = 0;
+        while (start < numRecord) {
+            ArrayList<MusicDTO> list = MusicBUS.getDataList(start, 2000);
+            ms.ImportMusic2Solr(list, start);
+            start += 2000;
+        }
     }
 
     public void importDataRaoVat(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
@@ -188,7 +233,6 @@ public class frmMain extends javax.swing.JDialog {
             ms.ImportRaoVat2Solr(list, start);
             start += 1000;
         }
-
     }
 
     /**
@@ -213,5 +257,6 @@ public class frmMain extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
 }
