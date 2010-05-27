@@ -92,7 +92,7 @@ public class MySolrJ {
             start++;
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", "wk" + String.valueOf(start));
+            doc.addField("id", String.valueOf(start));
             doc.addField("wk_title", pagedto.getTitle());
             doc.addField("wk_title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("comment", pagedto.getComment());
@@ -129,10 +129,14 @@ public class MySolrJ {
             start++;
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", "rv" + String.valueOf(start));
-            doc.addField("rv_body", pagedto.getBody());
-            doc.addField("rv_body_unsigned", RemoveSignVN(pagedto.getBody()));
-            doc.addField("category", pagedto.getCategory());
+            doc.addField("id", String.valueOf(start));
+            String strBody = pagedto.getBody().replaceAll("\\<.*?\\>", "");
+            doc.addField("body", pagedto.getBody());
+            doc.addField("rv_body", strBody);
+            doc.addField("rv_body_unsigned", RemoveSignVN(strBody));
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
             doc.addField("contact", pagedto.getContact());
             doc.addField("last_update", pagedto.getLastUpdate().getTime());
             doc.addField("link_id", pagedto.getLinkId());
@@ -140,7 +144,7 @@ public class MySolrJ {
             doc.addField("photo", pagedto.getPhoto());
             doc.addField("price", pagedto.getPrice());
             doc.addField("score", pagedto.getScore());
-            doc.addField("site", pagedto.getSite());
+            doc.addField("site", pagedto.getSite().trim());
             doc.addField("rv_title", pagedto.getTitle());
             doc.addField("rv_title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("url", pagedto.getUrl());
