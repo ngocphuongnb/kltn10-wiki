@@ -38,7 +38,7 @@
         </script>
     </head>
 
-    <body onload="setText();">
+    <body onLoad="setText();">
         <%
                     // Get strQuery
                     String strQuery = "";

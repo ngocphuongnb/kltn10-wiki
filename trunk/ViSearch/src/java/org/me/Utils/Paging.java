@@ -16,11 +16,11 @@ public class Paging {
 
         if (currentpage > 1) {
             page = currentpage - 1;
-            Paging = "<a href=\"" + URL + "?currentpage=1&type=" + type + "&KeySearch=" + keysearch + "\">[Trang đầu]</a> ";
-            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang trước]</a> ";
+            Paging = "<a href=\"" + URL + "?currentpage=1&type=" + type + "&KeySearch=" + keysearch + "\"><img src='images/Button_First.png' width='30' height='30' align='absmiddle'/></a> ";
+            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\"><img src='images/Button_Rewind.png' width='30' height='30' align='absmiddle'/></a> ";
         } else {
-            Paging = "[Trang đầu]";
-            Paging += "[Trang trước]";
+            Paging = "<img src='images/Button_First_Disable.png' width='30' height='30' align='absmiddle'/> ";
+            Paging += "<img src='images/Button_Rewind_Disable.png' width='30' height='30' align='absmiddle'/>  ";
         }
 
         if (currentpage > 2) {
@@ -29,24 +29,27 @@ public class Paging {
             page = 1;
         }
 
+        Paging+= "  <font size='+1'>";
         for (int tam = page + 5; page <= numpage && page < tam; page++) {
 
             if (page == currentpage) {
-                Paging += "<font color='#FF0000'>" + page + "</font> ";
+                Paging += "<font color='#FF0000' size='+2'><b>" + page + "</b></font> ";
             } else {
                 Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">" + page + "</a> ";
             }
         }
 
+        Paging += "</font> ";
+
         if (currentpage < numpage) {
             page = currentpage + 1;
-            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang kế]</a> ";
-            Paging += "<a href=\"" + URL + "?currentpage=" + numpage + "&type=" + type + "&KeySearch=" + keysearch + "\">[Trang cuối]</a> ";
+            Paging += "<a href=\"" + URL + "?currentpage=" + page + "&type=" + type + "&KeySearch=" + keysearch + "\"><img src='images/Button_Fast_Forward.png' width='30' height='30' align='absmiddle'/></a> ";
+            Paging += "<a href=\"" + URL + "?currentpage=" + numpage + "&type=" + type + "&KeySearch=" + keysearch + "\"><img src='images/Button_Last.png' width='30' height='30' align='absmiddle'/></a> ";
         } else {
-            Paging += "[Trang kế]";
-            Paging += "[Trang cuối]";
+            Paging += "<img src='images/Button_Fast_Forward_Disable.png' width='30' height='30' align='absmiddle'/>";
+            Paging += "<img src='images/Button_Last_Disable.png' width='30' height='30' align='absmiddle'/>";
         }
-
+        
         return Paging;
     }
 }
