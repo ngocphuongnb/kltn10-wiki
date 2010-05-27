@@ -258,10 +258,13 @@
    <field name="rv_title" type="textRaoVat" indexed="true" stored="true" multiValued="true" termVectors="true"/>
 	<field name="rv_title_unsigned" type="text" indexed="true" stored="false" multiValued="true"/>
 	<field name="link_id" type="string" indexed="true" stored="true"/>
+	<field name="body" type="string" indexed="false" stored="true" multiValued="true"/>
 	<field name="rv_body" type="textRaoVat" indexed="true" stored="true" multiValued="true"/>
 	<field name="rv_body_unsigned" type="textRaoVat" indexed="true" stored="false" multiValued="true"/>
 	<field name="price"  type="sfloat" indexed="true" stored="true"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
+	<field name="category_index" type="textRaoVat" indexed="true" stored="false"/>
+	<field name="category_index_unsigned" type="textRaoVat" indexed="true" stored="false"/>
 	<field name="url" type="string" indexed="false" stored="true"/>
 	<field name="photo" type="string" indexed="false" stored="true" multiValued="true"/>
 	<field name="score"  type="sint" indexed="true" stored="true"/>
