@@ -12,6 +12,10 @@
         <servlet-name>SearchWikiController</servlet-name>
         <servlet-class>org.me.ViSearchController.SearchWikiController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MemberLoginController</servlet-name>
+        <servlet-class>org.me.ViSearchController.MemberLoginController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DetailRaoVatController</servlet-name>
         <url-pattern>/DetailRaoVatController</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>SearchWikiController</servlet-name>
         <url-pattern>/SearchWikiController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MemberLoginController</servlet-name>
+        <url-pattern>/MemberLoginController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
