@@ -40,6 +40,7 @@
 
     <body onLoad="setText();">
         <%
+                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
                     // Get strQuery
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -48,7 +49,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -125,7 +126,7 @@
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
                         }
-                       // result += "Số kết quả tìm được là: " + numrow + "<br/>";
+                        // result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         result += "Tổng số trang là: " + numpage + "<br/>";
                         if (numpage > 1) {
                             result += strpaging + "<br/><br/>";
@@ -133,12 +134,12 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
-                     String facet = "";
-      
+                    String facet = "";
+
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
@@ -149,7 +150,7 @@
                             facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName+"</b>";
+                            facet += "<b>Facet: " + fieldName + "</b>";
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
@@ -166,11 +167,11 @@
                             facet += "</table>";
                         }
                     }
-                    
-                    // End Get Facet
-%>
 
- <%
+                    // End Get Facet
+        %>
+
+        <%
                     // Get Facet date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
@@ -194,7 +195,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -217,6 +218,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
 
+                            <%@include file="template/login.jsp" %>
                             <% out.print(facet);%>
                             <% out.print(facetD);%>
                             <table>
@@ -235,7 +237,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
                                 <tr>
-                                    
+
                                     <td valign="top" id="content">
                                         <% out.print(result);%>
 

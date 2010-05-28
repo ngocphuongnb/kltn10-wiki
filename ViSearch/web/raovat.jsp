@@ -42,6 +42,7 @@
     <body onload="setText();">
 
         <%
+                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
                     // get String query
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -50,7 +51,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -107,7 +108,7 @@
                                         title = title.substring(0, 100) + "...";
                                     }
                                 }
-                                
+
                                 url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title_hl + "</a></b></td>";
                                 result += "<tr>";
                                 result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" alt=\"No image\" width=\"150\" align=\"left\" /></td>";
@@ -140,7 +141,7 @@
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -173,8 +174,8 @@
 
 
                     // End get Facet
-%>
- <%
+        %>
+        <%
                     // Get Facet date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
@@ -198,7 +199,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -217,8 +218,9 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">
+                            <%@include file="template/login.jsp" %>
                             <%  out.print(facet);%>
-                             <% out.print(facetD);%>
+                            <% out.print(facetD);%>
                             <table>
                                 <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
                                 <tr><td><a href="">aaa</a></td></tr>

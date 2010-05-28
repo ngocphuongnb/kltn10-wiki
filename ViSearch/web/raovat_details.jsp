@@ -35,6 +35,7 @@
     <body>
 
         <%
+                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
                     // get String query
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -43,7 +44,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -62,7 +63,7 @@
                             String site = (listdocs.get(i).getFieldValue("site")).toString();
                             String location = "";
                             String contact = "";
-                            Date last_update = (Date)(listdocs.get(i).getFieldValue("last_update"));
+                            Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
                             Calendar cl = Calendar.getInstance();
                             cl.setTime(last_update);
                             SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
@@ -107,7 +108,7 @@
                     }
 
                     //get SolrDocumentList
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -136,12 +137,12 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <%
                     // Get Facet
 
                     // End get Facet
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -161,6 +162,7 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">
+                            <%@include file="template/login.jsp" %>
                             <%  //out.print(facet);%>
                             <table>
                                 <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
