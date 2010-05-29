@@ -44,19 +44,21 @@
                     }
                     if (member == null) {
         %>
-        <form name="frmLogin" method="post" action="/ViSearch/MemberLoginController" style="text-align:center" onsubmit="return checkInputLogin();">
-            <p>
-                <label for="username">Tên đăng nhập:</label><br/>
-                <input type="text" name="username" id="username">
-            </p>
-            <p>
-                <label for="password">Mật khẩu: </label><br/>
-                <input type="password" name="password" id="password">
-            </p>
-            <p>
-                <input type="submit" name="btnLogin" id="btnLogin" value="Đăng nhập">
-            </p>
-        </form>
+        <table style="font-size: 13px">
+            <form name="frmLogin" method="post" action="/ViSearch/MemberLoginController" style="text-align:center" onsubmit="return checkInputLogin();">
+                <tr><td><label for="username">Tên đăng nhập:</label></td> </tr>
+                <tr><td><input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="username" id="username"></td> </tr>
+
+
+                <tr><td> <label for="password">Mật khẩu: </label></td> </tr>
+                <tr><td><input type="password" name="password" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="password"></td> </tr>
+
+                <tr><td>
+                    <input type="submit" name="btnLogin" id="btnLogin" value="Đăng nhập">
+                    <input type="reset" value="Làm lại" />
+                </td> </tr>
+            </form>
+        </table>
         <%                    }
         %>
     </body>

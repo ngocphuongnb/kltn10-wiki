@@ -138,3 +138,47 @@ vertical-align:middle;
 {
  clear: both;
 }
+.textForm_Hover{
+background:#FFFF99;
+border: 1.5px solid #5A9B20;
+}
+.textForm {
+border: 1.5px solid #666;
+}
+.blockhead{
+-moz-border-radius-topleft:5px;
+-moz-border-radius-topright:5px;
+background:url("images/buttons/newbtn_middle.png") repeat-x scroll 0 0 #7192A8;
+border:1px solid #5A7F97;
+color:#FFFFFF;
+font:12px Tahoma,Calibri,Verdana,Geneva,sans-serif;
+padding:4px 10px;
+margin:0;
+}
+.subblockhead{
+background:none repeat-x scroll 0 0 #E9E9E9;
+border-top:0 solid #FFFFFF;
+color:#3E3E3E;
+margin:0 1px;
+padding:4px 10px;
+margin-top:0;
+margin-bottom:3px;
+}
+
+.page {
+background-color:#FFFFFF;
+border:1px solid #6B91AB;
+height:75px;
+overflow:auto;
+padding:10px;
+}
+#frmRegister{
+margin:10px 100px;
+font-size:13px;
+}
+.hidden{
+		display: none;
+	}
+	.display{
+	}
+	

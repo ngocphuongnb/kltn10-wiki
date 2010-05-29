@@ -19,7 +19,7 @@
                 <td align="center" width="20%"><a href="raovat.jsp">Rao vặt</a></td>
                 <td align="center" width="20%"><a href="music.jsp">Nhạc</a></td>
                 <td align="center" width="20%"><a href="">Hình ảnh</a></td>
-                <td align="center" width="20%"><a href="">Video</a></td>
+                <td align="center" width="20%"><a href="video.jsp">Video</a></td>
             </tr>
         </table>
     </body>

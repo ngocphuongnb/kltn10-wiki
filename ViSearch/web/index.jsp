@@ -250,7 +250,7 @@
                     <tr>
 
                     </tr>
-                    <tr><td height="50"></td></tr>
+                    <tr><td height="30"></td></tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="100"></td>

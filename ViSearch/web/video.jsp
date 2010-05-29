@@ -1,10 +1,4 @@
 <%-- 
-    Document   : music
-    Created on : May 28, 2010, 11:57:45 PM
-    Author     : tuandom
---%>
-
-<%--
     Document   : video
     Created on : May 28, 2010, 9:22:53 PM
     Author     : tuandom
@@ -40,17 +34,12 @@
                     return;
                 else
                 {
-                    var url = "SearchMusicController?type=0&sp=1&KeySearch=";
+                    var url = "SearchVideoController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
                     window.location = url;
                 }
-            }
-            function showMediaWindow(id)
-            {
-                MDid = 'MediaPlayer'+id;
-                document.getElementById(MDid).className="display";
             }
         </script>
     </head>
@@ -107,35 +96,17 @@
                                 }
 
                                 result += "<tr>";
-                                result += "<td><b><a href=\"DetailMusicController?id=" + id + "\">" + title_hl + "</a></b></td>";
+                                result += "<td><b><a href=\"DetailVideoController?id=" + id + "\">" + title_hl + "</a></b></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
                                 result += "<td>"+url+"</td>";
                                 result += "</tr>";
 
-                                result += "<tr>";
-                                result += "<td><input type=\"button\" value=\"Play\" onclick=\"showMediaWindow('"+i+"');\" /></td>";
-                                result += "</tr>";
-
-                                String mediaId  = "MediaPlayer" + i;
-                                result += "<tr><td>";
-                                
-                                result += "<OBJECT class=\"hidden\" ID=\""+mediaId+"\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
-result += "<param name=\"fileName\" value=\"\">";
-result +="<param name=\"animationatStart\" value=\"false\">";
-result +="<param name=\"transparentatStart\" value=\"true\">";
-result +="<param name=\"autoStart\" value=\"true\">";
-result +="<param name=\"showControls\" value=\"true\">";
-result +="<param name=\"Volume\" value=\"-300\">";
-result +="<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>";
-result +="</OBJECT>";
-                               
-                                result += "</td></tr>";
 
                                 result += "<tr>";
                                 result += "<td colspan='2'>";
-                                result += "<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
 
                                 result += "</tr>";
@@ -179,7 +150,7 @@ result +="</OBJECT>";
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -207,7 +178,7 @@ result +="</OBJECT>";
                             for (int i = 0; i < listFacetDate.size(); i++) {
 
                                 String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                facetD += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                 facetD += " (" + listFacetDate.get(i).getCount() + ")";
                                 facetD += "<br>";
                             }
@@ -273,7 +244,7 @@ result +="</OBJECT>";
                     <tr>
 
                     </tr>
-                    <tr><td height="50"></td></tr>
+                    <tr><td height="30"></td></tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="100"></td>
@@ -287,7 +258,6 @@ result +="</OBJECT>";
 
     </body>
 </html>
-
 
 
 
