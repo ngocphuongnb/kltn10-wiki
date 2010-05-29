@@ -24,7 +24,8 @@
                         GVHD: <b>Nguyễn Tuấn Khang</b>
                     </p>
                 </td>
-                <td class="footer"><a href="">Hướng dẫn tìm kiếm</a></td>
+                <td class="footer"><a href="">Hướng dẫn tìm kiếm</a></br>
+                <a href="register.jsp">Ghi danh</a></td>
             </tr>
             <tr><td>&nbsp;</td></tr>
         </table>
