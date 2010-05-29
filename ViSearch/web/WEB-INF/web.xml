@@ -17,21 +17,17 @@
         <servlet-class>org.me.ViSearchController.MemberLoginController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SearchVideoContronller</servlet-name>
-        <servlet-class>org.me.ViSearchController.SearchVideoController</servlet-class>
+        <servlet-name>jcaptcha</servlet-name>
+        <servlet-class>com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SearchVideoController2</servlet-name>
-        <servlet-class>org.me.ViSearchController.SearchVideoController2</servlet-class>
+        <servlet-name>RegisterMemberController</servlet-name>
+        <servlet-class>org.me.ViSearchController.RegisterMemberController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>SearchVideoController</servlet-name>
-        <servlet-class>org.me.ViSearchController.SearchVideoController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SearchMusicController</servlet-name>
-        <servlet-class>org.me.ViSearchController.SearchMusicController</servlet-class>
-    </servlet>
+    <servlet-mapping>
+        <servlet-name>jcaptcha</servlet-name>
+        <url-pattern>/jcaptcha.jpg</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DetailRaoVatController</servlet-name>
         <url-pattern>/DetailRaoVatController</url-pattern>
@@ -49,20 +45,8 @@
         <url-pattern>/MemberLoginController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>SearchVideoContronller</servlet-name>
-        <url-pattern>/SearchVideoContronller</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchVideoController2</servlet-name>
-        <url-pattern>/SearchVideoController2</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchVideoController</servlet-name>
-        <url-pattern>/SearchVideoController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchMusicController</servlet-name>
-        <url-pattern>/SearchMusicController</url-pattern>
+        <servlet-name>RegisterMemberController</servlet-name>
+        <url-pattern>/RegisterMemberController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
