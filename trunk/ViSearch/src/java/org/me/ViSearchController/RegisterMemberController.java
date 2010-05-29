@@ -4,24 +4,19 @@
  */
 package org.me.ViSearchController;
 
+import com.octo.captcha.module.servlet.image.SimpleImageCaptchaServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.apache.catalina.Session;
-import org.me.bus.MemberBUS;
-import org.me.dto.MemberDTO;
 
 /**
  *
  * @author VinhPham
  */
-public class MemberLoginController extends HttpServlet {
+public class RegisterMemberController extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,19 +29,15 @@ public class MemberLoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        HttpSession session  = request.getSession();
         PrintWriter out = response.getWriter();
         try {
-            String _username = request.getParameter("username");
-            String _pass = request.getParameter("password");
-            MemberBUS membus = new MemberBUS();
-            MemberDTO user = membus.Login(_username, _pass, "visearch");
-            ServletContext sc = getServletContext();
-            if (user != null) {
-                request.setAttribute("Member", user);
+            String userCaptchaResponse = request.getParameter("jcaptcha");
+            boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
+            if (captchaPassed) {
+                out.println("exact");
+            } else {
+                out.println("fail");
             }
-        } catch (Exception ex) {
-            out.println(ex.getMessage());
         } finally {
             out.close();
         }
