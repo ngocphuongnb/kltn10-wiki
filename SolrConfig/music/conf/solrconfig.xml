@@ -37,10 +37,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        ms_title^2 album_index artist_index singer_index category_index lyric
+        title^2 album_index artist_index singer_index category_index lyric
      </str>
      <str name="pf">
-        ms_title^2 album_index^1.5 artist_index singer_index category_index lyric
+        title^2 album_index^1.5 artist_index singer_index category_index lyric
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -55,12 +55,12 @@
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
-     <str name="hl.fl">ms_title album_index</str>
+     <str name="hl.fl">title album_index</str>
      <!-- for this field, we want no fragmenting, just highlighting -->
      <str name="f.name.hl.fragsize">0</str>
      <!-- instructs Solr to return the field itself if no query terms are
           found -->
-     <str name="f.name.hl.alternateField">ms_title</str>
+     <str name="f.name.hl.alternateField">title</str>
      <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
     </lst>
 	
@@ -69,7 +69,7 @@
   <fragmenter name="regex" class="org.apache.solr.highlight.RegexFragmenter">
     <lst name="defaults">
       <!-- slightly smaller fragsizes work better because of slop -->
-      <int name="hl.fragsize">70</int>
+      <int name="hl.fragsize">0</int>
       <!-- allow 50% slop on fragment sizes -->
       <float name="hl.regex.slop">0.5</float>
       <!-- a basic sentence pattern -->
@@ -96,7 +96,7 @@
 
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">ms_title</str>
+      <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="spellcheckIndexDir">./spellcheckerMusic</str>
     </lst>
@@ -104,7 +104,7 @@
     <!-- a spellchecker that uses a different distance measure -->
     <lst name="spellchecker">
       <str name="name">jarowinkler</str>
-      <str name="field">ms_title</str>
+      <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
       <str name="spellcheckIndexDir">./spellcheckerMusic2</str>
