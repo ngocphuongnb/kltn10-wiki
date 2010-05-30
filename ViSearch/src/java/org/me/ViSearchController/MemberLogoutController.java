@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.me.ViSearchController;
 
 import java.io.IOException;
@@ -13,15 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.me.bus.MemberBUS;
-import org.me.dto.MemberDTO;
 
 /**
  *
  * @author VinhPham
  */
-public class MemberLoginController extends HttpServlet {
-
+public class MemberLogoutController extends HttpServlet {
+   
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -30,19 +29,13 @@ public class MemberLoginController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         try {
-            String _username = request.getParameter("username");
-            String _pass = request.getParameter("password");
-            MemberBUS membus = new MemberBUS();
-            MemberDTO user = membus.Login(_username, _pass, "visearch");
-            if (user != null) {
-                request.setAttribute("Member", user);
-            }
+            session.removeAttribute("Member");
             String url = session.getAttribute("CurrentPage").toString();
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
@@ -52,7 +45,7 @@ public class MemberLoginController extends HttpServlet {
         } finally {
             out.close();
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -64,9 +57,9 @@ public class MemberLoginController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -77,7 +70,7 @@ public class MemberLoginController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -89,4 +82,5 @@ public class MemberLoginController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

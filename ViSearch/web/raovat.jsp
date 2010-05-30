@@ -109,7 +109,7 @@
                                     }
                                 }
 
-                                url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title_hl + "</a></b></td>";
+                                url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
                                 result += "<tr>";
                                 result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" alt=\"No image\" width=\"150\" align=\"left\" /></td>";
                                 result += url;

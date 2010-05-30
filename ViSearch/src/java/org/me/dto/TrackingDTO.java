@@ -18,6 +18,7 @@ public class TrackingDTO {
       private String _ip;
       private String _docId;
       private int _memberId;
+      private String _timeRange;
 
     public int getId() {
         return _Id;
@@ -65,6 +66,20 @@ public class TrackingDTO {
 
     public void setTimeSearch(Calendar _timeSearch) {
         this._timeSearch = _timeSearch;
+    }
+
+    /**
+     * @return the _timeRange
+     */
+    public String getTimeRange() {
+        return _timeRange;
+    }
+
+    /**
+     * @param timeRange the _timeRange to set
+     */
+    public void setTimeRange(String timeRange) {
+        this._timeRange = timeRange;
     }
 
 

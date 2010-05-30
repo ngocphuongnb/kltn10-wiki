@@ -14,6 +14,20 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Rao vặt</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="script/jquery-1.4.2.min.js">
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#btBookmark").click(function(){
+                    var docID = $("#hdIdValue").attr("value");
+                    var keySearch = $("#txtSearch").attr("value");
+                    alert(keySearch);
+                    var Url = "BookmarkController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    $("#Bookmark").load(encodeURI(Url));
+                });
+            });
+        </script>
         <script language="javascript">
             function CheckInput()
             {
@@ -44,7 +58,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -101,14 +115,20 @@
                             result += "<ul>" + "Site: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
                             result += "<ul>" + "Price: " + price + "</ul>";
                             result += "<ul>" + "Last update: " + sf.format(last_update) + "</ul></div>";
-                            photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/></div>";
+                            photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/><br/>";
+                            if (session.getAttribute("Member") != null) {
+                                photo += "<span id='Bookmark'>"
+                                        +"<input id='hdIdValue' type='hidden' value='" + id + "'>" +
+                                        "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span>";
+                            }
+                            photo += "</div>";
                             result += photo;
                             result += "<div id='divbottom'>" + body + "</div>";
                         }
                     }
 
                     //get SolrDocumentList
-%>
+        %>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -137,7 +157,7 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <%
                     // Get Facet
 

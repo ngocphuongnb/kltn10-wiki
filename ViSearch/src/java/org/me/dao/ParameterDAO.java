@@ -8,6 +8,7 @@ package org.me.dao;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.me.dto.ParameterDTO;
 /**
@@ -16,7 +17,7 @@ import org.me.dto.ParameterDTO;
  */
 public class ParameterDAO {
 
-    public boolean  InsertNewMember(ParameterDTO param, String database) {
+    public boolean  AddParameter(ParameterDTO param, String database) {
         boolean result = true;
         Connection cn = DataProvider.getConnection(database);
         try {
@@ -33,5 +34,23 @@ public class ParameterDAO {
             ex.printStackTrace();
         }
         return result;
+    }
+
+    public String GetParameter(String name, String database){
+        String value = "";
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL select_parameter(?)}");
+            cs.setString(1, name);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                value = rs.getString("value");
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return value;
     }
 }

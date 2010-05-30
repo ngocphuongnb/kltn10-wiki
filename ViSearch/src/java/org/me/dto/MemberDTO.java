@@ -17,7 +17,7 @@ public class MemberDTO {
     private String _pass;
     private String _fullName;
     private Calendar _birthDay;
-    private boolean _sex;
+    private int _sex;
 
     /**
      * @return the _id
@@ -92,14 +92,14 @@ public class MemberDTO {
     /**
      * @return the _sex
      */
-    public boolean isSex() {
+    public int getSex() {
         return _sex;
     }
 
     /**
      * @param sex the _sex to set
      */
-    public void setSex(boolean sex) {
+    public void setSex(int sex) {
         this._sex = sex;
     }
 }

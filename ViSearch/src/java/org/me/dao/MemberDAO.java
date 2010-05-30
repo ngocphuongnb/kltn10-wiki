@@ -32,9 +32,9 @@ public class MemberDAO {
             cs.setString(3, member.getFullName());
             Calendar cl = Calendar.getInstance();
             cl = member.getBirthDay();
-            //String birthdate = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH);
-            cs.setDate(4, (Date) cl.getTime());
-            cs.setBoolean(5, member.isSex());
+            String birthdate = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH);
+            cs.setString(4, birthdate);
+            cs.setInt(5, member.getSex());
             int n = cs.executeUpdate();
             if (n == 0) {
                 result = false;
@@ -58,13 +58,14 @@ public class MemberDAO {
             while (rs.next()) {
                 member = new MemberDTO();
                 Calendar cl = Calendar.getInstance();
-                cl.setTime(rs.getDate("birthday"));
+                Date date = rs.getDate("birthday");
+                cl.setTime(date);
                 member.setBirthDay(cl);
-                member.setFullName(cs.getString("fullname"));
-                member.setId(cs.getInt("ID"));
-                member.setPass(cs.getString("pass"));
-                member.setSex(cs.getBoolean("sex"));
-                member.setUserName(cs.getString("username"));
+                member.setFullName(rs.getString("fullname"));
+                member.setId(rs.getInt("ID"));
+                member.setPass(rs.getString("pass"));
+                member.setSex(rs.getInt("sex"));
+                member.setUserName(rs.getString("username"));
             }
             cn.close();
         } catch (SQLException ex) {
