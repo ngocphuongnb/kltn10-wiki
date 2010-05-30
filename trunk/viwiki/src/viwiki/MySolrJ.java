@@ -30,30 +30,12 @@ public class MySolrJ {
     public SolrServer getSolrServer() throws MalformedURLException {
         String url = "http://localhost:8983/solr";
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-//        server.setSoTimeout(1000);  // socket read timeout
-//        server.setConnectionTimeout(100);
-//        server.setDefaultMaxConnectionsPerHost(100);
-//        server.setMaxTotalConnections(100);
-//        server.setFollowRedirects(false);  // defaults to false
-//        // allowCompression defaults to false.
-//        // Server side must support gzip or deflate for this to have any effect.
-//        server.setAllowCompression(true);
-//        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
         return server;
     }
 
     public SolrServer getSolrServer(String core) throws MalformedURLException {
         String url = "http://localhost:8983/solr/" + core;
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-//        server.setSoTimeout(1000);  // socket read timeout
-//        server.setConnectionTimeout(100);
-//        server.setDefaultMaxConnectionsPerHost(100);
-//        server.setMaxTotalConnections(100);
-//        server.setFollowRedirects(false);  // defaults to false
-//        // allowCompression defaults to false.
-//        // Server side must support gzip or deflate for this to have any effect.
-//        server.setAllowCompression(true);
-//        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
         return server;
     }
 
