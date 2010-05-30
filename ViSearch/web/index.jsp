@@ -178,13 +178,13 @@
 
                     ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
                     if (listFacetDate != null) {
-                        facetD += "<tr><td><b>Facet: last_update</b>";
+                        facetD += "<tr><td><b>Facet: timestamp</b>";
                         facetD += "<br>";
                         if (listFacetDate.size() > 0) {
                             for (int i = 0; i < listFacetDate.size(); i++) {
 
                                 String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "timestamp" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
                                 facetD += " (" + listFacetDate.get(i).getCount() + ")";
                                 facetD += "<br>";
                             }
@@ -193,6 +193,9 @@
                         }
                         facetD += "</td></tr>";
                     }
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp'>" + "25 ngày qua" + "</a>";
+                     facetD += "</td></tr>";
                     facetD += "</table>";
                     // End get Facet Date
         %>

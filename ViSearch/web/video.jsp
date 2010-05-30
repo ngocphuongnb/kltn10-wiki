@@ -129,7 +129,7 @@
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                     List<String> highlightTitle = highLight.get(id).get("title");
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
-                                        title_hl = highlightTitle.get(0) + "...";
+                                        title_hl = highlightTitle.get(0);
                                     }
                                 }
 
@@ -171,8 +171,8 @@
                                 result += "<param name=\"salign\" value=\"lt\" />";
                                 result += "<param name=\"quality\" value=\"high\" />";
                                 result += "<param name=\"scale\" value=\"noscale\" />";
-                                result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus&autoPlay=false&autoRewind=false\" />";
-                                result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
+                                result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
+                                result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
                                 result += "</object>";
 
 

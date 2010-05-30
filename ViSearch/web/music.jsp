@@ -143,7 +143,7 @@
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                     List<String> highlightTitle = highLight.get(id).get("title");
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
-                                        title_hl = highlightTitle.get(0) + "...";
+                                        title_hl = highlightTitle.get(0);
                                     }
                                 }
 
