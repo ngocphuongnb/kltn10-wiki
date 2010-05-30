@@ -27,6 +27,14 @@
                 }
                 return true;
             }
+
+            function logOut()
+            {
+                alert("abc");
+                session.removeAttribute("Member");
+                location.reload(true);
+                alert("xyz");
+            }
         </script>
     </head>
     <body>
@@ -65,6 +73,17 @@
             </form>
         </table>
         <%                    }
+		else
+		{
         %>
+        Chào mừng<br/>
+        <a href="#"><%
+		if(member.getFullName()!=null && !member.getFullName().equals(""))
+                    out.print(member.getFullName());
+                else
+                   out.print(member.getUserName());
+		%></a><br/>
+                <a href="MemberLogoutController" style="font-size: 10pt">Đăng xuất</a>
+        <%}%>
     </body>
 </html>

@@ -32,6 +32,14 @@
         <servlet-name>SearchVideoController</servlet-name>
         <servlet-class>org.me.ViSearchController.SearchVideoController</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>MemberLogoutController</servlet-name>
+        <servlet-class>org.me.ViSearchController.MemberLogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookmarkController</servlet-name>
+        <servlet-class>org.me.ViSearchController.BookmarkController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>SearchVideoController</servlet-name>
         <url-pattern>/SearchVideoController</url-pattern>
+    </servlet-mapping>
+	<servlet-mapping>
+        <servlet-name>MemberLogoutController</servlet-name>
+        <url-pattern>/MemberLogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookmarkController</servlet-name>
+        <url-pattern>/BookmarkController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

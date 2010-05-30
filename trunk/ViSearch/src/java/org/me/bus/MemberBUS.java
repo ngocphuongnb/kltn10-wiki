@@ -19,4 +19,9 @@ public class MemberBUS {
         MemberDAO memDao = new MemberDAO();
         return memDao.Login(username, password, database);
     }
+
+    public boolean AddNewMember(MemberDTO member, String database) {
+        MemberDAO memDao = new MemberDAO();
+        return memDao.AddNewMember(member, database);
+    }
 }
