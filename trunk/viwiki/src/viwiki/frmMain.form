@@ -34,7 +34,10 @@
                   <Component id="jButton1" alignment="0" pref="129" max="32767" attributes="1"/>
               </Group>
               <EmptySpace pref="55" max="32767" attributes="0"/>
-              <Component id="jButton3" min="-2" pref="142" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jButton5" max="32767" attributes="1"/>
+                  <Component id="jButton3" alignment="0" pref="142" max="32767" attributes="1"/>
+              </Group>
               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -48,7 +51,10 @@
                   <Component id="jButton1" alignment="0" pref="53" max="32767" attributes="1"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jButton4" min="-2" pref="54" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jButton5" max="32767" attributes="1"/>
+                  <Component id="jButton4" alignment="0" pref="54" max="32767" attributes="1"/>
+              </Group>
               <EmptySpace pref="55" max="32767" attributes="0"/>
               <Component id="jButton2" min="-2" pref="55" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
@@ -87,6 +93,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Import Data Video"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
