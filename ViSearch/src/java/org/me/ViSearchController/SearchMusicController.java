@@ -46,7 +46,7 @@ import org.me.dto.FacetDateDTO;
  */
 public class SearchMusicController extends HttpServlet {
    SolrServer server;
-    /** 
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -177,8 +177,8 @@ public class SearchMusicController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("site");
-       // solrQuery.addFacetField("location");
+        solrQuery.addFacetField("singer");
+        solrQuery.addFacetField("artist");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -206,8 +206,8 @@ public class SearchMusicController extends HttpServlet {
        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("site");
-        //solrQuery.addFacetField("location");
+        solrQuery.addFacetField("singer");
+        solrQuery.addFacetField("artist");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -231,8 +231,8 @@ public class SearchMusicController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        //query.addFacetField("site");
-        //query.addFacetField("location");
+        query.addFacetField("singer");
+        query.addFacetField("artist");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet
@@ -306,7 +306,7 @@ public class SearchMusicController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -317,9 +317,9 @@ public class SearchMusicController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -332,7 +332,7 @@ public class SearchMusicController extends HttpServlet {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

@@ -51,6 +51,42 @@
             {
                 MDid = 'MediaPlayer'+id;
                 document.getElementById(MDid).className="display";
+
+                // Close all other MediaPlayers
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    if(i!=id)
+                    {
+                        MDid2 = 'MediaPlayer'+i;
+                        document.getElementById(MDid2).className="hidden";
+                    }
+                }
+            }
+            function showLyric(id)
+            {
+                // Show lyric div
+                MDid = 'Lyric'+id;
+                document.getElementById(MDid).className="display";
+
+                // Button XemLoiNhac hide, button DongLoiNhac show
+                var btxem = 'BTViewlyricId'+id;
+                document.getElementById(btxem).className="hidden";
+
+                 var  btDong = "BTCloselyricId" + id;
+                document.getElementById(btDong).className="display";
+            }
+            function hideLyric(id)
+            {
+                // Show lyric div
+                MDid = 'Lyric'+id;
+                document.getElementById(MDid).className="hidden";
+
+                // Button XemLoiNhac hide, button DongLoiNhac show
+                var btxem = 'BTViewlyricId'+id;
+                document.getElementById(btxem).className="display";
+
+                 var  btDong = "BTCloselyricId" + id;
+                document.getElementById(btDong).className="hidden";
             }
         </script>
     </head>
@@ -85,7 +121,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchVideoController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchMusicController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
@@ -95,6 +131,11 @@
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                String CaSi = (listdocs.get(i).getFieldValue("singer")).toString();
+                                String category = (listdocs.get(i).getFieldValue("category")).toString();
+                                String album = (listdocs.get(i).getFieldValue("album")).toString();
+                                String lyric = (listdocs.get(i).getFieldValue("lyric")).toString();
+                                String artist = (listdocs.get(i).getFieldValue("artist")).toString();
 
                                 String title_hl = title;
 
@@ -110,27 +151,59 @@
                                 result += "<td><b><a href=\"DetailMusicController?id=" + id + "\">" + title_hl + "</a></b></td>";
                                 result += "</tr>";
 
+
+                                // result += "<tr>";
+                                // result += "<td>Link nhạc: "+url+"</td>";
+                                // result += "</tr>";
+
+
+
                                 result += "<tr>";
-                                result += "<td>"+url+"</td>";
+                                result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=singer:\"" + CaSi + "\"'>" + CaSi + "</a></td>";
+                                result += "</tr>";
+
+                                 result += "<tr>";
+                                result += "<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=artist:\"" + artist + "\"'>" + artist + "</a></td>";
+                                result += "</tr>";
+
+
+                                result += "<tr>";
+                                result += "<td>Thể Loại: " + "<a href = 'SearchMusicController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><input type=\"button\" value=\"Play\" onclick=\"showMediaWindow('"+i+"');\" /></td>";
+                                result += "<td>Thể Album: " + "<a href = 'SearchMusicController?type=2&KeySearch=album:\"" + album + "\"'>" + album + "</a></td>";
                                 result += "</tr>";
 
-                                String mediaId  = "MediaPlayer" + i;
-                                result += "<tr><td>";
-                                
-                                result += "<OBJECT class=\"hidden\" ID=\""+mediaId+"\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
-result += "<param name=\"fileName\" value=\"\">";
-result +="<param name=\"animationatStart\" value=\"false\">";
-result +="<param name=\"transparentatStart\" value=\"true\">";
-result +="<param name=\"autoStart\" value=\"true\">";
-result +="<param name=\"showControls\" value=\"true\">";
-result +="<param name=\"Volume\" value=\"-300\">";
-result +="<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>";
-result +="</OBJECT>";
+                                     String mediaId = "MediaPlayer" + i;
+                                String lyricId = "Lyric" + i;
+                                String BTViewlyricId = "BTViewlyricId" + i;
+                                String BTCloselyricId = "BTCloselyricId" + i;
+
+                                result += "<tr>";
+                                result += "<td><input type=\"button\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />";
+                                result += "<input type=\"button\" ID=\"" + BTViewlyricId + "\" value=\"Xem lời nhạc\" onclick=\"showLyric('" + i + "');\" />";
+                                result += "<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>";
+                                result += "</tr>";
+
                                
+                                result += "<tr><td>";
+                                result += "<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
+                                result += "<param name=\"fileName\" value=\"\">";
+                                result += "<param name=\"animationatStart\" value=\"false\">";
+                                result += "<param name=\"transparentatStart\" value=\"true\">";
+                                result += "<param name=\"autoStart\" value=\"true\">";
+                                result += "<param name=\"showControls\" value=\"true\">";
+                                result += "<param name=\"Volume\" value=\"-300\">";
+                                result += "<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>";
+                                result += "</OBJECT>";
+                                result += "</td></tr>";
+
+                                result += "<tr><td>";
+                                result += "<div class=\"hidden\" ID=\"" + lyricId+ "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">";
+                                result += lyric;
+                                result += "</div>";
+
                                 result += "</td></tr>";
 
                                 result += "<tr>";
@@ -230,7 +303,7 @@ result +="</OBJECT>";
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <%@ include file="template/banner_Wiki.jsp"%>
+                                        <%@ include file="template/banner_Nhac.jsp"%>
                                         <!-- end banner      !-->
                                     </td>
                                 </tr>
