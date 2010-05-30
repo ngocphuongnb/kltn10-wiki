@@ -59,7 +59,7 @@
                     </td> </tr>
                 <tr>
                     <td style="font-size: 10pt">
-                        <span>Quên mật khẩu</span>|<span>Đăng ký</span>
+                        <span><a href="">Quên mật khẩu</a>&nbsp;</span>|&nbsp;<span><a href="register.jsp">Đăng kí</a></span>
                     </td>
                 </tr>
             </form>

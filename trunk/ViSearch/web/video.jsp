@@ -20,6 +20,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Video - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
         <script language="javascript">
             function setText()
             {
@@ -40,6 +41,39 @@
                     //alert(url);
                     window.location = url;
                 }
+            }
+            function showVideo(id)
+            {
+                // showVideo and Close all other Videos
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    MDid = 'MediaPlayer'+i;
+                    if(i!=id) // Close others
+                    {
+                        hideVideo(i);
+                    }
+                    else // and open new
+                    {
+                        document.getElementById(MDid).className="display";
+                    }
+                }
+                // Show button CloseVideo and Close bt View
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="display";
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="hidden";
+            }
+            function hideVideo(id)
+            {
+                // Hide media
+                MDid = 'MediaPlayer'+id;
+                document.getElementById(MDid).className="hidden";
+
+                // Button XemLoiNhac hide, button DongLoiNhac show
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="display";
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="hidden";
             }
         </script>
     </head>
@@ -84,6 +118,10 @@
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                String category = (listdocs.get(i).getFieldValue("category")).toString();
+                                String duration = (listdocs.get(i).getFieldValue("duration")).toString();
+                                String counterView = (listdocs.get(i).getFieldValue("counterView")).toString();
+                                String uploadBy = (listdocs.get(i).getFieldValue("uploadBy")).toString();
 
                                 String title_hl = title;
 
@@ -100,13 +138,48 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>"+url+"</td>";
+                                result += "<td>Thể Loại: " + "<a href = 'SearchVideoController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td>";
                                 result += "</tr>";
 
+                                result += "<tr>";
+                                result += "<td>Thời gian: " + duration + "</td>";
+                                result += "</tr>";
 
                                 result += "<tr>";
+                                result += "<td>Lượt xem: " + counterView + "</td>";
+                                result += "</tr>";
+
+                                result += "<tr>";
+                                result += "<td>Người upload: " + "<a href = 'SearchVideoController?type=2&KeySearch=uploadBy:\"" + uploadBy + "\"'>" + uploadBy + "</a></td>";
+                                result += "</tr>";
+
+                                String mediaId = "MediaPlayer" + i;
+                                String BTViewMediaId = "BTViewMediaId" + i;
+                                String BTCloseMediaId = "BTCloseMediaId" + i;
+
+                                result += "<tr><td>";
+                                //result += "<td><input type=\"button\" value=\"Play\" onclick=\"showObject('" + i + "');\" />";
+                                result += "<input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
+                                result += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" /></td>";
+                                result += "</tr>";
+
+                                result += "<tr><td>";
+
+
+                                result += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
+                                result += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
+                                result += "<param name=\"salign\" value=\"lt\" />";
+                                result += "<param name=\"quality\" value=\"high\" />";
+                                result += "<param name=\"scale\" value=\"noscale\" />";
+                                result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus&autoPlay=false&autoRewind=false\" />";
+                                result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
+                                result += "</object>";
+
+
+                                result += "</td></tr>";
+                                result += "<tr>";
                                 result += "<td colspan='2'>";
-                                result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchVideoController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
 
                                 result += "</tr>";
@@ -201,7 +274,7 @@
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <%@ include file="template/banner_Wiki.jsp"%>
+                                        <%@ include file="template/banner_Video.jsp"%>
                                         <!-- end banner      !-->
                                     </td>
                                 </tr>

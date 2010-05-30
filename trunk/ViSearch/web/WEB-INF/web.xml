@@ -24,6 +24,14 @@
         <servlet-name>RegisterMemberController</servlet-name>
         <servlet-class>org.me.ViSearchController.RegisterMemberController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchMusicController</servlet-name>
+        <servlet-class>org.me.ViSearchController.SearchMusicController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchVideoController</servlet-name>
+        <servlet-class>org.me.ViSearchController.SearchVideoController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>RegisterMemberController</servlet-name>
         <url-pattern>/RegisterMemberController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchMusicController</servlet-name>
+        <url-pattern>/SearchMusicController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchVideoController</servlet-name>
+        <url-pattern>/SearchVideoController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
