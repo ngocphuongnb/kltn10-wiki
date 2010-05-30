@@ -4,7 +4,9 @@
  */
 package DAO;
 
-import DTO.MusicDTO;
+import DAO.DataProvider;
+import DTO.VideoDTO;
+import DTO.VideoDTO;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
@@ -18,33 +20,35 @@ import java.util.Date;
  *
  * @author tuandom
  */
-public class MusicDAO {
+public class VideoDAO {
 
-    public static ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
-        ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("music");
+    public static ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
+        ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
+        Connection cn = (Connection) DataProvider.getConnection("video");
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM media_data LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM data LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
 
-        MusicDTO page;
+        VideoDTO page;
 
         while (rs.next()) {
-            page = new MusicDTO();
+            page = new VideoDTO();
             page.setTitle(rs.getString("Title"));
             page.setCategory(rs.getString("Category"));
-            page.setSinger(rs.getString("Singer"));
-            page.setAlbum(rs.getString("Album"));
             page.setUrl(rs.getString("URL"));
-            page.setLyric(rs.getString("Lyric"));
-            page.setArtist(rs.getString("Artist"));
-
-            Date d = new Date();
-            d = rs.getDate("DateUpload");
+            page.setDuration(rs.getString("Duration"));
 
             Calendar cl = Calendar.getInstance();
+            Date d = rs.getDate("LastedView");
             cl.setTime(d);
-            page.setDayUpload(cl);
+            page.setLastedView(cl);
+
+            d = rs.getDate("LastedUpdate");
+            cl.setTime(d);
+            page.setLastedUpdate(cl);
+
+            page.setUploadBy(rs.getString("UploadBy"));
+            page.setCounterView(rs.getInt("CounterView"));
             list.add(page);
         }
 
@@ -55,9 +59,9 @@ public class MusicDAO {
 
     public static int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("music");
+        Connection cn = (Connection) DataProvider.getConnection("video");
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM media_data";
+        String query = "SELECT count(*) as NumRow FROM data";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {

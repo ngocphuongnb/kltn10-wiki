@@ -13,9 +13,11 @@ package viwiki;
 import BUS.MusicBUS;
 import BUS.RaoVatBUS;
 import BUS.SynonymWordBUS;
+import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import DTO.MusicDTO;
 import DTO.RaoVatDTO;
+import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
 import java.awt.Cursor;
 import java.io.IOException;
@@ -52,6 +54,7 @@ public class frmMain extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -83,6 +86,13 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
+        jButton5.setText("Import Data Video");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,7 +107,9 @@ public class frmMain extends javax.swing.JDialog {
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
                 .addGap(64, 64, 64))
         );
         layout.setVerticalGroup(
@@ -108,7 +120,9 @@ public class frmMain extends javax.swing.JDialog {
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
@@ -200,6 +214,26 @@ public class frmMain extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    // Import data Video
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int numOfRecords;
+        try {
+            numOfRecords = VideoBUS.CountRecord();
+             importDataVideo(numOfRecords);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     public void importDataWiki(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         // TODO code application logic here
         MySolrJ ms = new MySolrJ();
@@ -211,11 +245,27 @@ public class frmMain extends javax.swing.JDialog {
             start += 2000;
         }
     }
+     public void importDataVideo(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+        MySolrJ ms = new MySolrJ();
+        ms.EmptyData("video");
+        int start = 0;
+         ArrayList<VideoDTO> list = VideoBUS.getDataList(start, numRecord);
+            ms.ImportVideo2Solr(list, start);
+//        while (start < numRecord) {
+//            ArrayList<VideoDTO> list = VideoBUS.getDataList(start, 2000);
+//            ms.ImportVideo2Solr(list, start);
+//            start += 2000;
+//        }
+    }
     public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         // TODO code application logic here
         MySolrJ ms = new MySolrJ();
         ms.EmptyData("music");
         int start = 0;
+       // ArrayList<MusicDTO> list = MusicBUS.getDataList(start, numRecord);
+       // ms.ImportMusic2Solr(list, start);
+
+        
         while (start < numRecord) {
             ArrayList<MusicDTO> list = MusicBUS.getDataList(start, 2000);
             ms.ImportMusic2Solr(list, start);
@@ -258,5 +308,6 @@ public class frmMain extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     // End of variables declaration//GEN-END:variables
 }
