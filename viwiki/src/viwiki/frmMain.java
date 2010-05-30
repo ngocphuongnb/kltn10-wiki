@@ -174,7 +174,8 @@ public class frmMain extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {jButton3.setEnabled(false);
+        try {
+            jButton3.setEnabled(false);
             // TODO add your handling code here:
             int numOfRecords;
             numOfRecords = RaoVatBUS.CountRecord();
@@ -196,7 +197,8 @@ public class frmMain extends javax.swing.JDialog {
     // Import data music
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-         int numOfRecords;
+        jButton4.setEnabled(false);
+        int numOfRecords;
         try {
             numOfRecords = MusicBUS.CountRecord();
             importDataMusic(numOfRecords);
@@ -211,15 +213,16 @@ public class frmMain extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        jButton4.setEnabled(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     // Import data Video
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        jButton5.setEnabled(false);
         int numOfRecords;
         try {
             numOfRecords = VideoBUS.CountRecord();
-             importDataVideo(numOfRecords);
+            importDataVideo(numOfRecords);
         } catch (MalformedURLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SolrServerException ex) {
@@ -231,7 +234,7 @@ public class frmMain extends javax.swing.JDialog {
         } catch (SQLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        jButton5.setEnabled(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     public void importDataWiki(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
@@ -245,27 +248,29 @@ public class frmMain extends javax.swing.JDialog {
             start += 2000;
         }
     }
-     public void importDataVideo(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+
+    public void importDataVideo(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         MySolrJ ms = new MySolrJ();
         ms.EmptyData("video");
         int start = 0;
-         ArrayList<VideoDTO> list = VideoBUS.getDataList(start, numRecord);
-            ms.ImportVideo2Solr(list, start);
+        ArrayList<VideoDTO> list = VideoBUS.getDataList(start, numRecord);
+        ms.ImportVideo2Solr(list, start);
 //        while (start < numRecord) {
 //            ArrayList<VideoDTO> list = VideoBUS.getDataList(start, 2000);
 //            ms.ImportVideo2Solr(list, start);
 //            start += 2000;
 //        }
     }
+
     public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
         // TODO code application logic here
         MySolrJ ms = new MySolrJ();
         ms.EmptyData("music");
         int start = 0;
-       // ArrayList<MusicDTO> list = MusicBUS.getDataList(start, numRecord);
-       // ms.ImportMusic2Solr(list, start);
+        // ArrayList<MusicDTO> list = MusicBUS.getDataList(start, numRecord);
+        // ms.ImportMusic2Solr(list, start);
 
-        
+
         while (start < numRecord) {
             ArrayList<MusicDTO> list = MusicBUS.getDataList(start, 2000);
             ms.ImportMusic2Solr(list, start);
