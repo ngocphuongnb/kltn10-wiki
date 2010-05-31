@@ -43,6 +43,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 import org.me.dto.FacetDateDTO;
 
@@ -325,7 +326,7 @@ public class SearchWikiController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "wk_title");
-        query.setQuery("wk_title:" + ClientUtils.escapeQueryChars(q));
+        query.setQuery("wk_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);

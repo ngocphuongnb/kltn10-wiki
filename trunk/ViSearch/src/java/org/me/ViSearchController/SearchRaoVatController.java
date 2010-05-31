@@ -37,6 +37,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 import org.me.dto.FacetDateDTO;
 
@@ -318,7 +319,7 @@ public class SearchRaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
         
-        query.setQuery("rv_title:" + ClientUtils.escapeQueryChars(q));
+        query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
