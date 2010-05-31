@@ -63,7 +63,6 @@ public class RegisterMemberController extends HttpServlet {
                out.println("fail");
             }
         } finally {
-            out.print("error");
             out.close();
         }
     }
