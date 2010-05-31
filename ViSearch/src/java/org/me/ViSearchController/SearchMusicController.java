@@ -241,8 +241,8 @@ public class SearchMusicController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
-        //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
-        query.setQuery(ClientUtils.escapeQueryChars(q));
+        query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
+        //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
