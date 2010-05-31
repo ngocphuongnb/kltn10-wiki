@@ -49,7 +49,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -80,6 +80,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
+                                String timestamp = (listdocs.get(i).getFirstValue("timestamp")).toString();
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -112,6 +113,10 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
+                                result += "<td>Timestamp: " + timestamp + "</td>";
+                                result += "</tr>";
+
+                                result += "<tr>";
                                 result += "<td colspan='2'>";
                                 result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
@@ -134,7 +139,7 @@
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -169,7 +174,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -192,13 +197,26 @@
                             facetD += "Không tìm ra Facet<br>";
                         }
                         facetD += "</td></tr>";
-                    }
+                    
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp'>" + "25 ngày qua" + "</a>";
-                     facetD += "</td></tr>";
+                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=0'>" + "Hôm nay" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=1'>" + "Hôm qua" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=7'>" + "7 ngày trước" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=30'>" + "30 ngày trước" + "</a>";
+                    facetD += "</td></tr>";
+                    }
                     facetD += "</table>";
                     // End get Facet Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

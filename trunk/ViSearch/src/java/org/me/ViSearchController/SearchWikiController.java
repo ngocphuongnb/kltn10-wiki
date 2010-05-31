@@ -60,7 +60,6 @@ public class SearchWikiController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     SolrServer server;
-    int QTime = 0;
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
@@ -119,6 +118,49 @@ public class SearchWikiController extends HttpServlet {
         return rsp;
     }
 
+    QueryResponse OnSearchSubmitStandard1(String keySearch, String faceName, String numdate, int start, int pagesize) throws SolrServerException, URIException, IOException {
+        SolrQuery solrQuery = new SolrQuery();
+        ArrayList<FacetDateDTO> listFacetDate = NewestUpdateDocument(keySearch, numdate);
+        String faceValue = null;
+
+        keySearch = "+(wk_title:(" + keySearch + ") || wk_text:(" + keySearch + ")) ";
+        //keySearch = "+(wk_title:("hoahong") || wk_text:("daigia")) ";
+        keySearch += "+(";
+        for (int i = 0; i < listFacetDate.size(); i++) {
+            faceValue = listFacetDate.get(i).getDateTime();
+            keySearch += faceName + ":\"" + faceValue + "\"";
+            if (i != listFacetDate.size() - 1) {
+                keySearch += " || ";
+            }
+        }
+        keySearch += ")";
+
+
+        //keySearch += "+(" + faceName + ":\"" + faceValue + "\")";
+
+        solrQuery.setQuery(keySearch);
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("wk_title");
+        //solrQuery.addFacetField("username");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        //solrQuery.setFacet(true);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("wk_title");
+        solrQuery.addHighlightField("wk_text");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        //solrQuery.setStart(start);
+        //solrQuery.setRows(pagesize);
+
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
     ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
         HttpClient client = new HttpClient();
 
@@ -167,26 +209,28 @@ public class SearchWikiController extends HttpServlet {
 
     }
 
-    public SolrDocumentList getDocumentOnFacetDate(String keySearch, String faceName, int start, int pagesize) throws SolrServerException, URIException, IOException {
-        ArrayList<FacetDateDTO> listFacetDate = NewestUpdateDocument(keySearch, "25");
-        SolrDocumentList allDocs = new SolrDocumentList();
-        SolrDocumentList docs;
-        QueryResponse rsp;
-        String faceValue = null;
-        QTime = 0;
-        for (int i = 0; i < listFacetDate.size(); i++) {
-            docs = new SolrDocumentList();
-            faceValue = listFacetDate.get(i).getDateTime();
-            rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
-            QTime += rsp.getQTime();
-            docs = rsp.getResults();
-            for (int j = 0; j < docs.size(); j++) {
-                allDocs.add(docs.get(j));
-            }
-        }
-
-        return allDocs;
-    }
+//    public SolrDocumentList getDocumentOnFacetDate(String keySearch, String faceName, int start, int pagesize) throws SolrServerException, URIException, IOException {
+//        ArrayList<FacetDateDTO> listFacetDate = NewestUpdateDocument(keySearch, "25");
+//        SolrDocumentList allDocs = new SolrDocumentList();
+//        SolrDocumentList docs;
+//        QueryResponse rsp;
+//        String faceValue = null;
+//        // QTime = 0;
+//        //  numRow = 0;
+//        for (int i = 0; i < listFacetDate.size(); i++) {
+//            docs = new SolrDocumentList();
+//            faceValue = listFacetDate.get(i).getDateTime();
+//            rsp = OnSearchSubmitStandard1(keySearch, faceName, start, pagesize);
+//            docs = rsp.getResults();
+//            //   QTime += rsp.getQTime();
+//            //   numRow += docs.getNumFound();
+//            for (int j = 0; j < docs.size(); j++) {
+//                allDocs.add(docs.get(j));
+//            }
+//        }
+//
+//        return allDocs;
+//    }
 
     public String convertStreamToString(InputStream is, String encode) throws IOException {
         if (is != null) {
@@ -319,10 +363,11 @@ public class SearchWikiController extends HttpServlet {
         String keySearch = "";
         int pagesize = 10;
         int currentpage = 1;
-        long numRow = 0;
+
         String sPaging = "";
         int type = -1;
-
+        int QTime = 0;
+        long numRow = 0;
 
         try {
 
@@ -362,7 +407,7 @@ public class SearchWikiController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        listFacetDate = NewestUpdateDocument(keySearch, "30");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -396,11 +441,16 @@ public class SearchWikiController extends HttpServlet {
                         break;
                     case 3:
                         faceName = null;
+                        String numday=null;
                         if (request.getParameter("FaceName") != null) {
                             faceName = request.getParameter("FaceName");
+                            numday = request.getParameter("d");
                         }
-                        docs = getDocumentOnFacetDate(keySearch, faceName, start, pagesize);
-                        // Cai QTime đưa vào hàm trên lấy luôn rồi
+                        rsp = OnSearchSubmitStandard1(keySearch, faceName, numday, start, pagesize);
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        docs = rsp.getResults();
+                        QTime = rsp.getQTime();
                         break;
                     default:
                         break;
@@ -411,6 +461,7 @@ public class SearchWikiController extends HttpServlet {
             request.setAttribute("KeySearch", keySearch);
             if (docs != null) {
                 numRow = docs.getNumFound();
+                //numRow = docs.size();
                 int numpage = (int) (numRow / pagesize);
 
                 if (numRow % pagesize > 0) {
