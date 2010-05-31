@@ -23,23 +23,16 @@ public class TrackingDAO {
         Connection cn = DataProvider.getConnection(database);
         try {
             CallableStatement cs;
-            cs = cn.prepareCall("{CALL Insert_Tracking(?, ?, ?, ?, ?, ?)}");
+            cs = cn.prepareCall("{CALL Insert_Tracking(?, ?, ?, ?, ?)}");
             cs.setString(1, tracking.getKeySearch());
-
-            Calendar cl = Calendar.getInstance();
-            cl = tracking.getTimeSearch();
-            String datesearch = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH);
-
-            cs.setString(2, datesearch);
-
-            cs.setString(3, tracking.getIp());
-            cs.setString(4, tracking.getDocId());
+            cs.setString(2, tracking.getIp());
+            cs.setString(3, tracking.getDocId());
             if (tracking.getMemberId() > 0) {
-                cs.setInt(5, tracking.getMemberId());
+                cs.setInt(4, tracking.getMemberId());
+            } else {
+                cs.setNull(4, Types.INTEGER);
             }
-            else
-                cs.setNull(5, Types.INTEGER);
-            cs.setString(6, tracking.getTimeRange());
+            cs.setString(5, tracking.getTimeRange());
 
             int n = cs.executeUpdate();
             if (n == 0) {

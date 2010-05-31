@@ -83,8 +83,8 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url;
                                 String title_hl = title;
-                                String photo = "";
-                                if (listdocs.get(i).getFieldValue("photo") != null) {
+                                String photo = "images/Noimage.jpg";
+                                if (listdocs.get(i).getFieldValue("photo") != null && !listdocs.get(i).getFieldValue("photo").toString().equals("")) {
 
                                     photo = (listdocs.get(i).getFieldValue("photo")).toString();
                                 }
@@ -111,7 +111,7 @@
 
                                 url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
                                 result += "<tr>";
-                                result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" alt=\"No image\" width=\"150\" align=\"left\" /></td>";
+                                result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>";
                                 result += url;
                                 result += "</tr>";
 
@@ -261,7 +261,6 @@
                 </table>
             </div>
         </div>
-
     </body>
 </html>
 

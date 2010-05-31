@@ -319,6 +319,7 @@ public class SearchRaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
+        
         //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
         query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
