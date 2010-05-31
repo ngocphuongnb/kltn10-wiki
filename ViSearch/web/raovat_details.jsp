@@ -124,7 +124,7 @@
                             if (location != null && location.trim() != "") {
                                 result += "<tr><td>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></td></tr>";
                             }
-                            result += "<tr><td>" + "Score: " + score + "</td></tr>";
+                            //result += "<tr><td>" + "Score: " + score + "</td></tr>";
                             result += "<tr><td>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></td></tr>";
                             result += "<tr><td>" + "Giá: " + price + "</td></tr>";
                             result += "<tr><td>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</td></tr>";
