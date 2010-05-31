@@ -120,8 +120,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
                                 String duration = (listdocs.get(i).getFieldValue("duration")).toString();
-                                String counterView = (listdocs.get(i).getFieldValue("counterView")).toString();
-                                String uploadBy = (listdocs.get(i).getFieldValue("uploadBy")).toString();
+                               
 
                                 String title_hl = title;
 
@@ -145,13 +144,7 @@
                                 result += "<td>Thời gian: " + duration + "</td>";
                                 result += "</tr>";
 
-                                result += "<tr>";
-                                result += "<td>Lượt xem: " + counterView + "</td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>Người upload: " + "<a href = 'SearchVideoController?type=2&KeySearch=uploadBy:\"" + uploadBy + "\"'>" + uploadBy + "</a></td>";
-                                result += "</tr>";
+                               
 
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
@@ -217,7 +210,7 @@
                             facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName + "</b>";
+                            facet += "<b>Thể loại</b>"; // vi chi facet 1 field category
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {

@@ -172,7 +172,7 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>Thể Album: " + "<a href = 'SearchMusicController?type=2&KeySearch=album:\"" + album + "\"'>" + album + "</a></td>";
+                                result += "<td>Album: " + "<a href = 'SearchMusicController?type=2&KeySearch=album:\"" + album + "\"'>" + album + "</a></td>";
                                 result += "</tr>";
 
                                      String mediaId = "MediaPlayer" + i;
@@ -246,7 +246,12 @@
                             facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName + "</b>";
+                            if(fieldName.equals("category"))
+                                facet += "<b>Thể loại:</b>";
+                            if(fieldName.equals("singer"))
+                                facet += "<b>Ca sĩ:</b>";
+                            if(fieldName.equals("artist"))
+                                facet += "<b>Nhạc sĩ:</b>";
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {

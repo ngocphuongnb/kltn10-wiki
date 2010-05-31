@@ -178,8 +178,6 @@ public class SearchVideoController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("uploadBy");
-       // solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -207,8 +205,6 @@ public class SearchVideoController extends HttpServlet {
        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("uploadBy");
-        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -231,8 +227,6 @@ public class SearchVideoController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        query.addFacetField("uploadBy");
-        //query.addFacetField("location");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet

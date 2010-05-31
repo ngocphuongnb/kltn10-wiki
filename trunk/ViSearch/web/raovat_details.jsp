@@ -58,7 +58,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -105,21 +105,37 @@
                             url = "<div class=\"title_content\" id='divtop'>" + title + "</div>";
                             result += url;
                             result += "<div id='divleft'>";
-                            if (contact != null && contact.trim() != "") {
-                                result += "<ul>" + "Category: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></ul>";
+
+                            /*  if (contact != null && contact.trim() != "") {
+                            result += "<ul>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></ul>";
                             }
                             if (location != null && location.trim() != "") {
-                                result += "<ul>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></ul>";
+                            result += "<ul>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></ul>";
                             }
                             result += "<ul>" + "Score: " + score + "</ul>";
-                            result += "<ul>" + "Site: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
-                            result += "<ul>" + "Price: " + price + "</ul>";
-                            result += "<ul>" + "Last update: " + sf.format(last_update) + "</ul></div>";
+                            result += "<ul>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
+                            result += "<ul>" + "Giá: " + price + "</ul>";
+                            result += "<ul>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</ul>";
+                             */
+                             result += "<table style=\"font-size:13px\">";
+                            if (contact != null && contact.trim() != "") {
+                                result += "<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>";
+                            }
+                            if (location != null && location.trim() != "") {
+                                result += "<tr><td>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></td></tr>";
+                            }
+                            result += "<tr><td>" + "Score: " + score + "</td></tr>";
+                            result += "<tr><td>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></td></tr>";
+                            result += "<tr><td>" + "Giá: " + price + "</td></tr>";
+                            result += "<tr><td>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</td></tr>";
+                            result += "</table>";
+
+                            result += "</div>";
                             photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/><br/>";
                             if (session.getAttribute("Member") != null) {
                                 photo += "<span id='Bookmark'>"
-                                        +"<input id='hdIdValue' type='hidden' value='" + id + "'>" +
-                                        "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span>";
+                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'>"
+                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span>";
                             }
                             photo += "</div>";
                             result += photo;
@@ -128,7 +144,7 @@
                     }
 
                     //get SolrDocumentList
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -157,12 +173,12 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <%
                     // Get Facet
 
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
