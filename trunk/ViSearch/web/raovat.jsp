@@ -51,7 +51,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -105,7 +105,10 @@
                                     }
                                 } else {
                                     if (title.length() > 100) {
-                                        title = title.substring(0, 100) + "...";
+                                        title_hl = title.substring(0, 100) + "...";
+                                    }
+                                    if (body.length() > 100) {
+                                        body = body.substring(0, 100) + "...";
                                     }
                                 }
 
@@ -121,7 +124,7 @@
 
                                 result += "<tr>";
                                 result += "<td>";
-                                result += "<a href=\"SearchRaoVatController?type=1&KeySearch=" + title_hl.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchRaoVatController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
@@ -141,7 +144,7 @@
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -174,7 +177,7 @@
 
 
                     // End get Facet
-        %>
+%>
         <%
                     // Get Facet date
                     String facetD = "";
@@ -199,7 +202,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
