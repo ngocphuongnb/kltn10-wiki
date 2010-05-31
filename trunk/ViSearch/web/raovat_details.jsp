@@ -83,13 +83,13 @@
                             SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 
                             String url = title;
-                            String photo = "";
+                            String photo = "images/Noimage.jpg";
 
                             if (listdocs.get(i).getFieldValue("contact") != null) {
                                 contact = (listdocs.get(i).getFieldValue("contact")).toString();
                             }
 
-                            if (listdocs.get(i).getFieldValue("photo") != null) {
+                            if (listdocs.get(i).getFieldValue("photo") != null && !listdocs.get(i).getFieldValue("photo").toString().equals("")) {
                                 photo = (listdocs.get(i).getFieldValue("photo")).toString();
                             }
                             if (listdocs.get(i).getFieldValue("price") != null) {

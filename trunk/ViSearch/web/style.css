@@ -132,6 +132,7 @@ vertical-align:middle;
 #divright
 {
  float: right;
+ padding-right:100px;
 }
 
 #divbottom
