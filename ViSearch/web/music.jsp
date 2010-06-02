@@ -72,7 +72,7 @@
                 var btxem = 'BTViewlyricId'+id;
                 document.getElementById(btxem).className="hidden";
 
-                 var  btDong = "BTCloselyricId" + id;
+                var  btDong = "BTCloselyricId" + id;
                 document.getElementById(btDong).className="display";
             }
             function hideLyric(id)
@@ -85,7 +85,7 @@
                 var btxem = 'BTViewlyricId'+id;
                 document.getElementById(btxem).className="display";
 
-                 var  btDong = "BTCloselyricId" + id;
+                var  btDong = "BTCloselyricId" + id;
                 document.getElementById(btDong).className="hidden";
             }
         </script>
@@ -93,7 +93,13 @@
 
     <body onLoad="setText();">
         <%
-                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
+
+                    String currentPage = "/music.jsp";
+                    if (request.getQueryString() != null) {
+                        currentPage = "/SearchMusicController?";
+                        currentPage += request.getQueryString().toString();
+                    }
+                    session.setAttribute("CurrentPage", currentPage);
                     // Get strQuery
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -102,7 +108,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -162,7 +168,7 @@
                                 result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=singer:\"" + CaSi + "\"'>" + CaSi + "</a></td>";
                                 result += "</tr>";
 
-                                 result += "<tr>";
+                                result += "<tr>";
                                 result += "<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=artist:\"" + artist + "\"'>" + artist + "</a></td>";
                                 result += "</tr>";
 
@@ -175,7 +181,7 @@
                                 result += "<td>Album: " + "<a href = 'SearchMusicController?type=2&KeySearch=album:\"" + album + "\"'>" + album + "</a></td>";
                                 result += "</tr>";
 
-                                     String mediaId = "MediaPlayer" + i;
+                                String mediaId = "MediaPlayer" + i;
                                 String lyricId = "Lyric" + i;
                                 String BTViewlyricId = "BTViewlyricId" + i;
                                 String BTCloselyricId = "BTCloselyricId" + i;
@@ -186,7 +192,7 @@
                                 result += "<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>";
                                 result += "</tr>";
 
-                               
+
                                 result += "<tr><td>";
                                 result += "<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
                                 result += "<param name=\"fileName\" value=\"\">";
@@ -200,7 +206,7 @@
                                 result += "</td></tr>";
 
                                 result += "<tr><td>";
-                                result += "<div class=\"hidden\" ID=\"" + lyricId+ "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">";
+                                result += "<div class=\"hidden\" ID=\"" + lyricId + "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">";
                                 result += lyric;
                                 result += "</div>";
 
@@ -230,7 +236,7 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -246,12 +252,15 @@
                             facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            if(fieldName.equals("category"))
+                            if (fieldName.equals("category")) {
                                 facet += "<b>Thể loại:</b>";
-                            if(fieldName.equals("singer"))
+                            }
+                            if (fieldName.equals("singer")) {
                                 facet += "<b>Ca sĩ:</b>";
-                            if(fieldName.equals("artist"))
+                            }
+                            if (fieldName.equals("artist")) {
                                 facet += "<b>Nhạc sĩ:</b>";
+                            }
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
@@ -270,7 +279,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -296,7 +305,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

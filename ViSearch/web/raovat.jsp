@@ -42,7 +42,12 @@
     <body onload="setText();">
 
         <%
-                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
+                    String currentPage = "/raovat.jsp";
+                    if (request.getQueryString() != null) {
+                        currentPage = "/SearchRaoVatController?";
+                        currentPage += request.getQueryString().toString();
+                    }
+                    session.setAttribute("CurrentPage", currentPage);
                     // get String query
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -51,7 +56,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -144,7 +149,7 @@
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -177,7 +182,7 @@
 
 
                     // End get Facet
-%>
+        %>
         <%
                     // Get Facet date
                     String facetD = "";
@@ -202,7 +207,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

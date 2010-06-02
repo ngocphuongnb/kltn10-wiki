@@ -19,6 +19,7 @@ public class TrackingDTO {
       private String _docId;
       private int _memberId;
       private String _timeRange;
+      private int _searchType;
 
     public int getId() {
         return _Id;
@@ -80,6 +81,20 @@ public class TrackingDTO {
      */
     public void setTimeRange(String timeRange) {
         this._timeRange = timeRange;
+    }
+
+    /**
+     * @return the _searchType
+     */
+    public int getSearchType() {
+        return _searchType;
+    }
+
+    /**
+     * @param searchType the _searchType to set
+     */
+    public void setSearchType(int searchType) {
+        this._searchType = searchType;
     }
 
 

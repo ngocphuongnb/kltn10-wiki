@@ -23,7 +23,7 @@ public class TrackingDAO {
         Connection cn = DataProvider.getConnection(database);
         try {
             CallableStatement cs;
-            cs = cn.prepareCall("{CALL Insert_Tracking(?, ?, ?, ?, ?)}");
+            cs = cn.prepareCall("{CALL Insert_Tracking(?, ?, ?, ?, ?, ?)}");
             cs.setString(1, tracking.getKeySearch());
             cs.setString(2, tracking.getIp());
             cs.setString(3, tracking.getDocId());
@@ -33,6 +33,7 @@ public class TrackingDAO {
                 cs.setNull(4, Types.INTEGER);
             }
             cs.setString(5, tracking.getTimeRange());
+            cs.setInt(6, tracking.getSearchType());
 
             int n = cs.executeUpdate();
             if (n == 0) {

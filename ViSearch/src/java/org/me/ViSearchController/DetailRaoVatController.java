@@ -49,6 +49,7 @@ public class DetailRaoVatController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         String keySearchId = "";
         SolrDocumentList docs = new SolrDocumentList();
@@ -65,24 +66,25 @@ public class DetailRaoVatController extends HttpServlet {
                 keySearchId = request.getParameter("id");
 
                 //Phan tracking
-                TrackingDTO traking = new TrackingDTO();
+                TrackingDTO tracking = new TrackingDTO();
                 String keysearch = request.getParameter("KeySearch").toString();
                 request.setAttribute("KeySearch", keysearch);
-                traking.setKeySearch(keysearch);
-                traking.setDocId(keySearchId);
-                traking.setIp(request.getRemoteAddr());
+                tracking.setKeySearch(keysearch);
+                tracking.setDocId(keySearchId);
+                tracking.setIp(request.getRemoteAddr());
                 HttpSession session = request.getSession();
                 if(session.getAttribute("Member") != null)
                 {
                     MemberDTO mem = (MemberDTO) session.getAttribute("Member");
-                    traking.setMemberId(mem.getId());
+                    tracking.setMemberId(mem.getId());
                 }
                 else
-                    traking.setMemberId(-1);
-                traking.setTimeRange(sTime);
-                traking.setTimeSearch(Calendar.getInstance());
+                    tracking.setMemberId(-1);
+                tracking.setTimeRange(sTime);
+                tracking.setTimeSearch(Calendar.getInstance());
+                tracking.setSearchType(2);
                 TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(traking, "visearch");
+                tbus.InsertTracking(tracking, "visearch");
                 // end tracking
 
                 QueryResponse rsp;

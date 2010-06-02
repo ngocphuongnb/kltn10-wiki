@@ -35,12 +35,25 @@
                     window.location = url;
                 }
             }
+            function ClickDetail(link)
+            {
+                var keysearch = document.getElementById('hfKeySearch').value;
+                var url = "DetailWikiController?url=" + link;
+                url += "&KeySearch=" + keysearch;
+                window.location = url;
+            }
         </script>
     </head>
 
     <body onLoad="setText();">
         <%
-                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
+                    String currentPage = "/index.jsp";
+                    if (request.getQueryString() != null) {
+                        currentPage = "/SearchWikiController?";
+                        currentPage += request.getQueryString().toString();
+                    }
+                    session.setAttribute("CurrentPage", currentPage);
+
                     // Get strQuery
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -103,7 +116,7 @@
                                 }
 
 
-                                url = "<td><b><a href=\"http://vi.wikipedia.org/wiki/" + URLEncoder.encode(url, "UTF-8") + "\">" + title_hl + "</a><b></td>";
+                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "')\">" + title_hl + "</a><b></td>";
                                 result += "<tr>";
                                 result += url;
                                 result += "</tr>";
@@ -197,22 +210,22 @@
                             facetD += "Không tìm ra Facet<br>";
                         }
                         facetD += "</td></tr>";
-                    
-                    facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=0'>" + "Hôm nay" + "</a>";
-                    facetD += "</td></tr>";
 
-                    facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=1'>" + "Hôm qua" + "</a>";
-                    facetD += "</td></tr>";
+                        facetD += "<tr><td>";
+                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=0'>" + "Hôm nay" + "</a>";
+                        facetD += "</td></tr>";
 
-                    facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=7'>" + "7 ngày trước" + "</a>";
-                    facetD += "</td></tr>";
+                        facetD += "<tr><td>";
+                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=1'>" + "Hôm qua" + "</a>";
+                        facetD += "</td></tr>";
 
-                    facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=30'>" + "30 ngày trước" + "</a>";
-                    facetD += "</td></tr>";
+                        facetD += "<tr><td>";
+                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=7'>" + "7 ngày trước" + "</a>";
+                        facetD += "</td></tr>";
+
+                        facetD += "<tr><td>";
+                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=30'>" + "30 ngày trước" + "</a>";
+                        facetD += "</td></tr>";
                     }
                     facetD += "</table>";
                     // End get Facet Date
