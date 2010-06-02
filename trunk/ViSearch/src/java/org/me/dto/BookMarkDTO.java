@@ -14,6 +14,7 @@ public class BookMarkDTO {
     private int _memberId;
     private String _keySearch;
     private String _docId;
+    private int _searchType;
 
     public String getId() {
         return _Id;
@@ -45,6 +46,20 @@ public class BookMarkDTO {
 
     public void setMemberId(int _memberId) {
         this._memberId = _memberId;
+    }
+
+    /**
+     * @return the _searchType
+     */
+    public int getSearchType() {
+        return _searchType;
+    }
+
+    /**
+     * @param searchType the _searchType to set
+     */
+    public void setSearchType(int searchType) {
+        this._searchType = searchType;
     }
 
    

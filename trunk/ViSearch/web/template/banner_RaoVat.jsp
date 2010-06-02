@@ -84,6 +84,9 @@ function MM_swapImage() { //v3.0
                         <input id="txtSearch" type="text" value="<% if (strQuery != null) {
                                         out.print(strQuery);
                                     }%>"/>
+                        <input id="hfKeySearch" type="hidden" value="<% if (strQuery != null) {
+                                        out.print(strQuery);
+                                    }%>"/>
                         </div>
                     </td>
                     <td>

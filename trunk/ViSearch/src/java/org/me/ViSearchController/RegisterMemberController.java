@@ -11,6 +11,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -55,12 +57,16 @@ public class RegisterMemberController extends HttpServlet {
                 mem.setSex(i);
                 MemberBUS membus = new MemberBUS();
                 if (membus.AddNewMember(mem, "visearch")) {
-                    out.print("successful");
+                    String url = "/register_result.jsp";
+                    request.setAttribute("Register", mem);
+                    ServletContext sc = getServletContext();
+                    RequestDispatcher rd = sc.getRequestDispatcher(url);
+                    rd.forward(request, response);
                 } else {
                     out.print("error");
                 }
             } else {
-               out.println("fail");
+                out.println("Bạn nhập mã xác nhận chưa chính xác. Vui lòng thử lại");
             }
         } finally {
             out.close();

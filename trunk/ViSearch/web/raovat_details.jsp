@@ -20,10 +20,11 @@
             $(document).ready(function(){
                 $("#btBookmark").click(function(){
                     var docID = $("#hdIdValue").attr("value");
-                    var keySearch = $("#txtSearch").attr("value");
+                    var keySearch = $("#hfKeySearch").attr("value");
                     alert(keySearch);
                     var Url = "BookmarkController?KeySearch=" + keySearch;
                     Url += "&DocID=" + docID;
+                    Url += "&SearchType=2";
                     $("#Bookmark").load(encodeURI(Url));
                 });
             });
@@ -49,7 +50,11 @@
     <body>
 
         <%
-                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
+                    if (request.getQueryString() != null) {
+                        String currentPage = "DetailRaoVatController?";
+                        currentPage += request.getQueryString().toString();
+                        session.setAttribute("CurrentPage", currentPage);
+                    }
                     // get String query
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -58,7 +63,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -117,7 +122,7 @@
                             result += "<ul>" + "Giá: " + price + "</ul>";
                             result += "<ul>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</ul>";
                              */
-                             result += "<table style=\"font-size:13px\">";
+                            result += "<table style=\"font-size:13px\">";
                             if (contact != null && contact.trim() != "") {
                                 result += "<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>";
                             }
@@ -144,7 +149,7 @@
                     }
 
                     //get SolrDocumentList
-%>
+        %>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -173,12 +178,12 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <%
                     // Get Facet
 
                     // End get Facet
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

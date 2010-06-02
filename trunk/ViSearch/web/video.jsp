@@ -80,7 +80,12 @@
 
     <body onLoad="setText();">
         <%
-                    session.setAttribute("CurrentPage", request.getRequestURI().replaceFirst("/ViSearch", ""));
+                    String currentPage = "/video.jsp";
+                    if (request.getQueryString() != null) {
+                        currentPage = "/SearchVideoController?";
+                        currentPage += request.getQueryString().toString();
+                    }
+                    session.setAttribute("CurrentPage", currentPage);
                     // Get strQuery
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -89,7 +94,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -120,7 +125,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
                                 String duration = (listdocs.get(i).getFieldValue("duration")).toString();
-                               
+
 
                                 String title_hl = title;
 
@@ -144,7 +149,7 @@
                                 result += "<td>Thời gian: " + duration + "</td>";
                                 result += "</tr>";
 
-                               
+
 
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
@@ -194,7 +199,7 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -229,7 +234,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -255,7 +260,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
