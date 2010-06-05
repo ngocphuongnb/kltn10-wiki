@@ -66,14 +66,23 @@ public class SearchWikiController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
         //solrQuery.setQueryType("dismax");
 
-        solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
+        String query = "";
+        //String query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        //Gop chung co dau va ko dau
+        //solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
 
+        if(MyString.CheckSigned(keySearch))
+            query = "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
+        else
+            query = "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+
+        solrQuery.setQuery(query);
         // Facet
-        solrQuery.setFacet(true);
+        //solrQuery.setFacet(true);
 
         // Cái này chắc ko cần, nhưng cứ để cho chắc
-        solrQuery.addFacetQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(\"" + keySearch + "\")^1.5 (" + keySearch + ")");
-        solrQuery.addFacetField("wk_title");
+        //solrQuery.addFacetQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(\"" + keySearch + "\")^1.5 (" + keySearch + ")");
+        //solrQuery.addFacetField("wk_title");
         //solrQuery.addFacetField("username");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);

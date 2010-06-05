@@ -44,6 +44,10 @@
         <servlet-name>DetailWikiController</servlet-name>
         <servlet-class>org.me.ViSearchController.DetailWikiController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TopSearch</servlet-name>
+        <servlet-class>org.me.ViSearchController.TopSearch</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>DetailWikiController</servlet-name>
         <url-pattern>/DetailWikiController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TopSearch</servlet-name>
+        <url-pattern>/TopSearch</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

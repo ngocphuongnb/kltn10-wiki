@@ -7,8 +7,10 @@ package org.me.dao;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import org.me.dto.TrackingDTO;
 import java.util.Calendar;
 
@@ -38,6 +40,24 @@ public class TrackingDAO {
             int n = cs.executeUpdate();
             if (n == 0) {
                 result = false;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public ArrayList<String> GetTopSearch(int searchtype, String database){
+        ArrayList<String> result = new ArrayList<String>();
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL top_search(?)}");
+            cs.setInt(1, searchtype);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString("keysearch"));
             }
             cn.close();
         } catch (SQLException ex) {

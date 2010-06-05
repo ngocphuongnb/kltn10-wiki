@@ -175,7 +175,7 @@ public class SearchRaoVatController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("dismax");
+        solrQuery.setQueryType("dismax2");
 
         solrQuery.setQuery(keySearch);
 
