@@ -54,7 +54,7 @@
         %>
         <table style="font-size: 13px">
             <form name="frmLogin" method="post" action="/ViSearch/MemberLoginController" style="text-align:center" onsubmit="return checkInputLogin();">
-                <tr><td><label for="username">Tên đăng nhập:</label></td> </tr>
+                <tr><td c><label for="username">Tên đăng nhập:</label></td> </tr>
                 <tr><td><input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="username" id="username"></td> </tr>
 
 

@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.me.ViSearchController;
 
 import java.io.BufferedReader;
@@ -32,7 +33,6 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
@@ -43,20 +43,18 @@ import org.me.dto.FacetDateDTO;
 
 /**
  *
- * @author VinhPham
+ * @author tuandom
  */
-public class SearchRaoVatController extends HttpServlet {
-
-    SolrServer server;
-
-    /**
+public class SearchImageController extends HttpServlet {
+   SolrServer server;
+    /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -75,7 +73,7 @@ public class SearchRaoVatController extends HttpServlet {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
 
-            server = SolrJConnection.getSolrServer("raovat");
+            server = SolrJConnection.getSolrServer("image");
             int start = (currentpage - 1) * pagesize;
 
             if (request.getParameter("type") != null) {
@@ -93,12 +91,11 @@ public class SearchRaoVatController extends HttpServlet {
                     case 0:
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
-                            if (!sCollation.equals("")) {
+                            if (sCollation.equals("")==false) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
-                        
-                        //NewestDocument22(keySearch, "25");
+
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -106,7 +103,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -119,7 +116,7 @@ public class SearchRaoVatController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                       // listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String faceName = "";
@@ -135,7 +132,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
 
                         break;
                     default:
@@ -152,7 +149,7 @@ public class SearchRaoVatController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchRaoVatController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchImageController", type);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
@@ -160,7 +157,7 @@ public class SearchRaoVatController extends HttpServlet {
                 request.setAttribute("NumPage", numpage);
                 request.setAttribute("ListFacet", listFacet);
             }
-            String url = "/raovat.jsp";
+            String url = "/image.jsp";
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
@@ -175,23 +172,21 @@ public class SearchRaoVatController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("dismax");
+        //solrQuery.setQueryType("dismax");
 
         solrQuery.setQuery(keySearch);
 
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("site");
-        solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
 
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("rv_title");
-        solrQuery.addHighlightField("rv_body");
+        solrQuery.addHighlightField("site_title");
+        solrQuery.addHighlightField("site_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -275,21 +270,19 @@ public class SearchRaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
+            keySearch = "+(site_title:(" + keySearch + ") site_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("site");
-        solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("rv_title");
+        solrQuery.addHighlightField("site_title");
         //solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
@@ -307,25 +300,23 @@ public class SearchRaoVatController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        query.addFacetField("site");
-        query.addFacetField("location");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet
-        
+
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
-        
-        query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "site_title");
+
+        query.setQuery("site_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
-        query.addHighlightField("rv_title");
-        query.addHighlightField("rv_body");
+        query.addHighlightField("site_title");
+        query.addHighlightField("site_body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
@@ -337,7 +328,7 @@ public class SearchRaoVatController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/raovat/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/image/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -383,7 +374,7 @@ public class SearchRaoVatController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -392,11 +383,11 @@ public class SearchRaoVatController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
-    }
+    } 
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -405,11 +396,11 @@ public class SearchRaoVatController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */
@@ -417,4 +408,5 @@ public class SearchRaoVatController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

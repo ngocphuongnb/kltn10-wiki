@@ -11,7 +11,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,7 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -38,7 +41,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
@@ -71,10 +73,11 @@ public class SearchWikiController extends HttpServlet {
         //Gop chung co dau va ko dau
         //solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
 
-        if(MyString.CheckSigned(keySearch))
+        if (MyString.CheckSigned(keySearch)) {
             query = "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
-        else
+        } else {
             query = "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+        }
 
         solrQuery.setQuery(query);
         // Facet
@@ -102,20 +105,24 @@ public class SearchWikiController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        if (faceName != "" && faceName != null) {
-            keySearch = "+(wk_title:(" + keySearch + ") || wk_text:(" + keySearch + ")) +(" + faceName + ":\"" + faceValue + "\")";
+        String query = keySearch;
+        if (faceName.equals("") == false && faceName != null) {
+            if (MyString.CheckSigned(keySearch)) {
+                query = "+(wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
+            } else {
+                query = "+(wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + "))";
+            }
+            query += " +(" + faceName + ":" + faceValue + ")";
         }
 
-        solrQuery.setQuery(keySearch);
+        solrQuery.setQuery(query);
         // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("wk_title");
-        //solrQuery.addFacetField("username");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
+        //solrQuery.setFacet(true);
+        //solrQuery.addFacetField("wk_title");
+        // solrQuery.setFacetLimit(10);
+        // solrQuery.setFacetMinCount(1);
         // End Facet
 
-        //solrQuery.setFacet(true);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("wk_title");
         solrQuery.addHighlightField("wk_text");
@@ -128,54 +135,58 @@ public class SearchWikiController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard1(String keySearch, String faceName, String numdate, int start, int pagesize) throws SolrServerException, URIException, IOException {
+    QueryResponse OnSearchSubmitStandard1(String keySearch, String faceName, String startDate, String endDate, int start, int pagesize) throws SolrServerException, URIException, IOException {
         SolrQuery solrQuery = new SolrQuery();
-        ArrayList<FacetDateDTO> listFacetDate = NewestUpdateDocument(keySearch, numdate);
+        ArrayList<FacetDateDTO> listFacetDate = NewestUpdateDocument(keySearch, startDate, endDate);
         String faceValue = null;
-
-        keySearch = "+(wk_title:(" + keySearch + ") || wk_text:(" + keySearch + ")) ";
-        //keySearch = "+(wk_title:("hoahong") || wk_text:("daigia")) ";
-        keySearch += "+(";
-        for (int i = 0; i < listFacetDate.size(); i++) {
-            faceValue = listFacetDate.get(i).getDateTime();
-            keySearch += faceName + ":\"" + faceValue + "\"";
-            if (i != listFacetDate.size() - 1) {
-                keySearch += " || ";
+        if (listFacetDate.size() > 0) {
+            keySearch = "+(wk_title:(" + keySearch + ") || wk_text:(" + keySearch + ")) ";
+            keySearch += "+(";
+            for (int i = 0; i < listFacetDate.size(); i++) {
+                faceValue = listFacetDate.get(i).getDateTime();
+                keySearch += faceName + ":(\"" + faceValue + "\")";
+                if (i != listFacetDate.size() - 1) {
+                    keySearch += " || ";
+                }
             }
+            keySearch += ")";
+
+            solrQuery.setQuery(keySearch);
+            // Facet
+            // solrQuery.setFacet(true);
+            // solrQuery.addFacetField("wk_title");
+            // solrQuery.setFacetLimit(10);
+            // solrQuery.setFacetMinCount(1);
+            // End Facet
+
+            solrQuery.setHighlight(true);
+            solrQuery.addHighlightField("wk_title");
+            solrQuery.addHighlightField("wk_text");
+            solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+            solrQuery.setHighlightSimplePost("</em>");
+            solrQuery.setHighlightRequireFieldMatch(true);
+            solrQuery.setStart(start);
+            solrQuery.setRows(pagesize);
+
+            QueryResponse rsp = server.query(solrQuery);
+            return rsp;
+        } else {
+            return null;
         }
-        keySearch += ")";
-
-
-        //keySearch += "+(" + faceName + ":\"" + faceValue + "\")";
-
-        solrQuery.setQuery(keySearch);
-        // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("wk_title");
-        //solrQuery.addFacetField("username");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-        // End Facet
-
-        //solrQuery.setFacet(true);
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("wk_title");
-        solrQuery.addHighlightField("wk_text");
-        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
-        //solrQuery.setStart(start);
-        //solrQuery.setRows(pagesize);
-
-        QueryResponse rsp = server.query(solrQuery);
-        return rsp;
     }
 
-    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
+    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String startDay, String endDay) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
         HttpClient client = new HttpClient();
 
-        String url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=timestamp&facet.limit=10&wt=json";
-        url = URIUtil.encodeQuery(url);
+        //String url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=timestamp&facet.limit=10&wt=json";
+        String url = "";
+        keySearch = URIUtil.encodeQuery(keySearch);
+        if (endDay != null && "".equals(endDay.trim()) == false) {
+            url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY-" + endDay + "DAYS&facet.date.gap=%2B1DAY&wt=json";
+        } else {
+            url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY&facet.date.gap=%2B1DAY&wt=json";
+        }
+
         GetMethod get = new GetMethod(url);
 
         get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
@@ -191,26 +202,59 @@ public class SearchWikiController extends HttpServlet {
         try {
             JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
             JSONObject ob = json.getJSONObject("facet_counts");
-            JSONObject location = ob.getJSONObject("facet_fields");
+            JSONObject location = ob.getJSONObject("facet_dates");
+
 
             // Vi moi chi xai 1 field Location nen lay luon
-            JSONArray last_update = location.getJSONArray("timestamp");
+            JSONObject last_update = location.getJSONObject("timestamp");
+            JSONArray jsonarr = null;
+            last_update.toJSONArray(jsonarr);
+            //JSONArray arrTime = location.getJSONArray("timestamp");
             ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
 
-            if (last_update.size() > 0) {
-                FacetDateDTO fD = null;
-                for (int i = 0; i < last_update.size(); i++) {
-                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
-                    {
-                        fD = new FacetDateDTO();
-                        fD.setDateTime(last_update.get(i).toString());
-                    } else //  Phan tu le là số (Count)
-                    {
-                        fD.setCount(last_update.get(i).toString());
-                        myArr.add(fD);
-                    }
+//            if (last_update.size() > 0) {
+//                FacetDateDTO fD = null;
+//                for (int i = 0; i < last_update.size(); i++) {
+//                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
+//                    {
+//                        fD = new FacetDateDTO();
+//                        fD.setDateTime(last_update.get(i).toString());
+//                    } else //  Phan tu le là số (Count)
+//                    {
+//                        fD.setCount(last_update.get(i).toString());
+//                        myArr.add(fD);
+//                    }
+//                }
+//            }
+            //  ArrayList arrL = (ArrayList) last_update.values();
+            String test = last_update.toString();
+            test = test.substring(1, test.length() - 1);
+            String[] strArr = test.split(",");
+
+            for (int i = 0; i < strArr.length - 2; i++) {
+                String[] value = strArr[i].split("\":");
+                if (value[1].toString().equals("0") == false) {
+                    String val0 = value[0].substring(1);
+                    FacetDateDTO fD = new FacetDateDTO();
+                    fD.setDateTime(val0.toString());
+                    fD.setCount(value[1]);
+                    myArr.add(fD);
                 }
             }
+            // if (last_update.size() > 0) {
+            //     FacetDateDTO fD = null;
+            //     for (int i = 0; i < last_update.size()-2; i++) {
+            //       fD = new FacetDateDTO();
+            //last_update.g
+            // last_update.
+            //       String label = last_update.getJSONObject(i).getString("labels");
+            //String docs = last_update.getJSONObject(i).getString("docs");
+            // last_update.get
+            //.get
+            //fD.setCount(last_update.get(i).toString());
+            // myArr.add(fD);
+            //    }
+            //  }
             get.releaseConnection();
             return myArr;
         } catch (Exception x) {
@@ -241,7 +285,6 @@ public class SearchWikiController extends HttpServlet {
 //
 //        return allDocs;
 //    }
-
     public String convertStreamToString(InputStream is, String encode) throws IOException {
         if (is != null) {
             StringBuilder sb = new StringBuilder();
@@ -266,6 +309,7 @@ public class SearchWikiController extends HttpServlet {
 
         HttpClient client = new HttpClient();
         String url = "http://localhost:8983/solr/wikipedia/clustering?q=" + query + "&rows=" + rows + "&wt=json";
+
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -404,12 +448,13 @@ public class SearchWikiController extends HttpServlet {
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
 
-                            if (sCollation != "") {
+                            if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
 
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        //rsp = OnSearchSubmitStandard(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -417,7 +462,7 @@ public class SearchWikiController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "30");
+                        listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -430,7 +475,7 @@ public class SearchWikiController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
                         break;
                     case 2:
                         String faceName = "";
@@ -447,20 +492,49 @@ public class SearchWikiController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
                         break;
                     case 3:
                         faceName = null;
-                        String numday=null;
+                        String startDate = null;
                         if (request.getParameter("FaceName") != null) {
                             faceName = request.getParameter("FaceName");
-                            numday = request.getParameter("d");
+                            startDate = request.getParameter("d");
                         }
-                        rsp = OnSearchSubmitStandard1(keySearch, faceName, numday, start, pagesize);
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        docs = rsp.getResults();
-                        QTime = rsp.getQTime();
+                        rsp = OnSearchSubmitStandard1(keySearch, faceName, startDate, "", start, pagesize);
+                        if (rsp == null) {
+                            docs = null;
+                        } else {
+                            highLight = rsp.getHighlighting();
+                            listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
+                            request.setAttribute("HighLight", highLight);
+                            docs = rsp.getResults();
+                            QTime = rsp.getQTime();
+                        }
+                        break;
+                    case 4:
+                        faceName = "timestamp";
+                        startDate = null;
+                        if (request.getParameter("sd") != null) {
+                            startDate = request.getParameter("sd");
+                            //faceName = request.getParameter("FaceName");
+                        }
+                        String endDate = null;
+                        if (request.getParameter("ed") != null) {
+                            endDate = request.getParameter("ed");
+                        }
+                        String startday = CountNumDay(startDate);
+                        String endday = CountNumDay(endDate);
+                        rsp = OnSearchSubmitStandard1(keySearch, faceName, startday, endday, start, pagesize);
+                        if (rsp == null) {
+                            docs = null;
+                        } else {
+                            highLight = rsp.getHighlighting();
+                            listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
+                            request.setAttribute("HighLight", highLight);
+                            docs = rsp.getResults();
+                            QTime = rsp.getQTime();
+                        }
                         break;
                     default:
                         break;
@@ -522,9 +596,6 @@ public class SearchWikiController extends HttpServlet {
             Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
-
-
     }
 
     /**
@@ -539,19 +610,9 @@ public class SearchWikiController extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-
-
-
-
-
-
         } catch (SolrServerException ex) {
             Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
-
-
     }
 
     /**
@@ -564,4 +625,28 @@ public class SearchWikiController extends HttpServlet {
 
 
     }// </editor-fold>
+
+    private String CountNumDay(String strDate) {
+        // Lay ngay  hien tai
+        Date now = new Date();
+        Calendar cl1 = Calendar.getInstance();
+        cl1.setTime(now);
+
+        // Lay ngay nhap vao
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        Date date1 = new Date();
+
+        try {
+            date1 = format.parse(strDate);
+            Calendar cl2 = Calendar.getInstance();
+            cl2.setTime(date1);
+
+            // Tinh khoang cach so voi ngay hien tai
+            int count = cl1.get(Calendar.DAY_OF_YEAR) - cl2.get(Calendar.DAY_OF_YEAR);
+            return Integer.toString(count);
+        } catch (ParseException ex) {
+            Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }
