@@ -55,7 +55,7 @@
             function SeachPVDC(strQuery){
                 var batdau = document.getElementById("divPVTC_BD").value;
                 var  kethuc = document.getElementById("divPVTC_KT").value;
-                var url = "SearchWikiController?type=4&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchWikiController?type=2&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
            function showPVTC(){
@@ -247,14 +247,16 @@
                
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=0&KeySearch=" + strQuery + "'>" + "Mọi lúc" + "</a>";
-                    facetD += "</td></tr>";
-
-                    facetD += "<tr><td>";
                     facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm nay" + "</a>";
                     facetD += "</td></tr>";
 
-                      
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm qua" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm kia" + "</a>";
+                    facetD += "</td></tr>";
 
                     facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";
 
