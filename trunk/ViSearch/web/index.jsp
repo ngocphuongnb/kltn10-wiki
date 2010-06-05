@@ -41,14 +41,40 @@
                     window.location = url;
                 }
             }
-            function ClickDetail(link)
+    function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
                 var url = "DetailWikiController?url=" + link;
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
-        </script>
+
+            function showPVTC(){
+                document.getElementById("divPVTC").className="display";
+            }
+            function SeachPVDC(strQuery){
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                var url = "SearchWikiController?type=4&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
+            }
+           function showPVTC(){
+                document.getElementById("divPVTC").className="display";
+            }
+            function SeachPVDC(strQuery){
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                var url = "SearchWikiController?type=4&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
+            }
+        function ClickDetail(link)
+            {
+                var keysearch = document.getElementById('hfKeySearch').value;
+                var url = "DetailWikiController?url=" + link;
+                url += "&KeySearch=" + keysearch;
+                window.location = url;
+            }
+</script>
     </head>
 
     <body onLoad="setText();">
@@ -68,7 +94,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -149,6 +175,8 @@
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
+                        } else {
+                            result += strpaging + "<b>Không tìm ra dữ liệu</b><br/>";
                         }
                         // result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         result += "Tổng số trang là: " + numpage + "<br/>";
@@ -156,9 +184,8 @@
                             result += strpaging + "<br/><br/>";
                         }
                     }
-
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -185,7 +212,7 @@
                                     facet += "<br>";
                                 }
                             } else {
-                                facet += "Không tìm ra Facet<br>";
+                                facet += "Kh�ng t�m ra Facet<br>";
                             }
                             facet += "</td></tr>";
                             facet += "</table>";
@@ -193,49 +220,56 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
-                    ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
+                    /*       ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
                     if (listFacetDate != null) {
-                        facetD += "<tr><td><b>Facet: timestamp</b>";
-                        facetD += "<br>";
-                        if (listFacetDate.size() > 0) {
-                            for (int i = 0; i < listFacetDate.size(); i++) {
+                    facetD += "<tr><td><b>Facet: timestamp</b>";
+                    facetD += "<br>";
+                    if (listFacetDate.size() > 0) {
+                    for (int i = 0; i < listFacetDate.size(); i++) {
 
-                                String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "timestamp" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
-                                facetD += " (" + listFacetDate.get(i).getCount() + ")";
-                                facetD += "<br>";
-                            }
-                        } else {
-                            facetD += "Không tìm ra Facet<br>";
-                        }
-                        facetD += "</td></tr>";
-
-                        facetD += "<tr><td>";
-                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=0'>" + "Hôm nay" + "</a>";
-                        facetD += "</td></tr>";
-
-                        facetD += "<tr><td>";
-                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=1'>" + "Hôm qua" + "</a>";
-                        facetD += "</td></tr>";
-
-                        facetD += "<tr><td>";
-                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=7'>" + "7 ngày trước" + "</a>";
-                        facetD += "</td></tr>";
-
-                        facetD += "<tr><td>";
-                        facetD += "<a href = 'SearchWikiController?type=3&KeySearch=" + strQuery + "&FaceName=timestamp&d=30'>" + "30 ngày trước" + "</a>";
-                        facetD += "</td></tr>";
+                    String fieldText = listFacetDate.get(i).getDateTime();
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "timestamp" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                    facetD += " (" + listFacetDate.get(i).getCount() + ")";
+                    facetD += "<br>";
                     }
+                    } else {
+                    facetD += "Không tìm ra Facet<br>";
+                    }
+                    facetD += "</td></tr>";
+                     */
+               
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=0&KeySearch=" + strQuery + "'>" + "Mọi lúc" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm nay" + "</a>";
+                    facetD += "</td></tr>";
+
+                      
+
+                    facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<div id=\"divPVTC\" class=\"hidden\">";
+                    facetD += "<div style=\"float:left\"> Bắt dầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
+                    facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
+                    facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";
+                    facetD += "</div>";
+
+                    facetD += "</td></tr>";
+                    // }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -254,16 +288,32 @@
                             </table>
                         </td>
                     </tr>
-                    <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
+                    <tr>
+                        <td height="20" colspan="2" align="center" valign="bottom">
+                            <div align="center" class="nav"></div>
+                        </td>
+                    </tr>
                     <tr>
                         <td width="200" height="33" valign="top">
+                            <div class="subtable">
+                                <div class="mnu">Đăng nhập</div>
+                                <%@include file="template/login.jsp" %>
+                                <% if (request.getAttribute("Docs") != null) {
+                                            out.print(facet);
+                                        }%>
+                                 <% if (request.getAttribute("Docs") != null) {
+                                            out.print("<div  class=\"mnu\">Ngày cập nhật</div>"+facetD);
+                                        }%>
 
-                            <%@include file="template/login.jsp" %>
-                            <% out.print(facet);%>
-                            <% out.print(facetD);%>
+                        <div class="mnu">Tìm kiếm nhiều</div>
+                          <table id="tbTopSearch">
+                                    
+                                </table>
+                            </div>
+                          
                             <table id="tbTopSearch">
                             </table>
-                        </td>
+                  </td>
                         <td width="627" rowspan="2" valign="top">
 
                             <table>

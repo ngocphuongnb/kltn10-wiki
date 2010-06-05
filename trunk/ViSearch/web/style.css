@@ -182,4 +182,24 @@ font-size:13px;
 	}
 	.display{
 	}
-	
+        .lmn{
+            background: #0099CC;
+}
+
+.subtable{
+    margin:0px;
+    border-bottom:thick #0000FF;
+    border-left:thick #0000FF;
+
+}
+.mnu{
+background:#0099FF;
+padding-top:7px;
+padding-bottom:7px;
+text-align:center;
+color:#FFFFFF;
+font-size:15px;
+text-transform:uppercase;
+font: bold Verdana, Arial, Helvetica, sans-serif;
+font-weight: bold;
+}
