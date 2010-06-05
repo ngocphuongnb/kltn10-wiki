@@ -15,6 +15,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Rao vặt</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=2");
+            });
+        </script>
         <script language="javascript">
             function setText()
             {
@@ -25,14 +31,15 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
+
                     var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
-                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
-                    //alert(url);
+                    url += "&SortedType=" + sortedtype;
                     window.location = url;
                 }
             }
@@ -56,7 +63,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -149,7 +156,7 @@
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -182,7 +189,7 @@
 
 
                     // End get Facet
-        %>
+%>
         <%
                     // Get Facet date
                     String facetD = "";
@@ -207,7 +214,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -221,6 +228,7 @@
                                     </td>
                                 </tr>
                             </table>
+                                        <span style="padding-left: 300px"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
@@ -229,15 +237,10 @@
                             <%@include file="template/login.jsp" %>
                             <%  out.print(facet);%>
                             <% out.print(facetD);%>
-                            <table>
-                                <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
-                                <tr><td><a href="">aaa</a></td></tr>
-                                <tr><td><a href="">bbb</a></td></tr>
-                                <tr><td><a href="">ccc</a></td></tr>
+                            <table  id="tbTopSearch">
                             </table>
                         </td>
                         <td width="627" rowspan="2" valign="top">
-
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>

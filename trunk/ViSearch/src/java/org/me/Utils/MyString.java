@@ -13,4 +13,11 @@ public class MyString {
     public static String cleanQueryTerm(String source) {
         return source.replaceAll("[\\^\\-+:!(){}~*?\"\\\\]", "");
     }
+
+    public static boolean  CheckSigned(String source){
+        for(int i = 0; i < source.length(); i++)
+            if(source.charAt(i) > '~')
+                return true;
+        return false;
+    }
 }

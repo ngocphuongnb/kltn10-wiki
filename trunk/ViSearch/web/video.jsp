@@ -21,6 +21,12 @@
         <title>Video - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=4");
+            });
+        </script>
         <script language="javascript">
             function setText()
             {
@@ -286,11 +292,7 @@
                             <%@include file="template/login.jsp" %>
                             <% out.print(facet);%>
                             <% out.print(facetD);%>
-                            <table>
-                                <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
-                                <tr><td><a href="">aaa</a></td></tr>
-                                <tr><td><a href="">bbb</a></td></tr>
-                                <tr><td><a href="">ccc</a></td></tr>
+                            <table id="tbTopSearch">
                             </table>
                         </td>
                         <td width="627" rowspan="2" valign="top">

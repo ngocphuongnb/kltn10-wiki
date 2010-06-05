@@ -27,6 +27,8 @@
                     Url += "&SearchType=2";
                     $("#Bookmark").load(encodeURI(Url));
                 });
+
+                $("#tbTopSearch").load("TopSearch?SearchType=2");
             });
         </script>
         <script language="javascript">
@@ -205,11 +207,7 @@
                         <td width="200" height="33" valign="top">
                             <%@include file="template/login.jsp" %>
                             <%  //out.print(facet);%>
-                            <table>
-                                <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
-                                <tr><td><a href="">aaa</a></td></tr>
-                                <tr><td><a href="">bbb</a></td></tr>
-                                <tr><td><a href="">ccc</a></td></tr>
+                            <table id="tbTopSearch">
                             </table>
                         </td>
                         <td width="627" rowspan="2" valign="top">
