@@ -46,7 +46,7 @@
                 var R = document.getElementById("divPVTC_R").value;
                 var  C = document.getElementById("divPVTC_C").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FaceName=timestamp&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
             function showPVTC(){
@@ -67,7 +67,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -146,7 +146,7 @@
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -167,7 +167,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -181,7 +181,7 @@
 
 
                     // End get Facet
-        %>
+%>
         <%
                     // Get Facet date
                     String facetD = "";
@@ -195,7 +195,7 @@
                             for (int i = 0; i < listFacetDate.size(); i++) {
 
                                 String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                facetD += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + "last_update" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                 facetD += " (" + listFacetDate.get(i).getCount() + ")";
                                 facetD += "<br>";
                             }
@@ -206,7 +206,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -234,17 +234,17 @@
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[1001 TO *]", "UTF-8") + "'>" + "Lớn" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[1001 TO *]", "UTF-8") + "'>" + "Lớn" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[501 TO 1000]", "UTF-8") + "'>" + "Trung bình" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[501 TO 1000]", "UTF-8") + "'>" + "Trung bình" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[1 TO 500]", "UTF-8") + "'>" + "Nhỏ" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[1 TO 500]", "UTF-8") + "'>" + "Nhỏ" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>");
@@ -265,6 +265,7 @@
 
                                 </table>
                             </div>
+                        </td>
                         <td width="627" rowspan="2" valign="top">
 
                             <table>

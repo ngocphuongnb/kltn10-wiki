@@ -46,7 +46,7 @@
                 var R = document.getElementById("divPVTC_R").value;
                 var  C = document.getElementById("divPVTC_C").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FaceName=timestamp&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
             function showPVTC(){
@@ -187,7 +187,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -215,7 +215,7 @@
                             for (int i = 0; i < listFacetDate.size(); i++) {
 
                                 String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FaceName=" + "last_update" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + "last_update" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                 facetD += " (" + listFacetDate.get(i).getCount() + ")";
                                 facetD += "<br>";
                             }

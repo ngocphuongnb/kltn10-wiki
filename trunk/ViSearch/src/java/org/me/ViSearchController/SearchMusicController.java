@@ -64,9 +64,11 @@ public class SearchMusicController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        String sPaging = "";
+        String sPaging = "/ViSearch/SearchMusicController?";
         int type = -1;
         int QTime = 0;
+        List<FacetField> listFacet = null;
+            ArrayList<FacetDateDTO> listFacetDate = null;
         try {
 
 
@@ -79,12 +81,13 @@ public class SearchMusicController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
+                sPaging += "type=" + type;
             }
 
-            List<FacetField> listFacet = null;
-            ArrayList<FacetDateDTO> listFacetDate = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
+                sPaging += "&KeySearch=" + keySearch;
+                
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
 
@@ -120,13 +123,15 @@ public class SearchMusicController extends HttpServlet {
                         //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
-                        String faceName = "";
-                        String faceValue = "";
-                        if (request.getParameter("FaceName") != null) {
-                            faceName = request.getParameter("FaceName");
-                            faceValue = request.getParameter("FaceValue");
+                        String facetName = "";
+                        String facetValue = "";
+                        if (request.getParameter("FacetName") != null) {
+                            facetName = request.getParameter("FacetName");
+                            facetValue = request.getParameter("FacetValue");
+                            sPaging += "&FacetName=" + facetName;
+                            sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -150,7 +155,7 @@ public class SearchMusicController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchMusicController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
@@ -196,10 +201,10 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
-      QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
+      QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
+        if (!facetName.equals("") && facetName != null) {
+            keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
