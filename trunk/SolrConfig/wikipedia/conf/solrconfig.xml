@@ -18,6 +18,7 @@
 
 <!--
  This is a stripped down config file used for a simple example...  
+ 
  It is *not* a good example to work from. 
 -->
 <config>
@@ -37,7 +38,7 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        wk_title wk_text
+        wk_title^3 wk_text^2 wk_title_unsigned^1.5 wk_text_unsigned
      </str>
      <str name="pf">
         wk_title^2 wk_text^1.5
