@@ -18,7 +18,6 @@
 
 <!--
  This is a stripped down config file used for a simple example...  
- 
  It is *not* a good example to work from. 
 -->
 <config>
@@ -38,16 +37,16 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        wk_title^3 wk_text^2 wk_title_unsigned^1.5 wk_text_unsigned
+        site_title^2 site_body
      </str>
      <str name="pf">
-        wk_title^2 wk_text^1.5
+        site_title^2 site_body
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
      </str>-->
      <str name="fl">
-        id, wk_title, wk_text
+        *
      </str>
      <str name="mm">
         2&lt;-25%
@@ -56,12 +55,12 @@
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
-     <str name="hl.fl">wk_text wk_title</str>
+     <str name="hl.fl">site_title site_body</str>
      <!-- for this field, we want no fragmenting, just highlighting -->
      <str name="f.name.hl.fragsize">0</str>
      <!-- instructs Solr to return the field itself if no query terms are
           found -->
-     <str name="f.name.hl.alternateField">wk_title</str>
+     <str name="f.name.hl.alternateField">site_title</str>
      <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
     </lst>
 	
@@ -70,7 +69,7 @@
   <fragmenter name="regex" class="org.apache.solr.highlight.RegexFragmenter">
     <lst name="defaults">
       <!-- slightly smaller fragsizes work better because of slop -->
-      <int name="hl.fragsize">70</int>
+      <int name="hl.fragsize">0</int>
       <!-- allow 50% slop on fragment sizes -->
       <float name="hl.regex.slop">0.5</float>
       <!-- a basic sentence pattern -->
@@ -93,22 +92,22 @@
     </arr>
   </requestHandler>
 	<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">textWiKi</str>
+    <str name="queryAnalyzerFieldType">textImage</str>
 
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">wk_title</str>
+      <str name="field">site_title</str>
 	  <str name="buildOnOptimize">true</str>
-      <str name="spellcheckIndexDir">./spellcheckerWiKi</str>
+      <str name="spellcheckIndexDir">./spellcheckerImage</str>
     </lst>
 
     <!-- a spellchecker that uses a different distance measure -->
     <lst name="spellchecker">
       <str name="name">jarowinkler</str>
-      <str name="field">wk_title</str>
+      <str name="field">site_title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
-      <str name="spellcheckIndexDir">./spellcheckerWiKi2</str>
+      <str name="spellcheckIndexDir">./spellcheckerImage2</str>
     </lst>
     
 
@@ -118,7 +117,7 @@
       <str name="name">file</str>
       <str name="sourceLocation">spellings.txt</str>
       <str name="characterEncoding">UTF-8</str>
-      <str name="spellcheckIndexDir">./spellcheckerFileWiKi</str>
+      <str name="spellcheckIndexDir">./spellcheckerFileImage</str>
     </lst>
   </searchComponent>
   <admin>
