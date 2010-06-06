@@ -98,6 +98,7 @@
                                 String body = (listdocs.get(i).getFirstValue("site_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
+                                String website = (listdocs.get(i).getFieldValue("website")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
                                 String size = (listdocs.get(i).getFieldValue("size")).toString();
@@ -117,16 +118,26 @@
                                 }
                                 
 
+                                
+
                                 result += "<tr>";
-                                result += "<td><b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
+                                result += "<td><a href='" + url+"' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
+                                result += "<td>Thông tin hình ảnh:</b>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>" + width + " x " + height + " - " + size + "Kb - " + fileType + "</td>";
+                                result += "<td>Kích thước: " + width + " x " + height;
+                                result += "</tr>";
+
+                                result += "<tr>";
+                                result += "<td>Loại: " + size + "Kb - " + fileType + "</td>";
+                                result += "</tr>";
+
+                                result += "<tr>";
+                                result += "<td><b><a href='"+website+"' target=\"_blank\">" + title_hl + "</a></b></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -134,23 +145,25 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>";
+                                result += "<td><a href='" + website+"' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
+                                result += "<a href='" + url+"' target=\"_blank\">Hình ảnh đầy đủ</a>&nbsp;|&nbsp;";
                                 result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
+
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
                             // Phan trang
-                            numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                            numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
-                            strpaging = (String) request.getAttribute("Pagging");
+                            //numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
+                           // numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                           // strpaging = (String) request.getAttribute("Pagging");
                         }
                         //result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
-                        if (numpage > 1) {
-                            result += strpaging + "<br/><br/></div>";
-                        }
+                       // result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
+                       // if (numpage > 1) {
+                       //     result += strpaging + "<br/><br/></div>";
+                       // }
                     }
                     //get SolrDocumentList
 %>
@@ -237,36 +250,10 @@
                                 <div class="mnu">Đăng nhập</div>
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
-                                                out.print(facet);
-                                                out.print("<div class=\"mnu\">Kích thước</div>");
+                                               // out.print(facet);
+                                               
 
-                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
-                                                out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[1001 TO *]", "UTF-8") + "'>" + "Lớn" + "</a>");
-                                                out.print("</td></tr>");
-
-                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
-                                                out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[501 TO 1000]", "UTF-8") + "'>" + "Trung bình" + "</a>");
-                                                out.print("</td></tr>");
-
-                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
-                                                out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[1 TO 500]", "UTF-8") + "'>" + "Nhỏ" + "</a>");
-                                                out.print("</td></tr>");
-
-                                                out.print("<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>");
-
-                                                out.print("<tr><td>");
-                                                out.print("<div id=\"divPVTC\" class=\"hidden\">");
-                                                out.print("<div style=\"float:left\"> Chiều rộng: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_R\" /></div>");
-                                                out.print("<div style=\"float:left\"> Chiều cao: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_C\" /></div>");
-                                                out.print("<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>");
-                                                out.print("</div>");
-
-                                                out.print("</td></tr>");
-
-                                                out.print("</table>");
+                                               
                                             }%>
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">

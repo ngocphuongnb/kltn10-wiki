@@ -75,7 +75,7 @@ public class DetailImageController extends HttpServlet {
                     QueryResponse rsp;
                     Map<String, Map<String, List<String>>> highLight;
 
-                    rsp = OnSearchSubmit(keySearch);
+                    rsp = OnSearchSubmit(keySearchId);
                     docs = rsp.getResults();
                     highLight = rsp.getHighlighting();
                     request.setAttribute("HighLight", highLight);
@@ -123,12 +123,7 @@ public class DetailImageController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("site_title");
-        solrQuery.addHighlightField("site_body");
-        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
+   
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
