@@ -6,20 +6,28 @@ package org.me.ViSearchController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.Paging;
 
@@ -48,11 +56,12 @@ public class DetailImageController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        String sPaging = "/ViSearch/SearchImageDetailController?";
         String keySearchId = "";
         int type = -1;
         int QTime = 0;
+        SolrDocumentList docs_MoreLikeThis = new SolrDocumentList();
         List<FacetField> listFacet = null;
+        QueryResponse rsp;
         try {
 
             if (request.getParameter("currentpage") != null) {
@@ -62,10 +71,6 @@ public class DetailImageController extends HttpServlet {
             server = SolrJConnection.getSolrServer("image");
             int start = (currentpage - 1) * pagesize;
 
-            if (request.getParameter("type") != null) {
-                type = Integer.parseInt(request.getParameter("type"));
-                sPaging += "type=" + type;
-            }
 
             if (request.getParameter("id") != null) {
                 keySearchId = request.getParameter("id");
@@ -73,9 +78,8 @@ public class DetailImageController extends HttpServlet {
 
                 if (request.getParameter("KeySearch") != null) {
                     keySearch = request.getParameter("KeySearch");
-                    sPaging += "&KeySearch=" + keySearch;
-                    QueryResponse rsp;
-                    Map<String, Map<String, List<String>>> highLight;
+                    
+                    Map<String, Map<String, List<String>>> highLight = null;
 
                     rsp = OnSearchSubmit(keySearchId);
                     docs = rsp.getResults();
@@ -90,17 +94,12 @@ public class DetailImageController extends HttpServlet {
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
             if (docs != null) {
-                numRow = docs.getNumFound();
-                int numpage = (int) (numRow / pagesize);
-
-                if (numRow % pagesize > 0) {
-                    numpage++;
-                }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+                String title = (docs.get(0).getFirstValue("site_title")).toString();
+                rsp = OnMoreLikeThis(title);
+                docs_MoreLikeThis = rsp.getResults();
                 request.setAttribute("Docs", docs);
-                request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
-                request.setAttribute("NumPage", numpage);
+                request.setAttribute("Docs_MoreLikeThis", docs_MoreLikeThis);
                 request.setAttribute("ListFacet", listFacet);
             }
             String url = "/image_detail.jsp";
@@ -154,6 +153,26 @@ public class DetailImageController extends HttpServlet {
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
         QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
+    {
+       SolrQuery query = new SolrQuery();
+        query.setQueryType("/" + MoreLikeThisParams.MLT);
+        query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
+        query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
+        query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "site_title");
+        //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
+        query.setQuery(ClientUtils.escapeQueryChars(strquery));
+        query.setStart(0);
+        query.setRows(10);
+        query.setHighlight(true);
+        query.addHighlightField("site_title");
+        query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        query.setHighlightSimplePost("</em>");
+        query.setHighlightRequireFieldMatch(true);
+        QueryResponse rsp = server.query(query);
         return rsp;
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
