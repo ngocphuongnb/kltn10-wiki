@@ -3,6 +3,7 @@
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
 <%@page import="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"%>
 <%@page import="org.apache.solr.common.SolrDocument"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
@@ -41,7 +42,7 @@
                     window.location = url;
                 }
             }
-    function ClickDetail(link)
+            function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
                 var url = "DetailWikiController?url=" + link;
@@ -49,32 +50,26 @@
                 window.location = url;
             }
 
+            
+            function SeachPVDC(strQuery){
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                strQuery =  encodeURIComponent(strQuery);
+                var url = "SearchWikiController?type=4&KeySearch=" + strQuery + "&FaceName=timestamp&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
+            }
             function showPVTC(){
                 document.getElementById("divPVTC").className="display";
             }
-            function SeachPVDC(strQuery){
-                var batdau = document.getElementById("divPVTC_BD").value;
-                var  kethuc = document.getElementById("divPVTC_KT").value;
-                var url = "SearchWikiController?type=2&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
-                window.location = url;
-            }
-           function showPVTC(){
-                document.getElementById("divPVTC").className="display";
-            }
-            function SeachPVDC(strQuery){
-                var batdau = document.getElementById("divPVTC_BD").value;
-                var  kethuc = document.getElementById("divPVTC_KT").value;
-                var url = "SearchWikiController?type=4&KeySearch="+strQuery+"&sd="+batdau+"&ed="+kethuc;
-                window.location = url;
-            }
-        function ClickDetail(link)
+            
+            function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
                 var url = "DetailWikiController?url=" + link;
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
-</script>
+        </script>
     </head>
 
     <body onLoad="setText();">
@@ -94,7 +89,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -185,7 +180,7 @@
                         }
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -212,7 +207,7 @@
                                     facet += "<br>";
                                 }
                             } else {
-                                facet += "Kh�ng t�m ra Facet<br>";
+                                facet += "Không tìm ra Facet<br>";
                             }
                             facet += "</td></tr>";
                             facet += "</table>";
@@ -220,7 +215,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -244,18 +239,32 @@
                     }
                     facetD += "</td></tr>";
                      */
-               
+
+
+                    Calendar cl = Calendar.getInstance();
+                    String homnay = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+
+                    cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
+                    String homqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+                    String homquaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
+
+
+                    cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
+                    String homkia = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+                    String homkiaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
+
+                    // 1976-03-06T23:59:59.999Z
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm nay" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homnay + " TO NOW]", "UTF-8") + "'>" + "Hôm nay" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm qua" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homqua + " TO "+homquaEnd+"]", "UTF-8") + "'>" + "Hôm qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue="+ URLEncoder.encode("[NOW-1YEAR/DAY TO NOW/DAY+1DAY]", "UTF-8")+"'>" + "Hôm kia" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homkia + " TO "+homkiaEnd+"]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";
@@ -271,7 +280,7 @@
                     // }
                     facetD += "</table>";
                     // End get Facet Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -301,21 +310,18 @@
                                 <div class="mnu">Đăng nhập</div>
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
-                                            out.print(facet);
-                                        }%>
-                                 <% if (request.getAttribute("Docs") != null) {
-                                            out.print("<div  class=\"mnu\">Ngày cập nhật</div>"+facetD);
-                                        }%>
+                                                out.print(facet);
+                                            }%>
+                                <% if (request.getAttribute("Docs") != null) {
+                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
+                                             }%>
 
-                        <div class="mnu">Tìm kiếm nhiều</div>
-                          <table id="tbTopSearch">
-                                    
+                                <div class="mnu">Tìm kiếm nhiều</div>
+                                <table id="tbTopSearch">
+
                                 </table>
                             </div>
-                          
-                            <table id="tbTopSearch">
-                            </table>
-                  </td>
+                        </td>
                         <td width="627" rowspan="2" valign="top">
 
                             <table>

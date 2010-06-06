@@ -513,28 +513,28 @@ public class SearchWikiController extends HttpServlet {
                         }
                         break;
                     case 4:
-                        faceName = "timestamp";
+                        faceName = "";
+                        faceValue = "";
+                        if (request.getParameter("FaceName") != null) {
+                            faceName = request.getParameter("FaceName");
+                        }
                         startDate = null;
                         if (request.getParameter("sd") != null) {
                             startDate = request.getParameter("sd");
-                            //faceName = request.getParameter("FaceName");
                         }
                         String endDate = null;
                         if (request.getParameter("ed") != null) {
                             endDate = request.getParameter("ed");
                         }
-                        String startday = CountNumDay(startDate);
-                        String endday = CountNumDay(endDate);
-                        rsp = OnSearchSubmitStandard1(keySearch, faceName, startday, endday, start, pagesize);
-                        if (rsp == null) {
-                            docs = null;
-                        } else {
-                            highLight = rsp.getHighlighting();
-                            listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
-                            request.setAttribute("HighLight", highLight);
-                            docs = rsp.getResults();
-                            QTime = rsp.getQTime();
-                        }
+                        faceValue = createFaceValue(startDate, endDate);
+                        rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
+
+                        highLight = rsp.getHighlighting();
+                        //listFacetDate = NewestUpdateDocument(keySearch, "120", "30");
+                        request.setAttribute("HighLight", highLight);
+                        docs = rsp.getResults();
+                        QTime = rsp.getQTime();
+
                         break;
                     default:
                         break;
@@ -648,5 +648,26 @@ public class SearchWikiController extends HttpServlet {
             Logger.getLogger(SearchWikiController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    private String createFaceValue(String startDate, String endDate) {
+        // src: dd-mm-yyyy
+        // dest: 1976-03-06T23:59:59.999Z
+        String result = "[";
+        String[] arrStr1 = startDate.split("-");
+        if (arrStr1.length >= 3) {
+            result += arrStr1[2] + "-" + arrStr1[1] + "-" + arrStr1[0] + "T00:00:00.000Z";
+        } else {
+            result += "1990-01-01T00:00:00.000Z";
+        }
+        result += " TO ";
+        String[] arrStr2 = endDate.split("-");
+        if (arrStr2.length >= 3) {
+            result += arrStr2[2] + "-" + arrStr2[1] + "-" + arrStr2[0] + "T00:00:00.000Z";
+        } else {
+            result += "NOW";
+        }
+        result += "]";
+        return result;
     }
 }

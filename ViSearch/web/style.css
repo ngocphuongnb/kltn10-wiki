@@ -192,6 +192,11 @@ font-size:13px;
     border-left:thick #0000FF;
 
 }
+#top-header{
+    background:url("images/rv3_m_h_bg.jpg");
+    color: #0000FF;
+	height:40px;
+}
 .mnu{
 background:#0099FF;
 padding-top:7px;

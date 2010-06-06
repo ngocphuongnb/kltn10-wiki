@@ -42,6 +42,16 @@
                     window.location = url;
                 }
             }
+             function SeachPVDC(strQuery){
+                var R = document.getElementById("divPVTC_R").value;
+                var  C = document.getElementById("divPVTC_C").value;
+                strQuery =  encodeURIComponent(strQuery);
+                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FaceName=timestamp&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
+            }
+            function showPVTC(){
+                document.getElementById("divPVTC").className="display";
+            }
         </script>
     </head>
 
@@ -58,7 +68,7 @@
                     }
                     // end get String query
         %>
-       <%
+        <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
                     Map<String, Map<String, List<String>>> highLight = null;
@@ -88,7 +98,7 @@
                                 String website = (listdocs.get(i).getFirstValue("website")).toString();
                                 String body = (listdocs.get(i).getFirstValue("site_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String url= (listdocs.get(i).getFieldValue("url")).toString();
+                                String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String title_hl = title;
 
 
@@ -101,7 +111,7 @@
                                     } else {
                                         if (body.length() > 100) {
                                             body = body.substring(0, 100) + "...";
-                                       }
+                                        }
                                     }
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
@@ -122,11 +132,11 @@
                                 result += "</tr>";
 
 
-                                 result += "<tr>";
+                                result += "<tr>";
                                 result += "<td><img src=\"" + url + "\" width=\"150\" align=\"left\" /></td>";
                                 result += "</tr>";
 
-                                 result += "<tr>";
+                                result += "<tr>";
                                 result += "<td>" + body + "</td>";
                                 result += "</tr>";
 
@@ -159,13 +169,15 @@
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"title_content\" align=\"left\"><b>Facet</b></div>";
+                        facet += "<div class=\"mnu\">Facet</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName + "</b>";
+                            if (fieldName.equals("category")) {
+                                facet += "<b>Chuyên mục</b>";
+                            }
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
@@ -229,16 +241,46 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">
-                            <%@include file="template/login.jsp" %>
-                            <%  out.print(facet);%>
-                            <% out.print(facetD);%>
-                            <table>
-                                <tr><th><div class="title_content" align="left">Từ khóa được tìm kiếm nhiều nhất</div></th></tr>
-                                <tr><td><a href="">aaa</a></td></tr>
-                                <tr><td><a href="">bbb</a></td></tr>
-                                <tr><td><a href="">ccc</a></td></tr>
-                            </table>
-                        </td>
+                            <div class="subtable">
+                                <div class="mnu">Đăng nhập</div>
+                                <%@include file="template/login.jsp" %>
+                                <% if (request.getAttribute("Docs") != null) {
+                                                out.print(facet);
+                                                out.print("<div class=\"mnu\">Kích thước</div>");
+
+                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
+                                                out.print("<tr><td>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=width&FaceValue=" + URLEncoder.encode("[* TO 1000]", "UTF-8") + "'>" + "Lớn" + "</a>");
+                                                out.print("</td></tr>");
+
+                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
+                                                out.print("<tr><td>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=tb'>" + "Trung bình" + "</a>");
+                                                out.print("</td></tr>");
+
+                                                out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
+                                                out.print("<tr><td>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=n'>" + "Nhỏ" + "</a>");
+                                                out.print("</td></tr>");
+
+                                                out.print("<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>");
+
+                    out.print("<tr><td>");
+                    out.print("<div id=\"divPVTC\" class=\"hidden\">");
+                    out.print("<div style=\"float:left\"> Chiều rộng: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_R\" /></div>");
+                    out.print("<div style=\"float:left\"> Chiều cao: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_C\" /></div>");
+                    out.print("<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>");
+                    out.print("</div>");
+
+                    out.print("</td></tr>");
+
+                                                out.print("</table>");
+                                            }%>
+                                <div class="mnu">Tìm kiếm nhiều</div>
+                                <table id="tbTopSearch">
+
+                                </table>
+                            </div>
                         <td width="627" rowspan="2" valign="top">
 
                             <table>
