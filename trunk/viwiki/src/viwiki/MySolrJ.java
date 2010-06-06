@@ -302,7 +302,6 @@ public class MySolrJ {
             doc.addField("category", pagedto.getCategory().trim());
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
-            doc.addField("url_thumbnail", pagedto.getUrl_thumbnail());
             doc.addField("url", pagedto.getUrl());
             doc.addField("website", pagedto.getWebsite());
             doc.addField("site_title", pagedto.getSite_title());

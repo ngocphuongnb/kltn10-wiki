@@ -45,7 +45,6 @@ public class ImageDAO {
         while (rs.next()) {
             page = new ImageDTO();
             page.setCategory(rs.getString("Category"));
-            page.setUrl_thumbnail(rs.getString("URL_Thumbnail"));
             page.setUrl(rs.getString("URL"));
             page.setWebsite(rs.getString("Website"));
             page.setSite_title(rs.getString("Site_Title"));
