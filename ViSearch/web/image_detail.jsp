@@ -203,30 +203,34 @@
                     // End get Facet
         %>
         <%
-                    // Get Facet date
-          /*          String facetD = "";
-                    facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
+                    //get Cùng chuyên mục Category
+                    SolrDocumentList listdocs2 = new SolrDocumentList();
+                    String result2 = "";
 
-                    ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
-                    if (listFacetDate != null) {
-                        facetD += "<tr><td><b>Facet: last_update</b>";
-                        facetD += "<br>";
-                        if (listFacetDate.size() > 0) {
-                            for (int i = 0; i < listFacetDate.size(); i++) {
+                    if (request.getAttribute("Docs_MoreLikeThis") != null) {
+                        listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
-                                String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + "last_update" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                                facetD += " (" + listFacetDate.get(i).getCount() + ")";
-                                facetD += "<br>";
+                        result2 += "<div style=\"font-size:13px\">";
+                        result2 += "Một số hình ảnh tương tự: <br>";
+                        for (int i = 0; i < listdocs2.size(); i++) {
+
+
+                            // Lay noi dung cua moi field
+                            String title = "";
+                            if ((listdocs2.get(i).getFieldValue("site_title")).toString() != null) {
+                                title = listdocs2.get(i).getFirstValue("site_title").toString();
                             }
-                        } else {
-                            facetD += "Không tìm ra Facet<br>";
+
+                            String id = (listdocs2.get(i).getFieldValue("id")).toString();
+                            String url = (listdocs2.get(i).getFieldValue("url")).toString();
+
+                            
+                            result2 += "<b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></li>";
+
                         }
-                        facetD += "</td></tr>";
+                        result2 += "</div>";
                     }
-                    facetD += "</table>";
- */
-                    // End get Facet Date
+                    //end Cùng chuyên mục Category
         %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -252,8 +256,6 @@
                                 <% if (request.getAttribute("Docs") != null) {
                                                // out.print(facet);
                                                
-
-                                               
                                             }%>
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">
@@ -273,7 +275,7 @@
                                 <tr>
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
-
+                                        <% out.print(result2);%>
                                     </td>
                                 </tr>
                             </table>
