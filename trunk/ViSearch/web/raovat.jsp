@@ -169,7 +169,10 @@
                             facet += "<tr>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            facet += "<b>Facet: " + fieldName + "</b>";
+                            if(fieldName.equals("category"))
+                                facet += "<b>Chuyên mục</b>";
+                            if(fieldName.equals("site"))
+                                facet += "<b>Nguồn</b>";
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
@@ -186,7 +189,6 @@
                             facet += "</table>";
                         }
                     }
-
 
                     // End get Facet
 %>
@@ -228,7 +230,7 @@
                                     </td>
                                 </tr>
                             </table>
-                                        <span style="padding-left: 300px"><%@include file="template/sortedtype.jsp"%></span>
+                                        <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
@@ -244,6 +246,8 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                                <tr><td id="top-header"><% if(request.getParameter("FaceValue")!=null )out.print(">> "+ request.getParameter("FaceValue"));
+                                %></td></tr>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 

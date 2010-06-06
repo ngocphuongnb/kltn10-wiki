@@ -179,6 +179,7 @@ public class SearchImageController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
+        //solrQuery.addFacetField("widdh");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -277,6 +278,7 @@ public class SearchImageController extends HttpServlet {
        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
+        solrQuery.addFacetField("widdh");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -300,6 +302,7 @@ public class SearchImageController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
+        query.addFacetField("widdh");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet

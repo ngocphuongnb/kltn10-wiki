@@ -32,7 +32,6 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
@@ -183,7 +182,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.addFacetField("site");
-        solrQuery.addFacetField("location");
+        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -274,6 +273,9 @@ public class SearchRaoVatController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
+        if(faceValue.equals("l")){
+         //   faceValue="["
+        }
         if (!faceName.equals("") && faceName != null) {
             keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
         }
@@ -283,7 +285,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.addFacetField("site");
-        solrQuery.addFacetField("location");
+        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -308,7 +310,7 @@ public class SearchRaoVatController extends HttpServlet {
         query.setFacet(true);
         query.addFacetField("category");
         query.addFacetField("site");
-        query.addFacetField("location");
+        //query.addFacetField("location");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet
