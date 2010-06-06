@@ -663,7 +663,7 @@ public class SearchWikiController extends HttpServlet {
         result += " TO ";
         String[] arrStr2 = endDate.split("-");
         if (arrStr2.length >= 3) {
-            result += arrStr2[2] + "-" + arrStr2[1] + "-" + arrStr2[0] + "T00:00:00.000Z";
+            result += arrStr2[2] + "-" + arrStr2[1] + "-" + arrStr2[0] + "T23:59:59.999Z";
         } else {
             result += "NOW";
         }

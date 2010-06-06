@@ -63,7 +63,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -156,7 +156,7 @@
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -169,10 +169,12 @@
                             facet += "<tr>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
-                            if(fieldName.equals("category"))
+                            if (fieldName.equals("category")) {
                                 facet += "<b>Chuyên mục</b>";
-                            if(fieldName.equals("site"))
+                            }
+                            if (fieldName.equals("site")) {
                                 facet += "<b>Nguồn</b>";
+                            }
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
@@ -191,7 +193,7 @@
                     }
 
                     // End get Facet
-%>
+        %>
         <%
                     // Get Facet date
                     String facetD = "";
@@ -216,7 +218,7 @@
                     }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -230,7 +232,7 @@
                                     </td>
                                 </tr>
                             </table>
-                                        <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
+                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
@@ -246,8 +248,12 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
-                                <tr><td id="top-header"><% if(request.getParameter("FaceValue")!=null )out.print(">> "+ request.getParameter("FaceValue"));
-                                %></td></tr>
+                                <%  if (request.getParameter("FaceValue") != null) {
+                                                out.print("<tr><td id=\"top-header\">");
+                                                out.print(">> " + request.getParameter("FaceValue"));
+                                                out.print("</td></tr>");
+                                            }
+                                %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
