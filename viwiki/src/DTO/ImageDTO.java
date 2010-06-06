@@ -11,7 +11,6 @@ package DTO;
  */
 public class ImageDTO {
      private String _category;
-    private String _url_thumbnail;
     private String _url;
     private String _website;
     private String _site_title;
@@ -49,9 +48,7 @@ public class ImageDTO {
         return _url;
     }
 
-    public String getUrl_thumbnail() {
-        return _url_thumbnail;
-    }
+   
 
     public String getWebsite() {
         return _website;
@@ -89,10 +86,7 @@ public class ImageDTO {
         this._url = _url;
     }
 
-    public void setUrl_thumbnail(String _url_thumbnail) {
-        this._url_thumbnail = _url_thumbnail;
-    }
-
+   
     public void setWebsite(String _website) {
         this._website = _website;
     }
