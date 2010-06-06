@@ -38,17 +38,7 @@ public class VideoDAO {
             page.setUrl(rs.getString("URL"));
             page.setDuration(rs.getString("Duration"));
 
-            Calendar cl = Calendar.getInstance();
-            Date d = rs.getDate("LastedView");
-            cl.setTime(d);
-            page.setLastedView(cl);
-
-            d = rs.getDate("LastedUpdate");
-            cl.setTime(d);
-            page.setLastedUpdate(cl);
-
-            page.setUploadBy(rs.getString("UploadBy"));
-            page.setCounterView(rs.getInt("CounterView"));
+   
             list.add(page);
         }
 
