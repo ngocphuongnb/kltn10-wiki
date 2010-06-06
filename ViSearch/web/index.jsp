@@ -7,7 +7,7 @@
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
-<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
+<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,9 +36,7 @@
                 else
                 {
                     var url = "SearchWikiController?type=0&sp=1&KeySearch=";
-                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
-                    //alert(url);
                     window.location = url;
                 }
             }
@@ -55,7 +53,7 @@
                 var batdau = document.getElementById("divPVTC_BD").value;
                 var  kethuc = document.getElementById("divPVTC_KT").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchWikiController?type=4&KeySearch=" + strQuery + "&FaceName=timestamp&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchWikiController?type=3&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
             function showPVTC(){
@@ -120,7 +118,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
-                                String timestamp = (listdocs.get(i).getFirstValue("timestamp")).toString();
+                                Date timestamp = (Date)(listdocs.get(i).getFieldValue("timestamp"));
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -153,7 +151,8 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>Timestamp: " + timestamp + "</td>";
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                                result += "<td><b>Ngày cập nhật:</b> " + sdf.format(timestamp) + "</td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -202,7 +201,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + fieldName + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -230,7 +229,7 @@
                     for (int i = 0; i < listFacetDate.size(); i++) {
 
                     String fieldText = listFacetDate.get(i).getDateTime();
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=" + "timestamp" + "&FaceValue=" + fieldText + "'>" + fieldText + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + "timestamp" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                     facetD += " (" + listFacetDate.get(i).getCount() + ")";
                     facetD += "<br>";
                     }
@@ -256,15 +255,15 @@
                     // 1976-03-06T23:59:59.999Z
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homnay + " TO NOW]", "UTF-8") + "'>" + "Hôm nay" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homnay + " TO NOW]", "UTF-8") + "'>" + "Hôm nay" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homqua + " TO "+homquaEnd+"]", "UTF-8") + "'>" + "Hôm qua" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homqua + " TO "+homquaEnd+"]", "UTF-8") + "'>" + "Hôm qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FaceName=timestamp&FaceValue=" + URLEncoder.encode("[" + homkia + " TO "+homkiaEnd+"]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homkia + " TO "+homkiaEnd+"]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";

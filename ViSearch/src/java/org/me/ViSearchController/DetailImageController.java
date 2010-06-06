@@ -48,7 +48,7 @@ public class DetailImageController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        String sPaging = "";
+        String sPaging = "/ViSearch/SearchImageDetailController?";
         String keySearchId = "";
         int type = -1;
         int QTime = 0;
@@ -64,6 +64,7 @@ public class DetailImageController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
+                sPaging += "type=" + type;
             }
 
             if (request.getParameter("id") != null) {
@@ -72,6 +73,7 @@ public class DetailImageController extends HttpServlet {
 
                 if (request.getParameter("KeySearch") != null) {
                     keySearch = request.getParameter("KeySearch");
+                    sPaging += "&KeySearch=" + keySearch;
                     QueryResponse rsp;
                     Map<String, Map<String, List<String>>> highLight;
 
@@ -94,7 +96,7 @@ public class DetailImageController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchImageDetailController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);

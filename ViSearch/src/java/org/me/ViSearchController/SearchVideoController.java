@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.BufferedReader;
@@ -47,7 +46,8 @@ import org.me.dto.FacetDateDTO;
  */
 public class SearchVideoController extends HttpServlet {
 
-     SolrServer server;
+    SolrServer server;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -56,7 +56,7 @@ public class SearchVideoController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -65,9 +65,14 @@ public class SearchVideoController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        String sPaging = "";
         int type = -1;
         int QTime = 0;
+        String sPaging = "/ViSearch/SearchVideoController?";
+        List<FacetField> listFacet = null;
+        ArrayList<FacetDateDTO> listFacetDate = null;
+        QueryResponse rsp;
+        Map<String, Map<String, List<String>>> highLight;
+
         try {
 
 
@@ -80,20 +85,18 @@ public class SearchVideoController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
+                sPaging += "type=" + type;
             }
 
-            List<FacetField> listFacet = null;
-            ArrayList<FacetDateDTO> listFacetDate = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
-                QueryResponse rsp;
-                Map<String, Map<String, List<String>>> highLight;
+                sPaging += "&KeySearch=" + keySearch;
 
                 switch (type) {
                     case 0:
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
-                            if (sCollation.equals("")==false) {
+                            if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
@@ -121,13 +124,15 @@ public class SearchVideoController extends HttpServlet {
                         //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
-                        String faceName = "";
-                        String faceValue = "";
-                        if (request.getParameter("FaceName") != null) {
-                            faceName = request.getParameter("FaceName");
-                            faceValue = request.getParameter("FaceValue");
+                        String facetName = "";
+                        String facetValue = "";
+                        if (request.getParameter("FacetName") != null) {
+                            facetName = request.getParameter("FacetName");
+                            facetValue = request.getParameter("FacetValue");
+                            sPaging += "&FacetName=" + facetName;
+                            sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, faceName, faceValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -151,7 +156,7 @@ public class SearchVideoController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, keySearch, "/ViSearch/SearchVideoController", type);
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
                 request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
@@ -163,14 +168,14 @@ public class SearchVideoController extends HttpServlet {
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
-            } catch (Exception e) {
+        } catch (Exception e) {
             out.print(e.getMessage());
         } finally {
             out.close();
         }
     }
 
-     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQueryType("dismax");
 
@@ -186,7 +191,7 @@ public class SearchVideoController extends HttpServlet {
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-       // solrQuery.addHighlightField("rv_body");
+        // solrQuery.addHighlightField("rv_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -196,14 +201,14 @@ public class SearchVideoController extends HttpServlet {
         return rsp;
     }
 
-      QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
+        if (!facetName.equals("") && facetName != null) {
+            keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
-       // Facet
+        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
@@ -300,7 +305,6 @@ public class SearchVideoController extends HttpServlet {
         }
     }
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -311,7 +315,7 @@ public class SearchVideoController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -324,7 +328,7 @@ public class SearchVideoController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -336,5 +340,4 @@ public class SearchVideoController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

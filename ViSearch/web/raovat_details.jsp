@@ -87,7 +87,7 @@
                             Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
                             Calendar cl = Calendar.getInstance();
                             cl.setTime(last_update);
-                            SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat sf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 
                             String url = title;
                             String photo = "images/Noimage.jpg";
@@ -112,18 +112,6 @@
                             url = "<div class=\"title_content\" id='divtop'>" + title + "</div>";
                             result += url;
                             result += "<div id='divleft'>";
-
-                            /*  if (contact != null && contact.trim() != "") {
-                            result += "<ul>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></ul>";
-                            }
-                            if (location != null && location.trim() != "") {
-                            result += "<ul>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></ul>";
-                            }
-                            result += "<ul>" + "Score: " + score + "</ul>";
-                            result += "<ul>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></ul>";
-                            result += "<ul>" + "Giá: " + price + "</ul>";
-                            result += "<ul>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</ul>";
-                             */
                             result += "<table style=\"font-size:13px\">";
                             if (contact != null && contact.trim() != "") {
                                 result += "<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>";
@@ -134,7 +122,7 @@
                             //result += "<tr><td>" + "Score: " + score + "</td></tr>";
                             result += "<tr><td>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></td></tr>";
                             result += "<tr><td>" + "Giá: " + price + "</td></tr>";
-                            result += "<tr><td>" + "Ngày mới cập nhật : " + sf.format(last_update) + "</td></tr>";
+                            result += "<tr><td>" + "Ngày cập nhật : " + sf.format(last_update) + "</td></tr>";
                             result += "</table>";
 
                             result += "</div>";

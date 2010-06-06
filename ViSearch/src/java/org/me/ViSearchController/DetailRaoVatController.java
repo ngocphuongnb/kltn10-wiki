@@ -26,6 +26,7 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MyString;
 import org.me.bus.ParameterBUS;
 import org.me.bus.TrackingBUS;
 import org.me.dto.MemberDTO;
@@ -73,13 +74,12 @@ public class DetailRaoVatController extends HttpServlet {
                 tracking.setDocId(keySearchId);
                 tracking.setIp(request.getRemoteAddr());
                 HttpSession session = request.getSession();
-                if(session.getAttribute("Member") != null)
-                {
+                if (session.getAttribute("Member") != null) {
                     MemberDTO mem = (MemberDTO) session.getAttribute("Member");
                     tracking.setMemberId(mem.getId());
-                }
-                else
+                } else {
                     tracking.setMemberId(-1);
+                }
                 tracking.setTimeRange(sTime);
                 tracking.setTimeSearch(Calendar.getInstance());
                 tracking.setSearchType(2);
@@ -92,11 +92,7 @@ public class DetailRaoVatController extends HttpServlet {
                     rsp = OnSearchSubmit(keySearchId);
                     docs = rsp.getResults();
                     if (docs != null) {
-                        //String category = (docs.get(0).getFieldValue("category")).toString();
-                        String title = (docs.get(0).getFieldValue("rv_title")).toString();
-                        //String strQr = "category:\""+category+"\"";
-                        //rsp = Category(strQr);
-                        //docs_Category = rsp.getResults();
+                        String title = (docs.get(0).getFirstValue("rv_title")).toString();
                         rsp = OnMoreLikeThis(title);
                         docs_MoreLikeThis = rsp.getResults();
                     }
@@ -106,7 +102,6 @@ public class DetailRaoVatController extends HttpServlet {
             }
             String url = "/raovat_details.jsp";
             request.setAttribute("Docs", docs);
-            //request.setAttribute("Docs_Category", docs_Category);
             request.setAttribute("Docs_MoreLikeThis", docs_MoreLikeThis);
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
@@ -145,16 +140,16 @@ public class DetailRaoVatController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
-    {
-       SolrQuery query = new SolrQuery();
+    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        SolrQuery query = new SolrQuery();
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
-        //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
-        query.setQuery(ClientUtils.escapeQueryChars(strquery));
+
+        query.setQuery("rv_title:" + MyString.cleanQueryTerm(strquery));
+        //query.setQuery(ClientUtils.escapeQueryChars(strquery));
         query.setStart(0);
         query.setRows(10);
         query.setHighlight(true);
