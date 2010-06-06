@@ -1,6 +1,6 @@
 <%-- 
-    Document   : image
-    Created on : Jun 5, 2010, 1:09:22 AM
+    Document   : image_detail
+    Created on : Jun 6, 2010, 4:56:11 PM
     Author     : tuandom
 --%>
 
@@ -91,10 +91,11 @@
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<div class=\"cellImage\">  <table style=\"font-size:13px\">";
+                                result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
+                                String body = (listdocs.get(i).getFirstValue("site_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
@@ -106,24 +107,30 @@
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                     List<String> highlightTitle = highLight.get(id).get("site_title");
+                                    List<String> highlightBody = highLight.get(id).get("site_body");
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
+                                    if (highlightBody != null && !highlightBody.isEmpty()) {
+                                        body = highlightBody.get(0);
+                                    }
                                 }
-                                if (title.length() > 30) {
-                                    title_hl = title.substring(0, 20) + "...";
-                                }
+                                
 
                                 result += "<tr>";
                                 result += "<td><b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";
+                                result += "<td><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
                                 result += "<td>" + width + " x " + height + " - " + size + "Kb - " + fileType + "</td>";
+                                result += "</tr>";
+
+                                result += "<tr>";
+                                result += "<td>" + body + "</td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -132,7 +139,7 @@
                                 result += "</td>";
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table></div>";
+                                result += "</table>";
                             }
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
@@ -184,7 +191,7 @@
         %>
         <%
                     // Get Facet date
-                    String facetD = "";
+          /*          String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
                     ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
@@ -205,6 +212,7 @@
                         facetD += "</td></tr>";
                     }
                     facetD += "</table>";
+ */
                     // End get Facet Date
         %>
         <div id="wrap_left" align="center">
@@ -265,6 +273,7 @@
 
                                 </table>
                             </div>
+                        </td>
                         <td width="627" rowspan="2" valign="top">
 
                             <table>
@@ -300,6 +309,7 @@
         </div>
     </body>
 </html>
+
 
 
 

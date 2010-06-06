@@ -34,7 +34,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
-import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
@@ -172,7 +171,7 @@ public class SearchImageController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        //solrQuery.setQueryType("dismax");
+        solrQuery.setQueryType("dismax");
 
         solrQuery.setQuery(keySearch);
 
@@ -197,27 +196,6 @@ public class SearchImageController extends HttpServlet {
         return rsp;
     }
 
-    void NewestDocument22(String keySearch, String numDays) throws SolrServerException {
-
-        ModifiableSolrParams params = new ModifiableSolrParams();
-        params.set("q", keySearch);
-        params.set("facet", true);
-        params.set("field", "last_update");
-        params.set("field", "site");
-        params.set("facet.date.start", "NOW/DAY-5DAYS");
-        params.set("facet.date.end", "NOW/DAY%2B1DAY");
-        params.set("facet.date.gap", "%2B1DAY");
-
-
-        QueryResponse rsp = server.query(params);
-
-        Map<String, Integer> sdl = rsp.getFacetQuery();
-        List<FacetField> lfc1 = rsp.getFacetFields();
-        List<FacetField> lfc = rsp.getFacetDates();
-        FacetField fc = rsp.getFacetDate("last_update");
-        SolrDocumentList dl = rsp.getResults();
-        int a = 8;
-    }
 
     // Lay nhung bai viet moi nhat --> Test OK
     ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
@@ -271,14 +249,14 @@ public class SearchImageController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(site_title:(" + keySearch + ") site_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + faceName + ":\"" + faceValue + "\"";
+            keySearch = "+(site_title:(" + keySearch + ")^3 site_body:(" + keySearch + ")^2 category_index:(" + keySearch + ")) +(" + faceName + ":" + faceValue + ")";
         }
         solrQuery.setQuery(keySearch);
 
        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("widdh");
+       // solrQuery.addFacetField("widdh");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -302,7 +280,7 @@ public class SearchImageController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        query.addFacetField("widdh");
+       // query.addFacetField("widdh");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet

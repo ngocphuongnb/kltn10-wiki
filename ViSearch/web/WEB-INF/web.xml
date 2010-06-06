@@ -48,9 +48,17 @@
         <servlet-name>TopSearch</servlet-name>
         <servlet-class>org.me.ViSearchController.TopSearch</servlet-class>
     </servlet>
-	<servlet>
+    <servlet>
         <servlet-name>SearchImageController</servlet-name>
         <servlet-class>org.me.ViSearchController.SearchImageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchImageDetailController</servlet-name>
+        <servlet-class>org.me.ViSearchController.DetailImageController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DetailImageController</servlet-name>
+        <servlet-class>org.me.ViSearchController.DetailImageController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
@@ -100,9 +108,17 @@
         <servlet-name>TopSearch</servlet-name>
         <url-pattern>/TopSearch</url-pattern>
     </servlet-mapping>
-	<servlet-mapping>
+    <servlet-mapping>
         <servlet-name>SearchImageController</servlet-name>
         <url-pattern>/SearchImageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchImageDetailController</servlet-name>
+        <url-pattern>/SearchImageDetailController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailImageController</servlet-name>
+        <url-pattern>/DetailImageController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
