@@ -4,15 +4,22 @@
  */
 package viwiki;
 
+import DTO.ImageDTO;
 import DTO.MusicDTO;
 import DTO.RaoVatDTO;
 import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -87,7 +94,10 @@ public class MySolrJ {
             doc.addField("restrictions", pagedto.getRestrictions());
             doc.addField("wk_text", pagedto.getText());
             doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText()));
-            doc.addField("timestamp", pagedto.getTimestamp().getTime());
+            String timeTest = pagedto.getTimestamp().getTime().toString();
+            String time = format2SolrTime(pagedto.getTimestamp());
+
+            doc.addField("timestamp",time); // Test lai
             doc.addField("username", pagedto.getUsername());
             doc.addField("username_unsigned", RemoveSignVN(pagedto.getUsername()));
             docs.add(doc);
@@ -197,6 +207,52 @@ public class MySolrJ {
         UpdateResponse rsp = req.process(server);
     }
 
+    public String format2SolrTime(Calendar cl){
+        try {
+            // Src: Fri May 14 00:00:00 ICT 2010
+            // des: 1995-12-31T23:59:59Z
+             String result = "";
+            String dateString = cl.getTime().toString();
+            SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+            Date date = new Date();
+            date = format.parse(dateString);
+
+            SimpleDateFormat ns1 = new SimpleDateFormat("yyyy");
+            String yyyy = ns1.format(date);
+            result+=yyyy;
+            result+="-";
+
+            SimpleDateFormat ns2 = new SimpleDateFormat("MM");
+            String MM = ns2.format(date);
+            result+=MM;
+            result+="-";
+
+             SimpleDateFormat ns3 = new SimpleDateFormat("dd");
+            String dd = ns3.format(date);
+            result+=dd;
+            result+="T";
+
+             SimpleDateFormat ns4 = new SimpleDateFormat("HH");
+            String HH = ns4.format(date);
+            result+=HH;
+            result+=":";
+
+            SimpleDateFormat ns5 = new SimpleDateFormat("mm");
+            String mm = ns5.format(date);
+            result+=mm;
+            result+=":";
+
+            SimpleDateFormat ns6 = new SimpleDateFormat("ss");
+            String ss = ns6.format(date);
+            result+=ss;
+            result+="Z";
+
+            return result;
+        } catch (ParseException ex) {
+            Logger.getLogger(MySolrJ.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
     public void ImportVideo2Solr(ArrayList<VideoDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -217,10 +273,7 @@ public class MySolrJ {
 
             doc.addField("url", pagedto.getUrl());
             doc.addField("duration", pagedto.getDuration());
-            doc.addField("lastedView", pagedto.getLastedView().getTime());
-            doc.addField("lastedUpdate", pagedto.getLastedUpdate().getTime());
-            doc.addField("uploadBy", pagedto.getUploadBy());
-            doc.addField("counterView", pagedto.getCounterView());
+    
 
             docs.add(doc);
         }
@@ -235,4 +288,44 @@ public class MySolrJ {
         req.add(docs);
         UpdateResponse rsp = req.process(server);
     }
+
+     public void ImportImage2Solr(ArrayList<ImageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        ImageDTO pagedto = new ImageDTO();
+        Iterator<ImageDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            start++;
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id",String.valueOf(start));
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("url_thumbnail", pagedto.getUrl_thumbnail());
+            doc.addField("url", pagedto.getUrl());
+            doc.addField("website", pagedto.getWebsite());
+            doc.addField("site_title", pagedto.getSite_title());
+            doc.addField("site_title_unsigned", RemoveSignVN(pagedto.getSite_title()));
+            doc.addField("site_body", pagedto.getSite_body());
+            doc.addField("site_body_unsigned", RemoveSignVN(pagedto.getSite_body()));
+            doc.addField("fileType", pagedto.getFileType());
+            doc.addField("width", Integer.toString(pagedto.getWidth()));
+            doc.addField("height", Integer.toString(pagedto.getHeight()));
+            doc.addField("size", Integer.toString(pagedto.getSize()));
+
+            docs.add(doc);
+        }
+
+
+        SolrServer server = getSolrServer("image");
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
 }
