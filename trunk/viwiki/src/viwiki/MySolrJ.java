@@ -82,8 +82,8 @@ public class MySolrJ {
             doc.addField("comment", pagedto.getComment());
             doc.addField("comment_unsigned", RemoveSignVN(pagedto.getComment()));
             doc.addField("ip", pagedto.getIp());
-            doc.addField("minor", pagedto.getMinor());
-            doc.addField("redirect", pagedto.getRedirect());
+//            doc.addField("minor", pagedto.getMinor());
+//            doc.addField("redirect", pagedto.getRedirect());
             doc.addField("restrictions", pagedto.getRestrictions());
             doc.addField("wk_text", pagedto.getText());
             doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText()));
@@ -211,7 +211,7 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-             doc.addField("category", pagedto.getCategory());
+            doc.addField("category", pagedto.getCategory());
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
 

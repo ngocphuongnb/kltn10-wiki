@@ -14,13 +14,13 @@ import java.util.Calendar;
 public class ViwikiPageDTO {
 
     private String _title;
-    private String _redirect;
+    //private String _redirect;
     private Calendar _timestamp;
     private String _ip;
     private String _text;
     private String _restrictions;
     private String _username;
-    private String _minor;
+    //private String _minor;
     private String _comment;
 
     /**
@@ -40,16 +40,16 @@ public class ViwikiPageDTO {
     /**
      * @return the _redirect
      */
-    public String getRedirect() {
-        return _redirect;
-    }
+//    public String getRedirect() {
+//        return _redirect;
+//    }
 
     /**
      * @param redirect the _redirect to set
      */
-    public void setRedirect(String redirect) {
-        this._redirect = redirect;
-    }
+//    public void setRedirect(String redirect) {
+//        this._redirect = redirect;
+//    }
 
     /**
      * @return the _timestamp
@@ -124,16 +124,16 @@ public class ViwikiPageDTO {
     /**
      * @return the _minor
      */
-    public String getMinor() {
-        return _minor;
-    }
+//    public String getMinor() {
+//        return _minor;
+//    }
 
     /**
      * @param minor the _minor to set
      */
-    public void setMinor(String minor) {
-        this._minor = minor;
-    }
+//    public void setMinor(String minor) {
+//        this._minor = minor;
+//    }
 
     /**
      * @return the _comment
