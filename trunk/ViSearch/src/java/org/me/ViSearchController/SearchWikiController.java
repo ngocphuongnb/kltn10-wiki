@@ -64,19 +64,23 @@ public class SearchWikiController extends HttpServlet {
      */
     SolrServer server;
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         //solrQuery.setQueryType("dismax");
 
         String query = "";
-        //String query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        if (sortedType == 1) {
+            query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        }
         //Gop chung co dau va ko dau
         //solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
 
         if (MyString.CheckSigned(keySearch)) {
             query += "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
         } else {
-            query += "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
+                    + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + ")";
         }
 
         solrQuery.setQuery(query);
@@ -92,19 +96,26 @@ public class SearchWikiController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
+        String str = "";
+        if (sortedType == 1) {
+            str = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        }
         SolrQuery solrQuery = new SolrQuery();
         String query = keySearch;
         if (facetName.equals("") == false && facetName != null) {
             if (MyString.CheckSigned(keySearch)) {
-                query = "+(wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
+                query += "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
             } else {
-                query = "+(wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + "))";
+                query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+                        + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
+                        + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + ")";
             }
             query += " +(" + facetName + ":" + facetValue + ")";
         }
 
-        solrQuery.setQuery(query);
+        str += query;
+        solrQuery.setQuery(str);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("wk_title");
         solrQuery.addHighlightField("wk_text");
@@ -291,13 +302,17 @@ public class SearchWikiController extends HttpServlet {
         }
     }
 
-    QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
-        //q = URLDecoder.decode(q, "UTF-8");
+    QueryResponse OnMLT(String q, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        //boost b= }";
         SolrQuery query = new SolrQuery();
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+        if (sortedType == 1) {
+            query.set(MoreLikeThisParams.BOOST, true);
+            query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+        }
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "wk_title");
         query.setQuery("wk_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
@@ -344,6 +359,7 @@ public class SearchWikiController extends HttpServlet {
         String sPaging = "/ViSearch/SearchWikiController?";
         List<FacetField> listFacet = null;
         ArrayList<FacetDateDTO> listFacetDate = null;
+        int sortedType = 0;
 
         try {
 
@@ -360,6 +376,11 @@ public class SearchWikiController extends HttpServlet {
                 type = Integer.parseInt(request.getParameter("type"));
             }
 
+            if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "SortedType=" + sortedType;
+            }
+
             //</get-parameter>
             if (request.getParameter("KeySearch") != null) {
 
@@ -367,19 +388,19 @@ public class SearchWikiController extends HttpServlet {
                 Map<String, Map<String, List<String>>> highLight;
 
                 keySearch = request.getParameter("KeySearch");
-                sPaging += "KeySearch=" + keySearch;
+                sPaging += "&KeySearch=" + keySearch;
 
                 switch (type) {
                     case 0:
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
 
-                            if (sCollation.equals("") == false) {
+                            if (sCollation != null && sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
 
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -387,7 +408,7 @@ public class SearchWikiController extends HttpServlet {
                         sPaging += "&type=0";
                         break;
                     case 1:
-                        rsp = OnMLT(keySearch, start, pagesize);
+                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
@@ -406,7 +427,7 @@ public class SearchWikiController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -430,7 +451,7 @@ public class SearchWikiController extends HttpServlet {
                             facetValue = createFacetValue(startDate, endDate);
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -445,6 +466,8 @@ public class SearchWikiController extends HttpServlet {
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
+            request.setAttribute("SortedType", sortedType);
+            request.setAttribute("Type", type);
             if (docs != null) {
                 numRow = docs.getNumFound();
                 //numRow = docs.size();

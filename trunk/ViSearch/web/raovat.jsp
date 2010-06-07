@@ -6,7 +6,7 @@
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
-<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
+<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.SimpleDateFormat"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,6 +28,7 @@
                 if(keysearch=="")
                     document.getElementById('txtSearch').focus();
             }
+
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -36,10 +37,27 @@
                     return;
                 else
                 {
-
                     var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
+                    window.location = url;
+                }
+            }
+        </script>
+        <script language="javascript">
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                //alert(sortedtype);
+                var keysearch = document.getElementById('hfKeySearch').value;
+                //alert(keysearch);
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchRaoVatController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
                     window.location = url;
                 }
             }
@@ -63,7 +81,11 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+                    int sortedType = 0;
+                    if (request.getAttribute("SortedType") != null) {
+                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
+                    }
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -93,6 +115,7 @@
                                 String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                Date last_update = (Date)(listdocs.get(i).getFieldValue("last_update"));
                                 String url;
                                 String title_hl = title;
                                 String photo = "images/Noimage.jpg";
@@ -132,6 +155,11 @@
 
                                 result += "<tr>";
                                 result += "<td>" + body + "</td>";
+                                result += "</tr>";
+
+                                result += "<tr>";
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                                result += "<td><b>Ngày cập nhật:</b> " + sdf.format(last_update) + "</td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -239,20 +267,23 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <%@include file="template/login.jsp" %>
-                            <%  out.print(facet);%>
-                            <% out.print(facetD);%>
+                            <%  out.print (facet);%>
+                            <% out.print (facetD);%>
                             <table  id="tbTopSearch">
                             </table>
                         </td>
                         <td width="627" rowspan="2" valign="top">
                             <table>
 
-                                <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
-                                <%  if (request.getParameter("FacetValue") != null) {
+                                <tr><td id="result_search"><% out.print (search_stats);%></td></tr><tr></tr>
+                                <%  if
+
+                                     (request.getParameter(
+                                        "FacetValue") != null) {
                                                 out.print("<tr><td id=\"top-header\">");
-                                                out.print(">> " + request.getParameter("FacetValue"));
-                                                out.print("</td></tr>");
-                                            }
+                                        out.print(">> " + request.getParameter("FacetValue"));
+                                        out.print("</td></tr>");
+                                    }
                                 %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
@@ -260,7 +291,7 @@
 
                                 <tr>
                                     <td  valign="top" id="content">
-                                        <% out.print(result);%>
+                                        <% out.print (result);%>
 
                                     </td>
                                 </tr>
