@@ -33,6 +33,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -67,6 +68,7 @@ public class SearchRaoVatController extends HttpServlet {
         long numRow = 0;
         int type = -1;
         int QTime = 0;
+        int sortedType = 0;
         String sPaging = "/ViSearch/SearchRaoVatController?";
         List<FacetField> listFacet = null;
         ArrayList<FacetDateDTO> listFacetDate = null;
@@ -85,6 +87,11 @@ public class SearchRaoVatController extends HttpServlet {
                 sPaging += "type=" + type;
             }
 
+             if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "&SortedType=" + sortedType;
+            }
+
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
@@ -101,7 +108,7 @@ public class SearchRaoVatController extends HttpServlet {
                         }
 
                         //NewestDocument22(keySearch, "25");
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -111,7 +118,7 @@ public class SearchRaoVatController extends HttpServlet {
                         listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
-                        rsp = OnMLT(keySearch, start, pagesize);
+                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
@@ -148,6 +155,7 @@ public class SearchRaoVatController extends HttpServlet {
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
+            request.setAttribute("SortedType", sortedType);
             if (docs != null) {
                 numRow = docs.getNumFound();
                 int numpage = (int) (numRow / pagesize);
@@ -176,9 +184,16 @@ public class SearchRaoVatController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("dismax");
+
+        if(MyString.CheckSigned(keySearch))
+            solrQuery.setQueryType("dismax");
+        else
+            solrQuery.setQueryType("dismax2");
+
+        if(sortedType!=0)
+            solrQuery.setParam(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
 
         solrQuery.setQuery(keySearch);
 
@@ -306,7 +321,7 @@ public class SearchRaoVatController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+    QueryResponse OnMLT(String q, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
 
@@ -324,6 +339,11 @@ public class SearchRaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
+        if(sortedType == 1)
+        {
+            query.set(MoreLikeThisParams.BOOST, true);
+            query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+        }
 
         query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));

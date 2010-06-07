@@ -161,7 +161,7 @@
                             String id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String url;
 
-                            url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "\">" + title + "</a></b></li>";
+                            url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></b></li>";
                             result2 += url;
 
                         }

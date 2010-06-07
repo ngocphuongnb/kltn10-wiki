@@ -31,12 +31,14 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
                     var url = "SearchWikiController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
                     window.location = url;
                 }
             }
@@ -68,6 +70,25 @@
                 window.location = url;
             }
         </script>
+
+        <script language="javascript">
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                //alert(sortedtype);
+                var keysearch = document.getElementById('hfKeySearch').value;
+                //alert(keysearch);
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchWikiController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
+                    window.location = url;
+                }
+            }
+        </script>
     </head>
 
     <body onLoad="setText();">
@@ -87,7 +108,11 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+                    int sortedType = 0;
+                    if (request.getAttribute("SortedType") != null) {
+                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
+                    }
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -118,7 +143,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
-                                Date timestamp = (Date)(listdocs.get(i).getFieldValue("timestamp"));
+                                Date timestamp = (Date) (listdocs.get(i).getFieldValue("timestamp"));
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -179,7 +204,7 @@
                         }
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -214,7 +239,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -241,16 +266,16 @@
 
 
                     Calendar cl = Calendar.getInstance();
-                    String homnay = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+                    String homnay = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
 
                     cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
-                    String homqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
-                    String homquaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
+                    String homqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+                    String homquaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
 
 
                     cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
-                    String homkia = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
-                    String homkiaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH)+1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
+                    String homkia = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
+                    String homkiaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
 
                     // 1976-03-06T23:59:59.999Z
 
@@ -259,11 +284,11 @@
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homqua + " TO "+homquaEnd+"]", "UTF-8") + "'>" + "Hôm qua" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homqua + " TO " + homquaEnd + "]", "UTF-8") + "'>" + "Hôm qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homkia + " TO "+homkiaEnd+"]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homkia + " TO " + homkiaEnd + "]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";
@@ -279,7 +304,7 @@
                     // }
                     facetD += "</table>";
                     // End get Facet Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -296,6 +321,7 @@
                                     </td>
                                 </tr>
                             </table>
+                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr>
@@ -312,8 +338,8 @@
                                                 out.print(facet);
                                             }%>
                                 <% if (request.getAttribute("Docs") != null) {
-                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
-                                             }%>
+                                                out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
+                                            }%>
 
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">
