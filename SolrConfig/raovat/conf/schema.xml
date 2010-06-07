@@ -301,7 +301,5 @@
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="OR"/>
-   <copyField source="rv_title_unsigned" dest="rv_title"/>
-   <copyField source="rv_body_unsigned" dest="rv_body"/>
 </schema>
 
