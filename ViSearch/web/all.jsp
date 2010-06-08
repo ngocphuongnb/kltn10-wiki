@@ -42,7 +42,7 @@
                     return;
                 else
                 {
-                    var url = "SearchAllController?type=0&sp=1&KeySearch=";
+                    var url = "SearchAllController?type=0&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
                     window.location = url;
@@ -68,29 +68,12 @@
             }
         </script>
 
-        <script language="javascript">
-            function Sort(type){
-                var sortedtype = document.getElementById('slSortedType').value;
-                //alert(sortedtype);
-                var keysearch = document.getElementById('hfKeySearch').value;
-                //alert(keysearch);
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchAllController?sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                    url += "&type=" + type;
-                    window.location = url;
-                }
-            }
-        </script>
+       
     </head>
 
     <body onLoad="setText();">
         <%
-                    String currentPage = "/index.jsp";
+                    String currentPage = "/all.jsp";
                     if (request.getQueryString() != null) {
                         currentPage = "/SearchAllController?";
                         currentPage += request.getQueryString().toString();
@@ -105,10 +88,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-                    int sortedType = 0;
-                    if (request.getAttribute("SortedType") != null) {
-                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
-                    }
+                   
         %>
         <%
                     // Get SolrDocumentList
@@ -128,7 +108,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchWikiController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchAllController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
@@ -163,7 +143,7 @@
 
 
                                 result += "<tr>";
-                                result += "<td>" + title + "</td>";
+                                result += "<td>" + title_hl + "</td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -215,7 +195,6 @@
                                     </td>
                                 </tr>
                             </table>
-                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr>
