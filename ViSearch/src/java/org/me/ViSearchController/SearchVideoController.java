@@ -177,9 +177,17 @@ public class SearchVideoController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQueryType("dismax");
+        String query = "";
+           if (MyString.CheckSigned(keySearch)) {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
+        } else {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                    + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                    + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+        }
 
-        solrQuery.setQuery(keySearch);
+        solrQuery.setQuery(query);
 
         // Facet
         solrQuery.setFacet(true);
@@ -203,10 +211,19 @@ public class SearchVideoController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        if (!facetName.equals("") && facetName != null) {
-            keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
+        String query = "+(";
+           if (MyString.CheckSigned(keySearch)) {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
+        } else {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                    + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                    + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
-        solrQuery.setQuery(keySearch);
+        query += ")";
+        query += "+("+facetName + ":\"" + facetValue + "\")";
+
+        solrQuery.setQuery(query);
 
         // Facet
         solrQuery.setFacet(true);

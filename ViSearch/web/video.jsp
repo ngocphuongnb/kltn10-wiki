@@ -214,7 +214,7 @@
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"title_content\" align=\"left\"><b>Facet</b></div>";
+                        facet += "<div class=\"mnu\">Facet</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
@@ -242,31 +242,7 @@
                     // End Get Facet
         %>
 
-        <%
-                    // Get Facet date
-                    String facetD = "";
-                    facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-
-                    ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
-                    if (listFacetDate != null) {
-                        facetD += "<tr><td><b>Facet: last_update</b>";
-                        facetD += "<br>";
-                        if (listFacetDate.size() > 0) {
-                            for (int i = 0; i < listFacetDate.size(); i++) {
-
-                                String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FacetName=" + "last_update" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                                facetD += " (" + listFacetDate.get(i).getCount() + ")";
-                                facetD += "<br>";
-                            }
-                        } else {
-                            facetD += "Không tìm ra Facet<br>";
-                        }
-                        facetD += "</td></tr>";
-                    }
-                    facetD += "</table>";
-                    // End get Facet Date
-        %>
+       
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -289,11 +265,14 @@
                     <tr>
                         <td width="200" height="33" valign="top">
 
+                             <div class="subtable">
+                             <div class="mnu">Đăng nhập</div>
                             <%@include file="template/login.jsp" %>
                             <% out.print(facet);%>
                             <% out.print(facetD);%>
                             <table id="tbTopSearch">
                             </table>
+                              </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 

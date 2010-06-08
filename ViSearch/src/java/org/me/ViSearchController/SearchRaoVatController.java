@@ -115,7 +115,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize, sortedType);
@@ -128,7 +128,7 @@ public class SearchRaoVatController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String facetName = "";
@@ -146,7 +146,7 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     default:
                         break;
@@ -165,7 +165,7 @@ public class SearchRaoVatController extends HttpServlet {
                 }
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
-                request.setAttribute("ListFacetDate", listFacetDate);
+                //request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
