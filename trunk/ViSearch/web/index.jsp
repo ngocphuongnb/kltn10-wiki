@@ -198,10 +198,10 @@
                             result += strpaging + "<b>Không tìm ra dữ liệu</b><br/>";
                         }
                         // result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        result += "Tổng số trang là: " + numpage + "<br/>";
-                        if (numpage > 1) {
-                            result += strpaging + "<br/><br/>";
+                        if (numpage > 0) {
+                            result += "Tổng số trang là: " + numpage + "<br/>";
                         }
+                        result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
         %>

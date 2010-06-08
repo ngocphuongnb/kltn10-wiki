@@ -115,7 +115,7 @@
                                 String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                Date last_update = (Date)(listdocs.get(i).getFieldValue("last_update"));
+                                Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String url;
                                 String title_hl = title;
                                 String photo = "images/Noimage.jpg";
@@ -174,24 +174,26 @@
 
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                            numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                            if (request.getAttribute("NumPage") != null) {
+                                numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                            }
                             strpaging = (String) request.getAttribute("Pagging");
                         }
                         //result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        result += "Tổng số trang là: " + numpage + "<br/>";
                         if (numpage > 1) {
-                            result += strpaging + "<br/><br/>";
+                            result += "Tổng số trang là: " + numpage + "<br/>";
                         }
+                        result += "<p><font color=\"#CC3333\" size=\"+1\">" +strpaging + "</font></p><br/><br/>";
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                         facet += "<div class=\"mnu\">Facet</div>";
+                        facet += "<div class=\"mnu\">Facet</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
@@ -221,8 +223,8 @@
                     }
 
                     // End get Facet
-        %>
-        
+%>
+
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -243,28 +245,26 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                             <div class="mnu">Đăng nhập</div>
-                            <%@include file="template/login.jsp" %>
-                             <% if (request.getAttribute("Docs") != null) {
-                                                out.print(facet);
-                                                } %>
-                            <table  id="tbTopSearch">
-                            
-                            </table>
+                                <div class="mnu">Đăng nhập</div>
+                                <%@include file="template/login.jsp" %>
+                                <% if (request.getAttribute("Docs") != null) {
+                                             out.print(facet);
+                                         }%>
+                                <table  id="tbTopSearch">
+
+                                </table>
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
                             <table>
 
-                                <tr><td id="result_search"><% out.print (search_stats);%></td></tr><tr></tr>
-                                <%  if
-
-                                     (request.getParameter(
-                                        "FacetValue") != null) {
+                                <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                                <%  if (request.getParameter(
+                                                    "FacetValue") != null) {
                                                 out.print("<tr><td id=\"top-header\">");
-                                        out.print(">> " + request.getParameter("FacetValue"));
-                                        out.print("</td></tr>");
-                                    }
+                                                out.print(">> " + request.getParameter("FacetValue"));
+                                                out.print("</td></tr>");
+                                            }
                                 %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
@@ -272,7 +272,7 @@
 
                                 <tr>
                                     <td  valign="top" id="content">
-                                        <% out.print (result);%>
+                                        <% out.print(result);%>
 
                                     </td>
                                 </tr>

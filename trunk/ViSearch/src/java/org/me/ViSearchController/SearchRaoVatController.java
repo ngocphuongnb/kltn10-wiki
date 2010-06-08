@@ -136,13 +136,10 @@ public class SearchRaoVatController extends HttpServlet {
                                 if (title1.trim().equals(title2.trim())) {
                                     Date date1 = (Date) docs.get(i).getFieldValue("last_update");
                                     Date date2 = (Date) docs.get(j).getFieldValue("last_update");
-                                    if(date1.compareTo(date2) >= 0)
-                                    {
+                                    if (date1.compareTo(date2) >= 0) {
                                         docs.remove(j);
                                         j--;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         docs.remove(i);
                                         i--;
                                         break;
@@ -151,7 +148,7 @@ public class SearchRaoVatController extends HttpServlet {
                             }
                         }
 
-                        int idem = Math.min(10, docs.size());
+                        int idem = Math.min(20, docs.size());
                         while (docs.size() > idem) {
                             docs.remove(idem);
                         }
@@ -193,12 +190,18 @@ public class SearchRaoVatController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
                 //request.setAttribute("ListFacetDate", listFacetDate);
+                if (type != 1) {
+                    sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+                    request.setAttribute("NumPage", numpage);
+                }
+                else
+                {
+                    sPaging = "20 kết quả tốt nhất trong " + numRow + " kết quả tìm được";
+                }
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
-                request.setAttribute("NumPage", numpage);
                 request.setAttribute("ListFacet", listFacet);
             }
             String url = "/raovat.jsp";
