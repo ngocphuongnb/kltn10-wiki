@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -32,8 +33,10 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
+import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -87,7 +90,7 @@ public class SearchRaoVatController extends HttpServlet {
                 sPaging += "type=" + type;
             }
 
-             if (request.getParameter("SortedType") != null) {
+            if (request.getParameter("SortedType") != null) {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
                 sPaging += "&SortedType=" + sortedType;
             }
@@ -118,13 +121,40 @@ public class SearchRaoVatController extends HttpServlet {
                         //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
-                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
+                        rsp = OnMLT(keySearch, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
                             request.setAttribute("HighLight", highLight);
                         }
                         QTime = rsp.getQTime();
+
+                        for (int i = 0; i < docs.size() - 1; i++) {
+                            for (int j = i + 1; j < docs.size(); j++) {
+                                String title1 = docs.get(i).getFirstValue("rv_title").toString();
+                                String title2 = docs.get(j).getFirstValue("rv_title").toString();
+                                if (title1.trim().equals(title2.trim())) {
+                                    Date date1 = (Date) docs.get(i).getFieldValue("last_update");
+                                    Date date2 = (Date) docs.get(j).getFieldValue("last_update");
+                                    if(date1.compareTo(date2) >= 0)
+                                    {
+                                        docs.remove(j);
+                                        j--;
+                                    }
+                                    else
+                                    {
+                                        docs.remove(i);
+                                        i--;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        int idem = Math.min(10, docs.size());
+                        while (docs.size() > idem) {
+                            docs.remove(idem);
+                        }
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
@@ -187,13 +217,15 @@ public class SearchRaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
-        if(MyString.CheckSigned(keySearch))
+        if (MyString.CheckSigned(keySearch)) {
             solrQuery.setQueryType("dismax");
-        else
+        } else {
             solrQuery.setQueryType("dismax2");
+        }
 
-        if(sortedType!=0)
+        if (sortedType != 0) {
             solrQuery.setParam(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
+        }
 
         solrQuery.setQuery(keySearch);
 
@@ -321,7 +353,7 @@ public class SearchRaoVatController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnMLT(String q, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+    QueryResponse OnMLT(String q, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
 
@@ -339,22 +371,25 @@ public class SearchRaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
-        if(sortedType == 1)
-        {
+        if (sortedType == 1) {
             query.set(MoreLikeThisParams.BOOST, true);
             query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
         }
 
         query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
-        query.setStart(start);
-        query.setRows(pagesize);
+        query.setStart(0);
+        query.setRows(100);
         query.setHighlight(true);
         query.addHighlightField("rv_title");
         query.addHighlightField("rv_body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
-        query.setHighlightRequireFieldMatch(true);
+        query.set(HighlightParams.ALTERNATE_FIELD, "wk_title");
+        query.set(HighlightParams.FRAGMENTER, "regex");
+        query.setHighlightFragsize(70);
+        query.set(HighlightParams.SLOP, "0.5");
+        query.set(HighlightParams.REGEX, "[-,/\n\"']{20,200}");
         QueryResponse rsp = server.query(query);
         return rsp;
     }
