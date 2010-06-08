@@ -182,31 +182,7 @@
 
                     // End get Facet
 %>
-        <%
-                    // Get Facet date
-                    String facetD = "";
-                    facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-
-                    ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
-                    if (listFacetDate != null) {
-                        facetD += "<tr><td><b>Facet: last_update</b>";
-                        facetD += "<br>";
-                        if (listFacetDate.size() > 0) {
-                            for (int i = 0; i < listFacetDate.size(); i++) {
-
-                                String fieldText = listFacetDate.get(i).getDateTime();
-                                facetD += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + "last_update" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                                facetD += " (" + listFacetDate.get(i).getCount() + ")";
-                                facetD += "<br>";
-                            }
-                        } else {
-                            facetD += "Không tìm ra Facet<br>";
-                        }
-                        facetD += "</td></tr>";
-                    }
-                    facetD += "</table>";
-                    // End get Facet Date
-%>
+        
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -247,8 +223,7 @@
                                                 out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[1 TO 500]", "UTF-8") + "'>" + "Nhỏ" + "</a>");
                                                 out.print("</td></tr>");
 
-                                                out.print("<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>");
-
+                                                out.print("<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>");
                                                 out.print("<tr><td>");
                                                 out.print("<div id=\"divPVTC\" class=\"hidden\">");
                                                 out.print("<div style=\"float:left\"> Chiều rộng: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_R\" /></div>");

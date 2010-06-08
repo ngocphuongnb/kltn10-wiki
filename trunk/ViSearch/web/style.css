@@ -8,6 +8,7 @@ margin:0;
 font-family:Verdana, Arial, Helvetica, sans-serif;
 font-size:10px;
 }
+a {text-decoration: none; color:#2C79B3}
 A:link {text-decoration: none; color:#2C79B3}
 A:visited {text-decoration: none}
 A:active {text-decoration: none}

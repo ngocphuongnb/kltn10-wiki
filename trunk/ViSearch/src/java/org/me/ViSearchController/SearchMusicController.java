@@ -178,6 +178,20 @@ public class SearchMusicController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
         //solrQuery.setQueryType("dismax");
 
+//        String query = "";
+//         if (MyString.CheckSigned(keySearch)) {
+//            query += "title:(\"" + keySearch + "\")^4 || title:(" + keySearch + ")^3 || album:(\"" + keySearch + "\")^2 || album:(" + keySearch + ")^1.5 || singer:(\"" + keySearch + "\")^1.5 || singer:(" + keySearch + ")";
+//        } else {
+//            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+//                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
+//                    + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + ")";
+//        }
+
+        if(MyString.CheckSigned(keySearch))
+            solrQuery.setQueryType("dismax");
+        else
+            solrQuery.setQueryType("dismax2");
+
         solrQuery.setQuery(keySearch);
 
         // Facet

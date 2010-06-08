@@ -67,7 +67,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -116,12 +116,12 @@
                                         body = highlightBody.get(0);
                                     }
                                 }
-                                
 
-                                
+
+
 
                                 result += "<tr>";
-                                result += "<td><a href='" + url+"' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
+                                result += "<td><a href='" + url + "' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -137,7 +137,7 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><b><a href='"+website+"' target=\"_blank\">" + title_hl + "</a></b></td>";
+                                result += "<td><b><a href='" + website + "' target=\"_blank\">" + title_hl + "</a></b></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -145,8 +145,8 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><a href='" + website+"' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
-                                result += "<a href='" + url+"' target=\"_blank\">Hình ảnh đầy đủ</a>&nbsp;|&nbsp;";
+                                result += "<td><a href='" + website + "' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
+                                result += "<a href='" + url + "' target=\"_blank\">Hình ảnh đầy đủ</a>&nbsp;|&nbsp;";
                                 result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
@@ -156,17 +156,17 @@
                             }
                             // Phan trang
                             //numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                           // numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
-                           // strpaging = (String) request.getAttribute("Pagging");
+                            // numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                            // strpaging = (String) request.getAttribute("Pagging");
                         }
                         //result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                       // result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
-                       // if (numpage > 1) {
-                       //     result += strpaging + "<br/><br/></div>";
-                       // }
+                        // result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
+                        // if (numpage > 1) {
+                        //     result += strpaging + "<br/><br/></div>";
+                        // }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -201,7 +201,7 @@
 
 
                     // End get Facet
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -214,24 +214,16 @@
                         result2 += "Một số hình ảnh tương tự: <br>";
                         for (int i = 0; i < listdocs2.size(); i++) {
 
-
                             // Lay noi dung cua moi field
-                            String title = "";
-                            if ((listdocs2.get(i).getFieldValue("site_title")).toString() != null) {
-                                title = listdocs2.get(i).getFirstValue("site_title").toString();
-                            }
-
                             String id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String url = (listdocs2.get(i).getFieldValue("url")).toString();
 
-                            
                             result2 += "<b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></li>";
-
                         }
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -254,8 +246,7 @@
                                 <div class="mnu">Đăng nhập</div>
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
-                                               // out.print(facet);
-                                               
+                                                // out.print(facet);
                                             }%>
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">

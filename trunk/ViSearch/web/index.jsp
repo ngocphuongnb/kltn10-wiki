@@ -291,7 +291,7 @@
                     facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + homkia + " TO " + homkiaEnd + "]", "UTF-8") + "'>" + "Hôm kia" + "</a>";
                     facetD += "</td></tr>";
 
-                    facetD += "<tr><td><input type=\"button\" name=\"btShowPVTC\" value=\"Phạm vi tùy chỉnh\" onclick=\"showPVTC();\" /></td></tr>";
+                    facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
 
                     facetD += "<tr><td>";
                     facetD += "<div id=\"divPVTC\" class=\"hidden\">";
