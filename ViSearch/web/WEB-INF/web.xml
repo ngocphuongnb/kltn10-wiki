@@ -60,6 +60,10 @@
         <servlet-name>DetailImageController</servlet-name>
         <servlet-class>org.me.ViSearchController.DetailImageController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchAllController</servlet-name>
+        <servlet-class>org.me.ViSearchController.SearchAllController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>DetailImageController</servlet-name>
         <url-pattern>/DetailImageController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchAllController</servlet-name>
+        <url-pattern>/SearchAllController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

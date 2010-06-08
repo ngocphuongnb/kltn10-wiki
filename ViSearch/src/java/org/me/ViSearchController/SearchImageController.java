@@ -68,7 +68,6 @@ public class SearchImageController extends HttpServlet {
         int type = -1;
         int QTime = 0;
         try {
-
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
@@ -263,8 +262,8 @@ public class SearchImageController extends HttpServlet {
         String query = "+(";
         if (MyString.CheckSigned(keySearch)) {
             query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
-                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
-                    + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
+                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7";
+                  //  + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
         } else {
             query += "site_title:(\"" + keySearch + "\")^10 || site_title:(" + keySearch + ")^8 || "
                     + "site_title_unsigned:(\"" + keySearch + "\")^9 || site_title_unsigned:(" + keySearch + ")^7 || "
@@ -274,7 +273,8 @@ public class SearchImageController extends HttpServlet {
                     + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
         query += ")";
-        query += " +(" + facetName + ":\"" + facetValue + "\")";
+        //query += " +(" + facetName + ":\"" + facetValue + "\")";
+        query += " +(" + facetName + ":" + facetValue + ")";
         solrQuery.setQuery(query);
 
         // Facet
