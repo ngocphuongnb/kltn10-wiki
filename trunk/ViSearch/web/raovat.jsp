@@ -43,6 +43,16 @@
                     window.location = url;
                 }
             }
+            function SeachPVDC(strQuery){
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                strQuery =  encodeURIComponent(strQuery);
+                var url = "SearchRaoVatController?type=3&KeySearch=" + strQuery + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
+            }
+            function showPVTC(){
+                document.getElementById("divPVTC").className="display";
+            }
         </script>
         <script language="javascript">
             function Sort(type){
@@ -224,6 +234,52 @@
 
                     // End get Facet
 %>
+<%
+                    // Get query date
+                    String facetD = "";
+                    facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
+
+                    Calendar cl = Calendar.getInstance();
+
+                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH)-1)
+                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+
+                    cl.add(Calendar.DATE, -7);
+                    String str1tuanqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH)
+                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+
+                    cl.add(Calendar.DATE, +7);
+                    String str1thangqua = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH)
+                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+
+
+                    // 1976-03-06T23:59:59.999Z
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "</td></tr>";
+
+                    facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
+
+                    facetD += "<tr><td>";
+                    facetD += "<div id=\"divPVTC\" class=\"hidden\">";
+                    facetD += "<div style=\"float:left\"> Bắt dầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
+                    facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
+                    facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";
+                    facetD += "</div>";
+
+                    facetD += "</td></tr>";
+                    // }
+                    facetD += "</table>";
+                    // End get Query Date
+%>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -249,6 +305,7 @@
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
                                              out.print(facet);
+                                              out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
                                          }%>
                                 <table  id="tbTopSearch">
 

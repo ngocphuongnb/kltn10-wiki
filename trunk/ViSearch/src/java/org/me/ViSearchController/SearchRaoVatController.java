@@ -152,10 +152,8 @@ public class SearchRaoVatController extends HttpServlet {
                         while (docs.size() > idem) {
                             docs.remove(idem);
                         }
-
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String facetName = "";
@@ -173,7 +171,33 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
+                        break;
+                    case 3:
+                        facetName = "";
+                        facetValue = "";
+                        sPaging += "&type=2";
+                        if (request.getParameter("FacetName") != null) {
+                            facetName = request.getParameter("FacetName");
+                            sPaging += "&FacetName=" + facetName;
+                            String startDate = "";
+                            if (request.getParameter("sd") != null) {
+                                startDate = request.getParameter("sd");
+                            }
+                            String endDate = "";
+                            if (request.getParameter("ed") != null) {
+                                endDate = request.getParameter("ed");
+                            }
+                            facetValue = createFacetValue(startDate, endDate);
+                            sPaging += "&FacetValue=" + facetValue;
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        docs = rsp.getResults();
+                        QTime = rsp.getQTime();
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
                         break;
                     default:
                         break;
@@ -195,9 +219,7 @@ public class SearchRaoVatController extends HttpServlet {
                 if (type != 1) {
                     sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                     request.setAttribute("NumPage", numpage);
-                }
-                else
-                {
+                } else {
                     sPaging = "20 kết quả tốt nhất trong " + numRow + " kết quả tìm được";
                 }
                 request.setAttribute("Pagging", sPaging);
@@ -215,6 +237,27 @@ public class SearchRaoVatController extends HttpServlet {
         } finally {
             out.close();
         }
+    }
+
+    private String createFacetValue(String startDate, String endDate) {
+        // src: dd-mm-yyyy
+        // dest: 1976-03-06T23:59:59.999Z
+        String result = "[";
+        String[] arrStr1 = startDate.split("-");
+        if (arrStr1.length >= 3) {
+            result += arrStr1[2] + "-" + arrStr1[1] + "-" + arrStr1[0] + "T00:00:00.000Z";
+        } else {
+            result += "1990-01-01T00:00:00.000Z";
+        }
+        result += " TO ";
+        String[] arrStr2 = endDate.split("-");
+        if (arrStr2.length >= 3) {
+            result += arrStr2[2] + "-" + arrStr2[1] + "-" + arrStr2[0] + "T23:59:59.999Z";
+        } else {
+            result += "NOW";
+        }
+        result += "]";
+        return result;
     }
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
@@ -331,7 +374,8 @@ public class SearchRaoVatController extends HttpServlet {
             //   facetValue="["
         }
         if (!facetName.equals("") && facetName != null) {
-            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
+             keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
+            //keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + (" + facetName + ":" + facetValue + ")";
         }
         solrQuery.setQuery(keySearch);
 

@@ -242,56 +242,25 @@
 %>
 
         <%
-                    // Get Facet date
+                    // Get query date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
-                    /*       ArrayList<FacetDateDTO> listFacetDate = (ArrayList<FacetDateDTO>) request.getAttribute("ListFacetDate");
-                    if (listFacetDate != null) {
-                    facetD += "<tr><td><b>Facet: timestamp</b>";
-                    facetD += "<br>";
-                    if (listFacetDate.size() > 0) {
-                    for (int i = 0; i < listFacetDate.size(); i++) {
-
-                    String fieldText = listFacetDate.get(i).getDateTime();
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + "timestamp" + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                    facetD += " (" + listFacetDate.get(i).getCount() + ")";
-                    facetD += "<br>";
-                    }
-                    } else {
-                    facetD += "Không tìm ra Facet<br>";
-                    }
-                    facetD += "</td></tr>";
-                     */
-
-
                     Calendar cl = Calendar.getInstance();
-                    String homnay = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
 
-                    //cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
-                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH)-1)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH) - 1)
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, -7);
-                    String str1tuanqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH)-7)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                    String str1tuanqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH)
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, +7);
-                    cl.add(Calendar.MONTH, -1);
                     String str1thangqua = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
-                  //  cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
-                  //  String homqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
-                  //  String homquaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
-
-
-                  //  cl.set(Calendar.DAY_OF_MONTH, cl.get(Calendar.DAY_OF_MONTH) - 1);
-                  //  String homkia = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T00:00:00.000Z";
-                  //  String homkiaEnd = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH) + "T23:59:59.999Z";
 
                     // 1976-03-06T23:59:59.999Z
-
                     facetD += "<tr><td>";
                     facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
@@ -316,7 +285,7 @@
                     facetD += "</td></tr>";
                     // }
                     facetD += "</table>";
-                    // End get Facet Date
+                    // End get Query Date
 %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -327,7 +296,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                        <div style="float:right; margin-bottom:8px; font-size:11px"><a href="">Đăng kí</a>&nbsp;&nbsp;<a href="">Đăng nhập</a>&nbsp;&nbsp;</div>
+                                        <div style="float:right; margin-bottom:8px; font-size:11px"><a  name="top" href="">Đăng kí</a>&nbsp;&nbsp;<a href="">Đăng nhập</a>&nbsp;&nbsp;</div>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -352,8 +321,6 @@
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
-                                            }%>
-                                <% if (request.getAttribute("Docs") != null) {
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
                                             }%>
 

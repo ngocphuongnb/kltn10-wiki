@@ -274,6 +274,7 @@
                               </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
+
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
@@ -281,6 +282,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
                                 <tr>
+
                                     <td valign="top" id="content">
                                         <% out.print(result);%>
 
