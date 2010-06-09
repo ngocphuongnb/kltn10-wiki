@@ -23,11 +23,11 @@ public class Paging {
 
             if (currentpage > 1) {
                 page = currentpage - 1;
-                Paging = "<a href=\"" + URL + "&currentpage=1\"><img src='images/Button_First.png' width='30' height='30' align='absmiddle'/></a> ";
-                Paging += "<a href=\"" + URL + "&currentpage=" + page + "\"><img src='images/Button_Rewind.png' width='30' height='30' align='absmiddle'/></a> ";
+                Paging = "<a href=\"" + URL + "&currentpage=1\"><img style=\"border:none\" src='images/Button_First.png' width='30' height='30' align='absmiddle'/></a> ";
+                Paging += "<a href=\"" + URL + "&currentpage=" + page + "\"><img style=\"border:none\" src='images/Button_Rewind.png' width='30' height='30' align='absmiddle'/></a> ";
             } else {
-                Paging = "<img src='images/Button_First_Disable.png' width='30' height='30' align='absmiddle'/> ";
-                Paging += "<img src='images/Button_Rewind_Disable.png' width='30' height='30' align='absmiddle'/>  ";
+                Paging = "<img style=\"border:none\" src='images/Button_First_Disable.png' width='30' height='30' align='absmiddle'/> ";
+                Paging += "<img style=\"border:none\" src='images/Button_Rewind_Disable.png' width='30' height='30' align='absmiddle'/>  ";
             }
 
             if (currentpage > 2) {
@@ -50,11 +50,11 @@ public class Paging {
 
             if (currentpage < numpage) {
                 page = currentpage + 1;
-                Paging += "<a href=\"" + URL + "&currentpage=" + page + "\"><img src='images/Button_Fast_Forward.png' width='30' height='30' align='absmiddle'/></a> ";
-                Paging += "<a href=\"" + URL + "&currentpage=" + numpage + "\"><img src='images/Button_Last.png' width='30' height='30' align='absmiddle'/></a> ";
+                Paging += "<a  href=\"" + URL + "&currentpage=" + page + "\"><img style=\"border:none\" src='images/Button_Fast_Forward.png' width='30' height='30' align='absmiddle'/></a> ";
+                Paging += "<a  href=\"" + URL + "&currentpage=" + numpage + "\"><img style=\"border:none\" src='images/Button_Last.png' width='30' height='30' align='absmiddle'/></a> ";
             } else {
-                Paging += "<img src='images/Button_Fast_Forward_Disable.png' width='30' height='30' align='absmiddle'/>";
-                Paging += "<img src='images/Button_Last_Disable.png' width='30' height='30' align='absmiddle'/>";
+                Paging += "<img style=\"border:none\" src='images/Button_Fast_Forward_Disable.png' width='30' height='30' align='absmiddle'/>";
+                Paging += "<img style=\"border:none\" src='images/Button_Last_Disable.png' width='30' height='30' align='absmiddle'/>";
             }
         }
 

@@ -213,8 +213,10 @@ font-weight: bold;
 {
     float:left;
     padding:15px;
+    width: 150px;
+    height: 240px;
 }
-#bttop
+.bt
 {
 border:none;
 }

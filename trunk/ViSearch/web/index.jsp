@@ -296,7 +296,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                        <div style="float:right; margin-bottom:8px; font-size:11px"><a  name="top" href="">Đăng kí</a>&nbsp;&nbsp;<a href="">Đăng nhập</a>&nbsp;&nbsp;</div>
+                                        <div style="float:right; margin-bottom:8px; font-size:11px"><a  name="top" href="register.jsp">Đăng kí</a>&nbsp;&nbsp;<a href="">Đăng nhập</a>&nbsp;&nbsp;</div>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -337,9 +337,7 @@
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
-
                                 <tr>
-
                                     <td valign="top" id="content">
                                         <% out.print(result);%>
 
