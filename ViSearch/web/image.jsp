@@ -46,7 +46,7 @@
                 var R = document.getElementById("divPVTC_R").value;
                 var  C = document.getElementById("divPVTC_C").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchImageController?type=3&KeySearch=" + strQuery + "&w="+R+"&h="+C;
                 window.location = url;
             }
             function showPVTC(){
@@ -91,7 +91,7 @@
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<div class=\"cellImage\">  <table style=\"font-size:13px\">";
+                                result += "<div class=\"cellImage\">  <table style=\"font-size:13px; vertical-align:bottom\">";
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
@@ -114,12 +114,12 @@
                                     title_hl = title.substring(0, 20) + "...";
                                 }
 
-                                result += "<tr>";
-                                result += "<td><b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
-                                result += "</tr>";
+                             //   result += "<tr>";
+                              //  result += "<td><b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
+                              //  result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";
+                                result += "<td width=\"150\" height=\"200\" valign=\"bottom\"><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
@@ -226,9 +226,9 @@
                                                 out.print("<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>");
                                                 out.print("<tr><td>");
                                                 out.print("<div id=\"divPVTC\" class=\"hidden\">");
-                                                out.print("<div style=\"float:left\"> Chiều rộng: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_R\" /></div>");
-                                                out.print("<div style=\"float:left\"> Chiều cao: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_C\" /></div>");
-                                                out.print("<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>");
+                                                out.print("<div style=\"float:left\"> Khoảng chiều rộng: </div><div style=\"float:right\"><input type=\"text\" size=12 class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_R\" /></div>");
+                                                out.print("<div style=\"float:left\"> Khoảng chiều cao: </div><div style=\"float:right\"><input type=\"text\" size=12 class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_C\" /></div>");
+                                                out.print("<div style=\"float:left\"><i>(ví dụ: 50-100)</i></div><div style=\"float:right\">&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>");
                                                 out.print("</div>");
 
                                                 out.print("</td></tr>");

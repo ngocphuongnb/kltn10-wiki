@@ -96,7 +96,6 @@ public class SearchImageController extends HttpServlet {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
-
                         rsp = OnSearchSubmit(keySearch, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -126,7 +125,8 @@ public class SearchImageController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        String facetNameValue = " +(" + facetName + ":" + facetValue + ")";
+                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -134,6 +134,31 @@ public class SearchImageController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
+                    case 3:
+                        facetNameValue = "";
+                        facetValue = "";
+                        sPaging += "&type=2";
+                        if (request.getParameter("w") != null) {
+                            //  facetName = request.getParameter("FacetName");
+                            // sPaging += "&FacetName=" + facetName;
+                            String w = "";
+                            if (request.getParameter("w") != null) {
+                                w = request.getParameter("w");
+                            }
+                            String h = "";
+                            if (request.getParameter("h") != null) {
+                                h = request.getParameter("h");
+                            }
+                            facetNameValue = createFacetValue(w, h);
+                            //  sPaging += "&FacetValue=" + facetValue;
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        docs = rsp.getResults();
+                        QTime = rsp.getQTime();
+
                     default:
                         break;
                 }
@@ -257,13 +282,13 @@ public class SearchImageController extends HttpServlet {
 
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "+(";
         if (MyString.CheckSigned(keySearch)) {
             query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
-                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7";
-                  //  + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
+                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
+                    + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
         } else {
             query += "site_title:(\"" + keySearch + "\")^10 || site_title:(" + keySearch + ")^8 || "
                     + "site_title_unsigned:(\"" + keySearch + "\")^9 || site_title_unsigned:(" + keySearch + ")^7 || "
@@ -273,8 +298,8 @@ public class SearchImageController extends HttpServlet {
                     + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
         query += ")";
-        //query += " +(" + facetName + ":\"" + facetValue + "\")";
-        query += " +(" + facetName + ":" + facetValue + ")";
+        query += facetNameValue;
+        //query += " +(" + facetName + ":" + facetValue + ")";
         solrQuery.setQuery(query);
 
         // Facet
@@ -413,4 +438,13 @@ public class SearchImageController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String createFacetValue(String w, String h) {
+        String result = "";
+        String[] ww = w.split("-");
+        result += " +(width:[" + ww[0] + " TO " + ww[1] + "])";
+        String[] hh = h.split("-");
+        result += " +(height:[" + hh[0] + " TO " + hh[1] + "])";
+        return result;
+    }
 }
