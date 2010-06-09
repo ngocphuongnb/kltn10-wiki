@@ -69,14 +69,30 @@ public class SearchWikiController extends HttpServlet {
         //solrQuery.setQueryType("dismax");
 
         String query = "";
-        if (sortedType == 1) {
-            query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 1:
+                query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+
+            default:
+                break;
         }
+
         //Gop chung co dau va ko dau
         //solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
 
         if (MyString.CheckSigned(keySearch)) {
-            query += "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
+            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^5 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
         } else {
             query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
                     + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
@@ -98,16 +114,34 @@ public class SearchWikiController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         String str = "";
-        if (sortedType == 1) {
-            str = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+        String trackingboost = "";
+         switch(sortedType)
+        {
+            case 0:
+                str = "";
+                trackingboost = "";
+                break;
+            case 1:
+                str = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+                trackingboost = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     trackingboost = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     trackingboost = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+
+            default:
+                break;
         }
         SolrQuery solrQuery = new SolrQuery();
         String query = keySearch;
         if (facetName.equals("") == false && facetName != null) {
             if (MyString.CheckSigned(keySearch)) {
-                query += "+(wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
+                query += "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
             } else {
-                query += "+(wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+                query += "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
                         + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
                         + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + "))";
             }

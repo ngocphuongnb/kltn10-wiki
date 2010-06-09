@@ -44,6 +44,8 @@ public class DetailWikiController extends HttpServlet {
 
             if (request.getParameter("id") != null) {
                 String keySearchId = request.getParameter("id");
+                //Phan update tracking boosting
+                int id_link = Integer.parseInt(request.getParameter("id_link").toString());
 
                 //Phan tracking
                 TrackingDTO tracking = new TrackingDTO();
@@ -63,6 +65,7 @@ public class DetailWikiController extends HttpServlet {
                 tracking.setSearchType(1);
                 TrackingBUS tbus = new TrackingBUS();
                 tbus.InsertTracking(tracking, "visearch");
+                tbus.UpdateKeysearch(id_link, keysearch, "viwiki", "visearch");
                 // end tracking
                 String link = request.getParameter("url").toString();
                 String url = "http://vi.wikipedia.org/wiki/" + URLEncoder.encode(link, "UTF-8");

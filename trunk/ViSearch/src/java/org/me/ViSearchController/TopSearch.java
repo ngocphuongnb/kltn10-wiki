@@ -38,7 +38,7 @@ public class TopSearch extends HttpServlet {
                 String sController = "";
                 switch (searchtype) {
                     case 1:
-                        sController = "SearchWikiControlller";
+                        sController = "SearchWikiController";
                         break;
                     case 2:
                         sController = "SearchRaoVatController";
