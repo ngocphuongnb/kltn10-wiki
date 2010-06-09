@@ -23,4 +23,10 @@ public class TrackingBUS {
         TrackingDAO tdao = new TrackingDAO();
         return tdao.GetTopSearch(searchtype, database);
     }
+
+    public boolean UpdateKeysearch(int id_link, String keySearch, String table, String database)
+    {
+        TrackingDAO tdao = new TrackingDAO();
+        return tdao.UpdateKeysearch(id_link, keySearch, table, database);
+    }
 }

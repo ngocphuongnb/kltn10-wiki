@@ -141,6 +141,7 @@
                                 String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
                                 String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
                                 Date timestamp = (Date) (listdocs.get(i).getFieldValue("timestamp"));
@@ -166,7 +167,7 @@
                                 }
 
 
-                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "')\">" + title_hl + "</a><b></td>";
+                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "&id_link=" + id_link +"')\">" + title_hl + "</a><b></td>";
                                 result += "<tr>";
                                 result += url;
                                 result += "</tr>";
@@ -242,7 +243,7 @@
 %>
 
         <%
-                    // Get query date
+                    // Get Facet date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
@@ -260,7 +261,6 @@
                             + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
 
-                    // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
                     facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";

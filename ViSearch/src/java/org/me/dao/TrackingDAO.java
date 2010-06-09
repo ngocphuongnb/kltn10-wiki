@@ -65,4 +65,24 @@ public class TrackingDAO {
         }
         return result;
     }
+
+    public boolean UpdateKeysearch(int id_link, String keySearch, String table, String database) {
+        boolean result = true;
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL update_keysearch_" + table + "(?, ?)}");
+            cs.setInt(1, id_link);
+            cs.setString(2, keySearch);
+
+            int n = cs.executeUpdate();
+            if (n == 0) {
+                result = false;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
 }
