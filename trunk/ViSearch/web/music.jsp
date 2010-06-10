@@ -42,11 +42,12 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
+                f = document.getElementById('field').value;
                 if(keysearch == "")
                     return;
                 else
                 {
-                    var url = "SearchMusicController?type=0&sp=1&KeySearch=";
+                    var url = "SearchMusicController?type=0&sp=1&f="+f+"&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);

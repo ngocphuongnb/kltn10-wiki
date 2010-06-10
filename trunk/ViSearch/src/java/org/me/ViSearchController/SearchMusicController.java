@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.BufferedReader;
@@ -46,7 +45,9 @@ import org.me.dto.FacetDateDTO;
  * @author tuandom
  */
 public class SearchMusicController extends HttpServlet {
-   SolrServer server;
+
+    SolrServer server;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -55,7 +56,7 @@ public class SearchMusicController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -68,7 +69,8 @@ public class SearchMusicController extends HttpServlet {
         int type = -1;
         int QTime = 0;
         List<FacetField> listFacet = null;
-            ArrayList<FacetDateDTO> listFacetDate = null;
+        String FieldId = null;
+        ArrayList<FacetDateDTO> listFacetDate = null;
         try {
 
 
@@ -83,11 +85,14 @@ public class SearchMusicController extends HttpServlet {
                 type = Integer.parseInt(request.getParameter("type"));
                 sPaging += "type=" + type;
             }
+            if (request.getParameter("f") != null) {
+                FieldId = request.getParameter("f");
+            }
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
-                
+
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
 
@@ -95,12 +100,12 @@ public class SearchMusicController extends HttpServlet {
                     case 0:
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
-                            if (sCollation.equals("")==false) {
+                            if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
 
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmitByField(keySearch, FieldId, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -167,7 +172,7 @@ public class SearchMusicController extends HttpServlet {
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
-            } catch (Exception e) {
+        } catch (Exception e) {
             out.print(e.getMessage());
         } finally {
             out.close();
@@ -178,21 +183,33 @@ public class SearchMusicController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
         //solrQuery.setQueryType("dismax");
 
-//        String query = "";
-//         if (MyString.CheckSigned(keySearch)) {
-//            query += "title:(\"" + keySearch + "\")^4 || title:(" + keySearch + ")^3 || album:(\"" + keySearch + "\")^2 || album:(" + keySearch + ")^1.5 || singer:(\"" + keySearch + "\")^1.5 || singer:(" + keySearch + ")";
-//        } else {
-//            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
-//                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
-//                    + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + ")";
-//        }
+        String query = "";
+        if (MyString.CheckSigned(keySearch)) {
+            query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
+                    + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
+                    + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
+                    + "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ") || "
+                    + "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ")";
 
-        if(MyString.CheckSigned(keySearch))
-            solrQuery.setQueryType("dismax");
-        else
-            solrQuery.setQueryType("dismax2");
+        } else {
+            query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ")^7 || "
+                    + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
+                    + "album_index_unsigned:(\"" + keySearch + "\")^5 || album_index_unsigned:(" + keySearch + ")^3 || "
+                    + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
+                    + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
+                    + "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ") || "
+                    + "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ") || "
+                    + "artist_index_unsigned:(\"" + keySearch + "\") || artist_index_unsigned:(" + keySearch + ") || "
+                    + "singer_index_unsigned:(\"" + keySearch + "\") || singer_index_unsigned:(" + keySearch + ")";
+        }
+        solrQuery.setQuery(query);
+        //if(MyString.CheckSigned(keySearch))
+        //    solrQuery.setQueryType("dismax");
+        /// else
+        //    solrQuery.setQueryType("dismax2");
 
-        solrQuery.setQuery(keySearch);
+        // solrQuery.setQuery(keySearch);
 
         // Facet
         solrQuery.setFacet(true);
@@ -215,14 +232,66 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
-      QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitByField(String keySearch, String fieldId, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        if (MyString.CheckSigned(keySearch)) {
+            if (fieldId.equals("1")) {
+                query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8";
+            } else if (fieldId.equals("2")) {
+                query += "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4";
+            } else if (fieldId.equals("3")) {
+                query += "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ")";
+            } else if (fieldId.equals("4")) {
+                query += "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ")";
+            } else if (fieldId.equals("5")) {
+                query += "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2";
+            }
+
+
+        } else {
+            query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ")^7 || "
+                    + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
+                    + "album_index_unsigned:(\"" + keySearch + "\")^5 || album_index_unsigned:(" + keySearch + ")^3 || "
+                    + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
+                    + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
+                    + "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ") || "
+                    + "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ") || "
+                    + "artist_index_unsigned:(\"" + keySearch + "\") || artist_index_unsigned:(" + keySearch + ") || "
+                    + "singer_index_unsigned:(\"" + keySearch + "\") || singer_index_unsigned:(" + keySearch + ")";
+        }
+        solrQuery.setQuery(query);
+
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
+        solrQuery.addFacetField("singer");
+        solrQuery.addFacetField("artist");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         if (!facetName.equals("") && facetName != null) {
             keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
         }
         solrQuery.setQuery(keySearch);
 
-       // Facet
+        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.addFacetField("singer");
@@ -334,7 +403,7 @@ public class SearchMusicController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -347,7 +416,7 @@ public class SearchMusicController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -359,5 +428,4 @@ public class SearchMusicController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
