@@ -305,7 +305,6 @@ public class SearchImageController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        // solrQuery.addFacetField("widdh");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
