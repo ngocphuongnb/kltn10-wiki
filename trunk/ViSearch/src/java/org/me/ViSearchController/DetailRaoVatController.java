@@ -172,7 +172,7 @@ public class DetailRaoVatController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "rv_title");
 
-        query.setQuery("rv_title:" + MyString.cleanQueryTerm(strquery));
+        query.setQuery("rv_title:" + ClientUtils.escapeQueryChars(strquery));
         //query.setQuery(ClientUtils.escapeQueryChars(strquery));
         query.setStart(0);
         query.setRows(100);

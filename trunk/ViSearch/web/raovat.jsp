@@ -18,10 +18,19 @@
         <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=2");
+                //$("#tbTopSearch").load("TopSearch?SearchType=2");
             });
         </script>
         <script language="javascript">
+            $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=2",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -193,10 +202,10 @@
                         if (numpage > 1) {
                             result += "Tổng số trang là: " + numpage + "<br/>";
                         }
-                        result += "<p><font color=\"#CC3333\" size=\"+1\">" +strpaging + "</font></p><br/><br/>";
+                        result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -233,24 +242,24 @@
                     }
 
                     // End get Facet
-%>
-<%
+        %>
+        <%
                     // Get query date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
                     Calendar cl = Calendar.getInstance();
 
-                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH)-1)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH) - 1)
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, -7);
                     String str1tuanqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, +7);
                     String str1thangqua = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
 
                     // 1976-03-06T23:59:59.999Z
@@ -279,7 +288,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -304,9 +313,11 @@
                                 <div class="mnu">Đăng nhập</div>
                                 <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
-                                             out.print(facet);
-                                              out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
-                                         }%>
+                                                out.print(facet);
+                                                out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
+                                            }%>
+
+                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
                                 <table  id="tbTopSearch">
 
                                 </table>
