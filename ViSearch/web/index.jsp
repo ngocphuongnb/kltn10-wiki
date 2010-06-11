@@ -17,11 +17,20 @@
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=1");
+            $(document).ready(function(){                
             });
+
         </script>
         <script language="javascript">
+             $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=1",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -167,7 +176,7 @@
                                 }
 
 
-                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "&id_link=" + id_link +"')\">" + title_hl + "</a><b></td>";
+                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "&id_link=" + id_link + "')\">" + title_hl + "</a><b></td>";
                                 result += "<tr>";
                                 result += url;
                                 result += "</tr>";
@@ -205,7 +214,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -218,7 +227,6 @@
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
-                            facet += "<td>";
                             facet += "<td>";
                             String fieldName = listFacet.get(i).getName();
                             facet += "<b>Facet: " + fieldName + "</b>";
@@ -240,7 +248,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -286,7 +294,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -324,7 +332,7 @@
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
                                             }%>
 
-                                <div class="mnu">Tìm kiếm nhiều</div>
+                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
                                 <table id="tbTopSearch">
 
                                 </table>

@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
@@ -133,7 +135,7 @@ public class SearchRaoVatController extends HttpServlet {
                             for (int j = i + 1; j < docs.size(); j++) {
                                 String title1 = docs.get(i).getFirstValue("rv_title").toString();
                                 String title2 = docs.get(j).getFirstValue("rv_title").toString();
-                                if (title1.trim().equals(title2.trim())) {
+                                if (title1.trim().toLowerCase().equals(title2.trim().toLowerCase())) {
                                     Date date1 = (Date) docs.get(i).getFieldValue("last_update");
                                     Date date2 = (Date) docs.get(j).getFieldValue("last_update");
                                     if (date1.compareTo(date2) >= 0) {
@@ -220,7 +222,8 @@ public class SearchRaoVatController extends HttpServlet {
                     sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                     request.setAttribute("NumPage", numpage);
                 } else {
-                    sPaging = "20 kết quả tốt nhất trong " + numRow + " kết quả tìm được";
+                    int min = (int) Math.min(20, numRow);
+                    sPaging = min + " kết quả tốt nhất trong " + numRow + " kết quả tìm được";
                 }
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
@@ -401,7 +404,6 @@ public class SearchRaoVatController extends HttpServlet {
     }
 
     QueryResponse OnMLT(String q, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
-        //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
 
         // Facet
@@ -423,7 +425,9 @@ public class SearchRaoVatController extends HttpServlet {
             query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
         }
 
-        query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
+        query.setQuery("rv_title:" + ClientUtils.escapeQueryChars(q));
+
+        //query.setQuery("rv_title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(0);
         query.setRows(100);

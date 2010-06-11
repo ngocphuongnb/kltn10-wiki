@@ -55,7 +55,7 @@ public class TopSearch extends HttpServlet {
                 ArrayList<String> arr = new ArrayList<String>();
                 TrackingBUS tbus = new TrackingBUS();
                 arr = tbus.GetTopSearch(searchtype, "visearch");
-                String result = "<tr><th><div class='title_content' align='left'>Từ khóa tìm kiếm nhiều nhất trong ngày:</div></th></tr>";
+                String result = "";
                 String url = "";
                 for (String keysearch : arr) {
                     url = String.format("%s?type=0&sp=1&KeySearch=%s&SortedType=0", sController, keysearch);
