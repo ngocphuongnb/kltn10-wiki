@@ -5,8 +5,6 @@
 
 package BUS;
 
-import DAO.VideoDAO;
-import DTO.VideoDTO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -16,11 +14,11 @@ import java.util.ArrayList;
  */
 public class VideoBUS {
 
-    public static ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException {
-        return VideoDAO.getDataList(start, end);
-    }
-
-    public static int CountRecord() throws SQLException {
-        return VideoDAO.CountRecord();
-    }
+//    public static ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException {
+//        return VideoDAO.getDataList(start, end);
+//    }
+//
+//    public static int CountRecord() throws SQLException {
+//        return VideoDAO.CountRecord();
+//    }
 }

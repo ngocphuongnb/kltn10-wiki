@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author VinhPham
  */
 public class SynonymWordBUS {
-    public static void generateSynonym() throws SQLException, ParseException, java.text.ParseException, IOException{
-        SynonymWordDAO.generateSynonym();
-    }
+//    public static void generateSynonym() throws SQLException, ParseException, java.text.ParseException, IOException{
+//        SynonymWordDAO.generateSynonym();
+//    }
 }
