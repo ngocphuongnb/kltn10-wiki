@@ -75,7 +75,7 @@ public class MySolrJ {
         return UnicodeHelper.removeUnicodeSign(src);
     }
 
-    public void ImportWiki2Solr(String title, String timestime, String ip, String text, String restrictions, String username, String comment, int start) throws MalformedURLException, SolrServerException, IOException {
+    public void ImportWiki2Solr(String title, Calendar timestamp, String ip, String text, String restrictions, String username, String comment, int start) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
    
@@ -95,7 +95,7 @@ public class MySolrJ {
             //doc.addField("wk_text_unsigned", RemoveSignVN(text));
            // String time = format2SolrTime(timestime);
 
-            //doc.addField("timestamp", timestime); // Test lai
+            //doc.addField("timestamp", timestamp); // Test lai
             doc.addField("username", username);
             //doc.addField("username_unsigned", RemoveSignVN(username));
             docs.add(doc);
