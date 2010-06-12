@@ -28,7 +28,7 @@ public class WSIndex {
     @WebMethod(operationName = "Index2SolrWiki")
     public boolean Index2SolrWiki(@WebParam(name = "title")
     String title, @WebParam(name = "timestamp")
-    String timestamp, @WebParam(name = "ip")
+    Calendar timestamp, @WebParam(name = "ip")
     String ip, @WebParam(name = "username")
     String username, @WebParam(name = "comment")
     String comment, @WebParam(name = "restriction")
@@ -37,7 +37,7 @@ public class WSIndex {
 
         MySolrJ ms = new MySolrJ();
         try {
-           ms.ImportWiki2Solr(title, null, ip, text, restriction, username, comment, 20000);
+           ms.ImportWiki2Solr(title, timestamp, ip, text, restriction, username, comment, 20000);
             return true;
         } catch (MalformedURLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
