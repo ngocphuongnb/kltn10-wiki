@@ -9,7 +9,7 @@
 <xs:complexType name="Index2SolrWiki">
 <xs:sequence>
 <xs:element name="title" type="xs:string" minOccurs="0" />
-<xs:element name="timestamp" type="xs:string" minOccurs="0" />
+<xs:element name="timestamp" type="xs:dateTime" minOccurs="0" />
 <xs:element name="ip" type="xs:string" minOccurs="0" />
 <xs:element name="username" type="xs:string" minOccurs="0" />
 <xs:element name="comment" type="xs:string" minOccurs="0" />
