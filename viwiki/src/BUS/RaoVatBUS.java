@@ -4,23 +4,17 @@
  */
 package BUS;
 
-import DAO.RaoVatDAO;
-import DTO.RaoVatDTO;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-
 /**
  *
  * @author VinhPham
  */
 public class RaoVatBUS {
 
-    public static ArrayList<RaoVatDTO> getDataList(int start, int end) throws SQLException, ParseException {
-        return RaoVatDAO.getDataList(start, end);
-    }
-
-    public static int CountRecord() throws SQLException {
-        return RaoVatDAO.CountRecord();
-    }
+//    public static ArrayList<RaoVatDTO> getDataList(int start, int end) throws SQLException, ParseException {
+//        return RaoVatDAO.getDataList(start, end);
+//    }
+//
+//    public static int CountRecord() throws SQLException {
+//        return RaoVatDAO.CountRecord();
+//    }
 }
