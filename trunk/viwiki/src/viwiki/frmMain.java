@@ -17,7 +17,7 @@ import BUS.SynonymWordBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import ViSearchSyncDataService.ViwikiPageDTO;
-import ViSearchSyncDataService.
+import ViSearchSyncDataService.*;
 import ViSearchSyncDataService.WSIndex;
 import ViSearchSyncDataService.WSIndexService;
 import java.awt.Cursor;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.xml.datatype.DatatypeConfigurationException;
 import org.apache.solr.client.solrj.SolrServerException;
 
 /**
@@ -262,7 +263,11 @@ public class frmMain extends javax.swing.JDialog {
         try {
             MusicBUS bus = new MusicBUS();
             int numOfRecords = bus.CountRecord();
-            importDataWiki(numOfRecords);
+            try {
+                importDataMusic(numOfRecords);
+            } catch (DatatypeConfigurationException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (MalformedURLException ex) {
             Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SolrServerException ex) {
@@ -357,7 +362,7 @@ public class frmMain extends javax.swing.JDialog {
         WSIndex port = service.getWSIndexPort();
         int start = 0;
         while (start < 10000) {
-            ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
+            ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
             ViwikiPageBUS bus = new ViwikiPageBUS();
             list = bus.getDataList(start, 2000);
             port.syncDataWiki(list);
@@ -389,7 +394,7 @@ public class frmMain extends javax.swing.JDialog {
 ////        }
 //    }
 //
-    public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+    public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
 //        // TODO code application logic here
 //        MySolrJ ms = new MySolrJ();
 //        ms.EmptyData("music");
@@ -407,10 +412,10 @@ public class frmMain extends javax.swing.JDialog {
         WSIndex port = service.getWSIndexPort();
         int start = 0;
         while (start < 10000) {
-            ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            ViwikiPageBUS bus = new ViwikiPageBUS();
+            ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
+            MusicBUS bus = new MusicBUS();
             list = bus.getDataList(start, 2000);
-            port.syncDataWiki(list);
+            port.syncDataMusic(list);
             start += 2000;
         }
     }

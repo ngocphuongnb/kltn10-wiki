@@ -46,7 +46,7 @@ public class MusicDAO {
 
 
             String timestamp = rs.getString("DateUpload");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mms'Z'");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = sdf.parse(timestamp);
             GregorianCalendar gcal = new GregorianCalendar();
             gcal.setTime(d);
