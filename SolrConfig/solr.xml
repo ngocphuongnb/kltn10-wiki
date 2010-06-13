@@ -33,5 +33,8 @@
     <core name="raovat" instanceDir="raovat" />
 	<core name="music" instanceDir="music" />
 	<core name="video" instanceDir="video" />
+	<core name="all" instanceDir="all" />
+	<core name="image" instanceDir="image" />
+	<core name="news" instanceDir="news" />
   </cores>
 </solr>
