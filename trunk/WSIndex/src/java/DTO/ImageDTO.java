@@ -10,16 +10,24 @@ package DTO;
  * @author tuandom
  */
 public class ImageDTO {
+    private int _id;
      private String _category;
     private String _url;
     private String _website;
     private String _site_title;
     private String _site_body;
     private String _fileType;
-    private int _width;
-    private int _height;
-    private int _size;
+    private float _width;
+    private float _height;
+    private String _size;
 
+    public void setId(int _id) {
+        this._id = _id;
+    }
+
+    public int getId() {
+        return _id;
+    }
     public String getCategory() {
         return _category;
     }
@@ -28,7 +36,7 @@ public class ImageDTO {
         return _fileType;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return _height;
     }
 
@@ -40,7 +48,7 @@ public class ImageDTO {
         return _site_title;
     }
 
-    public int getSize() {
+    public String getSize() {
         return _size;
     }
 
@@ -54,7 +62,7 @@ public class ImageDTO {
         return _website;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return _width;
     }
 
@@ -66,7 +74,7 @@ public class ImageDTO {
         this._fileType = _fileType;
     }
 
-    public void setHeight(int _height) {
+    public void setHeight(float _height) {
         this._height = _height;
     }
 
@@ -78,7 +86,7 @@ public class ImageDTO {
         this._site_title = _site_title;
     }
 
-    public void setSize(int _size) {
+    public void setSize(String _size) {
         this._size = _size;
     }
 
@@ -91,7 +99,7 @@ public class ImageDTO {
         this._website = _website;
     }
 
-    public void setWidth(int _width) {
+    public void setWidth(float _width) {
         this._width = _width;
     }
 

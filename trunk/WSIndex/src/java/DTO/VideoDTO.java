@@ -12,13 +12,20 @@ import java.util.Calendar;
  */
 public class VideoDTO {
 
+    private int _id;
     private String _title;
     private String _category;
     private String _url;
     private String _duration;
 
 
+public void setId(int _id) {
+        this._id = _id;
+    }
 
+    public int getId() {
+        return _id;
+    }
     public String getCategory() {
         return _category;
     }

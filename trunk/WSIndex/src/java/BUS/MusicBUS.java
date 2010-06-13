@@ -16,11 +16,16 @@ import java.util.ArrayList;
  */
 public class MusicBUS {
 
-    public static ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException {
+    public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException {
         return MusicDAO.getDataList(start, end);
     }
 
-    public static int CountRecord() throws SQLException {
+    public int CountRecord() throws SQLException {
         return MusicDAO.CountRecord();
+    }
+     public void SyncDataMusic(ArrayList<MusicDTO> listPage) throws SQLException
+    {
+        MusicDAO dao = new MusicDAO();
+        dao.SyncDataMusic(listPage);
     }
 }

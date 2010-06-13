@@ -4,7 +4,13 @@
  */
 package Utils;
 
+import BUS.ImageBUS;
+import BUS.MusicBUS;
+import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
+import DTO.ImageDTO;
+import DTO.MusicDTO;
+import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
 import Utils.UnicodeHelper;
 import java.io.IOException;
@@ -117,53 +123,92 @@ public class MySolrJ {
             start += 2000;
         }
     }
-//     public void ImportMusic2Solr(ArrayList<MusicDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
-//        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-//        SolrInputDocument doc;
-//        MusicDTO pagedto = new MusicDTO();
-//        Iterator<MusicDTO> iter = listpage.iterator();
-//        while (iter.hasNext()) {
-//            start++;
-//            pagedto = iter.next();
-//            doc = new SolrInputDocument();
-//
-//            doc.addField("id",String.valueOf(start));
-//            doc.addField("title", pagedto.getTitle());
-//            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
-//
-//            doc.addField("album", pagedto.getAlbum());
-//            doc.addField("album_index", pagedto.getAlbum());
-//            doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
-//
-//            doc.addField("artist", pagedto.getArtist());
-//            doc.addField("artist_index", pagedto.getArtist());
-//            doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
-//
-//            doc.addField("singer", pagedto.getSinger());
-//            doc.addField("singer_index", pagedto.getSinger());
-//            doc.addField("singer_index_unsigned", RemoveSignVN(pagedto.getSinger()));
-//
-//            doc.addField("category", pagedto.getCategory());
-//            doc.addField("category_index", pagedto.getCategory());
-//            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
-//
-//            doc.addField("url", pagedto.getUrl());
-//            doc.addField("lyric", pagedto.getLyric());
-//            doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
-//            doc.addField("dateUpload", pagedto.getDayUpload().getTime());
-//            docs.add(doc);
-//        }
-//
-//       SolrServer server = getSolrServer("music");
-//        //server.add(docs);
-//       // server.commit();
-//
-//        UpdateRequest req = new UpdateRequest();
-//        req.setAction(ACTION.COMMIT, false, false);
-//        req.add(docs);
-//        UpdateResponse rsp = req.process(server);
-//
-//    }
+     public void IndexMusic() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+
+        EmptyData("music");
+        MusicBUS bus = new MusicBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
+            list = bus.getDataList(start, 2000);
+            ImportMusic2Solr(list);
+            start += 2000;
+        }
+    }
+      public void IndexImage() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+
+        EmptyData("image");
+        ImageBUS bus = new ImageBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
+            list = bus.getDataList(start, 2000);
+            ImportImage2Solr(list);
+            start += 2000;
+        }
+    }
+       public void IndexVideo() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+
+        EmptyData("video");
+        VideoBUS bus = new VideoBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
+            list = bus.getDataList(start, 2000);
+            ImportVideo2Solr(list);
+            start += 2000;
+        }
+    }
+     public void ImportMusic2Solr(ArrayList<MusicDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        MusicDTO pagedto = new MusicDTO();
+        Iterator<MusicDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+           
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+
+           doc.addField("id", pagedto.getId());
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("album", pagedto.getAlbum());
+            doc.addField("album_index", pagedto.getAlbum());
+            doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
+
+            doc.addField("artist", pagedto.getArtist());
+            doc.addField("artist_index", pagedto.getArtist());
+            doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
+
+            doc.addField("singer", pagedto.getSinger());
+            doc.addField("singer_index", pagedto.getSinger());
+            doc.addField("singer_index_unsigned", RemoveSignVN(pagedto.getSinger()));
+
+            doc.addField("category", pagedto.getCategory());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("url", pagedto.getUrl());
+            doc.addField("lyric", pagedto.getLyric());
+            doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
+            doc.addField("dateUpload", pagedto.getDayUpload().getTime());
+            docs.add(doc);
+        }
+
+       SolrServer server = getSolrServer("music");
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+
+    }
 //
 //    public void ImportRaoVat2Solr(ArrayList<RaoVatDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
 //        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
@@ -253,79 +298,76 @@ public class MySolrJ {
 //        }
 //        return "";
 //    }
-//    public void ImportVideo2Solr(ArrayList<VideoDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
-//        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-//        SolrInputDocument doc;
-//        VideoDTO pagedto = new VideoDTO();
-//        Iterator<VideoDTO> iter = listpage.iterator();
-//        while (iter.hasNext()) {
-//            start++;
-//            pagedto = iter.next();
-//            doc = new SolrInputDocument();
-//            doc.addField("id", String.valueOf(start));
-//
-//            doc.addField("title", pagedto.getTitle());
-//            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
-//
-//            doc.addField("category", pagedto.getCategory());
-//            doc.addField("category_index", pagedto.getCategory());
-//            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
-//
-//            doc.addField("url", pagedto.getUrl());
-//            doc.addField("duration", pagedto.getDuration());
-//
-//
-//            docs.add(doc);
-//        }
-//
-//
-//        SolrServer server = getSolrServer("video");
-//        //server.add(docs);
-//       // server.commit();
-//
-//        UpdateRequest req = new UpdateRequest();
-//        req.setAction(ACTION.COMMIT, false, false);
-//        req.add(docs);
-//        UpdateResponse rsp = req.process(server);
-//    }
-//
-//     public void ImportImage2Solr(ArrayList<ImageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
-//        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-//        SolrInputDocument doc;
-//        ImageDTO pagedto = new ImageDTO();
-//        Iterator<ImageDTO> iter = listpage.iterator();
-//        while (iter.hasNext()) {
-//            start++;
-//            pagedto = iter.next();
-//            doc = new SolrInputDocument();
-//            doc.addField("id",String.valueOf(start));
-//            doc.addField("category", pagedto.getCategory().trim());
-//            doc.addField("category_index", pagedto.getCategory());
-//            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
-//            doc.addField("url", pagedto.getUrl());
-//            doc.addField("website", pagedto.getWebsite());
-//            doc.addField("site_title", pagedto.getSite_title());
-//            doc.addField("site_title_unsigned", RemoveSignVN(pagedto.getSite_title()));
-//            doc.addField("site_body", pagedto.getSite_body());
-//            doc.addField("site_body_unsigned", RemoveSignVN(pagedto.getSite_body()));
-//            doc.addField("fileType", pagedto.getFileType());
-//            doc.addField("width", Integer.toString(pagedto.getWidth()));
-//            doc.addField("height", Integer.toString(pagedto.getHeight()));
-//            doc.addField("size", Integer.toString(pagedto.getSize()));
-//
-//            docs.add(doc);
-//        }
-//
-//
-//        SolrServer server = getSolrServer("image");
-//        //server.add(docs);
-//       // server.commit();
-//
-//        UpdateRequest req = new UpdateRequest();
-//        req.setAction(ACTION.COMMIT, false, false);
-//        req.add(docs);
-//        UpdateResponse rsp = req.process(server);
-//    }
-//
+    public void ImportVideo2Solr(ArrayList<VideoDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        VideoDTO pagedto = new VideoDTO();
+        Iterator<VideoDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+             doc.addField("id", pagedto.getId());
+
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("category", pagedto.getCategory());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("url", pagedto.getUrl());
+            doc.addField("duration", pagedto.getDuration());
+
+
+            docs.add(doc);
+        }
+
+
+        SolrServer server = getSolrServer("video");
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
+     public void ImportImage2Solr(ArrayList<ImageDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        ImageDTO pagedto = new ImageDTO();
+        Iterator<ImageDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+             doc.addField("id", pagedto.getId());
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("url", pagedto.getUrl());
+            doc.addField("website", pagedto.getWebsite());
+            doc.addField("site_title", pagedto.getSite_title());
+            doc.addField("site_title_unsigned", RemoveSignVN(pagedto.getSite_title()));
+            doc.addField("site_body", pagedto.getSite_body());
+            doc.addField("site_body_unsigned", RemoveSignVN(pagedto.getSite_body()));
+            doc.addField("fileType", pagedto.getFileType());
+            doc.addField("width", Float.toString(pagedto.getWidth()));
+            doc.addField("height", Float.toString(pagedto.getHeight()));
+            doc.addField("size", pagedto.getSize());
+
+            docs.add(doc);
+        }
+
+        SolrServer server = getSolrServer("image");
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
 }
 
