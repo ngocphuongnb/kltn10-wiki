@@ -470,7 +470,7 @@ public class SearchWikiController extends HttpServlet {
                     case 3:
                         facetName = "";
                         facetValue = "";
-                        sPaging += "&type=2";
+                        sPaging += "&type=3";
                         if (request.getParameter("FacetName") != null) {
                             facetName = request.getParameter("FacetName");
                             sPaging += "&FacetName=" + facetName;

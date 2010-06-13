@@ -139,7 +139,6 @@
                                 String title_hl = title;
                                 String photo = "images/Noimage.jpg";
                                 if (listdocs.get(i).getFieldValue("photo") != null && !listdocs.get(i).getFieldValue("photo").toString().equals("")) {
-
                                     photo = (listdocs.get(i).getFieldValue("photo")).toString();
                                 }
 
@@ -293,10 +292,13 @@
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
-                    <tr><td height="20" colspan="2" align="center" valign="middle"></td></tr>
+                    <tr><td height="8" colspan="2" align="center" valign="middle"></td></tr>
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr><td>
+                                         <%@include file="template/frm_login.jsp" %>
+                                    </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <%@include file="template/banner_RaoVat.jsp"%>
@@ -310,8 +312,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                <div class="mnu">Đăng nhập</div>
-                                <%@include file="template/login.jsp" %>
+                              
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);

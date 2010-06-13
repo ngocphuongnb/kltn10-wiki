@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.me.ViSearchController;
 
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -33,21 +34,19 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
-import org.me.dto.FacetDateDTO;
 
 /**
  *
  * @author tuandom
  */
-public class SearchImageController extends HttpServlet {
-
+public class SearchNewsController extends HttpServlet {
     SolrServer server;
-
-    /**
+    /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -64,15 +63,18 @@ public class SearchImageController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        String sPaging = "/ViSearch/SearchImageController?";
         int type = -1;
         int QTime = 0;
+        int sortedType = 0;
+        String sPaging = "/ViSearch/SearchNewsController?";
+        List<FacetField> listFacet = null;
+
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
 
-            server = SolrJConnection.getSolrServer("image");
+            server = SolrJConnection.getSolrServer("news");
             int start = (currentpage - 1) * pagesize;
 
             if (request.getParameter("type") != null) {
@@ -80,8 +82,11 @@ public class SearchImageController extends HttpServlet {
                 sPaging += "type=" + type;
             }
 
-            List<FacetField> listFacet = null;
-            ArrayList<FacetDateDTO> listFacetDate = null;
+            if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "&SortedType=" + sortedType;
+            }
+
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
@@ -92,11 +97,12 @@ public class SearchImageController extends HttpServlet {
                     case 0:
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
-                            if (sCollation.equals("") == false) {
+                            if (!sCollation.equals("")) {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -105,7 +111,7 @@ public class SearchImageController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 1:
-                        rsp = OnMLT(keySearch, start, pagesize);
+                        rsp = OnMLT(keySearch, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
@@ -113,24 +119,42 @@ public class SearchImageController extends HttpServlet {
                         }
                         QTime = rsp.getQTime();
 
+                        for (int i = 0; i < docs.size() - 1; i++) {
+                            for (int j = i + 1; j < docs.size(); j++) {
+                                String title1 = docs.get(i).getFirstValue("title").toString();
+                                String title2 = docs.get(j).getFirstValue("title").toString();
+                                if (title1.trim().equals(title2.trim())) {
+                                    Date date1 = (Date) docs.get(i).getFieldValue("created");
+                                        Date date2 = (Date) docs.get(j).getFieldValue("created");
+                                    if (date1.compareTo(date2) >= 0) {
+                                        docs.remove(j);
+                                        j--;
+                                    } else {
+                                        docs.remove(i);
+                                        i--;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        int idem = Math.min(20, docs.size());
+                        while (docs.size() > idem) {
+                            docs.remove(idem);
+                        }
                         // Get Facet
-                        listFacet = rsp.getFacetFields();
+                        //listFacet = rsp.getFacetFields();
                         break;
                     case 2:
-                        String facetName = "";
-                        String facetValue = "";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            facetValue = request.getParameter("FacetValue");
-                            sPaging += "&FacetName=" + facetName;
-                            sPaging += "&FacetValue=" + facetValue;
+                        String qf = "";
+                        String qv = "";
+                        if (request.getParameter("qf") != null) {
+                            qf = request.getParameter("qf");
+                            qv = request.getParameter("qv");
+                            sPaging += "&qf=" + qf;
+                            sPaging += "&qv=" + qv;
                         }
-                        String facetNameValue = " +(" + facetName + ":" + facetValue + ")";
-                        if (facetName.equals("category")) {
-                            // Neu la text thi them ""
-                            facetNameValue = " +(" + facetName + ":\"" + facetValue + "\")";
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -139,30 +163,31 @@ public class SearchImageController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 3:
-                        facetNameValue = "";
-                        facetValue = "";
-                        sPaging += "&type=3";
-                        if (request.getParameter("w") != null) {
-                            //  facetName = request.getParameter("FacetName");
-                            // sPaging += "&FacetName=" + facetName;
-                            String w = "";
-                            if (request.getParameter("w") != null) {
-                                w = request.getParameter("w");
+                        qf = "";
+                        qv = "";
+                        if (request.getParameter("qf") != null) {
+                            qf = request.getParameter("qf");
+                            sPaging += "&qf=" + qf;
+                            String startDate = "";
+                            if (request.getParameter("sd") != null) {
+                                startDate = request.getParameter("sd");
                             }
-                            String h = "";
-                            if (request.getParameter("h") != null) {
-                                h = request.getParameter("h");
+                            String endDate = "";
+                            if (request.getParameter("ed") != null) {
+                                endDate = request.getParameter("ed");
                             }
-                            facetNameValue = createFacetValue(w, h);
-                            //  sPaging += "&FacetValue=" + facetValue;
+                            qv = createFacetValue(startDate, endDate);
+                            sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
                         docs = rsp.getResults();
                         QTime = rsp.getQTime();
-
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        break;
                     default:
                         break;
                 }
@@ -170,6 +195,7 @@ public class SearchImageController extends HttpServlet {
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
+            request.setAttribute("SortedType", sortedType);
             if (docs != null) {
                 numRow = docs.getNumFound();
                 int numpage = (int) (numRow / pagesize);
@@ -177,15 +203,19 @@ public class SearchImageController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
-                request.setAttribute("ListFacetDate", listFacetDate);
+                //request.setAttribute("ListFacetDate", listFacetDate);
+                if (type != 1) {
+                    sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+                    request.setAttribute("NumPage", numpage);
+                } else {
+                    sPaging = "20 kết quả tốt nhất trong " + numRow + " kết quả tìm được";
+                }
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
-                request.setAttribute("NumPage", numpage);
                 request.setAttribute("ListFacet", listFacet);
             }
-            String url = "/image.jsp";
+            String url = "/news.jsp";
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
@@ -198,36 +228,61 @@ public class SearchImageController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    private String createFacetValue(String startDate, String endDate) {
+        // src: dd-mm-yyyy
+        // dest: 1976-03-06T23:59:59.999Z
+        String result = "[";
+        String[] arrStr1 = startDate.split("-");
+        if (arrStr1.length >= 3) {
+            result += arrStr1[2] + "-" + arrStr1[1] + "-" + arrStr1[0] + "T00:00:00.000Z";
+        } else {
+            result += "1990-01-01T00:00:00.000Z";
+        }
+        result += " TO ";
+        String[] arrStr2 = endDate.split("-");
+        if (arrStr2.length >= 3) {
+            result += arrStr2[2] + "-" + arrStr2[1] + "-" + arrStr2[0] + "T23:59:59.999Z";
+        } else {
+            result += "NOW";
+        }
+        result += "]";
+        return result;
+    }
+
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
+
         String query = "";
-        if (MyString.CheckSigned(keySearch)) {
-            query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
-                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
-                    + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
+           if (MyString.CheckSigned(keySearch)) {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
-            query += "site_title:(\"" + keySearch + "\")^10 || site_title:(" + keySearch + ")^8 || "
-                    + "site_title_unsigned:(\"" + keySearch + "\")^9 || site_title_unsigned:(" + keySearch + ")^7 || "
-                    + "site_body:(\"" + keySearch + "\")^5 || site_body:(" + keySearch + ")^3 || "
-                    + "site_body_unsigned:(\"" + keySearch + "\")^4 || site_body_unsigned:(" + keySearch + ")^2 || "
-                    + "category:(\"" + keySearch + "\")1.3 || category:(" + keySearch + ")^1.3 || "
-                    + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                    + "fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^1.6 || "
+                    + "fulltext_unsigned:(\"" + keySearch + "\")^2 || fulltext_unsigned:(" + keySearch + ")^1.4";
         }
 
         solrQuery.setQuery(query);
 
+
+//        if (sortedType != 0) {
+//            solrQuery.setParam(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
+//        }
+
+
         // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        //solrQuery.addFacetField("widdh");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
+//        solrQuery.setFacet(true);
+//        solrQuery.addFacetField("category");
+//        solrQuery.addFacetField("site");
+//        //solrQuery.addFacetField("location");
+//        solrQuery.setFacetLimit(10);
+//        solrQuery.setFacetMinCount(1);
         // End Facet
 
 
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("site_title");
-        solrQuery.addHighlightField("site_body");
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("introtext");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -237,86 +292,37 @@ public class SearchImageController extends HttpServlet {
         return rsp;
     }
 
-    // Lay nhung bai viet moi nhat --> Test OK
-    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
-        HttpClient client = new HttpClient();
 
-        String url = "http://localhost:8983/solr/raovat/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=last_update&facet.limit=10&wt=json";
-        url = URIUtil.encodeQuery(url);
-        GetMethod get = new GetMethod(url);
-
-        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
-
-        int status = client.executeMethod(get);
-        String charSet = get.getResponseCharSet();
-        if (charSet == null) {
-            charSet = "UTF-8";
-        }
-        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
-
-
-        try {
-            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
-            JSONObject ob = json.getJSONObject("facet_counts");
-            JSONObject location = ob.getJSONObject("facet_fields");
-
-            // Vi moi chi xai 1 field Location nen lay luon
-            JSONArray last_update = location.getJSONArray("last_update");
-            ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
-
-            if (last_update.size() > 0) {
-                FacetDateDTO fD = null;
-                for (int i = 0; i < last_update.size(); i++) {
-                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
-                    {
-                        fD = new FacetDateDTO();
-                        fD.setDateTime(last_update.get(i).toString());
-                    } else //  Phan tu le là số (Count)
-                    {
-                        fD.setCount(last_update.get(i).toString());
-                        myArr.add(fD);
-                    }
-                }
-            }
-            get.releaseConnection();
-            return myArr;
-        } catch (Exception x) {
-            return null;
-        }
-
-    }
-
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
+
         String query = "+(";
-        if (MyString.CheckSigned(keySearch)) {
-            query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
-                    + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
-                    + "category:(\"" + keySearch + "\")1.2 || category:(" + keySearch + ")^1.1";
+           if (MyString.CheckSigned(keySearch)) {
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
-            query += "site_title:(\"" + keySearch + "\")^10 || site_title:(" + keySearch + ")^8 || "
-                    + "site_title_unsigned:(\"" + keySearch + "\")^9 || site_title_unsigned:(" + keySearch + ")^7 || "
-                    + "site_body:(\"" + keySearch + "\")^5 || site_body:(" + keySearch + ")^3 || "
-                    + "site_body_unsigned:(\"" + keySearch + "\")^4 || site_body_unsigned:(" + keySearch + ")^2 || "
-                    + "category:(\"" + keySearch + "\")1.3 || category:(" + keySearch + ")^1.3 || "
-                    + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                    + "fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^1.6 || "
+                    + "fulltext_unsigned:(\"" + keySearch + "\")^2 || fulltext_unsigned:(" + keySearch + ")^1.4";
         }
-        query += ")";
-        query += facetNameValue;
 
-
+        query += ") ";
+        // query += " +(" + queryField + ":\"" + queryValue + "\")";
+        query += " +(" + queryField + ":" + queryValue + ")";
         solrQuery.setQuery(query);
 
         // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
+//        solrQuery.setFacet(true);
+//        solrQuery.addFacetField("category");
+//        solrQuery.addFacetField("site");
+        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("site_title");
-        //solrQuery.addHighlightField("body");
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("introtext");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -326,34 +332,43 @@ public class SearchImageController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+    QueryResponse OnMLT(String q, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
 
         // Facet
-        query.setFacet(true);
-        query.addFacetField("category");
-        // query.addFacetField("widdh");
-        query.setFacetLimit(10);
-        query.setFacetMinCount(1);
+        //query.setFacet(true);
+        //query.addFacetField("category");
+       // query.addFacetField("site");
+        //query.addFacetField("location");
+       // query.setFacetLimit(10);
+       // query.setFacetMinCount(1);
         // End Facet
 
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "site_title");
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
+        if (sortedType == 1) {
+            query.set(MoreLikeThisParams.BOOST, true);
+           // query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+        }
 
-        query.setQuery("site_title:" + MyString.cleanQueryTerm(q));
+        query.setQuery("title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
-        query.setStart(start);
-        query.setRows(pagesize);
+        query.setStart(0);
+        query.setRows(100);
         query.setHighlight(true);
-        query.addHighlightField("site_title");
-        query.addHighlightField("site_body");
+        query.addHighlightField("title");
+        query.addHighlightField("introtext");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
-        query.setHighlightRequireFieldMatch(true);
+        //query.set(HighlightParams.ALTERNATE_FIELD, "wk_title");
+        query.set(HighlightParams.FRAGMENTER, "regex");
+        query.setHighlightFragsize(70);
+        query.set(HighlightParams.SLOP, "0.5");
+        query.set(HighlightParams.REGEX, "[-,/\n\"']{20,200}");
         QueryResponse rsp = server.query(query);
         return rsp;
     }
@@ -362,7 +377,7 @@ public class SearchImageController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/image/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/news/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -417,9 +432,9 @@ public class SearchImageController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
-    }
+    } 
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -430,7 +445,7 @@ public class SearchImageController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -443,12 +458,4 @@ public class SearchImageController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String createFacetValue(String w, String h) {
-        String result = "";
-        String[] ww = w.split("-");
-        result += " +(width:[" + ww[0] + " TO " + ww[1] + "])";
-        String[] hh = h.split("-");
-        result += " +(height:[" + hh[0] + " TO " + hh[1] + "])";
-        return result;
-    }
 }

@@ -67,12 +67,13 @@ public class DetailWikiController extends HttpServlet {
                 tbus.InsertTracking(tracking, "visearch");
                 tbus.UpdateKeysearch(id_link, keysearch, "viwiki", "visearch");
                 // end tracking
-                String link = request.getParameter("url").toString();
-                String url = "http://vi.wikipedia.org/wiki/" + link;
-                response.sendRedirect(url);
+				 String link = request.getParameter("url").toString();
+            String url = "http://vi.wikipedia.org/wiki/" + URLEncoder.encode(link, "UTF-8");
+            response.sendRedirect(url);
             }
         } finally {
             out.close();
+           
         }
     }
 

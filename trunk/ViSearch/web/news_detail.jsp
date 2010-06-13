@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : image_detail
     Created on : Jun 6, 2010, 4:56:11 PM
     Author     : tuandom
@@ -35,7 +35,7 @@
                     return;
                 else
                 {
-                    var url = "SearchImageController?type=0&sp=1&KeySearch=";
+                    var url = "SearchNewsController?type=0&sp=1&KeySearch=";
                     //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
                     //alert(url);
@@ -46,7 +46,7 @@
                 var R = document.getElementById("divPVTC_R").value;
                 var  C = document.getElementById("divPVTC_C").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchNewsController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
             function showPVTC(){
@@ -72,9 +72,7 @@
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
                     Map<String, Map<String, List<String>>> highLight = null;
-                    int numrow = 0;
-                    int numpage = 0;
-                    String strpaging = "";
+
                     String result = "";
                     String search_stats = "";
                     String QTime;
@@ -94,21 +92,17 @@
                                 result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFirstValue("site_title")).toString();
-                                String body = (listdocs.get(i).getFirstValue("site_body")).toString();
+                                String title = (listdocs.get(i).getFirstValue("title")).toString();
+                                String body = (listdocs.get(i).getFirstValue("fulltext")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String url = (listdocs.get(i).getFieldValue("url")).toString();
-                                String website = (listdocs.get(i).getFieldValue("website")).toString();
-                                String width = (listdocs.get(i).getFieldValue("width")).toString();
-                                String height = (listdocs.get(i).getFieldValue("height")).toString();
-                                String size = (listdocs.get(i).getFieldValue("size")).toString();
-                                String fileType = (listdocs.get(i).getFieldValue("fileType")).toString();
+                                String img = (listdocs.get(i).getFieldValue("images")).toString();
+                                String url = (listdocs.get(i).getFieldValue("urls")).toString();
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    List<String> highlightTitle = highLight.get(id).get("site_title");
-                                    List<String> highlightBody = highLight.get(id).get("site_body");
+                                    List<String> highlightTitle = highLight.get(id).get("title");
+                                    List<String> highlightBody = highLight.get(id).get("fulltext");
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
@@ -120,50 +114,30 @@
 
 
 
-                                result += "<tr>";
-                                result += "<td><a href='" + url + "' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
+
+
+                                  result += "<tr>";
+                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery+"\">" + title_hl + "</a><b></td>";
                                 result += "</tr>";
 
-                                result += "<tr>";
-                                result += "<td>Thông tin hình ảnh:</b>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>Kích thước: " + width + " x " + height;
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>Loại: " + size + "Kb - " + fileType + "</td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td><b><a href='" + website + "' target=\"_blank\">" + title_hl + "</a></b></td>";
-                                result += "</tr>";
 
                                 result += "<tr>";
                                 result += "<td>" + body + "</td>";
                                 result += "</tr>";
 
-                                result += "<tr>";
-                                result += "<td><a href='" + website + "' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
-                                result += "<a href='" + url + "' target=\"_blank\">Hình ảnh đầy đủ</a>&nbsp;|&nbsp;";
-                                result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
-                                result += "</td>";
+                                 result += "<tr>";
+                                result += "<td>img:" + img + "</td>";
+                                result += "</tr>";
+
+                                 result += "<tr>";
+                                result += "<td>url:" + url + "</td>";
                                 result += "</tr>";
 
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
-                            // Phan trang
-                            //numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                            // numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
-                            // strpaging = (String) request.getAttribute("Pagging");
                         }
-                        //result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        // result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
-                        // if (numpage > 1) {
-                        //     result += strpaging + "<br/><br/></div>";
-                        // }
+                        
                     }
                     //get SolrDocumentList
         %>
@@ -211,14 +185,14 @@
                         listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
                         result2 += "<div style=\"font-size:13px\">";
-                        result2 += "Một số hình ảnh tương tự: <br>";
+                        result2 += "Một số bài viết tương tự: <br>";
                         for (int i = 0; i < listdocs2.size(); i++) {
 
                             // Lay noi dung cua moi field
                             String id = (listdocs2.get(i).getFieldValue("id")).toString();
-                            String url = (listdocs2.get(i).getFieldValue("url")).toString();
+                            String title = (listdocs2.get(i).getFieldValue("title")).toString();
 
-                            result2 += "<b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></li>";
+                            result2 += "<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">"+title+"</a></li>";
                         }
                         result2 += "</div>";
                     }
@@ -246,7 +220,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                               
+                           
                                 <% if (request.getAttribute("Docs") != null) {
                                                 // out.print(facet);
                                             }%>

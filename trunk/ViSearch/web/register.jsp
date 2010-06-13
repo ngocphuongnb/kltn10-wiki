@@ -52,7 +52,7 @@
                         <td colspan="2" height="33" valign="top">
 
                             <!-- register !-->
-                            <form id="frmRegister" name="frmRegister" method="post" action="RegisterMemberController">
+                            <form class="frmRegister" name="" method="post" action="RegisterMemberController">
                                 <h3 class="subblockhead"> Thông tin đăng kí</h3>
                                 <table width="500" border="0" cellspacing="0" cellpadding="0" >
                                     <tr><td  align="left">Họ và Tên</td></tr>

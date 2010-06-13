@@ -37,14 +37,12 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
-                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
                     var url = "SearchAllController?type=0&KeySearch=";
                     url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
                     window.location = url;
                 }
             }
@@ -142,9 +140,22 @@
                                 }
 
 
-                                result += "<tr>";
-                                result += "<td>" + title_hl + "</td>";
+                                 result += "<tr>";
+                                result += "<td><b>" + id + "</b></td>";
                                 result += "</tr>";
+
+                                String link="";
+                                if(id.substring(0, 2).equals("rv"))
+                                    link = "DetailRaoVatController?id="+id+"&KeySearch="+strQuery;
+                                else if(id.substring(0, 2).equals("ms"))
+                                    link = "DetailMusicController?id="+id+"&KeySearch="+strQuery;
+                                 else if(id.substring(0, 2).equals("vd"))
+                                    link = "DetailMusicController?id="+id+"&KeySearch="+strQuery;
+                                result += "<tr>";
+                                result += "<td><b>" + title_hl + "</b></td>";
+                                result += "</tr>";
+
+
 
                                 result += "<tr>";
                                 result += "<td>" + body + "</td>";
@@ -183,10 +194,13 @@
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
 
-                    <tr><td height="20" colspan="2" align="center" valign="middle"></td></tr>
+                    <tr><td height="8" colspan="2" align="center" valign="middle"></td></tr>
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                 <tr><td>
+                                         <%@include file="template/frm_login.jsp" %>
+                                    </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
@@ -205,9 +219,6 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                <div class="mnu">Đăng nhập</div>
-                                <%@include file="template/login.jsp" %>
-                                
 
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">

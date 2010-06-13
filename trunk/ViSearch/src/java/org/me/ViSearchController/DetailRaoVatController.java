@@ -145,10 +145,6 @@ public class DetailRaoVatController extends HttpServlet {
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
-        //addFacetQuery("price:[* TO 150]");
-        //addFacetQuery("price:[151 TO 300]");
-
-
         // End Facet
 
         QueryResponse rsp = server.query(solrQuery);
@@ -157,9 +153,7 @@ public class DetailRaoVatController extends HttpServlet {
 
     QueryResponse Category(String query) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-
         solrQuery.setQuery(query);
-
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
