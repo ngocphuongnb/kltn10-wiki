@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://Index/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Index/">
+
+<xs:element name="IndexDataViwiki" type="tns:IndexDataViwiki" />
+
+<xs:element name="IndexDataViwikiResponse" type="tns:IndexDataViwikiResponse" />
+
+<xs:element name="SyncDataWiki" type="tns:SyncDataWiki" />
+
+<xs:element name="SyncDataWikiResponse" type="tns:SyncDataWikiResponse" />
+
+<xs:complexType name="SyncDataWiki">
+<xs:sequence>
+<xs:element name="listWikiPage" type="tns:viwikiPageDTO" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="viwikiPageDTO">
+<xs:sequence>
+<xs:element name="comment" type="xs:string" minOccurs="0" />
+<xs:element name="id" type="xs:int" />
+<xs:element name="ip" type="xs:string" minOccurs="0" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
+<xs:element name="restrictions" type="xs:string" minOccurs="0" />
+<xs:element name="text" type="xs:string" minOccurs="0" />
+<xs:element name="timestamp" type="xs:dateTime" minOccurs="0" />
+<xs:element name="title" type="xs:string" minOccurs="0" />
+<xs:element name="username" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SyncDataWikiResponse">
+<xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="IndexDataViwiki">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataViwikiResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
