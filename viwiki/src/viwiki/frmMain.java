@@ -92,14 +92,14 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
-        jButton5.setText("Import Data Video");
+        jButton5.setText("Sync Data Video");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Import data Image");
+        jButton6.setText("Sync data Image");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -303,8 +303,34 @@ public class frmMain extends javax.swing.JDialog {
 //            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        jButton5.setEnabled(true);
+
+
+
+        jButton5.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        try {
+            VideoBUS bus = new VideoBUS();
+            int numOfRecords = bus.CountRecord();
+
+            importDataVideo(numOfRecords);
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        jButton5.setEnabled(true);
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    // Image
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 //        int numOfRecords;
 //        try {
@@ -321,6 +347,34 @@ public class frmMain extends javax.swing.JDialog {
 //        } catch (SQLException ex) {
 //            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
 //        }
+
+
+
+         jButton6.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        try {
+            ImageBUS bus = new ImageBUS();
+            int numOfRecords = bus.CountRecord();
+            try {
+                importDataImage(numOfRecords);
+            } catch (DatatypeConfigurationException ex) {
+                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        jButton6.setEnabled(true);
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -358,7 +412,7 @@ public class frmMain extends javax.swing.JDialog {
 //            start += 2000;
 //        }
 
-        WSIndexService service  = new WSIndexService();
+        WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
         int start = 0;
         while (start < 10000) {
@@ -370,7 +424,7 @@ public class frmMain extends javax.swing.JDialog {
         }
     }
 
-//     public void importDataImage(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+     public void importDataImage(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
 //        MySolrJ ms = new MySolrJ();
 //        ms.EmptyData("image");
 //        int start = 0;
@@ -379,21 +433,46 @@ public class frmMain extends javax.swing.JDialog {
 //            ms.ImportImage2Solr(list, start);
 //            start += 2000;
 //        }
-//    }
-//     public void importDataVideo(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
-//
+
+
+          WSIndexService service = new WSIndexService();
+        WSIndex port = service.getWSIndexPort();
+        int start = 0;
+        while (start < 10000) {
+            ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
+            ImageBUS bus = new ImageBUS();
+            list = bus.getDataList(start, 2000);
+            port.syncDataImage(list);
+            start += 2000;
+        }
+    }
+    public void importDataVideo(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+
 //        MySolrJ ms = new MySolrJ();
 //        ms.EmptyData("video");
 //        int start = 0;
 //        ArrayList<VideoDTO> list = VideoBUS.getDataList(start, numRecord);
 //        ms.ImportVideo2Solr(list, start);
-////        while (start < numRecord) {
-////            ArrayList<VideoDTO> list = VideoBUS.getDataList(start, 2000);
-////            ms.ImportVideo2Solr(list, start);
-////            start += 2000;
-////        }
-//    }
-//
+//        while (start < numRecord) {
+//            ArrayList<VideoDTO> list = VideoBUS.getDataList(start, 2000);
+//            ms.ImportVideo2Solr(list, start);
+//            start += 2000;
+//        }
+
+
+
+        WSIndexService service = new WSIndexService();
+        WSIndex port = service.getWSIndexPort();
+        int start = 0;
+        while (start < 1000) {
+            ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
+            VideoBUS bus = new VideoBUS();
+            list = bus.getDataList(start, 200);
+            port.syncDataVideo(list);
+            start += 200;
+        }
+    }
+
     public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
 //        // TODO code application logic here
 //        MySolrJ ms = new MySolrJ();
@@ -408,15 +487,15 @@ public class frmMain extends javax.swing.JDialog {
 //            ms.ImportMusic2Solr(list, start);
 //            start += 2000;
 //        }
-        WSIndexService service  = new WSIndexService();
+        WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
         int start = 0;
-        while (start < 10000) {
+        while (start < 1000) {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
             MusicBUS bus = new MusicBUS();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 200);
             port.syncDataMusic(list);
-            start += 2000;
+            start += 200;
         }
     }
 //
@@ -435,6 +514,7 @@ public class frmMain extends javax.swing.JDialog {
 //    /**
 //     * @param args the command line arguments
 //     */
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
