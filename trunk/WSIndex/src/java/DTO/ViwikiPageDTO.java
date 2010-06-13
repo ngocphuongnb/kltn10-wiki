@@ -13,15 +13,15 @@ import java.util.Calendar;
  */
 public class ViwikiPageDTO {
 
+    private int _id;
     private String _title;
-    //private String _redirect;
     private Calendar _timestamp;
     private String _ip;
     private String _text;
     private String _restrictions;
     private String _username;
-    //private String _minor;
     private String _comment;
+    private String _keySearch;
 
     /**
      * @return the _title
@@ -147,5 +147,33 @@ public class ViwikiPageDTO {
      */
     public void setComment(String comment) {
         this._comment = comment;
+    }
+
+    /**
+     * @return the _id
+     */
+    public int getId() {
+        return _id;
+    }
+
+    /**
+     * @param id the _id to set
+     */
+    public void setId(int id) {
+        this._id = id;
+    }
+
+    /**
+     * @return the _keySearch
+     */
+    public String getKeySearch() {
+        return _keySearch;
+    }
+
+    /**
+     * @param keySearch the _keySearch to set
+     */
+    public void setKeySearch(String keySearch) {
+        this._keySearch = keySearch;
     }
 }

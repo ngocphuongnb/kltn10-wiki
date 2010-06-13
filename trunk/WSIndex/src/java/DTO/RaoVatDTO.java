@@ -11,9 +11,8 @@ import java.util.Calendar;
  * @author VinhPham
  */
 public class RaoVatDTO {
-
+    private int _id;
     private String _title;
-    private String _linkId;
     private String _body;
     private float _price;
     private String _category;
@@ -37,20 +36,6 @@ public class RaoVatDTO {
      */
     public void setTitle(String title) {
         this._title = title;
-    }
-
-    /**
-     * @return the _linkId
-     */
-    public String getLinkId() {
-        return _linkId;
-    }
-
-    /**
-     * @param linkId the _linkId to set
-     */
-    public void setLinkId(String linkId) {
-        this._linkId = linkId;
     }
 
     /**
@@ -191,5 +176,19 @@ public class RaoVatDTO {
      */
     public void setLastUpdate(Calendar lastUpdate) {
         this._lastUpdate = lastUpdate;
+    }
+
+    /**
+     * @return the _id
+     */
+    public int getId() {
+        return _id;
+    }
+
+    /**
+     * @param id the _id to set
+     */
+    public void setId(int id) {
+        this._id = id;
     }
 }

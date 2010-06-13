@@ -5,15 +5,18 @@
 
 package Index;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import Utils.MySolrJ;
+import BUS.AdminBUS;
+import BUS.ViwikiPageBUS;
+import DTO.ViwikiPageDTO;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import org.apache.solr.client.solrj.SolrServerException;
 
 /**
  *
@@ -21,30 +24,40 @@ import org.apache.solr.client.solrj.SolrServerException;
  */
 @WebService()
 public class WSIndex {
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "SyncDataWiki")
+    public void SyncDataViwiki(@WebParam(name = "listWikiPage")
+    ArrayList<ViwikiPageDTO> listWikiPage) {
+        try {
+            ViwikiPageBUS bus = new ViwikiPageBUS();
+            bus.SyncDataViwiki(listWikiPage);
+            //TODO write your implementation code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "Index2SolrWiki")
-    public boolean Index2SolrWiki(@WebParam(name = "title")
-    String title, @WebParam(name = "timestamp")
-    Calendar timestamp, @WebParam(name = "ip")
-    String ip, @WebParam(name = "username")
-    String username, @WebParam(name = "comment")
-    String comment, @WebParam(name = "restriction")
-    String restriction, @WebParam(name = "text")
-    String text) throws IOException {
-
-        MySolrJ ms = new MySolrJ();
-        try {
-           ms.ImportWiki2Solr(title, timestamp, ip, text, restriction, username, comment, 20000);
-            return true;
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
-       } catch (SolrServerException ex) {
-            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
-       }
-       return false;
+    @WebMethod(operationName = "IndexDataViwiki")
+    public boolean IndexDataViwiki(@WebParam(name = "code")
+    String code, @WebParam(name = "dateRequest")
+    Calendar dateRequest){
+        AdminBUS bus = new AdminBUS();
+        if(bus.CheckSecurity(code, dateRequest.getTime()))
+        {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.IndexViwiki();
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
     }
 
 }
