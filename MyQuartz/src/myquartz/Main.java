@@ -32,8 +32,8 @@ public class Main {
         Scheduler sched = schedFac.getScheduler();
         sched.start();
         JobDetail jobDetail = new JobDetail("myJob", null, MyJob.class);
-        CronTrigger trigger = new CronTrigger("my trigger", null, "0 0 0 ? * SUN");//s m h dom m dow
-        //Trigger trigger = TriggerUtils.makeMinutelyTrigger();
+        //CronTrigger trigger = new CronTrigger("my trigger", null, "30 9 2 ? * SUN");//s m h dom m dow
+        Trigger trigger = TriggerUtils.makeHourlyTrigger();
         trigger.setStartTime(new Date());
         trigger.setName("my trigger");
         sched.scheduleJob(jobDetail, trigger);
