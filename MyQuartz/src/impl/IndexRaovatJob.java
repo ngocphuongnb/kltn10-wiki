@@ -5,17 +5,11 @@
 
 package impl;
 
-import IndexData.IndexDataViwiki;
 import IndexData.WSIndex;
 import IndexData.WSIndexService;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import myquartz.MyHashEncryption;
@@ -27,10 +21,10 @@ import org.quartz.JobExecutionException;
  *
  * @author VinhPham
  */
-public class MyJob implements Job {
+public class IndexRaovatJob implements Job {
 
     public void execute(JobExecutionContext jec) throws JobExecutionException {
-        try {
+         try {
             System.out.println("Start index...");
             Date d = new Date();
             GregorianCalendar gcal = new GregorianCalendar();
@@ -45,7 +39,7 @@ public class MyJob implements Job {
             code += s;
             WSIndexService service = new WSIndexService();
             WSIndex port = service.getWSIndexPort();
-            port.indexDataViwiki(code, date);
+            port.indexDataRaovat(code, date);
             System.out.println("Index finish...");
         } catch (Exception ex) {
             System.out.println("Index fail...");

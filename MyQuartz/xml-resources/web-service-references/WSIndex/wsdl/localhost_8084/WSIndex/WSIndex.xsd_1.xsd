@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://Index/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Index/">
 
+<xs:element name="IndexDataRaovat" type="tns:IndexDataRaovat" />
+
+<xs:element name="IndexDataRaovatResponse" type="tns:IndexDataRaovatResponse" />
+
 <xs:element name="IndexDataViwiki" type="tns:IndexDataViwiki" />
 
 <xs:element name="IndexDataViwikiResponse" type="tns:IndexDataViwikiResponse" />
@@ -30,6 +34,19 @@
 
 <xs:complexType name="SyncDataWikiResponse">
 <xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="IndexDataRaovat">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataRaovatResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="IndexDataViwiki">
