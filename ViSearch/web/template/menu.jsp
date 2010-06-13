@@ -15,12 +15,13 @@
     <body>
         <table id="" height="20" width="532" border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td align="center" width="20%"><a href="index.jsp" onMouseOver="MM_effectShake('')">Wikipedia</a></td>
-                <td align="center" width="20%"><a href="raovat.jsp">Rao vặt</a></td>
-                <td align="center" width="20%"><a href="music.jsp">Nhạc</a></td>
-                <td align="center" width="20%"><a href="image.jsp">Hình ảnh</a></td>
-                <td align="center" width="20%"><a href="video.jsp">Video</a></td>
-                <td align="center" width="20%"><a href="all.jsp">All</a></td>
+                <td align="center" width="15%"><a href="index.jsp" onMouseOver="MM_effectShake('')">Wikipedia</a></td>
+                <td align="center" width="15%"><a href="raovat.jsp">Rao vặt</a></td>
+                <td align="center" width="15%"><a href="music.jsp">Nhạc</a></td>
+                <td align="center" width="15%"><a href="image.jsp">Hình ảnh</a></td>
+                <td align="center" width="15%"><a href="video.jsp">Video</a></td>
+                <td align="center" width="15%"><a href="news.jsp">Tin tức</a></td>
+                <td align="center" width="15%"><a href="all.jsp">All</a></td>
 
             </tr>
         </table>

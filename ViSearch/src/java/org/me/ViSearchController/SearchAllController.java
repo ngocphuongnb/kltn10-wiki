@@ -81,7 +81,6 @@ public class SearchAllController extends HttpServlet {
 
         try {
 
-
             //<get-parameter defaultstate="collapsed">
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));

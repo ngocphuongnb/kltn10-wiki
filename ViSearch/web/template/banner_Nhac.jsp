@@ -87,12 +87,30 @@
                                             out.print(strQuery);
                                         }%>"/>
                            <select id="field" style="width:96px">
-        <option value="1">Tên bài hát</option>
-        <option value="2">Album</option>
-        <option value="3">Ca sĩ</option>
-        <option value="4">Tác giả</option>
-        <option value="5">Lời nhạc</option>
-        <option value="6">Tất cả</option>
+                               <% if(FieldId.equals("1")==true)
+                                    out.print("<option value=\"1\" selected=\"selected\">Tên bài hát</option>");
+                                    else out.print("<option value=\"1\">Tên bài hát</option>");
+
+                            if(FieldId.equals("2")==true)
+                                    out.print("<option value=\"2\" selected=\"selected\">Album</option>");
+                                    else out.print("<option value=\"2\">Album</option>");
+
+                            if(FieldId.equals("3")==true)
+                                    out.print("<option value=\"3\" selected=\"selected\">Ca sĩ</option>");
+                                    else out.print("<option value=\"3\">Ca sĩ</option>");
+
+                            if(FieldId.equals("4")==true)
+                                    out.print("<option value=\"4\" selected=\"selected\">Tác giả</option>");
+                                    else out.print("<option value=\"4\">Tác giả</option>");
+
+                            if(FieldId.equals("5")==true)
+                                    out.print("<option value=\"5\" selected=\"selected\">Lời nhạc</option>");
+                                    else out.print("<option value=\"5\">Lời nhạc</option>");
+                            if(FieldId.equals("6")==true)
+                                    out.print("<option value=\"6\" selected=\"selected\">Tất cả</option>");
+                                    else out.print("<option value=\"6\">Tất cả</option>");
+                                   %>
+      
         </select>
                             <input id="hfKeySearch" type="hidden" value="<% if (strQuery != null) {
                                             out.print(strQuery);

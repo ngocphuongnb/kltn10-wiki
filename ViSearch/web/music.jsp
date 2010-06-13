@@ -109,10 +109,13 @@
                     session.setAttribute("CurrentPage", currentPage);
                     // Get strQuery
                     String strQuery = "";
+                    String FieldId="";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getAttribute("KeySearch");
+                        FieldId = (String) request.getAttribute("FieldId");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
+
                     }
                     // End Get strQuery
         %>
@@ -172,20 +175,20 @@
 
 
                                 result += "<tr>";
-                                result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=singer:\"" + CaSi + "\"'>" + CaSi + "</a></td>";
+                                result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + CaSi + "\"'>" + CaSi + "</a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=2&KeySearch=artist:\"" + artist + "\"'>" + artist + "</a></td>";
+                                result += "<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + artist + "\"'>" + artist + "</a></td>";
                                 result += "</tr>";
 
 
                                 result += "<tr>";
-                                result += "<td>Thể Loại: " + "<a href = 'SearchMusicController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td>";
+                                result += "<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + category + "\"'>" + category + "</a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>Album: " + "<a href = 'SearchMusicController?type=2&KeySearch=album:\"" + album + "\"'>" + album + "</a></td>";
+                                result += "<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + album + "\"'>" + album + "</a></td>";
                                 result += "</tr>";
 
                                 String mediaId = "MediaPlayer" + i;
@@ -273,7 +276,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f="+FieldId+"&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -293,10 +296,13 @@
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
 
-                    <tr><td height="20" colspan="2" align="center" valign="middle"></td></tr>
+                    <tr><td height="8" colspan="2" align="center" valign="middle"></td></tr>
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr><td>
+                                         <%@include file="template/frm_login.jsp" %>
+                                    </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
@@ -312,8 +318,7 @@
                         <td width="200" height="33" valign="top">
 
                              <div class="subtable">
-                            <div class="mnu">Đăng nhập</div>
-                            <%@include file="template/login.jsp" %>
+                          
                             <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 } %>

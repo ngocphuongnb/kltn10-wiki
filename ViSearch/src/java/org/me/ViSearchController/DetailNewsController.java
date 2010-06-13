@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,23 +18,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
-import org.me.Utils.Paging;
 
 /**
  *
  * @author tuandom
  */
-public class DetailImageController extends HttpServlet {
+public class DetailNewsController extends HttpServlet {
 
     SolrServer server;
 
@@ -47,129 +43,95 @@ public class DetailImageController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SolrServerException {
+
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         SolrDocumentList docs = new SolrDocumentList();
         String keySearch = "";
-
-        long numRow = 0;
         String keySearchId = "";
         int type = -1;
         int QTime = 0;
-        SolrDocumentList docs_MoreLikeThis = new SolrDocumentList();
-        List<FacetField> listFacet = null;
-        QueryResponse rsp;
+        SolrDocumentList docs_MoreLikeThis= new SolrDocumentList();
         try {
+            server = SolrJConnection.getSolrServer("news");
 
-          
+            //</get-parameter>
+            if (request.getParameter("KeySearch") != null) {
 
-            server = SolrJConnection.getSolrServer("image");
+                QueryResponse rsp;
+                Map<String, Map<String, List<String>>> highLight;
 
-            if (request.getParameter("id") != null) {
+                keySearch = request.getParameter("KeySearch");
                 keySearchId = request.getParameter("id");
 
+                rsp = OnSearchSubmit(keySearchId);
+                docs = rsp.getResults();
+                highLight = rsp.getHighlighting();
+                request.setAttribute("HighLight", highLight);
+                QTime = rsp.getQTime();
 
-                if (request.getParameter("KeySearch") != null) {
-                    keySearch = request.getParameter("KeySearch");
+                request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
+                request.setAttribute("KeySearch", keySearch);
+                highLight = rsp.getHighlighting();
                     
-                    Map<String, Map<String, List<String>>> highLight = null;
-
-                    rsp = OnSearchSubmit(keySearchId);
-                    docs = rsp.getResults();
-                    highLight = rsp.getHighlighting();
+                if (docs != null) {
+                    String title = (docs.get(0).getFirstValue("title")).toString();
+                    rsp = OnMoreLikeThis(title);
+                    docs_MoreLikeThis = rsp.getResults();
+                    request.setAttribute("Docs", docs);
+                    request.setAttribute("Docs_MoreLikeThis", docs_MoreLikeThis);
                     request.setAttribute("HighLight", highLight);
-                    QTime = rsp.getQTime();
-                    // Get Facet
-                    listFacet = rsp.getFacetFields();
                 }
+                String url = "/news_detail.jsp";
+                ServletContext sc = getServletContext();
+                RequestDispatcher rd = sc.getRequestDispatcher(url);
+                rd.forward(request, response);
             }
-
-            request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
-            request.setAttribute("KeySearch", keySearch);
-            if (docs != null) {
-                String title = (docs.get(0).getFirstValue("site_title")).toString();
-                rsp = OnMoreLikeThis(title);
-                docs_MoreLikeThis = rsp.getResults();
-                request.setAttribute("Docs", docs);
-                request.setAttribute("NumRow", numRow);
-                request.setAttribute("Docs_MoreLikeThis", docs_MoreLikeThis);
-                request.setAttribute("ListFacet", listFacet);
-            }
-            String url = "/image_detail.jsp";
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher(url);
-            rd.forward(request, response);
         } catch (Exception e) {
             out.print(e.getMessage());
         } finally {
             out.close();
         }
     }
-
-    QueryResponse OnSearchSubmit(String id) throws SolrServerException {
-        SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery("id:" + id);
-
-        // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-        // End Facet
-
-   
-        QueryResponse rsp = server.query(solrQuery);
-        return rsp;
-    }
-
-    QueryResponse OnSearchSubmitStandard(String keySearch, String faceName, String faceValue, int start, int pagesize) throws SolrServerException {
-        SolrQuery solrQuery = new SolrQuery();
-        if (!faceName.equals("") && faceName != null) {
-            keySearch = "+(site_title:(" + keySearch + ")^3 site_body:(" + keySearch + ")^2 category_index:(" + keySearch + ")) +(" + faceName + ":" + faceValue + ")";
-        }
-        solrQuery.setQuery(keySearch);
-
-        // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        // solrQuery.addFacetField("widdh");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-        // End Facet
-
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("site_title");
-        //solrQuery.addHighlightField("body");
-        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
-        solrQuery.setStart(start);
-        solrQuery.setRows(pagesize);
-        QueryResponse rsp = server.query(solrQuery);
-        return rsp;
-    }
-    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
+QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
     {
        SolrQuery query = new SolrQuery();
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "site_title");
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
         //query.setQuery("title:" + ClientUtils.escapeQueryChars(q));
         query.setQuery(ClientUtils.escapeQueryChars(strquery));
         query.setStart(0);
         query.setRows(10);
         query.setHighlight(true);
-        query.addHighlightField("site_title");
+        query.addHighlightField("title");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
         QueryResponse rsp = server.query(query);
         return rsp;
     }
+    QueryResponse OnSearchSubmit(String keySearchId) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "id:" + keySearchId;
+
+
+        solrQuery.setQuery(query);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("fulltext");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -181,7 +143,11 @@ public class DetailImageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(SearchAllController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -194,7 +160,11 @@ public class DetailImageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(SearchAllController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

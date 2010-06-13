@@ -178,10 +178,13 @@
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
 
-                    <tr><td height="20" colspan="2" align="center" valign="middle"></td></tr>
+                    <tr><td height="8" colspan="2" align="center" valign="middle"></td></tr>
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr><td>
+                                         <%@include file="template/frm_login.jsp" %>
+                                    </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <%@include file="template/banner_RaoVat.jsp" %>
@@ -193,7 +196,7 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">
-                            <%@include file="template/login.jsp" %>
+                           
                             <%  //out.print(facet);%>
                             <table id="tbTopSearch">
                             </table>

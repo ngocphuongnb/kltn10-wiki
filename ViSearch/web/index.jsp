@@ -150,7 +150,7 @@
                                 String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
                                 String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
+                                //int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
                                 String url = title.replace(' ', '_');
                                 String title_hl = title;
                                 Date timestamp = (Date) (listdocs.get(i).getFieldValue("timestamp"));
@@ -175,8 +175,7 @@
                                     }
                                 }
 
-
-                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "&id_link=" + id_link + "')\">" + title_hl + "</a><b></td>";
+                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "&id_link=" + id + "')\">" + title_hl + "</a><b></td>";
                                 result += "<tr>";
                                 result += url;
                                 result += "</tr>";
@@ -198,7 +197,6 @@
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
-
 
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
@@ -285,7 +283,7 @@
 
                     facetD += "<tr><td>";
                     facetD += "<div id=\"divPVTC\" class=\"hidden\">";
-                    facetD += "<div style=\"float:left\"> Bắt dầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
+                    facetD += "<div style=\"float:left\"> Bắt đầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
                     facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
                     facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";
                     facetD += "</div>";
@@ -304,7 +302,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                        <div style="float:right; margin-bottom:8px; font-size:11px"><a  name="top" href="register.jsp">Đăng kí</a>&nbsp;&nbsp;<a href="">Đăng nhập</a>&nbsp;&nbsp;</div>
+                                         <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -325,8 +323,6 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                <div class="mnu">Đăng nhập</div>
-                                <%@include file="template/login.jsp" %>
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
