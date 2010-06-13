@@ -4,35 +4,91 @@
 <xsd:import namespace="http://Index/" schemaLocation="http://localhost:8084/WSIndex/WSIndex?xsd=1" />
 </xsd:schema>
 </types>
-<message name="Index2SolrWiki">
-<part name="parameters" element="tns:Index2SolrWiki" />
-</message>
-<message name="Index2SolrWikiResponse">
-<part name="parameters" element="tns:Index2SolrWikiResponse" />
-</message>
-<message name="IOException">
-<part name="fault" element="tns:IOException" />
-</message>
 <message name="SyncDataWiki">
 <part name="parameters" element="tns:SyncDataWiki" />
 </message>
 <message name="SyncDataWikiResponse">
 <part name="parameters" element="tns:SyncDataWikiResponse" />
 </message>
+<message name="IndexDataViwiki">
+<part name="parameters" element="tns:IndexDataViwiki" />
+</message>
+<message name="IndexDataViwikiResponse">
+<part name="parameters" element="tns:IndexDataViwikiResponse" />
+</message>
+<message name="SyncDataMusic">
+<part name="parameters" element="tns:SyncDataMusic" />
+</message>
+<message name="SyncDataMusicResponse">
+<part name="parameters" element="tns:SyncDataMusicResponse" />
+</message>
+<message name="IndexDataMusic">
+<part name="parameters" element="tns:IndexDataMusic" />
+</message>
+<message name="IndexDataMusicResponse">
+<part name="parameters" element="tns:IndexDataMusicResponse" />
+</message>
+<message name="SyncDataImage">
+<part name="parameters" element="tns:SyncDataImage" />
+</message>
+<message name="SyncDataImageResponse">
+<part name="parameters" element="tns:SyncDataImageResponse" />
+</message>
+<message name="IndexDataImage">
+<part name="parameters" element="tns:IndexDataImage" />
+</message>
+<message name="IndexDataImageResponse">
+<part name="parameters" element="tns:IndexDataImageResponse" />
+</message>
+<message name="SyncDataVideo">
+<part name="parameters" element="tns:SyncDataVideo" />
+</message>
+<message name="SyncDataVideoResponse">
+<part name="parameters" element="tns:SyncDataVideoResponse" />
+</message>
+<message name="IndexDataVideo">
+<part name="parameters" element="tns:IndexDataVideo" />
+</message>
+<message name="IndexDataVideoResponse">
+<part name="parameters" element="tns:IndexDataVideoResponse" />
+</message>
 <portType name="WSIndex">
-<operation name="Index2SolrWiki">
-<input wsam:Action="http://Index/WSIndex/Index2SolrWikiRequest" message="tns:Index2SolrWiki" />
-<output wsam:Action="http://Index/WSIndex/Index2SolrWikiResponse" message="tns:Index2SolrWikiResponse" />
-<fault message="tns:IOException" name="IOException" wsam:Action="http://Index/WSIndex/Index2SolrWiki/Fault/IOException" />
-</operation>
 <operation name="SyncDataWiki">
 <input wsam:Action="http://Index/WSIndex/SyncDataWikiRequest" message="tns:SyncDataWiki" />
 <output wsam:Action="http://Index/WSIndex/SyncDataWikiResponse" message="tns:SyncDataWikiResponse" />
 </operation>
+<operation name="IndexDataViwiki">
+<input wsam:Action="http://Index/WSIndex/IndexDataViwikiRequest" message="tns:IndexDataViwiki" />
+<output wsam:Action="http://Index/WSIndex/IndexDataViwikiResponse" message="tns:IndexDataViwikiResponse" />
+</operation>
+<operation name="SyncDataMusic">
+<input wsam:Action="http://Index/WSIndex/SyncDataMusicRequest" message="tns:SyncDataMusic" />
+<output wsam:Action="http://Index/WSIndex/SyncDataMusicResponse" message="tns:SyncDataMusicResponse" />
+</operation>
+<operation name="IndexDataMusic">
+<input wsam:Action="http://Index/WSIndex/IndexDataMusicRequest" message="tns:IndexDataMusic" />
+<output wsam:Action="http://Index/WSIndex/IndexDataMusicResponse" message="tns:IndexDataMusicResponse" />
+</operation>
+<operation name="SyncDataImage">
+<input wsam:Action="http://Index/WSIndex/SyncDataImageRequest" message="tns:SyncDataImage" />
+<output wsam:Action="http://Index/WSIndex/SyncDataImageResponse" message="tns:SyncDataImageResponse" />
+</operation>
+<operation name="IndexDataImage">
+<input wsam:Action="http://Index/WSIndex/IndexDataImageRequest" message="tns:IndexDataImage" />
+<output wsam:Action="http://Index/WSIndex/IndexDataImageResponse" message="tns:IndexDataImageResponse" />
+</operation>
+<operation name="SyncDataVideo">
+<input wsam:Action="http://Index/WSIndex/SyncDataVideoRequest" message="tns:SyncDataVideo" />
+<output wsam:Action="http://Index/WSIndex/SyncDataVideoResponse" message="tns:SyncDataVideoResponse" />
+</operation>
+<operation name="IndexDataVideo">
+<input wsam:Action="http://Index/WSIndex/IndexDataVideoRequest" message="tns:IndexDataVideo" />
+<output wsam:Action="http://Index/WSIndex/IndexDataVideoResponse" message="tns:IndexDataVideoResponse" />
+</operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-<operation name="Index2SolrWiki">
+<operation name="SyncDataWiki">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
@@ -40,11 +96,62 @@
 <output>
 <soap:body use="literal" />
 </output>
-<fault name="IOException">
-<soap:fault name="IOException" use="literal" />
-</fault>
 </operation>
-<operation name="SyncDataWiki">
+<operation name="IndexDataViwiki">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataMusic">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataMusic">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataImage">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataImage">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataVideo">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataVideo">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />

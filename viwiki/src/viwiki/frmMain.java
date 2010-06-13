@@ -17,6 +17,7 @@ import BUS.SynonymWordBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import ViSearchSyncDataService.ViwikiPageDTO;
+import ViSearchSyncDataService.
 import ViSearchSyncDataService.WSIndex;
 import ViSearchSyncDataService.WSIndexService;
 import java.awt.Cursor;
@@ -83,7 +84,7 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
-        jButton4.setText("Import Data Music");
+        jButton4.setText("Sync Data Music");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -255,6 +256,27 @@ public class frmMain extends javax.swing.JDialog {
 //            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //        jButton4.setEnabled(true);
+
+        jButton4.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        try {
+            MusicBUS bus = new MusicBUS();
+            int numOfRecords = bus.CountRecord();
+            importDataWiki(numOfRecords);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SolrServerException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        jButton4.setEnabled(true);
+        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     // Import data Video
@@ -335,7 +357,7 @@ public class frmMain extends javax.swing.JDialog {
         WSIndex port = service.getWSIndexPort();
         int start = 0;
         while (start < 10000) {
-            ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
+            ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
             ViwikiPageBUS bus = new ViwikiPageBUS();
             list = bus.getDataList(start, 2000);
             port.syncDataWiki(list);
@@ -367,7 +389,7 @@ public class frmMain extends javax.swing.JDialog {
 ////        }
 //    }
 //
-//    public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
+    public void importDataMusic(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
 //        // TODO code application logic here
 //        MySolrJ ms = new MySolrJ();
 //        ms.EmptyData("music");
@@ -381,7 +403,17 @@ public class frmMain extends javax.swing.JDialog {
 //            ms.ImportMusic2Solr(list, start);
 //            start += 2000;
 //        }
-//    }
+        WSIndexService service  = new WSIndexService();
+        WSIndex port = service.getWSIndexPort();
+        int start = 0;
+        while (start < 10000) {
+            ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
+            ViwikiPageBUS bus = new ViwikiPageBUS();
+            list = bus.getDataList(start, 2000);
+            port.syncDataWiki(list);
+            start += 2000;
+        }
+    }
 //
 //    public void importDataRaoVat(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException {
 //        // TODO code application logic here
