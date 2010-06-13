@@ -19,14 +19,9 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class ViwikiPageBUS {
 
-    public ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException {
+    public ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException, DatatypeConfigurationException {
         ViwikiPageDAO dao = new ViwikiPageDAO();
-        try {
-            return dao.getDataList(start, end);
-        } catch (DatatypeConfigurationException ex) {
-            Logger.getLogger(ViwikiPageBUS.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        return dao.getDataList(start, end);
     }
 
     public  int CountRecord() throws SQLException {
