@@ -14,7 +14,7 @@ public class RaoVatDTO {
     private int _id;
     private String _title;
     private String _body;
-    private float _price;
+    private String _price;
     private String _category;
     private String _url;
     private String _photo;
@@ -55,14 +55,14 @@ public class RaoVatDTO {
     /**
      * @return the _price
      */
-    public float getPrice() {
+    public String getPrice() {
         return _price;
     }
 
     /**
      * @param price the _price to set
      */
-    public void setPrice(float price) {
+    public void setPrice(String price) {
         this._price = price;
     }
 
