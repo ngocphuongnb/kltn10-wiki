@@ -18,7 +18,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class MusicBUS {
 
-    public static ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, DatatypeConfigurationException {
+    public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, DatatypeConfigurationException {
         MusicDAO dao = new MusicDAO();
         return dao.getDataList(start, end);
     }
