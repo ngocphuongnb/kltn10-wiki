@@ -12,6 +12,7 @@ import java.util.Calendar;
  */
 public class MusicDTO {
 
+    private int _id;
     private String _title;
     private String _singer;
     private String _album;
@@ -20,6 +21,15 @@ public class MusicDTO {
     private String artist;
     private String _lyric;
     private Calendar _dayUpload;
+
+    public void setId(int _id) {
+        this._id = _id;
+    }
+
+    public int getId() {
+        return _id;
+    }
+
 
     public void setArtist(String artist) {
         this.artist = artist;

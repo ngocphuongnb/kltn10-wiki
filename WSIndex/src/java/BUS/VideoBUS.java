@@ -16,11 +16,18 @@ import java.util.ArrayList;
  */
 public class VideoBUS {
 
-    public static ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException {
-        return VideoDAO.getDataList(start, end);
+    public ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException {
+        VideoDAO dao = new VideoDAO();
+        return dao.getDataList(start, end);
     }
 
-    public static int CountRecord() throws SQLException {
-        return VideoDAO.CountRecord();
+    public int CountRecord() throws SQLException {
+        VideoDAO dao = new VideoDAO();
+        return dao.CountRecord();
+    }
+     public void SyncDataVideo(ArrayList<VideoDTO> listPage) throws SQLException
+    {
+        VideoDAO dao = new VideoDAO();
+        dao.SyncDataVideo(listPage);
     }
 }
