@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  *
@@ -33,10 +32,10 @@ public class RaoVatDAO {
 
         while (rs.next()) {
             page = new RaoVatDTO();
+            page.setId(rs.getInt("id"));
             page.setBody(rs.getString("body"));
             page.setCategory(rs.getString("category"));
             page.setContact(rs.getString("contact"));
-            page.setLinkId(rs.getString("link_id"));
             page.setLocation(rs.getString("location"));
             page.setPhoto(rs.getString("photo"));
             page.setPrice(rs.getFloat("price"));
@@ -57,7 +56,6 @@ public class RaoVatDAO {
         cn.close();
         return list;
     }
-
     public static int CountRecord() throws SQLException {
         int iCount = 0;
         Connection cn = DataProvider.getConnection("raovatdb");

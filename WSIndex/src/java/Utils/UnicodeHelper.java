@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package index;
+package Utils;
 
 import java.util.Locale;
 
@@ -12,14 +12,14 @@ import java.util.Locale;
  */
 public class UnicodeHelper {
 
-    public static String toLower(String s) {
+    public String toLower(String s) {
         String sResult = "";
         Locale lc = new Locale("vi");
         sResult = s.toLowerCase(lc);
         return sResult;
     }
 
-    public static String toUpper(String s) {
+    public String toUpper(String s) {
         String sResult = "";
         Locale lc = new Locale("vi");
         sResult = s.toUpperCase(lc);
@@ -27,7 +27,7 @@ public class UnicodeHelper {
     }
 
 
-    public static boolean checkUnicode(String s)
+    public boolean checkUnicode(String s)
     {
         char[] specChar = {'á', 'à', 'ả', 'ã', 'ạ', 'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ',
             'Á', 'À', 'Ả', 'Ã', 'Ạ', 'Â', 'Ấ', 'Ầ', 'Ẩ', 'Ẫ', 'Ă', 'Ặ', 'Ắ', 'Ằ', 'Ẳ', 'Ẵ', 'Ặ',
@@ -59,7 +59,7 @@ public class UnicodeHelper {
         return true;
     }
 
-    public static String removeUnicodeSign(String s) {
+    public String removeUnicodeSign(String s) {
         char[] arrChar = {'a', 'A', 'd', 'D', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U', 'y', 'Y'};
         char[][] uniChar = {
             {'á', 'à', 'ả', 'ã', 'ạ', 'â', 'ấ', 'ầ', 'ẩ', 'ẫ', 'ậ', 'ă', 'ắ', 'ằ', 'ẳ', 'ẵ', 'ặ'},

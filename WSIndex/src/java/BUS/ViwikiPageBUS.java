@@ -16,11 +16,19 @@ import java.util.ArrayList;
  */
 public class ViwikiPageBUS {
 
-    public static ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException {
-        return ViwikiPageDAO.getDataList(start, end);
+    public ArrayList<ViwikiPageDTO> getDataList(int start, int end) throws SQLException, ParseException {
+        ViwikiPageDAO dao = new ViwikiPageDAO();
+        return dao.getDataList(start, end);
     }
 
-    public static int CountRecord() throws SQLException {
-        return ViwikiPageDAO.CountRecord();
+    public int CountRecord() throws SQLException {
+        ViwikiPageDAO dao = new ViwikiPageDAO();
+        return dao.CountRecord();
+    }
+
+    public void SyncDataViwiki(ArrayList<ViwikiPageDTO> listPage) throws SQLException
+    {
+        ViwikiPageDAO dao = new ViwikiPageDAO();
+        dao.SyncDataViwiki(listPage);
     }
 }
