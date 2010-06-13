@@ -4,65 +4,11 @@
  */
 package viwiki;
 
-import ViSearchSyncDataService.ViwikiPageDTO;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
-import org.apache.solr.client.solrj.request.UpdateRequest;
-import org.apache.solr.client.solrj.response.UpdateResponse;
-import org.apache.solr.common.SolrInputDocument;
-
 /**
  *
  * @author VinhPham
  */
 public class MySolrJ {
-
-//    public SolrServer getSolrServer() throws MalformedURLException {
-//        String url = "http://localhost:8983/solr";
-//        CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-//        return server;
-//    }
-//
-//    public SolrServer getSolrServer(String core) throws MalformedURLException {
-//        String url = "http://localhost:8983/solr/" + core;
-//        CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-//        return server;
-//    }
-//
-//    public void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException
-//    {
-//        SolrServer server = getSolrServer(core);
-//        server.deleteByQuery( "*:*" );
-//        //server.commit();
-//        UpdateRequest req = new UpdateRequest();
-//        req.setAction(ACTION.COMMIT, false, false);
-//        UpdateResponse rsp = req.process(server);
-//    }
-    String RemoveSignVN(String src) {
-        if (src == null) {
-            return null;
-        }
-
-//        if (VIQRHelper.checkVIQR(src) == true) {
-//            return VIQRHelper.removeVIQRSign(src);
-//        } else if (VNIWindowsHelper.checkVNIWindow(src) == true) {
-//            return VNIWindowsHelper.removeVNIWindowsSign(src);
-//        }else if (UnicodeHelper.checkUnicode(src) == true) {
-//            return UnicodeHelper.removeUnicodeSign(src);
-//        } else if (TCVNHelper.checkTCVN(src) == true) {
-//            return TCVNHelper.removeTCVNSign(src);
-//        } else {
-//            return src;
-//        }
-        return UnicodeHelper.removeUnicodeSign(src);
-    }
 //    public void ImportWiki2Solr(ArrayList<ViwikiPageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
 //        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 //        SolrInputDocument doc;
