@@ -9,7 +9,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.mail.internet.MailDateFormat;
 
 /**
  *

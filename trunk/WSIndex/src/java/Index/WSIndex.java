@@ -2,12 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Index;
 
 import Utils.MySolrJ;
 import BUS.AdminBUS;
+import BUS.RaoVatBUS;
 import BUS.ViwikiPageBUS;
+import DTO.RaoVatDTO;
 import DTO.ViwikiPageDTO;
 import BUS.MusicBUS;
 import DTO.MusicDTO;
@@ -30,12 +31,12 @@ import javax.jws.WebService;
  */
 @WebService()
 public class WSIndex {
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataWiki")
-    public void SyncDataViwiki(@WebParam(name = "listWikiPage")
-    ArrayList<ViwikiPageDTO> listWikiPage) {
+    public void SyncDataViwiki(@WebParam(name = "listWikiPage") ArrayList<ViwikiPageDTO> listWikiPage) {
         try {
             ViwikiPageBUS bus = new ViwikiPageBUS();
             bus.SyncDataViwiki(listWikiPage);
@@ -49,15 +50,44 @@ public class WSIndex {
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataViwiki")
-    public boolean IndexDataViwiki(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataViwiki(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexViwiki();
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "SyncDataRaovat")
+    public void SyncDataRaovat(@WebParam(name = "listRaovat")
+    ArrayList<RaoVatDTO> listRaovat){
+        try {
+            RaoVatBUS bus = new RaoVatBUS();
+            bus.SyncDataRaovat(listRaovat);
+        } catch (SQLException ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "IndexDataRaovat")
+    public boolean IndexDataRaovat(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
+        AdminBUS bus = new AdminBUS();
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.IndexRaoVat();
                 return true;
             } catch (Exception ex) {
                 return false;
