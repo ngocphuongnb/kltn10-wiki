@@ -5,7 +5,7 @@
 
 package myquartz;
 
-import impl.MyJob;
+import impl.IndexViwikiJob;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +31,7 @@ public class Main {
         SchedulerFactory schedFac = new StdSchedulerFactory();
         Scheduler sched = schedFac.getScheduler();
         sched.start();
-        JobDetail jobDetail = new JobDetail("myJob", null, MyJob.class);
+        JobDetail jobDetail = new JobDetail("myJob", null, IndexViwikiJob.class);
         //CronTrigger trigger = new CronTrigger("my trigger", null, "30 9 2 ? * SUN");//s m h dom m dow
         Trigger trigger = TriggerUtils.makeHourlyTrigger();
         trigger.setStartTime(new Date());
