@@ -4,8 +4,9 @@
  */
 package BUS;
 
+import DAO.ImageDAO;
 import DAO.MusicDAO;
-import ViSearchSyncDataService.MusicDTO;
+import ViSearchSyncDataService.ImageDTO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class ImageBUS {
 
-    public static ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, DatatypeConfigurationException {
-        MusicDAO dao = new MusicDAO();
+    public ArrayList<ImageDTO> getDataList(int start, int end) throws SQLException, ParseException, DatatypeConfigurationException {
+        ImageDAO dao = new ImageDAO();
         return dao.getDataList(start, end);
     }
 
