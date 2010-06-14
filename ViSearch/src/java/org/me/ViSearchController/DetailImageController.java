@@ -11,8 +11,6 @@ import java.net.MalformedURLException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -29,7 +27,10 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
-import org.me.Utils.Paging;
+import org.me.bus.ParameterBUS;
+import org.me.bus.TrackingBUS;
+import org.me.dto.MemberDTO;
+import org.me.dto.TrackingDTO;
 
 /**
  *
@@ -63,7 +64,7 @@ public class DetailImageController extends HttpServlet {
         QueryResponse rsp;
         try {
 
-          
+
 
             server = SolrJConnection.getSolrServer("image");
 
@@ -71,9 +72,35 @@ public class DetailImageController extends HttpServlet {
                 keySearchId = request.getParameter("id");
 
 
+                //Phan tracking
+                ParameterBUS par = new ParameterBUS();
+                int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+                String sTime = String.format("%d:00:00", timeRange);
+
+                TrackingDTO tracking = new TrackingDTO();
+                String keysearch = request.getParameter("KeySearch").toString();
+                request.setAttribute("KeySearch", keysearch);
+                tracking.setKeySearch(keysearch);
+                tracking.setDocId(keySearchId);
+                tracking.setIp(request.getRemoteAddr());
+                HttpSession session = request.getSession();
+                if (session.getAttribute("Member") != null) {
+                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                    tracking.setMemberId(mem.getId());
+                } else {
+                    tracking.setMemberId(-1);
+                }
+                tracking.setTimeRange(sTime);
+                tracking.setTimeSearch(Calendar.getInstance());
+                tracking.setSearchType(4);
+                TrackingBUS tbus = new TrackingBUS();
+                tbus.InsertTracking(tracking, "visearch");
+                // end tracking
+
+
                 if (request.getParameter("KeySearch") != null) {
                     keySearch = request.getParameter("KeySearch");
-                    
+
                     Map<String, Map<String, List<String>>> highLight = null;
 
                     rsp = OnSearchSubmit(keySearchId);
@@ -119,7 +146,7 @@ public class DetailImageController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-   
+
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
@@ -150,9 +177,9 @@ public class DetailImageController extends HttpServlet {
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
-    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
-    {
-       SolrQuery query = new SolrQuery();
+
+    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        SolrQuery query = new SolrQuery();
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
@@ -171,6 +198,7 @@ public class DetailImageController extends HttpServlet {
         return rsp;
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request

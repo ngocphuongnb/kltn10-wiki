@@ -21,6 +21,23 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Hình ảnh</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+         <script type="text/javascript" src="script/jquery-1.4.2.min.js">
+        </script>
+         <script type="text/javascript">
+            $(document).ready(function(){
+                $("#btBookmark").click(function(){
+                    var docID = $("#hdIdValue").attr("value");
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    alert(keySearch);
+                    var Url = "BookmarkController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&SearchType=6";
+                    $("#Bookmark").load(encodeURI(Url));
+                });
+
+                $("#tbTopSearch").load("TopSearch?SearchType=6");
+            });
+        </script>
         <script language="javascript">
             function setText()
             {
@@ -112,10 +129,6 @@
                                 }
 
 
-
-
-
-
                                   result += "<tr>";
                                 result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery+"\">" + title_hl + "</a><b></td>";
                                 result += "</tr>";
@@ -132,6 +145,9 @@
                                  result += "<tr>";
                                 result += "<td>url:" + url + "</td>";
                                 result += "</tr>";
+
+                                result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
+                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
 
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
@@ -243,6 +259,7 @@
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
                                         <% out.print(result2);%>
+                                        
                                     </td>
                                 </tr>
                             </table>

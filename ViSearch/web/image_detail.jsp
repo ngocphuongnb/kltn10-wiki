@@ -21,6 +21,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Hình ảnh</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="script/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#btBookmark").click(function(){
+                    var docID = $("#hdIdValue").attr("value");
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    alert(keySearch);
+                    var Url = "BookmarkController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&SearchType=4";
+                    $("#Bookmark").load(encodeURI(Url));
+                });
+
+                $("#tbTopSearch").load("TopSearch?SearchType=4");
+            });
+        </script>
         <script language="javascript">
             function setText()
             {
@@ -117,9 +133,6 @@
                                     }
                                 }
 
-
-
-
                                 result += "<tr>";
                                 result += "<td><a href='" + url + "' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
                                 result += "</tr>";
@@ -132,6 +145,12 @@
                                 result += "<td>Kích thước: " + width + " x " + height;
                                 result += "</tr>";
 
+                                  if (session.getAttribute("Member") != null) {
+                               result +=  "<span id='Bookmark'>"
+                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'>";
+                                     result += "<tr><td><input id='btBookmark' type='button' value='Thêm vào bookmark'></td></tr>";
+                                     result +="</span>";
+                            }
                                 result += "<tr>";
                                 result += "<td>Loại: " + size + "Kb - " + fileType + "</td>";
                                 result += "</tr>";
@@ -154,16 +173,9 @@
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
-                            // Phan trang
-                            //numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                            // numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
-                            // strpaging = (String) request.getAttribute("Pagging");
+                           
                         }
-                        //result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        // result += "<div style=\"float:left; clear:both\"> Tổng số trang là: " + numpage + "<br/>";
-                        // if (numpage > 1) {
-                        //     result += strpaging + "<br/><br/></div>";
-                        // }
+                        
                     }
                     //get SolrDocumentList
         %>

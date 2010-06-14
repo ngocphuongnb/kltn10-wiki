@@ -24,10 +24,19 @@
         <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=2");
+                //$("#tbTopSearch").load("TopSearch?SearchType=2");
             });
         </script>
         <script language="javascript">
+            $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=6",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -133,7 +142,7 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 Date created = (Date) (listdocs.get(i).getFieldValue("created"));
                                 String title_hl = title;
-                                
+
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -141,14 +150,14 @@
                                     List<String> highlightTitle = highLight.get(id).get("title");
                                     if (highlightBody != null && !highlightBody.isEmpty()) {
                                         body = highlightBody.get(0) + "...";
-                                    } 
+                                    }
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
-                                } 
+                                }
 
                                 result += "<tr>";
-                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery+"\">" + title_hl + "</a><b></td>";
+                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>";
                                 result += "</tr>";
 
 
@@ -170,7 +179,6 @@
                                 result += "</table>";
                             }
 
-
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
                             if (request.getAttribute("NumPage") != null) {
@@ -182,10 +190,10 @@
                         if (numpage > 1) {
                             result += "Tổng số trang là: " + numpage + "<br/>";
                         }
-                        result += "<p><font color=\"#CC3333\" size=\"+1\">" +strpaging + "</font></p><br/><br/>";
+                        result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -222,24 +230,24 @@
                     }
 
                     // End get Facet
-%>
-<%
+        %>
+        <%
                     // Get query date
                     String facetD = "";
                     facetD += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
 
                     Calendar cl = Calendar.getInstance();
 
-                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH)-1)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                    String str24hqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + (cl.get(Calendar.DAY_OF_MONTH) - 1)
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, -7);
                     String str1tuanqua = cl.get(Calendar.YEAR) + "-" + (cl.get(Calendar.MONTH) + 1) + "-" + cl.get(Calendar.DAY_OF_MONTH)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
                     cl.add(Calendar.DATE, +7);
                     String str1thangqua = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH)
-                            + "T"+cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+                            + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
 
 
                     // 1976-03-06T23:59:59.999Z
@@ -268,7 +276,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -278,7 +286,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -293,13 +301,13 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                           
-                                <% if (request.getAttribute("Docs") != null) {
-                                             out.print(facet);
-                                              out.print("<div  class=\"mnu\">Ngày đăng</div>" + facetD);
-                                         }%>
-                                <table  id="tbTopSearch">
 
+                                <% if (request.getAttribute("Docs") != null) {
+                                                out.print(facet);
+                                                out.print("<div  class=\"mnu\">Ngày đăng</div>" + facetD);
+                                            }%>
+                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
+                                <table  id="tbTopSearch">
                                 </table>
                             </div>
                         </td>

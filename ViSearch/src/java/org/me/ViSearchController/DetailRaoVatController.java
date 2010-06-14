@@ -27,7 +27,6 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
-import org.me.Utils.MyString;
 import org.me.bus.ParameterBUS;
 import org.me.bus.TrackingBUS;
 import org.me.dto.MemberDTO;

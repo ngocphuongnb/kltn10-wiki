@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -18,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -26,6 +28,10 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.bus.ParameterBUS;
+import org.me.bus.TrackingBUS;
+import org.me.dto.MemberDTO;
+import org.me.dto.TrackingDTO;
 
 /**
  *
@@ -60,11 +66,36 @@ public class DetailNewsController extends HttpServlet {
             //</get-parameter>
             if (request.getParameter("KeySearch") != null) {
 
+                 ParameterBUS par = new ParameterBUS();
+            int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+            String sTime = String.format("%d:00:00", timeRange);
+
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
 
                 keySearch = request.getParameter("KeySearch");
                 keySearchId = request.getParameter("id");
+
+                 //Phan tracking
+                TrackingDTO tracking = new TrackingDTO();
+                String keysearch = request.getParameter("KeySearch").toString();
+                request.setAttribute("KeySearch", keysearch);
+                tracking.setKeySearch(keysearch);
+                tracking.setDocId(keySearchId);
+                tracking.setIp(request.getRemoteAddr());
+                HttpSession session = request.getSession();
+                if (session.getAttribute("Member") != null) {
+                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                    tracking.setMemberId(mem.getId());
+                } else {
+                    tracking.setMemberId(-1);
+                }
+                tracking.setTimeRange(sTime);
+                tracking.setTimeSearch(Calendar.getInstance());
+                tracking.setSearchType(6);
+                TrackingBUS tbus = new TrackingBUS();
+                tbus.InsertTracking(tracking, "visearch");
+                // end tracking
 
                 rsp = OnSearchSubmit(keySearchId);
                 docs = rsp.getResults();

@@ -21,7 +21,22 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Hình ảnh</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //$("#tbTopSearch").load("TopSearch?SearchType=2");
+            });
+        </script>
         <script language="javascript">
+            $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=4",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
