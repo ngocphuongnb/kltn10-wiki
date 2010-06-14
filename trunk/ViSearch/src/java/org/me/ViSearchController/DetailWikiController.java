@@ -37,21 +37,21 @@ public class DetailWikiController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
+        boolean b;
         try {
             ParameterBUS par = new ParameterBUS();
             int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
             String sTime = String.format("%d:00:00", timeRange);
 
             if (request.getParameter("id") != null) {
-                String keySearchId = request.getParameter("id");
+                int id = Integer.parseInt(request.getParameter("id").toString());
                 //Phan update tracking boosting
-                int id_link = Integer.parseInt(request.getParameter("id_link").toString());
 
                 //Phan tracking
                 TrackingDTO tracking = new TrackingDTO();
                 String keysearch = request.getParameter("KeySearch").toString();
                 tracking.setKeySearch(keysearch);
-                tracking.setDocId(keySearchId);
+                tracking.setDocId(String.valueOf(id));
                 tracking.setIp(request.getRemoteAddr());
                 HttpSession session = request.getSession();
                 if (session.getAttribute("Member") != null) {
@@ -64,16 +64,18 @@ public class DetailWikiController extends HttpServlet {
                 tracking.setTimeSearch(Calendar.getInstance());
                 tracking.setSearchType(1);
                 TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(tracking, "visearch");
-                tbus.UpdateKeysearch(id_link, keysearch, "viwiki", "visearch");
+                b = tbus.InsertTracking(tracking, "visearch");
+                b = tbus.UpdateKeysearch(id, keysearch, "viwiki", "visearch");
                 // end tracking
-				 String link = request.getParameter("url").toString();
-            String url = "http://vi.wikipedia.org/wiki/" + URLEncoder.encode(link, "UTF-8");
-            response.sendRedirect(url);
+                String link = request.getParameter("url").toString();
+                String url = "http://vi.wikipedia.org/wiki/" + URLEncoder.encode(link, "UTF-8");
+                response.sendRedirect(url);
             }
+        } catch (Exception ex) {
+            out.println(ex.getMessage());
         } finally {
             out.close();
-           
+
         }
     }
 

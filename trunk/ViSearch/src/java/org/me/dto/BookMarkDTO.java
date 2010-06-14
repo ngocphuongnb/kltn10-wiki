@@ -15,6 +15,7 @@ public class BookMarkDTO {
     private String _keySearch;
     private String _docId;
     private int _searchType;
+    private String _nameBookmark;
 
     public String getId() {
         return _Id;
@@ -60,6 +61,20 @@ public class BookMarkDTO {
      */
     public void setSearchType(int searchType) {
         this._searchType = searchType;
+    }
+
+    /**
+     * @return the _nameBookmark
+     */
+    public String getNameBookmark() {
+        return _nameBookmark;
+    }
+
+    /**
+     * @param nameBookmark the _nameBookmark to set
+     */
+    public void setNameBookmark(String nameBookmark) {
+        this._nameBookmark = nameBookmark;
     }
 
    
