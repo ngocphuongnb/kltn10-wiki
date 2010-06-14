@@ -35,7 +35,6 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.HighlightParams;
@@ -76,7 +75,6 @@ public class SearchRaoVatController extends HttpServlet {
         int sortedType = 0;
         String sPaging = "/ViSearch/SearchRaoVatController?";
         List<FacetField> listFacet = null;
-        ArrayList<FacetDateDTO> listFacetDate = null;
 
         try {
 

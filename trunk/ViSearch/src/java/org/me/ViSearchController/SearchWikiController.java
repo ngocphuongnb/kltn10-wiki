@@ -394,10 +394,7 @@ public class SearchWikiController extends HttpServlet {
         List<FacetField> listFacet = null;
         ArrayList<FacetDateDTO> listFacetDate = null;
         int sortedType = 0;
-
         try {
-
-
             //<get-parameter defaultstate="collapsed">
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));

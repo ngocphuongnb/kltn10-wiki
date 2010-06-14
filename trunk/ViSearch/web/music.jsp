@@ -24,15 +24,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Video - Wikipedia</title>
+        <title>Music - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=3");
+               // $("#tbTopSearch").load("TopSearch?SearchType=3");
             });
         </script>
         <script language="javascript">
+            $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=3",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -96,11 +105,11 @@
                 document.getElementById(btDong).className="hidden";
             }
         </script>
+
     </head>
 
     <body onLoad="setText();">
         <%
-
                     String currentPage = "/music.jsp";
                     if (request.getQueryString() != null) {
                         currentPage = "/SearchMusicController?";
@@ -109,7 +118,7 @@
                     session.setAttribute("CurrentPage", currentPage);
                     // Get strQuery
                     String strQuery = "";
-                    String FieldId="";
+                    String FieldId = "";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getAttribute("KeySearch");
                         FieldId = (String) request.getAttribute("FieldId");
@@ -118,7 +127,7 @@
 
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -195,12 +204,31 @@
                                 String lyricId = "Lyric" + i;
                                 String BTViewlyricId = "BTViewlyricId" + i;
                                 String BTCloselyricId = "BTCloselyricId" + i;
+                                String btPlay = "btPlay" + i;
 
+                                result += "<span id='Bookmark'>";
+                                result += "</span>";
                                 result += "<tr>";
-                                result += "<td><input type=\"button\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />";
+                                result += "<td><input type=\"button\" id=\"" + btPlay + "\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTViewlyricId + "\" value=\"Xem lời nhạc\" onclick=\"showLyric('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>";
                                 result += "</tr>";
+
+        %>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#<%=btPlay%>").click(function(){
+                    var docID = <%=id%>
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    var Url = "TrackingController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&searchType=3";
+                    alert(Url);
+                    $("#Bookmark").load(encodeURI(Url));
+                });
+            });
+        </script>
+        <%
 
 
                                 result += "<tr><td>";
@@ -246,7 +274,7 @@
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -276,7 +304,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f="+FieldId+"&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -289,9 +317,9 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
-        
+
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -301,7 +329,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -317,14 +345,15 @@
                     <tr>
                         <td width="200" height="33" valign="top">
 
-                             <div class="subtable">
-                          
-                            <% if (request.getAttribute("Docs") != null) {
-                                                out.print(facet);
-                                                } %>
-                            <table id="tbTopSearch">
-                            </table>
-                             </div>
+                            <div class="subtable">
+
+                                <% if (request.getAttribute("Docs") != null) {
+                                            out.print(facet);
+                                        }%>
+                                        <div class="mnu">Tìm kiếm nhiều</div>
+                                <table id="tbTopSearch">
+                                </table>
+                            </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 

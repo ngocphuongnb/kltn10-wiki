@@ -81,7 +81,16 @@
                 var  btDong = "BTCloseMediaId" + id;
                 document.getElementById(btDong).className="hidden";
             }
-        </script>
+       $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=5",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            });
+           </script>
     </head>
 
     <body onLoad="setText();">
@@ -162,13 +171,14 @@
                                 String BTCloseMediaId = "BTCloseMediaId" + i;
 
                                 result += "<tr><td>";
-                                //result += "<td><input type=\"button\" value=\"Play\" onclick=\"showObject('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" /></td>";
                                 result += "</tr>";
 
                                 result += "<tr><td>";
 
+                                result += "<span id='Bookmark'>";
+                                result += "</span>";
 
                                 result += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
                                 result += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
@@ -178,6 +188,22 @@
                                 result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
                                 result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
                                 result += "</object>";
+
+                                 %>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#<%=BTViewMediaId%>").click(function(){
+                    var docID = <%=id%>
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    var Url = "TrackingController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&searchType=5";
+                    alert(Url);
+                    $("#Bookmark").load(encodeURI(Url));
+                });
+            });
+        </script>
+        <%
 
 
                                 result += "</td></tr>";
@@ -271,8 +297,11 @@
                              <div class="subtable">
               
                             <% out.print(facet);%>
-                            <table id="tbTopSearch">
-                            </table>
+                            <div class="mnu">Tìm kiếm nhiều</div>
+                                <table id="tbTopSearch">
+
+                                </table>
+                           
                               </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">

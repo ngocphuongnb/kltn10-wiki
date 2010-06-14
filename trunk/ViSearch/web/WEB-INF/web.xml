@@ -72,6 +72,18 @@
         <servlet-name>DetailNewsController</servlet-name>
         <servlet-class>org.me.ViSearchController.DetailNewsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetBookmartController</servlet-name>
+        <servlet-class>org.me.ViSearchController.GetBookmarkController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetBookmarkController</servlet-name>
+        <servlet-class>org.me.ViSearchController.GetBookmarkController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TrackingController</servlet-name>
+        <servlet-class>org.me.ViSearchController.TrackingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -143,6 +155,18 @@
     <servlet-mapping>
         <servlet-name>DetailNewsController</servlet-name>
         <url-pattern>/DetailNewsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetBookmartController</servlet-name>
+        <url-pattern>/GetBookmartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetBookmarkController</servlet-name>
+        <url-pattern>/GetBookmarkController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TrackingController</servlet-name>
+        <url-pattern>/TrackingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
