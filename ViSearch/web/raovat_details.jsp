@@ -21,10 +21,12 @@
                 $("#btBookmark").click(function(){
                     var docID = $("#hdIdValue").attr("value");
                     var keySearch = $("#hfKeySearch").attr("value");
+                    var nameBookmark = $("#nameBookmark").attr("value");
                     alert(keySearch);
                     var Url = "BookmarkController?KeySearch=" + keySearch;
                     Url += "&DocID=" + docID;
                     Url += "&SearchType=2";
+                    Url += "&NameBookmark=" + nameBookmark;
                     $("#Bookmark").load(encodeURI(Url));
                 });
 
@@ -53,7 +55,7 @@
 
         <%
                     if (request.getQueryString() != null) {
-                        String currentPage = "DetailRaoVatController?";
+                        String currentPage = "/DetailRaoVatController?";
                         currentPage += request.getQueryString().toString();
                         session.setAttribute("CurrentPage", currentPage);
                     }
@@ -129,8 +131,9 @@
                             photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/><br/>";
                             if (session.getAttribute("Member") != null) {
                                 photo += "<span id='Bookmark'>"
-                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'>"
-                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span>";
+                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'/>"
+                                        + "Tên bookmark: <input id='nameBookmark' type='input'/><br/>"
+                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'/></span>";
                             }
                             photo += "</div>";
                             result += photo;

@@ -23,7 +23,7 @@
 
 
         %>
-        <META HTTP-EQUIV="refresh" CONTENT="3;URL=<%=url%>">
+        <META HTTP-EQUIV="refresh" CONTENT="3;URL=<%="Visearch/"+url%>">
         <title>Kết quả đăng ký</title>
     </head>
     <body>
