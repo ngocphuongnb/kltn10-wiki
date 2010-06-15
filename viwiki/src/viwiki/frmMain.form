@@ -22,11 +22,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btnSynDataImage" pref="181" max="32767" attributes="1"/>
-                  <Component id="btnSyncDataMusic" pref="181" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="jButton1" alignment="0" pref="181" max="32767" attributes="0"/>
+                  <Component id="btnSynDataImage" alignment="0" pref="181" max="32767" attributes="1"/>
+                  <Component id="btnSyncDataMusic" alignment="0" pref="181" max="32767" attributes="0"/>
                   <Component id="btnSyncDataWiki" alignment="0" pref="181" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -57,7 +58,9 @@
                   <Component id="btnSynDataImage" max="32767" attributes="1"/>
                   <Component id="btnGenerateSynonyms" alignment="0" pref="64" max="32767" attributes="1"/>
               </Group>
-              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" pref="65" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -109,6 +112,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSynDataImageActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sync data News"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

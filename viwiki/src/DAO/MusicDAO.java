@@ -52,8 +52,8 @@ public class MusicDAO {
             gcal.setTime(d);
             XMLGregorianCalendar date;
             date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-            
             page.setDayUpload(date);
+
             list.add(page);
         }
 

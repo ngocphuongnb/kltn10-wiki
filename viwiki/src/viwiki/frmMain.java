@@ -12,6 +12,7 @@ package viwiki;
 
 import BUS.ImageBUS;
 import BUS.MusicBUS;
+import BUS.NewsBUS;
 import BUS.RaoVatBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
@@ -57,6 +58,7 @@ public class frmMain extends javax.swing.JDialog {
         btnSyncDataMusic = new javax.swing.JButton();
         btnSycnDataVideo = new javax.swing.JButton();
         btnSynDataImage = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -102,16 +104,24 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Sync data News");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSynDataImage, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                    .addComponent(btnSyncDataMusic, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                    .addComponent(btnSyncDataWiki, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(btnSynDataImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(btnSyncDataMusic, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                    .addComponent(btnSyncDataWiki, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGenerateSynonyms, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
@@ -134,7 +144,9 @@ public class frmMain extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSynDataImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGenerateSynonyms, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
-                .addGap(81, 81, 81))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -266,6 +278,17 @@ public class frmMain extends javax.swing.JDialog {
         setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_btnSynDataImageActionPerformed
 
+    // News
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        NewsBUS bus = new NewsBUS();
+        try {
+            int numOfRecords = bus.CountRecord();
+            importDataNews(numOfRecords);
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void importDataWiki(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
         // TODO code application logic here
         WSIndexService service = new WSIndexService();
@@ -335,6 +358,18 @@ public class frmMain extends javax.swing.JDialog {
             start += 200;
         }
     }
+     public void importDataNews(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
+        WSIndexService service = new WSIndexService();
+        WSIndex port = service.getWSIndexPort();
+        int start = 0;
+        while (start < 1000) {
+            ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
+            NewsBUS bus = new NewsBUS();
+            list = bus.getDataList(start, 200);
+            port.syncDataNews(list);
+            start += 200;
+        }
+    }
 ////
 //    /**
 //     * @param args the command line arguments
@@ -362,5 +397,6 @@ public class frmMain extends javax.swing.JDialog {
     private javax.swing.JButton btnSyncDataMusic;
     private javax.swing.JButton btnSyncDataRaovat;
     private javax.swing.JButton btnSyncDataWiki;
+    private javax.swing.JButton jButton1;
     // End of variables declaration//GEN-END:variables
 }
