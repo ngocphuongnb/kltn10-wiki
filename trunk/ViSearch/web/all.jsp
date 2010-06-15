@@ -164,7 +164,7 @@
                                
                                 result += "<tr>";
                                 result += "<td colspan='2'>";
-                                result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
+                                result += "<a href=\"SearchAllController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
