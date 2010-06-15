@@ -83,7 +83,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -145,12 +145,12 @@
                                 result += "<td>Kích thước: " + width + " x " + height;
                                 result += "</tr>";
 
-                                  if (session.getAttribute("Member") != null) {
-                               result +=  "<span id='Bookmark'>"
-                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'>";
-                                     result += "<tr><td><input id='btBookmark' type='button' value='Thêm vào bookmark'></td></tr>";
-                                     result +="</span>";
-                            }
+                                if (session.getAttribute("Member") != null) {
+                                    result += "<span id='Bookmark'>"
+                                            + "<input id='hdIdValue' type='hidden' value='" + id + "'>";
+                                    result += "<tr><td><input id='btBookmark' type='button' value='Thêm vào bookmark'></td></tr>";
+                                    result += "</span>";
+                                }
                                 result += "<tr>";
                                 result += "<td>Loại: " + size + "Kb - " + fileType + "</td>";
                                 result += "</tr>";
@@ -173,12 +173,12 @@
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
-                           
+
                         }
-                        
+
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -213,7 +213,7 @@
 
 
                     // End get Facet
-%>
+        %>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -235,7 +235,7 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -244,7 +244,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -258,7 +258,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                               
+
                                 <% if (request.getAttribute("Docs") != null) {
                                                 // out.print(facet);
                                             }%>
