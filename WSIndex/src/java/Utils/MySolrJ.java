@@ -7,11 +7,13 @@ package Utils;
 import BUS.RaoVatBUS;
 import BUS.ImageBUS;
 import BUS.MusicBUS;
+import BUS.NewsBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import DTO.RaoVatDTO;
 import DTO.ImageDTO;
 import DTO.MusicDTO;
+import DTO.NewsDTO;
 import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
 import java.io.IOException;
@@ -129,6 +131,19 @@ public class MySolrJ {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
             list = bus.getDataList(start, 2000);
             ImportVideo2Solr(list);
+            start += 2000;
+        }
+    }
+        public void IndexNews() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+
+        EmptyData("news");
+        NewsBUS bus = new NewsBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
+            list = bus.getDataList(start, 2000);
+            ImportNews2Solr(list);
             start += 2000;
         }
     }
@@ -316,6 +331,43 @@ public class MySolrJ {
         }
 
         SolrServer server = getSolrServer("image");
+        //server.add(docs);
+       // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+public void ImportNews2Solr(ArrayList<NewsDTO> listpage) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        NewsDTO pagedto = new NewsDTO();
+        Iterator<NewsDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+             doc.addField("id", pagedto.getId());
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("introtext", pagedto.getIntrotext());
+            doc.addField("introtext_unsigned", RemoveSignVN(pagedto.getIntrotext()));
+
+            doc.addField("fulltext", pagedto.getFulltext());
+            doc.addField("fulltext_unsigned", RemoveSignVN(pagedto.getFulltext()));
+
+            doc.addField("created", pagedto.getCreated().getTime());
+            //doc.addField("modified", pagedto.getModified().getTime());
+
+            docs.add(doc);
+        }
+
+        SolrServer server = getSolrServer("news");
         //server.add(docs);
        // server.commit();
 
