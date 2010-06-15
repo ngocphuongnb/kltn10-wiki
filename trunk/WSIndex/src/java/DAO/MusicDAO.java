@@ -21,11 +21,11 @@ import java.util.Date;
  */
 public class MusicDAO {
 
-    public static ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
+    public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-         String query = String.format("SELECT * FROM viwiki where tracking_updated=1 LIMIT %d, %d", start, end);
+         String query = String.format("SELECT * FROM data_music where tracking_updated=1 LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
 
         MusicDTO page;
@@ -55,7 +55,7 @@ public class MusicDAO {
         return list;
     }
 
-    public static int CountRecord() throws SQLException {
+    public int CountRecord() throws SQLException {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
@@ -75,17 +75,17 @@ public class MusicDAO {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataMusic(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (MusicDTO musicDTO : listPage) {
             cs.setInt(1, musicDTO.getId());
-            cs.setString(2, sdf.format(musicDTO.getTitle()));
+            cs.setString(2, musicDTO.getTitle());
             cs.setString(3, musicDTO.getSinger());
             cs.setString(4, musicDTO.getAlbum());
             cs.setString(5, musicDTO.getCategory());
             cs.setString(6, musicDTO.getUrl());
             cs.setString(7, musicDTO.getArtist());
             cs.setString(8, musicDTO.getLyric());
-            cs.setDate(9, (java.sql.Date) musicDTO.getDayUpload().getTime());
+            cs.setString(9, sdf.format(musicDTO.getDayUpload().getTime()));
             cs.executeUpdate();
         }
         cs.close();

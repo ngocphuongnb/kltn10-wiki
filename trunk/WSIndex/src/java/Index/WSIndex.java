@@ -13,8 +13,10 @@ import DTO.ViwikiPageDTO;
 import BUS.MusicBUS;
 import DTO.MusicDTO;
 import BUS.ImageBUS;
+import BUS.NewsBUS;
 import BUS.VideoBUS;
 import DTO.ImageDTO;
+import DTO.NewsDTO;
 import DTO.VideoDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -191,6 +193,40 @@ public class WSIndex {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexVideo();
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "SyncDataNews")
+    public void SyncDataNews(@WebParam(name = "listNews")
+    ArrayList<NewsDTO> listNews) {
+        try {
+            NewsBUS bus = new NewsBUS();
+            bus.SyncDataNews(listNews);
+            //TODO write your implementation code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "IndexDataNews")
+    public boolean IndexDataNews(@WebParam(name = "code")
+    String code, @WebParam(name = "dateRequest")
+    Calendar dateRequest){
+        AdminBUS bus = new AdminBUS();
+        if(bus.CheckSecurity(code, dateRequest.getTime()))
+        {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.IndexNews();
                 return true;
             } catch (Exception ex) {
                 return false;
