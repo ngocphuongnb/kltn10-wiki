@@ -15,14 +15,15 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
-        <script type="text/javascript">
-            $(document).ready(function(){                
-            });
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
 
-        </script>
         <script language="javascript">
-             $.ajax({
+            $(document).ready(function(){
+            });
+            setInterval(
+            $.ajax({
                 type: "POST",
                 url: "TopSearch",
                 cache: false,
@@ -30,7 +31,7 @@
                 success: function(html){
                     $("#tbTopSearch").append(html);
                 }
-            });
+            }), 10000);
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -69,14 +70,6 @@
             }
             function showPVTC(){
                 document.getElementById("divPVTC").className="display";
-            }
-            
-            function ClickDetail(link)
-            {
-                var keysearch = document.getElementById('hfKeySearch').value;
-                var url = "DetailWikiController?url=" + link;
-                url += "&KeySearch=" + keysearch;
-                window.location = url;
             }
         </script>
 
@@ -302,7 +295,7 @@
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr><td>
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -322,11 +315,18 @@
                     </tr>
                     <tr>
                         <td width="200" height="33" valign="top">
+                            <script type="text/javascript">
+                                $(function(){
+                                    $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
+                                    $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
+                                });
+                            </script>
                             <div class="subtable">
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
-                                            }%>
+                                            }
+                                %>
 
                                 <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
                                 <table id="tbTopSearch">
