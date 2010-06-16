@@ -37,10 +37,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        title^10 album^7 singer^5 lyric^3 artist
+        title^5 body
      </str>
      <str name="pf">
-        title^10 album^7 singer^5 lyric^3 artist
+        title^5 body
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -72,10 +72,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        title^10 title_unsigned^8 album^7 album_index_unsigned^6 singer^5 singer_index_unsigned^4 lyric^3 lyric_unsigned^ artist^2 artist_index_unsigned
+        title^5 body
      </str>
      <str name="pf">
-        title^10 title_unsigned^8 album^7 album_index_unsigned^6 singer^5 singer_index_unsigned^4 lyric^3 lyric_unsigned^ artist^2 artist_index_unsigned
+        title^5 body
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -104,7 +104,7 @@
   <fragmenter name="regex" class="org.apache.solr.highlight.RegexFragmenter">
     <lst name="defaults">
       <!-- slightly smaller fragsizes work better because of slop -->
-      <int name="hl.fragsize">0</int>
+      <int name="hl.fragsize">70</int>
       <!-- allow 50% slop on fragment sizes -->
       <float name="hl.regex.slop">0.5</float>
       <!-- a basic sentence pattern -->
@@ -127,13 +127,13 @@
     </arr>
   </requestHandler>
 	<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">textMusic</str>
+    <str name="queryAnalyzerFieldType">textVideo</str>
 
     <lst name="spellchecker">
       <str name="name">default</str>
       <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
-      <str name="spellcheckIndexDir">./spellcheckerMusic</str>
+      <str name="spellcheckIndexDir">./spellcheckerAll</str>
     </lst>
 
     <!-- a spellchecker that uses a different distance measure -->
@@ -142,7 +142,7 @@
       <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
-      <str name="spellcheckIndexDir">./spellcheckerMusic2</str>
+      <str name="spellcheckIndexDir">./spellcheckerAll2</str>
     </lst>
     
 
@@ -152,7 +152,7 @@
       <str name="name">file</str>
       <str name="sourceLocation">spellings.txt</str>
       <str name="characterEncoding">UTF-8</str>
-      <str name="spellcheckIndexDir">./spellcheckerFileMusic</str>
+      <str name="spellcheckIndexDir">./spellcheckerFileAll</str>
     </lst>
   </searchComponent>
   <admin>

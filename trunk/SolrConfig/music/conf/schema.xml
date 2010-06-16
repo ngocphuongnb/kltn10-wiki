@@ -242,10 +242,10 @@
 	<field name="album_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="artist" type="string" indexed="true" stored="true"/>
 	<field name="artist_index" type="textMusic" indexed="true" stored="true" multiValued="true"/>
-	<field name="artist_index_unsigned" type="textMusic" indexed="true" stored="true"/>
+	<field name="artist_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="singer" type="string" indexed="true" stored="true"/>
-	<field name="singer_index" type="textMusic" indexed="true" stored="true" multiValued="true"/>
-	<field name="singer_index_unsigned" type="textMusic" indexed="true" stored="true"/>
+	<field name="singer_index" type="textMusic" indexed="true" stored="false"/>
+	<field name="singer_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
 	<field name="category_index" type="textMusic" indexed="true" stored="false" multiValued="true"/>
 	<field name="category_index_unsigned" type="textMusic" indexed="true" stored="false"/>
@@ -281,12 +281,13 @@
  <defaultSearchField>title</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
- <solrQueryParser defaultOperator="OR"/>
- <copyField source="title_unsigned" dest="title"/>
+ <solrQueryParser defaultOperator="AND"/>
+ <!-- <copyField source="title_unsigned" dest="title"/>
   <copyField source="album_index_unsigned" dest="album_index"/>
   <copyField source="artist_index_unsigned" dest="artist_index"/>
   <copyField source="singer_index_unsigned" dest="singer_index"/>
   <copyField source="category_index_unsigned" dest="category_index"/>
   <copyField source="lyric_unsigned" dest="lyric"/>
+  -->
 </schema>
 
