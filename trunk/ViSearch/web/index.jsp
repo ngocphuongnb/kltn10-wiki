@@ -205,7 +205,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -239,7 +239,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -285,7 +285,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -343,6 +343,15 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td valign="top" id="content">
+                                        <div id="Bookmark" title="Thêm bookmark">
+                                            <p class="validateTips"/>
+                                            <form>
+                                                <fieldset>
+                                                    <label for="name">Tên bookmark</label>
+                                                    <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                                </fieldset>
+                                            </form>
+                                        </div>
                                         <% out.print(result);%>
 
                                     </td>

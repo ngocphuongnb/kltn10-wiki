@@ -12,7 +12,6 @@ public class BookMarkDTO {
 
     private String _Id;
     private int _memberId;
-    private String _keySearch;
     private String _docId;
     private int _searchType;
     private String _nameBookmark;
@@ -25,10 +24,6 @@ public class BookMarkDTO {
         return _docId;
     }
 
-    public String getKeySearch() {
-        return _keySearch;
-    }
-
     public int getMemberId() {
         return _memberId;
     }
@@ -39,10 +34,6 @@ public class BookMarkDTO {
 
     public void setDocId(String _docId) {
         this._docId = _docId;
-    }
-
-    public void setKeySearch(String _keySearch) {
-        this._keySearch = _keySearch;
     }
 
     public void setMemberId(int _memberId) {
