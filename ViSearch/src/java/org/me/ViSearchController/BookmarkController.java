@@ -39,10 +39,8 @@ public class BookmarkController extends HttpServlet {
             int searchType = Integer.parseInt(request.getParameter("SearchType").toString());
             BookMarkDTO bmdto = new BookMarkDTO();
             String docID = request.getParameter("DocID").toString();
-            String keySearch = request.getParameter("KeySearch").toString();
             String nameBookmark = request.getParameter("NameBookmark").toString();
             bmdto.setDocId(docID);
-            bmdto.setKeySearch(keySearch);
             bmdto.setMemberId(memdto.getId());
             bmdto.setSearchType(searchType);
             bmdto.setNameBookmark(nameBookmark);
