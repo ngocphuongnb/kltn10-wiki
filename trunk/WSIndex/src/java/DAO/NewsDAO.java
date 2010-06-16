@@ -40,7 +40,7 @@ public class NewsDAO {
 
     public ArrayList<NewsDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("news");
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
        String query = String.format("SELECT * FROM data_news where tracking_updated=1 LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
@@ -51,19 +51,15 @@ public class NewsDAO {
             page = new NewsDTO();
             page.setId(rs.getInt("id"));
             page.setTitle(rs.getString("title"));
-            page.setTitle_alias(rs.getString("title_alias"));
             page.setIntrotext(rs.getString("introtext"));
             page.setFulltext(rs.getString("fulltext"));
             page.setCategory(rs.getString("category"));
             String created = rs.getString("created");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = sdf.parse(created);
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
             page.setCreated(cl);
-
-
-
 
 //            created = rs.getString("modified");
 //            if (created.equals("0000-00-00 00:00:00") == false) {
@@ -73,8 +69,6 @@ public class NewsDAO {
 //                cl.setTime(d);
 //                page.setModified(cl);
 //            }
-
-
 
             list.add(page);
         }
