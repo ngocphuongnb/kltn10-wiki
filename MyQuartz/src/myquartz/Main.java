@@ -5,12 +5,9 @@
 
 package myquartz;
 
-import impl.IndexRaovatJob;
-import impl.IndexViwikiJob;
+import impl.*;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
-import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -32,7 +29,7 @@ public class Main {
         SchedulerFactory schedFac = new StdSchedulerFactory();
         Scheduler sched = schedFac.getScheduler();
         sched.start();
-        JobDetail jobDetail = new JobDetail("myJob", null, IndexViwikiJob.class);
+        JobDetail jobDetail = new JobDetail("myJob", null, IndexNewsJob.class);
         //CronTrigger trigger = new CronTrigger("my trigger", null, "0 0 0 ? * SUN");//s m h dom m dow
         Trigger trigger = TriggerUtils.makeHourlyTrigger();
         trigger.setStartTime(new Date());
