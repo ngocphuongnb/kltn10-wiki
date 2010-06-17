@@ -59,9 +59,9 @@ public class RaoVatDAO {
     }
     public int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = DataProvider.getConnection("raovatdb");
+        Connection cn = DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM ads_posts where tracking_updated=1";
+        String query = "SELECT count(*) as NumRow FROM data_raovat where tracking_updated=1";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
