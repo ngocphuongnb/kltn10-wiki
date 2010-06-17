@@ -90,7 +90,7 @@ public class MySolrJ {
         while (start < numOfRecords) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             list = bus.getDataList(start, 2000);
-            ImportRaoVat2Solr(list,"raovat");
+            ImportRaoVat2Solr(list, "raovat");
             start += 2000;
         }
     }
@@ -312,6 +312,31 @@ public class MySolrJ {
         UpdateResponse rsp = req.process(server);
     }
 
+    private void ImportViwiki2SolrAll(ArrayList<ViwikiPageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        ViwikiPageDTO pagedto = new ViwikiPageDTO();
+        Iterator<ViwikiPageDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("body", pagedto.getText());
+            doc.addField("body_unsigned", RemoveSignVN(pagedto.getText()));
+            docs.add(doc);
+        }
+
+
+        SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
     public void ImportRaoVat2Solr(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -338,6 +363,36 @@ public class MySolrJ {
             doc.addField("rv_title", pagedto.getTitle());
             doc.addField("rv_title_unsigned", RemoveSignVN(pagedto.getTitle()));
             doc.addField("url", pagedto.getUrl());
+            docs.add(doc);
+        }
+        SolrServer server = getSolrServer(solrServer); // solrServer = raovat
+        //server.add(docs);
+        // server.commit();
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
+    public void ImportRaoVat2SolrAll(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        RaoVatDTO pagedto = new RaoVatDTO();
+        Iterator<RaoVatDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+            String strBody = pagedto.getBody().replaceAll("\\<.*?\\>", "");
+            doc.addField("body", strBody);
+            doc.addField("body_unsigned", RemoveSignVN(strBody));
+
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
             docs.add(doc);
         }
 
@@ -372,15 +427,41 @@ public class MySolrJ {
             doc.addField("url", pagedto.getUrl());
             doc.addField("duration", pagedto.getDuration());
 
-
             docs.add(doc);
         }
-
-
         SolrServer server = getSolrServer(solrServer); // solrServer = video
         //server.add(docs);
         // server.commit();
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
 
+    public void ImportVideo2SolrAll(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        VideoDTO pagedto = new VideoDTO();
+        Iterator<VideoDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("category", pagedto.getCategory());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("body", pagedto.getUrl());
+
+            docs.add(doc);
+        }
+        SolrServer server = getSolrServer(solrServer); // solrServer = video
+        //server.add(docs);
+        // server.commit();
         UpdateRequest req = new UpdateRequest();
         req.setAction(ACTION.COMMIT, false, false);
         req.add(docs);
@@ -423,6 +504,37 @@ public class MySolrJ {
         UpdateResponse rsp = req.process(server);
     }
 
+    public void ImportImage2SolrAll(ArrayList<ImageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        ImageDTO pagedto = new ImageDTO();
+        Iterator<ImageDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("body", pagedto.getUrl());
+
+            doc.addField("title", pagedto.getSite_title());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
+
+            docs.add(doc);
+        }
+
+        SolrServer server = getSolrServer(solrServer); // solrServer =image
+        //server.add(docs);
+        // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
     public void ImportNews2Solr(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -451,6 +563,37 @@ public class MySolrJ {
             docs.add(doc);
         }
 
+        SolrServer server = getSolrServer(solrServer); // solrServer = news
+        //server.add(docs);
+        // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+    }
+
+    public void ImportNews2SolrAll(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        NewsDTO pagedto = new NewsDTO();
+        Iterator<NewsDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("body", pagedto.getFulltext());
+            doc.addField("bod_unsigned", RemoveSignVN(pagedto.getFulltext()));
+            docs.add(doc);
+        }
         SolrServer server = getSolrServer(solrServer); // solrServer = news
         //server.add(docs);
         // server.commit();
