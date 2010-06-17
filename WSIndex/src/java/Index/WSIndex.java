@@ -234,4 +234,24 @@ public class WSIndex {
         }
         return false;
     }
+     /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "IndexDataAll")
+    public boolean IndexDataAll(@WebParam(name = "code")
+    String code, @WebParam(name = "dateRequest")
+    Calendar dateRequest){
+        AdminBUS bus = new AdminBUS();
+        if(bus.CheckSecurity(code, dateRequest.getTime()))
+        {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.IndexNews();
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
 }
