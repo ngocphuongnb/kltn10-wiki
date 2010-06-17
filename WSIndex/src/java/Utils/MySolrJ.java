@@ -75,9 +75,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportViwiki2Solr(list, "wikipedia");
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -89,9 +89,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportRaoVat2Solr(list, "raovat");
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -103,9 +103,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportMusic2Solr(list, "music");
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -117,9 +117,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportImage2Solr(list, "image");
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -131,9 +131,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportVideo2Solr(list, "video");
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -145,9 +145,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             ImportNews2Solr(list, "news");
-            start += 2000;
+            start += 100;
         }
 
     }
@@ -156,14 +156,17 @@ public class MySolrJ {
 
         EmptyData("all");
 
+         ///////////////////////
+        // Wiki
+        //////////////////////
         ViwikiPageBUS Wbus = new ViwikiPageBUS();
         int numOfRecords = Wbus.CountRecord();
         int start = 0;
-        while (start < numOfRecords) {
+        while (start < 300) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            list = Wbus.getDataList(start, 2000);
-            ImportViwiki2Solr(list, "all");
-            start += 2000;
+            list = Wbus.getDataList(start, 100);
+            ImportViwiki2SolrAll(list, "all");
+            start += 100;
         }
 
         ///////////////////////
@@ -173,11 +176,11 @@ public class MySolrJ {
         RaoVatBUS Rbus = new RaoVatBUS();
         numOfRecords = Rbus.CountRecord();
         start = 0;
-        while (start < numOfRecords) {
+        while (start < 200) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-            list = Rbus.getDataList(start, 2000);
-            ImportRaoVat2Solr(list, "all");
-            start += 2000;
+            list = Rbus.getDataList(start, 100);
+            ImportRaoVat2SolrAll(list, "all");
+            start += 100;
         }
         ///////////////////////
         // Music
@@ -185,11 +188,11 @@ public class MySolrJ {
         MusicBUS Mbus = new MusicBUS();
         numOfRecords = Mbus.CountRecord();
         start = 0;
-        while (start < numOfRecords) {
+        while (start < 200) {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-            list = Mbus.getDataList(start, 2000);
-            ImportMusic2Solr(list, "all");
-            start += 2000;
+            list = Mbus.getDataList(start, 100);
+            ImportMusic2SolrAll(list, "all");
+            start += 100;
         }
 
         ///////////////////////
@@ -198,11 +201,11 @@ public class MySolrJ {
         ImageBUS Ibus = new ImageBUS();
         numOfRecords = Ibus.CountRecord();
         start = 0;
-        while (start < numOfRecords) {
+        while (start < 100) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-            list = Ibus.getDataList(start, 2000);
-            ImportImage2Solr(list, "all");
-            start += 2000;
+            list = Ibus.getDataList(start, 100);
+            ImportImage2SolrAll(list, "all");
+            start += 100;
         }
         ///////////////////////
         // Video
@@ -210,11 +213,11 @@ public class MySolrJ {
         VideoBUS Vbus = new VideoBUS();
         numOfRecords = Vbus.CountRecord();
         start = 0;
-        while (start < numOfRecords) {
+        while (start < 100) {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
-            list = Vbus.getDataList(start, 2000);
-            ImportVideo2Solr(list, "all");
-            start += 2000;
+            list = Vbus.getDataList(start, 100);
+            ImportVideo2SolrAll(list, "all");
+            start += 100;
         }
         ///////////////////////
         // News
@@ -222,11 +225,11 @@ public class MySolrJ {
         NewsBUS Nbus = new NewsBUS();
         numOfRecords = Nbus.CountRecord();
         start = 0;
-        while (start < numOfRecords) {
+        while (start < 200) {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-            list = Nbus.getDataList(start, 2000);
-            ImportNews2Solr(list, "all");
-            start += 2000;
+            list = Nbus.getDataList(start, 100);
+            ImportNews2SolrAll(list, "all");
+            start += 100;
         }
     }
 
@@ -264,6 +267,37 @@ public class MySolrJ {
             doc.addField("lyric", pagedto.getLyric());
             doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
             doc.addField("dateUpload", pagedto.getDayUpload().getTime());
+            docs.add(doc);
+        }
+
+        SolrServer server = getSolrServer(solrServer); // solrServer = music
+        //server.add(docs);
+        // server.commit();
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+
+    }
+
+    public void ImportMusic2SolrAll(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        MusicDTO pagedto = new MusicDTO();
+        Iterator<MusicDTO> iter = listpage.iterator();
+        while (iter.hasNext()) {
+
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+
+            doc.addField("id", "ms"+pagedto.getId());
+            doc.addField("title", pagedto.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("category", "Nhạc");
+            doc.addField("body", pagedto.getUrl());
+
             docs.add(doc);
         }
 
@@ -320,9 +354,11 @@ public class MySolrJ {
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", pagedto.getId());
+            doc.addField("id", "wiki"+pagedto.getId());
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+
+            doc.addField("category", "Wikipedia");
 
             doc.addField("body", pagedto.getText());
             doc.addField("body_unsigned", RemoveSignVN(pagedto.getText()));
@@ -382,14 +418,12 @@ public class MySolrJ {
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", pagedto.getId());
+            doc.addField("id", "rv"+pagedto.getId());
             String strBody = pagedto.getBody().replaceAll("\\<.*?\\>", "");
             doc.addField("body", strBody);
             doc.addField("body_unsigned", RemoveSignVN(strBody));
 
-            doc.addField("category", pagedto.getCategory().trim());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("category", "Rao vặt");
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
@@ -446,14 +480,12 @@ public class MySolrJ {
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", pagedto.getId());
+            doc.addField("id", "video"+pagedto.getId());
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("category", pagedto.getCategory());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("category", "Video");
 
             doc.addField("body", pagedto.getUrl());
 
@@ -512,13 +544,14 @@ public class MySolrJ {
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", pagedto.getId());
+            doc.addField("id", "img"+pagedto.getId());
             doc.addField("category", pagedto.getCategory().trim());
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
 
             doc.addField("body", pagedto.getUrl());
 
+            doc.addField("category", "Hình ảnh");
             doc.addField("title", pagedto.getSite_title());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
 
@@ -581,17 +614,15 @@ public class MySolrJ {
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
-            doc.addField("id", pagedto.getId());
+            doc.addField("id", "news"+pagedto.getId());
 
-            doc.addField("category", pagedto.getCategory().trim());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("category", "Tin tức");
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
             doc.addField("body", pagedto.getFulltext());
-            doc.addField("bod_unsigned", RemoveSignVN(pagedto.getFulltext()));
+            doc.addField("body_unsigned", RemoveSignVN(pagedto.getFulltext()));
             docs.add(doc);
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = news
