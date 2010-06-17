@@ -246,7 +246,7 @@ public class WSIndex {
         {
             MySolrJ ms = new MySolrJ();
             try {
-                ms.IndexNews();
+                ms.IndexAll();
                 return true;
             } catch (Exception ex) {
                 return false;
