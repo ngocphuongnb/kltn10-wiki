@@ -23,6 +23,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
         <title>Hiển thị Bookmark - ViSearch</title>
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link href="style.css"rel="stylesheet" type="text/css" />
 
 
@@ -64,7 +67,8 @@
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                <tr><td>
+                                <tr>
+                                    <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>

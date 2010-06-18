@@ -26,7 +26,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Music - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                // $("#tbTopSearch").load("TopSearch?SearchType=3");
@@ -328,7 +330,8 @@
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                <tr><td>
+                                <tr>
+                                    <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>

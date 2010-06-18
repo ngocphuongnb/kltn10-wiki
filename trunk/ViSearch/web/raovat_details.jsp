@@ -240,7 +240,8 @@
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                <tr><td>
+                                <tr>
+                                    <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>

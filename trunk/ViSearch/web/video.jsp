@@ -21,7 +21,9 @@
         <title>Video - Wikipedia</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
-        <script type="text/javascript" src="script/jquery-1.4.2.min.js"/>
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#tbTopSearch").load("TopSearch?SearchType=4");
@@ -81,7 +83,7 @@
                 var  btDong = "BTCloseMediaId" + id;
                 document.getElementById(btDong).className="hidden";
             }
-       $.ajax({
+            $.ajax({
                 type: "POST",
                 url: "TopSearch",
                 cache: false,
@@ -90,7 +92,7 @@
                     $("#tbTopSearch").append(html);
                 }
             });
-           </script>
+        </script>
     </head>
 
     <body onLoad="setText();">
@@ -109,7 +111,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -189,7 +191,7 @@
                                 result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
                                 result += "</object>";
 
-                                 %>
+        %>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#<%=BTViewMediaId%>").click(function(){
@@ -231,7 +233,7 @@
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -266,9 +268,9 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
-       
+
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -277,8 +279,9 @@
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                <tr><td>
-                                         <%@include file="template/frm_login.jsp" %>
+                                <tr>
+                                    <td style="text-align:right; margin-bottom:8px; font-size:11px">
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -294,15 +297,15 @@
                     <tr>
                         <td width="200" height="33" valign="top">
 
-                             <div class="subtable">
-              
-                            <% out.print(facet);%>
-                            <div class="mnu">Tìm kiếm nhiều</div>
+                            <div class="subtable">
+
+                                <% out.print(facet);%>
+                                <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">
 
                                 </table>
-                           
-                              </div>
+
+                            </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
