@@ -545,9 +545,6 @@ public class MySolrJ {
             pagedto = iter.next();
             doc = new SolrInputDocument();
             doc.addField("id", "img"+pagedto.getId());
-            doc.addField("category", pagedto.getCategory().trim());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
 
             doc.addField("body", pagedto.getUrl());
 
