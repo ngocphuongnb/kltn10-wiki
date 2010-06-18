@@ -333,7 +333,8 @@
                                 <tr>
                                     <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
-                                    </td></tr>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->

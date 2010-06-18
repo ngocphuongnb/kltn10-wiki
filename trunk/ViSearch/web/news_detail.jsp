@@ -113,8 +113,6 @@
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("fulltext")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String img = (listdocs.get(i).getFieldValue("images")).toString();
-                                String url = (listdocs.get(i).getFieldValue("urls")).toString();
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
@@ -139,14 +137,6 @@
                                 result += "<td>" + body + "</td>";
                                 result += "</tr>";
 
-                                 result += "<tr>";
-                                result += "<td>img:" + img + "</td>";
-                                result += "</tr>";
-
-                                 result += "<tr>";
-                                result += "<td>url:" + url + "</td>";
-                                result += "</tr>";
-
                                 result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
                                         + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
 
@@ -154,7 +144,6 @@
                                 result += "</table>";
                             }
                         }
-                        
                     }
                     //get SolrDocumentList
         %>

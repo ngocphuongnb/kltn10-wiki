@@ -64,13 +64,10 @@ public class DetailImageController extends HttpServlet {
         QueryResponse rsp;
         try {
 
-
-
             server = SolrJConnection.getSolrServer("image");
 
             if (request.getParameter("id") != null) {
                 keySearchId = request.getParameter("id");
-
 
                 //Phan tracking
                 ParameterBUS par = new ParameterBUS();
