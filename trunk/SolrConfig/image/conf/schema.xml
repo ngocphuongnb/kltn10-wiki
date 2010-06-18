@@ -248,9 +248,9 @@
 	<field name="site_body_unsigned" type="textMusic" indexed="true" stored="false" multiValued="true"/>
 	
 	<field name="fileType" type="string" indexed="false" stored="true"/>
-	<field name="width" type="slong" indexed="true" stored="true"/>
-	<field name="height" type="slong" indexed="true" stored="true"/>
-	<field name="size" type="slong" indexed="true" stored="true"/>
+	<field name="width" type="sfloat" indexed="true" stored="true"/>
+	<field name="height" type="sfloat" indexed="true" stored="true"/>
+	<field name="size" type="string" indexed="true" stored="true"/>
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields

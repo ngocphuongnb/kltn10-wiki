@@ -170,7 +170,7 @@
 	
 	
 	
-		<fieldType name="textAll" class="solr.TextField" positionIncrementGap="100">
+		<fieldType name="textVideo" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
 		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -236,12 +236,13 @@
   <!-- general -->
   <!-- Field danhnh cho search wikipedia --> 	
 	<field name="id" type="string" indexed="true" stored="true" required="true" />
-	<field name="title" type="textAll" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-	<field name="title_unsigned" type="textAll" indexed="true" stored="false" multiValued="true"/>
-	<field name="body" type="textAll" indexed="true" stored="true"/>
-	<field name="body_unsigned" type="textAll" indexed="true" stored="false" default=""/>
+	<field name="title" type="textVideo" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+	<field name="title_unsigned" type="textVideo" indexed="true" stored="false" multiValued="true"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
-
+	<field name="category_index" type="textVideo" indexed="true" stored="false" multiValued="true"/>
+	<field name="category_index_unsigned" type="textVideo" indexed="true" stored="false"/>
+	<field name="url" type="string" indexed="false" stored="true"/>
+	<field name="duration" type="string" indexed="false" stored="true"/>
 	
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
