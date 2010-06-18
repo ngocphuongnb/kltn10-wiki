@@ -21,11 +21,11 @@ import org.quartz.JobExecutionException;
  *
  * @author tuandom
  */
-public class IndexImageJob implements Job {
+public class IndexAllJob implements Job {
 
     public void execute(JobExecutionContext jec) throws JobExecutionException {
          try {
-            System.out.println("Start index...Image");
+            System.out.println("Start index...All");
             Date d = new Date();
             GregorianCalendar gcal = new GregorianCalendar();
             gcal.setTime(d);
@@ -39,7 +39,7 @@ public class IndexImageJob implements Job {
             code += s;
             WSIndexService service = new WSIndexService();
             WSIndex port = service.getWSIndexPort();
-            port.indexDataImage(code, date);
+            port.indexDataAll(code, date);
             System.out.println("Index finish...");
         } catch (Exception ex) {
             System.out.println("Index fail...");
