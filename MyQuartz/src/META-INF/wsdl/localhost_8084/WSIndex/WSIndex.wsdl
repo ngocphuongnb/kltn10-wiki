@@ -16,11 +16,71 @@
 <message name="IndexDataViwikiResponse">
 <part name="parameters" element="tns:IndexDataViwikiResponse" />
 </message>
+<message name="SyncDataRaovat">
+<part name="parameters" element="tns:SyncDataRaovat" />
+</message>
+<message name="SyncDataRaovatResponse">
+<part name="parameters" element="tns:SyncDataRaovatResponse" />
+</message>
 <message name="IndexDataRaovat">
 <part name="parameters" element="tns:IndexDataRaovat" />
 </message>
 <message name="IndexDataRaovatResponse">
 <part name="parameters" element="tns:IndexDataRaovatResponse" />
+</message>
+<message name="SyncDataMusic">
+<part name="parameters" element="tns:SyncDataMusic" />
+</message>
+<message name="SyncDataMusicResponse">
+<part name="parameters" element="tns:SyncDataMusicResponse" />
+</message>
+<message name="IndexDataMusic">
+<part name="parameters" element="tns:IndexDataMusic" />
+</message>
+<message name="IndexDataMusicResponse">
+<part name="parameters" element="tns:IndexDataMusicResponse" />
+</message>
+<message name="SyncDataImage">
+<part name="parameters" element="tns:SyncDataImage" />
+</message>
+<message name="SyncDataImageResponse">
+<part name="parameters" element="tns:SyncDataImageResponse" />
+</message>
+<message name="IndexDataImage">
+<part name="parameters" element="tns:IndexDataImage" />
+</message>
+<message name="IndexDataImageResponse">
+<part name="parameters" element="tns:IndexDataImageResponse" />
+</message>
+<message name="SyncDataVideo">
+<part name="parameters" element="tns:SyncDataVideo" />
+</message>
+<message name="SyncDataVideoResponse">
+<part name="parameters" element="tns:SyncDataVideoResponse" />
+</message>
+<message name="IndexDataVideo">
+<part name="parameters" element="tns:IndexDataVideo" />
+</message>
+<message name="IndexDataVideoResponse">
+<part name="parameters" element="tns:IndexDataVideoResponse" />
+</message>
+<message name="SyncDataNews">
+<part name="parameters" element="tns:SyncDataNews" />
+</message>
+<message name="SyncDataNewsResponse">
+<part name="parameters" element="tns:SyncDataNewsResponse" />
+</message>
+<message name="IndexDataNews">
+<part name="parameters" element="tns:IndexDataNews" />
+</message>
+<message name="IndexDataNewsResponse">
+<part name="parameters" element="tns:IndexDataNewsResponse" />
+</message>
+<message name="IndexDataAll">
+<part name="parameters" element="tns:IndexDataAll" />
+</message>
+<message name="IndexDataAllResponse">
+<part name="parameters" element="tns:IndexDataAllResponse" />
 </message>
 <portType name="WSIndex">
 <operation name="SyncDataWiki">
@@ -31,9 +91,49 @@
 <input wsam:Action="http://Index/WSIndex/IndexDataViwikiRequest" message="tns:IndexDataViwiki" />
 <output wsam:Action="http://Index/WSIndex/IndexDataViwikiResponse" message="tns:IndexDataViwikiResponse" />
 </operation>
+<operation name="SyncDataRaovat">
+<input wsam:Action="http://Index/WSIndex/SyncDataRaovatRequest" message="tns:SyncDataRaovat" />
+<output wsam:Action="http://Index/WSIndex/SyncDataRaovatResponse" message="tns:SyncDataRaovatResponse" />
+</operation>
 <operation name="IndexDataRaovat">
 <input wsam:Action="http://Index/WSIndex/IndexDataRaovatRequest" message="tns:IndexDataRaovat" />
 <output wsam:Action="http://Index/WSIndex/IndexDataRaovatResponse" message="tns:IndexDataRaovatResponse" />
+</operation>
+<operation name="SyncDataMusic">
+<input wsam:Action="http://Index/WSIndex/SyncDataMusicRequest" message="tns:SyncDataMusic" />
+<output wsam:Action="http://Index/WSIndex/SyncDataMusicResponse" message="tns:SyncDataMusicResponse" />
+</operation>
+<operation name="IndexDataMusic">
+<input wsam:Action="http://Index/WSIndex/IndexDataMusicRequest" message="tns:IndexDataMusic" />
+<output wsam:Action="http://Index/WSIndex/IndexDataMusicResponse" message="tns:IndexDataMusicResponse" />
+</operation>
+<operation name="SyncDataImage">
+<input wsam:Action="http://Index/WSIndex/SyncDataImageRequest" message="tns:SyncDataImage" />
+<output wsam:Action="http://Index/WSIndex/SyncDataImageResponse" message="tns:SyncDataImageResponse" />
+</operation>
+<operation name="IndexDataImage">
+<input wsam:Action="http://Index/WSIndex/IndexDataImageRequest" message="tns:IndexDataImage" />
+<output wsam:Action="http://Index/WSIndex/IndexDataImageResponse" message="tns:IndexDataImageResponse" />
+</operation>
+<operation name="SyncDataVideo">
+<input wsam:Action="http://Index/WSIndex/SyncDataVideoRequest" message="tns:SyncDataVideo" />
+<output wsam:Action="http://Index/WSIndex/SyncDataVideoResponse" message="tns:SyncDataVideoResponse" />
+</operation>
+<operation name="IndexDataVideo">
+<input wsam:Action="http://Index/WSIndex/IndexDataVideoRequest" message="tns:IndexDataVideo" />
+<output wsam:Action="http://Index/WSIndex/IndexDataVideoResponse" message="tns:IndexDataVideoResponse" />
+</operation>
+<operation name="SyncDataNews">
+<input wsam:Action="http://Index/WSIndex/SyncDataNewsRequest" message="tns:SyncDataNews" />
+<output wsam:Action="http://Index/WSIndex/SyncDataNewsResponse" message="tns:SyncDataNewsResponse" />
+</operation>
+<operation name="IndexDataNews">
+<input wsam:Action="http://Index/WSIndex/IndexDataNewsRequest" message="tns:IndexDataNews" />
+<output wsam:Action="http://Index/WSIndex/IndexDataNewsResponse" message="tns:IndexDataNewsResponse" />
+</operation>
+<operation name="IndexDataAll">
+<input wsam:Action="http://Index/WSIndex/IndexDataAllRequest" message="tns:IndexDataAll" />
+<output wsam:Action="http://Index/WSIndex/IndexDataAllResponse" message="tns:IndexDataAllResponse" />
 </operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
@@ -56,7 +156,97 @@
 <soap:body use="literal" />
 </output>
 </operation>
+<operation name="SyncDataRaovat">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
 <operation name="IndexDataRaovat">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataMusic">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataMusic">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataImage">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataImage">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataVideo">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataVideo">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SyncDataNews">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataNews">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="IndexDataAll">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
