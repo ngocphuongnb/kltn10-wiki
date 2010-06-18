@@ -170,7 +170,7 @@
 	
 	
 	
-		<fieldType name="textAll" class="solr.TextField" positionIncrementGap="100">
+		<fieldType name="textNews" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
 		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -234,14 +234,19 @@
 
  <fields>   
   <!-- general -->
-  <!-- Field danhnh cho search wikipedia --> 	
+  <!-- Field danhnh cho search tin tuc --> 	
 	<field name="id" type="string" indexed="true" stored="true" required="true" />
-	<field name="title" type="textAll" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-	<field name="title_unsigned" type="textAll" indexed="true" stored="false" multiValued="true"/>
-	<field name="body" type="textAll" indexed="true" stored="true"/>
-	<field name="body_unsigned" type="textAll" indexed="true" stored="false" default=""/>
+	<field name="title" type="textNews" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+	<field name="title_unsigned" type="textNews" indexed="true" stored="false"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
-
+	<field name="category_index" type="textNews" indexed="true" stored="false" multiValued="true"/>
+	<field name="category_index_unsigned" type="textNews" indexed="true" stored="false"/>
+	<field name="introtext" type="textNews" indexed="true" stored="true"/>
+	<field name="introtext_unsigned" type="textNews" indexed="false" stored="true"/>
+	<field name="fulltext" type="textNews" indexed="true" stored="true"/>
+	<field name="fulltext_unsigned" type="textNews" indexed="true" stored="false"/>
+	<field name="created" type="date" indexed="true" stored="true" default="NOW"/>
+	<field name="modified" type="date" indexed="true" stored="true" default="NOW"/>
 	
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
