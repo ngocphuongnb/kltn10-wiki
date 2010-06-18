@@ -6,6 +6,7 @@ package BUS;
 
 import DAO.ViwikiPageDAO;
 import DTO.ViwikiPageDTO;
+import java.awt.Point;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
