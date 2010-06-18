@@ -9,7 +9,7 @@
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
-<%@page import="org.me.dto.FacetDateDTO"%>
+<%@page import="org.me.dto.FacetDateDTO" session="true"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -294,9 +294,11 @@
                     <tr>
                         <td height="130" colspan="2" valign="top">
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
-                                <tr><td>
+                                <tr>
+                                    <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
-                                    </td></tr>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
@@ -343,17 +345,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td valign="top" id="content">
-                                        <div id="Bookmark" title="Thêm bookmark">
-                                            <p class="validateTips"/>
-                                            <form>
-                                                <fieldset>
-                                                    <label for="name">Tên bookmark</label>
-                                                    <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
-                                                </fieldset>
-                                            </form>
-                                        </div>
                                         <% out.print(result);%>
-
                                     </td>
                                 </tr>
                             </table>

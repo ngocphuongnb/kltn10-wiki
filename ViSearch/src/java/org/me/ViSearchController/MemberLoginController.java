@@ -41,12 +41,10 @@ public class MemberLoginController extends HttpServlet {
             MemberBUS membus = new MemberBUS();
             MemberDTO user = membus.Login(_username, _pass, "visearch");
             if (user != null) {
-                request.setAttribute("Member", user);
+                session.setAttribute("Member", user);
             }
             String url = session.getAttribute("CurrentPage").toString();
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher(url);
-            rd.forward(request, response);
+            out.print("/ViSearch" + url);
         } catch (Exception ex) {
             out.println(ex.getMessage());
         } finally {

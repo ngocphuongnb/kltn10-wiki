@@ -516,7 +516,7 @@ public class SearchWikiController extends HttpServlet {
                 request.setAttribute("NumPage", numpage);
                 request.setAttribute("ListFacet", listFacet);
             }
-            String url = "/index.jsp";
+            String url = "/index_1.jsp";
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
