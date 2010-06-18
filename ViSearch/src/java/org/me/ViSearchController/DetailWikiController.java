@@ -4,7 +4,6 @@
  */
 package org.me.ViSearchController;
 
-import com.sun.xml.internal.bind.v2.runtime.output.Encoded;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;

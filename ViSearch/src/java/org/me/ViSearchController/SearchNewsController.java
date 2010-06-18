@@ -154,7 +154,7 @@ public class SearchNewsController extends HttpServlet {
                             sPaging += "&qf=" + qf;
                             sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -179,7 +179,7 @@ public class SearchNewsController extends HttpServlet {
                             qv = createFacetValue(startDate, endDate);
                             sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -271,8 +271,8 @@ public class SearchNewsController extends HttpServlet {
 
 
         // Facet
-//        solrQuery.setFacet(true);
-//        solrQuery.addFacetField("category");
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
 //        solrQuery.addFacetField("site");
 //        //solrQuery.addFacetField("location");
 //        solrQuery.setFacetLimit(10);
@@ -293,7 +293,7 @@ public class SearchNewsController extends HttpServlet {
     }
 
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "+(";
@@ -307,13 +307,15 @@ public class SearchNewsController extends HttpServlet {
         }
 
         query += ") ";
-        // query += " +(" + queryField + ":\"" + queryValue + "\")";
-        query += " +(" + queryField + ":" + queryValue + ")";
+        if(type==2) // seach chuoi facet, can ""
+            query += " +(" + queryField + ":\"" + queryValue + "\")";
+        else  // query ngay thang, ko can ""
+         query += " +(" + queryField + ":" + queryValue + ")";
         solrQuery.setQuery(query);
 
         // Facet
-//        solrQuery.setFacet(true);
-//        solrQuery.addFacetField("category");
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
 //        solrQuery.addFacetField("site");
         //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
@@ -337,8 +339,8 @@ public class SearchNewsController extends HttpServlet {
         SolrQuery query = new SolrQuery();
 
         // Facet
-        //query.setFacet(true);
-        //query.addFacetField("category");
+        query.setFacet(true);
+        query.addFacetField("category");
        // query.addFacetField("site");
         //query.addFacetField("location");
        // query.setFacetLimit(10);

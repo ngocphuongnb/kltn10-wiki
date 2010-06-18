@@ -202,7 +202,7 @@
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Facet</div>";
+                        facet += "<div class=\"mnu\">Bộ lọc</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
@@ -219,7 +219,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -309,9 +309,11 @@
                                                 out.print(facet);
                                                 out.print("<div  class=\"mnu\">Ngày đăng</div>" + facetD);
                                             }%>
+                                             
                                 <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
                                 <table  id="tbTopSearch">
                                 </table>
+                                
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
