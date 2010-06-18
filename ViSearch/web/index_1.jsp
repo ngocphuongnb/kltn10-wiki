@@ -24,8 +24,7 @@
                 $("#accordion").accordion({
                     collapsible: true,
                     header: 'div.Quickview',
-                    autoHeight: false,
-                    fillSpace: true
+                    autoHeight: false
                 });
                 //getter
                 var active = $( "#accordion" ).accordion( "option", "active" );
