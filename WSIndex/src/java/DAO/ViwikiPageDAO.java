@@ -5,7 +5,10 @@
 package DAO;
 
 import DTO.ViwikiPageDTO;
+import Utils.MySolrJ;
 import com.mysql.jdbc.CallableStatement;
+import info.bliki.wiki.model.WikiModel;
+import java.awt.Point;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,15 +33,23 @@ public class ViwikiPageDAO {
         ResultSet rs = st.executeQuery(query);
 
         ViwikiPageDTO page;
-
+        WikiModel wkmodel = new WikiModel("http://vi.wikipedia.org/wiki/${image}", "http://vi.wikipedia.org/wiki/${title}");
         while (rs.next()) {
             page = new ViwikiPageDTO();
             page.setComment(rs.getString("comment"));
             page.setIp(rs.getString("ip"));
             page.setId(rs.getInt("id"));
-//            page.setRedirect(rs.getString("redirect"));
             page.setRestrictions(rs.getString("restrictions"));
-            page.setText(rs.getString("text"));
+            String s="";
+            try{
+                s = wkmodel.render(rs.getString("text"));
+            }
+            catch(Exception ex)
+            {
+                s = "Xin lỗi vì dữ liệu quá lớn nên không thể hiển thị\r\nVui lòng click vào link bên trên để xem chi tiết";
+                MySolrJ.ierror ++;
+            }
+            page.setText(s);
             page.setTitle(rs.getString("title"));
             page.setUsername(rs.getString("username"));
             String timestamp = rs.getString("timestamp");

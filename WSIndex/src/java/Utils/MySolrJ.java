@@ -16,6 +16,9 @@ import DTO.MusicDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
+import java.awt.Point;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
@@ -37,6 +40,8 @@ import org.apache.solr.common.SolrInputDocument;
  * @author VinhPham
  */
 public class MySolrJ {
+
+    public static int ierror;
 
     private SolrServer getSolrServer() throws MalformedURLException {
         String url = "http://localhost:8983/solr";
@@ -69,16 +74,22 @@ public class MySolrJ {
 
     public void IndexViwiki() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
 
-        EmptyData("wikipedia");
+        //EmptyData("wikipedia");
         ViwikiPageBUS bus = new ViwikiPageBUS();
         int numOfRecords = bus.CountRecord();
+        System.out.print("Num records found: " + numOfRecords);
         int start = 0;
+        ierror = 0;
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
             list = bus.getDataList(start, 100);
             ImportViwiki2Solr(list, "wikipedia");
             start += 100;
         }
+
+        FileWriter writer = new FileWriter(new File("error.txt"));
+        writer.write("Num of records error:" + ierror);
+        writer.close();
     }
 
     public void IndexRaoVat() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
@@ -295,7 +306,7 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("category", "Nhạc");
+            doc.addField("category", "Nh?c");
             doc.addField("body", pagedto.getUrl());
 
             docs.add(doc);
@@ -317,6 +328,7 @@ public class MySolrJ {
         SolrInputDocument doc;
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
         Iterator<ViwikiPageDTO> iter = listpage.iterator();
+        try{
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
@@ -327,8 +339,9 @@ public class MySolrJ {
             doc.addField("comment_unsigned", RemoveSignVN(pagedto.getComment()));
             doc.addField("ip", pagedto.getIp());
             doc.addField("restrictions", pagedto.getRestrictions());
-            doc.addField("wk_text", pagedto.getText());
-            doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText()));
+            doc.addField("wk_text_raw", pagedto.getText().trim());
+            doc.addField("wk_text", pagedto.getText().replaceAll("\\<.*?\\>", ""));
+            doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText().replaceAll("\\<.*?\\>", "")));
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             doc.addField("timestamp", sdf.format(pagedto.getTimestamp().getTime()));
             doc.addField("username", pagedto.getUsername());
@@ -344,6 +357,10 @@ public class MySolrJ {
         req.setAction(ACTION.COMMIT, false, false);
         req.add(docs);
         UpdateResponse rsp = req.process(server);
+        }catch(Exception ex)
+        {
+            System.out.print(ex.getMessage());
+        }
     }
 
     private void ImportViwiki2SolrAll(ArrayList<ViwikiPageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
@@ -423,7 +440,7 @@ public class MySolrJ {
             doc.addField("body", strBody);
             doc.addField("body_unsigned", RemoveSignVN(strBody));
 
-            doc.addField("category", "Rao vặt");
+            doc.addField("category", "Rao v?t");
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
@@ -548,7 +565,7 @@ public class MySolrJ {
 
             doc.addField("body", pagedto.getUrl());
 
-            doc.addField("category", "Hình ảnh");
+            doc.addField("category", "H�nh ?nh");
             doc.addField("title", pagedto.getSite_title());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
 
@@ -613,7 +630,7 @@ public class MySolrJ {
             doc = new SolrInputDocument();
             doc.addField("id", "news"+pagedto.getId());
 
-            doc.addField("category", "Tin tức");
+            doc.addField("category", "Tin t?c");
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
