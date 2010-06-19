@@ -73,17 +73,17 @@ public class MySolrJ {
     }
 
     public void IndexViwiki() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
-
-        //EmptyData("wikipedia");
         ViwikiPageBUS bus = new ViwikiPageBUS();
         int numOfRecords = bus.CountRecord();
-        System.out.print("Num records found: " + numOfRecords);
+System.out.print("Num records found: " + numOfRecords);
         int start = 0;
         ierror = 0;
+        ArrayList<Integer> lResult = new ArrayList<Integer>();
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
             list = bus.getDataList(start, 100);
-            ImportViwiki2Solr(list, "wikipedia");
+            lResult = ImportViwiki2Solr(list, "wikipedia");
+            bus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
@@ -323,11 +323,12 @@ public class MySolrJ {
 
     }
 
-    private void ImportViwiki2Solr(ArrayList<ViwikiPageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportViwiki2Solr(ArrayList<ViwikiPageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
         Iterator<ViwikiPageDTO> iter = listpage.iterator();
+        ArrayList<Integer> listint = new ArrayList<Integer>();
         try{
         while (iter.hasNext()) {
             pagedto = iter.next();
@@ -349,6 +350,7 @@ public class MySolrJ {
             doc.addField("keysearch", pagedto.getKeySearch());
             doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()));
             docs.add(doc);
+            listint.add(pagedto.getId());
         }
 
 
@@ -357,9 +359,11 @@ public class MySolrJ {
         req.setAction(ACTION.COMMIT, false, false);
         req.add(docs);
         UpdateResponse rsp = req.process(server);
+        return listint;
         }catch(Exception ex)
         {
             System.out.print(ex.getMessage());
+            return null;
         }
     }
 
@@ -565,7 +569,7 @@ public class MySolrJ {
 
             doc.addField("body", pagedto.getUrl());
 
-            doc.addField("category", "Hình ?nh");
+            doc.addField("category", "Hï¿½nh ?nh");
             doc.addField("title", pagedto.getSite_title());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
 
