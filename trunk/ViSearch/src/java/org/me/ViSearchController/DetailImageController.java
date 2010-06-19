@@ -70,28 +70,30 @@ public class DetailImageController extends HttpServlet {
                 keySearchId = request.getParameter("id");
 
                 //Phan tracking
-                ParameterBUS par = new ParameterBUS();
-                int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
-                String sTime = String.format("%d:00:00", timeRange);
+                if (request.getParameter("KeySearch") != null) {
+                    ParameterBUS par = new ParameterBUS();
+                    int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+                    String sTime = String.format("%d:00:00", timeRange);
 
-                TrackingDTO tracking = new TrackingDTO();
-                String keysearch = request.getParameter("KeySearch").toString();
-                request.setAttribute("KeySearch", keysearch);
-                tracking.setKeySearch(keysearch);
-                tracking.setDocId(keySearchId);
-                tracking.setIp(request.getRemoteAddr());
-                HttpSession session = request.getSession();
-                if (session.getAttribute("Member") != null) {
-                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
-                    tracking.setMemberId(mem.getId());
-                } else {
-                    tracking.setMemberId(-1);
+                    TrackingDTO tracking = new TrackingDTO();
+                    String keysearch = request.getParameter("KeySearch").toString();
+                    request.setAttribute("KeySearch", keysearch);
+                    tracking.setKeySearch(keysearch);
+                    tracking.setDocId(keySearchId);
+                    tracking.setIp(request.getRemoteAddr());
+                    HttpSession session = request.getSession();
+                    if (session.getAttribute("Member") != null) {
+                        MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                        tracking.setMemberId(mem.getId());
+                    } else {
+                        tracking.setMemberId(-1);
+                    }
+                    tracking.setTimeRange(sTime);
+                    tracking.setTimeSearch(Calendar.getInstance());
+                    tracking.setSearchType(4);
+                    TrackingBUS tbus = new TrackingBUS();
+                    tbus.InsertTracking(tracking, "visearch");
                 }
-                tracking.setTimeRange(sTime);
-                tracking.setTimeSearch(Calendar.getInstance());
-                tracking.setSearchType(4);
-                TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(tracking, "visearch");
                 // end tracking
 
 

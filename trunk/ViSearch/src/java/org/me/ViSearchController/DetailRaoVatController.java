@@ -57,9 +57,6 @@ public class DetailRaoVatController extends HttpServlet {
         //SolrDocumentList docs_Category = new SolrDocumentList();
         SolrDocumentList docs_MoreLikeThis = new SolrDocumentList();
         try {
-            ParameterBUS par = new ParameterBUS();
-            int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
-            String sTime = String.format("%d:00:00", timeRange);
 
             server = SolrJConnection.getSolrServer("raovat");
 
@@ -67,24 +64,32 @@ public class DetailRaoVatController extends HttpServlet {
                 keySearchId = request.getParameter("id");
 
                 //Phan tracking
-                TrackingDTO tracking = new TrackingDTO();
-                String keysearch = request.getParameter("KeySearch").toString();
-                request.setAttribute("KeySearch", keysearch);
-                tracking.setKeySearch(keysearch);
-                tracking.setDocId(keySearchId);
-                tracking.setIp(request.getRemoteAddr());
-                HttpSession session = request.getSession();
-                if (session.getAttribute("Member") != null) {
-                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
-                    tracking.setMemberId(mem.getId());
-                } else {
-                    tracking.setMemberId(-1);
+                if (request.getParameter("KeySearch") != null) {
+                    ParameterBUS par = new ParameterBUS();
+                    TrackingDTO tracking = new TrackingDTO();
+                    try {
+                        int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+                        String sTime = String.format("%d:00:00", timeRange);
+                        String keysearch = request.getParameter("KeySearch").toString();
+                        request.setAttribute("KeySearch", keysearch);
+                        tracking.setKeySearch(keysearch);
+                        tracking.setDocId(keySearchId);
+                        tracking.setIp(request.getRemoteAddr());
+                        HttpSession session = request.getSession();
+                        if (session.getAttribute("Member") != null) {
+                            MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                            tracking.setMemberId(mem.getId());
+                        } else {
+                            tracking.setMemberId(-1);
+                        }
+                        tracking.setTimeRange(sTime);
+                        tracking.setTimeSearch(Calendar.getInstance());
+                        tracking.setSearchType(2);
+                        TrackingBUS tbus = new TrackingBUS();
+                        tbus.InsertTracking(tracking, "visearch");
+                    } catch (Exception ex) {
+                    }
                 }
-                tracking.setTimeRange(sTime);
-                tracking.setTimeSearch(Calendar.getInstance());
-                tracking.setSearchType(2);
-                TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(tracking, "visearch");
                 // end tracking
 
                 QueryResponse rsp;
