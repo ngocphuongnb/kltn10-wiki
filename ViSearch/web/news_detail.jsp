@@ -19,23 +19,80 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>ViSearch - Hình ảnh</title>
+        <title>ViSearch - Tin tức</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
-         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
-         <script type="text/javascript">
-            $(document).ready(function(){
-                $("#btBookmark").click(function(){
-                    var docID = $("#hdIdValue").attr("value");
-                    var keySearch = $("#hfKeySearch").attr("value");
-                    alert(keySearch);
-                    var Url = "BookmarkController?KeySearch=" + keySearch;
-                    Url += "&DocID=" + docID;
-                    Url += "&SearchType=6";
-                    $("#Bookmark").load(encodeURI(Url));
-                });
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
+       <script type="text/javascript">
+            $(function() {
+                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
 
+                $("#dialog").dialog("destroy");
+                var tips = $(".validateTips");
+                var name = $("#nameBookmark");
+
+                function updateTips(t) {
+                    tips
+                    .text(t)
+                    .addClass('ui-state-highlight');
+                    setTimeout(function() {
+                        tips.removeClass('ui-state-highlight', 1500);
+                    }, 500);
+                }
+
+                function checkLength(o) {
+
+                    if ( o.val().length == 0) {
+                        o.addClass('ui-state-error');
+                        updateTips("Bạn chưa nhập tên bookmark");
+                        return false;
+                    } else {
+                        return true;
+                    }
+
+                }
+
+                $("#addBookmark").dialog({
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        'Đóng': function() {
+                            $(this).dialog('close');
+                        },
+                        'Thêm': function() {
+                            var bValid = true;
+                            tips.removeClass('ui-state-error');
+                            bValid = checkLength(name);
+                            if(bValid)
+                            {
+                               
+                                var docID = $("#hdIdValue").attr("value");
+                                var keySearch = $("#hfKeySearch").attr("value");
+                                var nameBookmark = $("#nameBookmark").attr("value");
+                                alert(keySearch);
+                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                Url += "&DocID=" + docID;
+                                Url += "&SearchType=6";
+                                $("#Bookmark").load(encodeURI(Url));
+                                $(this).dialog('close');
+                            }
+                        }
+                    },close: function() {
+                        name.val('').removeClass('ui-state-error');
+                    }
+                });
+                $('#btBookmark')
+                .button()
+                .click(function() {
+                    $('#addBookmark').dialog('open');
+                });
+            });
+
+            $(document).ready(function(){
                 $("#tbTopSearch").load("TopSearch?SearchType=6");
             });
         </script>
@@ -85,7 +142,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -128,8 +185,8 @@
                                 }
 
 
-                                  result += "<tr>";
-                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery+"\">" + title_hl + "</a><b></td>";
+                                result += "<tr>";
+                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>";
                                 result += "</tr>";
 
 
@@ -137,20 +194,20 @@
                                 result += "<td>" + body + "</td>";
                                 result += "</tr>";
 
+                                if (session.getAttribute("Member") != null) {
                                 result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
                                         + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
-
+                                        }
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
-
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
                         facet += "<div class=\"mnu\">Facet</div>";
@@ -181,7 +238,7 @@
 
 
                     // End get Facet
-%>
+        %>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -198,12 +255,12 @@
                             String id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String title = (listdocs2.get(i).getFieldValue("title")).toString();
 
-                            result2 += "<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">"+title+"</a></li>";
+                            result2 += "<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></li>";
                         }
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -213,7 +270,7 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td style="text-align:right; margin-bottom:8px; font-size:11px">
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -227,7 +284,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                           
+
                                 <% if (request.getAttribute("Docs") != null) {
                                                 // out.print(facet);
                                             }%>
@@ -239,6 +296,16 @@
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
+                            <div id="addBookmark" title="Thêm bookmark">
+                                <p class="validateTips"/>
+                                <form>
+                                    <fieldset>
+                                        <label for="name">Tên bookmark</label>
+                                        <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                    </fieldset>
+                                </form>
+                            </div>
+                            
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
@@ -250,7 +317,7 @@
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
                                         <% out.print(result2);%>
-                                        
+
                                     </td>
                                 </tr>
                             </table>

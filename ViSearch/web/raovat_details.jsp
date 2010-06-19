@@ -208,8 +208,6 @@
 
                         result2 += "<div style=\"font-size:13px\">";
                         for (int i = 0; i < listdocs2.size(); i++) {
-
-
                             // Lay noi dung cua moi field
                             String title = "";
                             if ((listdocs2.get(i).getFieldValue("rv_title")).toString() != null) {
@@ -221,7 +219,6 @@
 
                             url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></b></li>";
                             result2 += url;
-
                         }
                         result2 += "</div>";
                     }
@@ -257,6 +254,7 @@
                         <td width="200" height="33" valign="top">
 
                             <%  //out.print(facet);%>
+                            <div class="mnu">Tìm kiếm nhiều</div>
                             <table id="tbTopSearch">
                             </table>
                         </td>
