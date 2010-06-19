@@ -39,23 +39,11 @@
                 session.setAttribute("CurrentPage", currentPage);
 
 
+                List<Object[]> lstBm = null;
+                if (request.getAttribute("lstBm") != null) {
+                    lstBm = (List<Object[]>) request.getAttribute("lstBm");
+                }
 
-                List<Object[]> lstBmWiki = null;
-                List<Object[]> lstBmRaoVat = null;
-                List<Object[]> lstBmMusic = null;
-                List<Object[]> lstBmNews = null;
-                if (request.getAttribute("lstBmWiki") != null) {
-                    lstBmWiki = (List<Object[]>) request.getAttribute("lstBmWiki");
-                }
-                if (request.getAttribute("lstBmRaoVat") != null) {
-                    lstBmRaoVat = (List<Object[]>) request.getAttribute("lstBmRaoVat");
-                }
-                if (request.getAttribute("lstBmMusic") != null) {
-                    lstBmMusic = (List<Object[]>) request.getAttribute("lstBmMusic");
-                }
-                if (request.getAttribute("lstBmNews") != null) {
-                    lstBmMusic = (List<Object[]>) request.getAttribute("lstBmNews");
-                }
     %>
     <body>
 
@@ -91,51 +79,24 @@
                             <form class="frmRegister" name="" method="post" action="RegisterMemberController">
                                 <h3 class="subblockhead"> Thông tin Bookmark đã lưu</h3>
                                 <table width="500" border="0" cellspacing="0" cellpadding="0" >
-                                    
-                                   
-                                    
-                                    
+
+
+
+
                                     <%
-                                                if (lstBmRaoVat != null) {
-                                                    out.print("<tr><td align=\"left\" ><b>Trang Rao vặt<b></td></tr>");
-                                                    for (int i = 0; i < lstBmRaoVat.size(); i++) {
+                                                if (lstBm != null) {
+                                                    for (int i = 0; i < lstBm.size(); i++) {
                                                         Object[] objBm = new Object[2];
-                                                        objBm = lstBmRaoVat.get(i);
-                                                       String KeySearch = objBm[0].toString();
-                                                        out.print("<tr><td align=\"left\" >Từ khóa: " + KeySearch + "</td></tr>");
+                                                        objBm = lstBm.get(i);
+                                                        String link = objBm[0].toString();
+                                                        String BmName = objBm[1].toString();
 
-                                                        ArrayList<String> lstDocId = new ArrayList<String>();
-                                                        lstDocId = (ArrayList<String>) objBm[1];
-
-                                                        for (int j = 0; j < lstDocId.size(); j++) {
-                                                            out.print("<tr><td align=\"left\" ><a href=\"DetailRaoVatController?id=" + lstDocId.get(j) +"\">Link "+(j+1)+" </a></td></tr>");
-                                                        }
-                                                    }
-                                                }
-                                    %>
-
-                                   
-  <%
-                                                if (lstBmNews != null) {
-                                                    out.print("<tr><td align=\"left\" ><b>Trang tin tức<b></td></tr>");
-                                                    for (int i = 0; i < lstBmNews.size(); i++) {
-                                                        Object[] objBm = new Object[2];
-                                                        objBm = lstBmNews.get(i);
-                                                       String KeySearch = objBm[0].toString();
-                                                        out.print("<tr><td align=\"left\" >Từ khóa: " + KeySearch + "</td></tr>");
-
-                                                        ArrayList<String> lstDocId = new ArrayList<String>();
-                                                        lstDocId = (ArrayList<String>) objBm[1];
-
-                                                        for (int j = 0; j < lstDocId.size(); j++) {
-                                                            out.print("<tr><td align=\"left\" ><a href=\"DetailRaoVatController?id=" + lstDocId.get(j) +"\">Link "+(j+1)+" </a></td></tr>");
-                                                        }
+                                                        out.print("<tr><td align=\"left\" ><a href=\"" + link + "\">" + BmName + " </a></td></tr>");
                                                     }
                                                 }
                                     %>
 
 
-                                   
                                     <tr><td height="15"></td></tr>
                                     <tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr>
                                 </table>

@@ -40,45 +40,41 @@ public class BookMarkDAO {
         return result;
     }
 
-    public List<Object[]> GetBookmark(int memberid, int searchType, String database) {
+    public List<Object[]> GetBookmark(int memberid, String database) {
         Connection cn = DataProvider.getConnection(database);
         try {
             CallableStatement cs;
-            cs = cn.prepareCall("{CALL Get_Bookmark(?, ?)}");
+            cs = cn.prepareCall("{CALL Get_Bookmark(?)}");
             cs.setInt(1, memberid);
-            cs.setInt(2, searchType);
 
             ResultSet rs = cs.executeQuery();
-            ArrayList<String> arrDocId = new ArrayList<String>();
             Object[] bmObj = new Object[2];
             List<Object[]> lstBm = new ArrayList<Object[]>();
-            String keySearch = "";
             while (rs.next()) {
-                if (rs.getString("keysearch").equals(keySearch) == false) { // la keySearch moi
-                    // Luu lai cai cu
-                     bmObj = new Object[2];
-                    bmObj[0] = keySearch;
-                    bmObj[1] = arrDocId;
-                    lstBm.add(bmObj);
+                bmObj = new Object[2];
 
-                    // Tao cai moi
-                    keySearch = rs.getString("keysearch");
-                    arrDocId = new ArrayList<String>();
-                    arrDocId.add(rs.getString("docid"));
-                } else { // la keySearch cu
-                    arrDocId.add(rs.getString("docid"));
+                String bookmark_name = rs.getString("bookmark_name");
+                String searchtype = rs.getString("searchtype");
+                String docid = rs.getString("docid");
+                String link = "";
+                if (searchtype.equals("1")) {
+                    link = "DetailWikiController?id=" + docid + "&KeySearch=";
+                } else if (searchtype.equals("2")) {
+                    link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
+                } else if (searchtype.equals("4")) {
+                    link = "DetailImageController?id=" + docid + "&KeySearch=";
+                } else if (searchtype.equals("6")) {
+                    link = "DetailNewsController?id=" + docid + "&KeySearch=";
                 }
+
+                bmObj[0] = link;
+                bmObj[1] = bookmark_name;
+
+                lstBm.add(bmObj);
             }
             // Khi da het
-            bmObj = new Object[2];
-            bmObj[0] = keySearch;
-            bmObj[1] = arrDocId;
-            lstBm.add(bmObj);
-            
+
             cn.close();
-            if (lstBm.size() >= 1) {
-                lstBm.remove(0);
-            }
 
             return lstBm;
         } catch (SQLException ex) {
