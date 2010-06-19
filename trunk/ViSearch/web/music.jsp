@@ -1,8 +1,3 @@
-<%-- 
-    Document   : music
-    Created on : May 28, 2010, 11:57:45 PM
-    Author     : tuandom
---%>
 
 <%--
     Document   : video
@@ -29,21 +24,84 @@
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
-        <script type="text/javascript">
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
+        <script language="javascript">
             $(document).ready(function(){
-               // $("#tbTopSearch").load("TopSearch?SearchType=3");
+                $("#tbTopSearch").load("TopSearch?SearchType=3");
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(function() {
+                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
+
+                $("#dialog").dialog("destroy");
+                var tips = $(".validateTips");
+                var name = $("#nameBookmark");
+
+                function updateTips(t) {
+                    tips
+                    .text(t)
+                    .addClass('ui-state-highlight');
+                    setTimeout(function() {
+                        tips.removeClass('ui-state-highlight', 1500);
+                    }, 500);
+                }
+
+                function checkLength(o) {
+
+                    if ( o.val().length == 0) {
+                        o.addClass('ui-state-error');
+                        updateTips("Bạn chưa nhập tên bookmark");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                $("#addBookmark").dialog({
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        'Đóng': function() {
+                            $(this).dialog('close');
+                        },
+                        'Thêm': function() {
+                            var bValid = true;
+                            tips.removeClass('ui-state-error');
+                            bValid = checkLength(name);
+                            if(bValid)
+                            {
+
+                                var docID = $("#hdIdValue").attr("value");
+                                var keySearch = $("#hfKeySearch").attr("value");
+                                var nameBookmark = $("#nameBookmark").attr("value");
+                                alert(keySearch);
+                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                Url += "&DocID=" + docID;
+                                Url += "&SearchType=6";
+                                $("#Bookmark").load(encodeURI(Url));
+                                $(this).dialog('close');
+                            }
+                        }
+                    },close: function() {
+                        name.val('').removeClass('ui-state-error');
+                    }
+                });
+                $('#btBookmark')
+                .button()
+                .click(function() {
+                    $('#addBookmark').dialog('open');
+                });
+            });
+
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=3");
             });
         </script>
         <script language="javascript">
-            $.ajax({
-                type: "POST",
-                url: "TopSearch",
-                cache: false,
-                data: "SearchType=3",
-                success: function(html){
-                    $("#tbTopSearch").append(html);
-                }
-            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -129,7 +187,7 @@
 
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -179,12 +237,6 @@
                                 result += "</tr>";
 
 
-                                // result += "<tr>";
-                                // result += "<td>Link nhạc: "+url+"</td>";
-                                // result += "</tr>";
-
-
-
                                 result += "<tr>";
                                 result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + CaSi + "\"'>" + CaSi + "</a></td>";
                                 result += "</tr>";
@@ -208,13 +260,13 @@
                                 String BTCloselyricId = "BTCloselyricId" + i;
                                 String btPlay = "btPlay" + i;
 
-                                result += "<span id='Bookmark'>";
+                                // Start Phan tracking
+                                result += "<span id='Tracking'>";
                                 result += "</span>";
                                 result += "<tr>";
                                 result += "<td><input type=\"button\" id=\"" + btPlay + "\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTViewlyricId + "\" value=\"Xem lời nhạc\" onclick=\"showLyric('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>";
-                                result += "</tr>";
 
         %>
         <script type="text/javascript">
@@ -226,13 +278,19 @@
                     Url += "&DocID=" + docID;
                     Url += "&searchType=3";
                     alert(Url);
-                    $("#Bookmark").load(encodeURI(Url));
+                    $("#Tracking").load(encodeURI(Url));
                 });
             });
         </script>
+
         <%
-
-
+                                //  End Phan tracking
+                                //  Start Bookmark
+                                if (session.getAttribute("Member") != null) {
+                                    result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
+                                            + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
+                                }
+                                // END Bookmark
                                 result += "<tr><td>";
                                 result += "<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
                                 result += "<param name=\"fileName\" value=\"\">";
@@ -276,7 +334,7 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -319,7 +377,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
 
         <div id="wrap_left" align="center">
@@ -352,15 +410,24 @@
                             <div class="subtable">
 
                                 <% if (request.getAttribute("Docs") != null) {
-                                            out.print(facet);
-                                        }%>
-                                        <div class="mnu">Tìm kiếm nhiều</div>
+                                                out.print(facet);
+                                            }%>
+                                <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">
                                 </table>
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
+                            <div id="addBookmark" title="Thêm bookmark">
+                                <p class="validateTips"/>
+                                <form>
+                                    <fieldset>
+                                        <label for="name">Tên bookmark</label>
+                                        <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                    </fieldset>
+                                </form>
+                            </div>
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>

@@ -24,18 +24,75 @@
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $("#btBookmark").click(function(){
-                    var docID = $("#hdIdValue").attr("value");
-                    var keySearch = $("#hfKeySearch").attr("value");
-                    alert(keySearch);
-                    var Url = "BookmarkController?KeySearch=" + keySearch;
-                    Url += "&DocID=" + docID;
-                    Url += "&SearchType=4";
-                    $("#Bookmark").load(encodeURI(Url));
-                });
+            $(function() {
+                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
 
+                $("#dialog").dialog("destroy");
+                var tips = $(".validateTips");
+                var name = $("#nameBookmark");
+
+                function updateTips(t) {
+                    tips
+                    .text(t)
+                    .addClass('ui-state-highlight');
+                    setTimeout(function() {
+                        tips.removeClass('ui-state-highlight', 1500);
+                    }, 500);
+                }
+
+                function checkLength(o) {
+
+                    if ( o.val().length == 0) {
+                        o.addClass('ui-state-error');
+                        updateTips("Bạn chưa nhập tên bookmark");
+                        return false;
+                    } else {
+                        return true;
+                    }
+
+                }
+
+                $("#addBookmark").dialog({
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        'Đóng': function() {
+                            $(this).dialog('close');
+                        },
+                        'Thêm': function() {
+                            var bValid = true;
+                            tips.removeClass('ui-state-error');
+                            bValid = checkLength(name);
+                            if(bValid)
+                            {
+
+                                var docID = $("#hdIdValue").attr("value");
+                                var keySearch = $("#hfKeySearch").attr("value");
+                                var nameBookmark = $("#nameBookmark").attr("value");
+                                alert(keySearch);
+                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                Url += "&DocID=" + docID;
+                                Url += "&SearchType=4";
+                                $("#Bookmark").load(encodeURI(Url));
+                                $(this).dialog('close');
+                            }
+                        }
+                    },close: function() {
+                        name.val('').removeClass('ui-state-error');
+                    }
+                });
+                $('#btBookmark')
+                .button()
+                .click(function() {
+                    $('#addBookmark').dialog('open');
+                });
+            });
+
+            $(document).ready(function(){
                 $("#tbTopSearch").load("TopSearch?SearchType=4");
             });
         </script>
@@ -172,6 +229,8 @@
                                 result += "</td>";
                                 result += "</tr>";
 
+                                
+                                
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
@@ -273,6 +332,16 @@
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
+                             <div id="addBookmark" title="Thêm bookmark">
+                                <p class="validateTips"/>
+                                <form>
+                                    <fieldset>
+                                        <label for="name">Tên bookmark</label>
+                                        <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                    </fieldset>
+                                </form>
+                            </div>
+                            
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
