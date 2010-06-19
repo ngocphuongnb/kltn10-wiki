@@ -58,13 +58,13 @@ public class BookMarkDAO {
                 String docid = rs.getString("docid");
                 String link = "";
                 if (searchtype.equals("1")) {
-                    link = "DetailWikiController?id=" + docid + "&KeySearch=";
+                    link = "DetailWikiController?id=" + docid;
                 } else if (searchtype.equals("2")) {
-                    link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
+                    link = "DetailRaoVatController?id=" + docid;
                 } else if (searchtype.equals("4")) {
-                    link = "DetailImageController?id=" + docid + "&KeySearch=";
+                    link = "DetailImageController?id=" + docid;
                 } else if (searchtype.equals("6")) {
-                    link = "DetailNewsController?id=" + docid + "&KeySearch=";
+                    link = "DetailNewsController?id=" + docid;
                 }
 
                 bmObj[0] = link;

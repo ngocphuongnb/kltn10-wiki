@@ -59,42 +59,42 @@ public class DetailNewsController extends HttpServlet {
         String keySearchId = "";
         int type = -1;
         int QTime = 0;
-        SolrDocumentList docs_MoreLikeThis= new SolrDocumentList();
+        SolrDocumentList docs_MoreLikeThis = new SolrDocumentList();
         try {
             server = SolrJConnection.getSolrServer("news");
 
             //</get-parameter>
             if (request.getParameter("KeySearch") != null) {
-
-                 ParameterBUS par = new ParameterBUS();
-            int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
-            String sTime = String.format("%d:00:00", timeRange);
-
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
 
                 keySearch = request.getParameter("KeySearch");
                 keySearchId = request.getParameter("id");
 
-                 //Phan tracking
-                TrackingDTO tracking = new TrackingDTO();
-                String keysearch = request.getParameter("KeySearch").toString();
-                request.setAttribute("KeySearch", keysearch);
-                tracking.setKeySearch(keysearch);
-                tracking.setDocId(keySearchId);
-                tracking.setIp(request.getRemoteAddr());
-                HttpSession session = request.getSession();
-                if (session.getAttribute("Member") != null) {
-                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
-                    tracking.setMemberId(mem.getId());
-                } else {
-                    tracking.setMemberId(-1);
+                //Phan tracking
+                if (request.getParameter("KeySearch") != null) {
+                    ParameterBUS par = new ParameterBUS();
+                    int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+                    String sTime = String.format("%d:00:00", timeRange);
+                    TrackingDTO tracking = new TrackingDTO();
+                    String keysearch = request.getParameter("KeySearch").toString();
+                    request.setAttribute("KeySearch", keysearch);
+                    tracking.setKeySearch(keysearch);
+                    tracking.setDocId(keySearchId);
+                    tracking.setIp(request.getRemoteAddr());
+                    HttpSession session = request.getSession();
+                    if (session.getAttribute("Member") != null) {
+                        MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                        tracking.setMemberId(mem.getId());
+                    } else {
+                        tracking.setMemberId(-1);
+                    }
+                    tracking.setTimeRange(sTime);
+                    tracking.setTimeSearch(Calendar.getInstance());
+                    tracking.setSearchType(6);
+                    TrackingBUS tbus = new TrackingBUS();
+                    tbus.InsertTracking(tracking, "visearch");
                 }
-                tracking.setTimeRange(sTime);
-                tracking.setTimeSearch(Calendar.getInstance());
-                tracking.setSearchType(6);
-                TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(tracking, "visearch");
                 // end tracking
 
                 rsp = OnSearchSubmit(keySearchId);
@@ -106,7 +106,7 @@ public class DetailNewsController extends HttpServlet {
                 request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
                 request.setAttribute("KeySearch", keySearch);
                 highLight = rsp.getHighlighting();
-                    
+
                 if (docs != null) {
                     String title = (docs.get(0).getFirstValue("title")).toString();
                     rsp = OnMoreLikeThis(title);
@@ -126,9 +126,9 @@ public class DetailNewsController extends HttpServlet {
             out.close();
         }
     }
-QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException
-    {
-       SolrQuery query = new SolrQuery();
+
+    QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        SolrQuery query = new SolrQuery();
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
@@ -146,6 +146,7 @@ QueryResponse OnMoreLikeThis(String strquery) throws SolrServerException, Malfor
         QueryResponse rsp = server.query(query);
         return rsp;
     }
+
     QueryResponse OnSearchSubmit(String keySearchId) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
