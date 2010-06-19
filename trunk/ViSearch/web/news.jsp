@@ -300,6 +300,12 @@
                             <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
+                     <script type="text/javascript">
+                                $(function(){
+                                    $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
+                                    $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
+                                });
+                            </script>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
                         <td width="200" height="33" valign="top">

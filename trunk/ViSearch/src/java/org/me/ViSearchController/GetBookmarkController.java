@@ -41,21 +41,11 @@ public class GetBookmarkController extends HttpServlet {
             MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
 
             // Data wikiBookMark
-            List<Object[]> lstBmWiki = getBookmart(memdto.getId(), 1);
-            // Data wikiRaoVat
-            List<Object[]> lstBmRaoVat = getBookmart(memdto.getId(), 2);
-
-           // Data wikiMusic
-            List<Object[]> lstBmMusic = getBookmart(memdto.getId(), 3);
-
-                       // Data News
-            List<Object[]> lstBmNews = getBookmart(memdto.getId(), 6);
+            List<Object[]> lstBm = getBookmart(memdto.getId());
 
 
-            request.setAttribute("lstBmWiki", lstBmWiki);
-            request.setAttribute("lstBmRaoVat", lstBmRaoVat);
-            request.setAttribute("lstBmMusic", lstBmMusic);
-            request.setAttribute("lstBmNews", lstBmNews);
+            request.setAttribute("lstBm", lstBm);
+
              request.setAttribute("forMark", 1);
         } finally {
             String url = "/showBookmark.jsp";
@@ -66,9 +56,9 @@ public class GetBookmarkController extends HttpServlet {
         }
     } 
 
-     private List<Object[]> getBookmart(int memberId, int searchType) {
+     private List<Object[]> getBookmart(int memberId) {
         BookMarkDAO myDAO = new BookMarkDAO();
-        return myDAO.GetBookmark(memberId, searchType, "visearch");
+        return myDAO.GetBookmark(memberId, "visearch");
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

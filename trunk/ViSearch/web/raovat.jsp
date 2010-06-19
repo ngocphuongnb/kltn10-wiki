@@ -325,6 +325,12 @@
                                 </table>
                             </div>
                         </td>
+                        <script type="text/javascript">
+                                $(function(){
+                                    $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
+                                    $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
+                                });
+                            </script>`
                         <td width="627" rowspan="2" valign="top">
                             <table>
 
