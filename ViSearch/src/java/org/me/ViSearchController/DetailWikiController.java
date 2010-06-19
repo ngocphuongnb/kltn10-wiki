@@ -6,6 +6,8 @@ package org.me.ViSearchController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import javax.servlet.ServletException;
@@ -48,7 +50,7 @@ public class DetailWikiController extends HttpServlet {
 
                 //Phan tracking
                 TrackingDTO tracking = new TrackingDTO();
-                String keysearch = request.getParameter("KeySearch").toString();
+                String keysearch = URLDecoder.decode(request.getParameter("KeySearch").toString(), "UTF-8");
                 tracking.setKeySearch(keysearch);
                 tracking.setDocId(String.valueOf(id));
                 tracking.setIp(request.getRemoteAddr());
@@ -66,7 +68,7 @@ public class DetailWikiController extends HttpServlet {
                 b = tbus.InsertTracking(tracking, "visearch");
                 b = tbus.UpdateKeysearch(id, keysearch, "viwiki", "visearch");
                 // end tracking
-                String link = request.getParameter("url").toString();
+                String link = URLDecoder.decode(request.getParameter("url").toString(), "UTF-8");
                 String url = "http://vi.wikipedia.org/wiki/" + URLEncoder.encode(link, "UTF-8");
                 response.sendRedirect(url);
             }

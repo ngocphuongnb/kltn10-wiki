@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,8 +97,8 @@ public class SearchRaoVatController extends HttpServlet {
             }
 
             if (request.getParameter("KeySearch") != null) {
-                keySearch = request.getParameter("KeySearch");
-                sPaging += "&KeySearch=" + keySearch;
+                keySearch = URLDecoder.decode(request.getParameter("KeySearch"),"UTF-8");
+                sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
 
@@ -261,6 +263,7 @@ public class SearchRaoVatController extends HttpServlet {
     }
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
+        keySearch = MyString.cleanQueryTerm(keySearch);
         SolrQuery solrQuery = new SolrQuery();
 
         if (MyString.CheckSigned(keySearch)) {
@@ -443,6 +446,7 @@ public class SearchRaoVatController extends HttpServlet {
     }
 
     String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
+        q = MyString.cleanQueryTerm(q);
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true

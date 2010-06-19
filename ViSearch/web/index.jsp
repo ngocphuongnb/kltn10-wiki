@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.apache.solr.client.solrj.SolrQuery"%>
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
 <%@page import="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"%>
@@ -19,44 +19,89 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
 
-        <script language="javascript">
-            $(document).ready(function(){
+        <script type="text/javascript">
+            $(function() {
+                $("#accordion").accordion({
+                    collapsible: true,
+                    header: 'div.Quickview',
+                    autoHeight: false
+                });
+                //getter
+                var active = $( "#accordion" ).accordion( "option", "active" );
+                $( "#accordion" ).accordion( "option", "active", 0 );
             });
-            setInterval(
-            $.ajax({
-                type: "POST",
-                url: "TopSearch",
-                cache: false,
-                data: "SearchType=1",
-                success: function(html){
-                    $("#tbTopSearch").append(html);
+        </script>
+
+        <script language="javascript">
+            $(function(){
+                setInterval(
+                $.ajax({
+                    type: "POST",
+                    url: "TopSearch",
+                    cache: false,
+                    data: "SearchType=1",
+                    success: function(html){
+                        $("#tbTopSearch").append(html);
+                    }
+                }), 10000);
+
+            });
+
+            function CheckInput()
+            {
+                var keysearch = $("#txtSearch");
+                var sortedtype = $("#slSortedType");
+                if(keysearch.val() == "")
+                    return;
+                else
+                {
+                    var url = "SearchWikiController?type=0&sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch.val());
+                    url += "&SortedType=" + sortedtype.val();
+                    window.location = url;
                 }
-            }), 10000);
+            }
+
+            function post_to_url(path, params) {
+                var form = document.createElement("form");
+                form.setAttribute("method", "post");
+                form.setAttribute("action", path);
+
+                for(var key in params) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+
+                    form.appendChild(hiddenField);
+                }
+
+                document.body.appendChild(form);    // Not entirely sure if this is necessary
+                form.submit();
+            }
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
                 if(keysearch=="")
                     document.getElementById('txtSearch').focus();
             }
-            function CheckInput()
+            function ClickDetail(link, id)
             {
-                var keysearch = document.getElementById('txtSearch').value;
-                var sortedtype = document.getElementById('slSortedType').value;
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchWikiController?type=0&sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                    window.location = url;
-                }
+                var keysearch = $('#hfKeySearch');
+                var url = "DetailWikiController?";
+                url += "&url=" + encodeURIComponent(link);
+                url += "&KeySearch=" + encodeURIComponent(keysearch.val()),
+                url += "&id=" + id;
+                url += "&t=" + Math.random();
+                window.location = url;
             }
-            function ClickDetail(link)
+
+            function MoreLikeThis(keysearch)
             {
-                var keysearch = document.getElementById('hfKeySearch').value;
-                var url = "DetailWikiController?url=" + link;
+                var url = "SearchWikiController?";
+                url += "&type=1";
                 url += "&KeySearch=" + keysearch;
+                url += "&t="+Math.random();
                 window.location = url;
             }
 
@@ -131,72 +176,12 @@
                             listdocs = (SolrDocumentList) request.getAttribute("Docs");
 
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
-                            if (request.getAttribute("Collation") != null) {
-                                String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchWikiController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
-                            }
-
-                            for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
-
-                                // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
-                                String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
-                                String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                //int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
-                                String url = title.replace(' ', '_');
-                                String title_hl = title;
-                                Date timestamp = (Date) (listdocs.get(i).getFieldValue("timestamp"));
-
-                                if (request.getAttribute("HighLight") != null) {
-                                    highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    List<String> highlightText = highLight.get(id).get("wk_text");
-                                    List<String> highlightTitle = highLight.get(id).get("wk_title");
-                                    if (highlightText != null && !highlightText.isEmpty()) {
-                                        text = highlightText.get(0) + "...";
-                                    } else {
-                                        if (text.length() > 300) {
-                                            text = text.substring(0, 300) + "...";
-                                        }
-                                    }
-                                    if (highlightTitle != null && !highlightTitle.isEmpty()) {
-                                        title_hl = highlightTitle.get(0);
-                                    }
-                                } else {
-                                    if (text.length() > 300) {
-                                        text = text.substring(0, 300) + "...";
-                                    }
-                                }
-
-                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "')\">" + title_hl + "</a><b></td>";
-                                result += "<tr>";
-                                result += url;
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>" + text + "</td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                                result += "<td><b>Ngày cập nhật:</b> " + sdf.format(timestamp) + "</td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td colspan='2'>";
-                                result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
-                                result += "</td>";
-                                result += "</tr>";
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
-                            }
-
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
                         } else {
-                            result += strpaging + "<b>Không tìm ra dữ liệu</b><br/>";
+                            result += strpaging + "<b>Không có kết quả nào</b><br/>";
                         }
                         // result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         if (numpage > 0) {
@@ -205,7 +190,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -239,7 +224,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -285,7 +270,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -307,7 +292,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
+                            <span><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr>
@@ -330,7 +315,7 @@
                                             }
                                 %>
 
-                                <div class="mnu">Tìm kiếm nhiều</div>
+                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
                                 <table id="tbTopSearch">
 
                                 </table>
@@ -345,7 +330,72 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td valign="top" id="content">
-                                        <% out.print(result);%>
+                                        <%
+                                                    if (request.getAttribute("Collation") != null) {
+                                                        String sCollation = (String) request.getAttribute("Collation");
+                                                        out.print("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchWikiController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
+                                                    }
+
+                                                    out.print("<div id=\"accordion\">");
+
+                                                    for (int i = 0; i < listdocs.size(); i++) {
+                                                        out.print("<table style=\"font-size:13px\">");
+
+                                                        // Lay noi dung cua moi field
+                                                        String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
+                                                        String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
+                                                        String text_raw = (listdocs.get(i).getFieldValue("wk_text_raw")).toString();
+                                                        String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                                        //int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
+                                                        String url = title.replace(' ', '_');
+                                                        String title_hl = title;
+                                                        Date timestamp = (Date) (listdocs.get(i).getFieldValue("timestamp"));
+
+                                                        if (request.getAttribute("HighLight") != null) {
+                                                            highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
+                                                            List<String> highlightText = highLight.get(id).get("wk_text");
+                                                            List<String> highlightTitle = highLight.get(id).get("wk_title");
+                                                            if (highlightText != null && !highlightText.isEmpty()) {
+                                                                text = highlightText.get(0) + "...";
+                                                            } else {
+                                                                if (text.length() > 300) {
+                                                                    text = text.substring(0, 300) + "...";
+                                                                }
+                                                            }
+                                                            if (highlightTitle != null && !highlightTitle.isEmpty()) {
+                                                                title_hl = highlightTitle.get(0);
+                                                            }
+                                                        } else {
+                                                            if (text.length() > 300) {
+                                                                text = text.substring(0, 300) + "...";
+                                                            }
+                                                        }
+
+                                                        url = "<td><h2><a href=\"javascript:ClickDetail('" + url + "','" + id + "')\">" + title_hl + "</a></h2></td>";
+                                                        out.print("<tr>");
+                                                        out.print(url);
+                                                        out.print("</tr>");
+
+                                                        out.print("<tr>");
+                                                        out.print("<td>" + text + "</td>");
+                                                        out.print("</tr>");
+
+                                                        out.print("<tr>");
+                                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                                                        out.print("<td><b>Ngày cập nhật:</b> " + sdf.format(timestamp) + "</td>");
+                                                        out.print("</tr>");
+
+                                                        out.print("<tr>");
+                                                        out.print("<td>");
+                                                        out.print("<a href=\"javascript:MoreLikeThis('" + URLEncoder.encode(title, "UTF-8") + "');\">Trang tương tự...</a>");
+                                                        out.print("</td>");
+                                                        out.print("</tr>");
+                                                        out.print("<tr><td><div class='Quickview'>Xem nhanh</div><div>" + text_raw + "</div></td></tr>");
+                                                        out.print("</table><hr/>");
+                                                    }
+
+                                                    out.print("</div>");
+                                                    out.print(result);%>
                                     </td>
                                 </tr>
                             </table>
