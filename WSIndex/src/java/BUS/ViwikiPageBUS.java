@@ -32,4 +32,9 @@ public class ViwikiPageBUS {
         ViwikiPageDAO dao = new ViwikiPageDAO();
         dao.SyncDataViwiki(listPage);
     }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException{
+        ViwikiPageDAO dao = new ViwikiPageDAO();
+        dao.UpdateAfterIndex(list);
+    }
 }

@@ -40,14 +40,12 @@ public class ViwikiPageDAO {
             page.setIp(rs.getString("ip"));
             page.setId(rs.getInt("id"));
             page.setRestrictions(rs.getString("restrictions"));
-            String s="";
-            try{
+            String s = "";
+            try {
                 s = wkmodel.render(rs.getString("text"));
-            }
-            catch(Exception ex)
-            {
+            } catch (Exception ex) {
                 s = "Xin lỗi vì dữ liệu quá lớn nên không thể hiển thị\r\nVui lòng click vào link bên trên để xem chi tiết";
-                MySolrJ.ierror ++;
+                MySolrJ.ierror++;
             }
             page.setText(s);
             page.setTitle(rs.getString("title"));
@@ -58,6 +56,7 @@ public class ViwikiPageDAO {
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
             page.setTimestamp(cl);
+            page.setKeySearch(rs.getString("keysearch"));
             list.add(page);
         }
 
@@ -82,8 +81,7 @@ public class ViwikiPageDAO {
         return iCount;
     }
 
-    public void SyncDataViwiki(ArrayList<ViwikiPageDTO> listPage) throws SQLException
-    {
+    public void SyncDataViwiki(ArrayList<ViwikiPageDTO> listPage) throws SQLException {
         Connection cn = DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataViwiki(?, ?, ?, ?, ?, ?, ?)}");
@@ -96,6 +94,18 @@ public class ViwikiPageDAO {
             cs.setString(5, viwikiPageDTO.getRestrictions());
             cs.setString(6, viwikiPageDTO.getUsername());
             cs.setString(7, viwikiPageDTO.getComment());
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_viwiki(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
             cs.executeUpdate();
         }
         cs.close();
