@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
@@ -64,10 +67,164 @@ public class SearchWikiController extends HttpServlet {
      */
     SolrServer server;
 
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, SolrServerException {
+
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        SolrDocumentList docs = new SolrDocumentList();
+        String keySearch = "";
+        int pagesize = 10;
+        int currentpage = 1;
+        int type = -1;
+        int QTime = 0;
+        long numRow = 0;
+        String sPaging = "/ViSearch/SearchWikiController?";
+        List<FacetField> listFacet = null;
+        ArrayList<FacetDateDTO> listFacetDate = null;
+        int sortedType = 0;
+        try {
+            //<get-parameter defaultstate="collapsed">
+            if (request.getParameter("currentpage") != null) {
+                currentpage = Integer.parseInt(request.getParameter("currentpage"));
+            }
+
+            server = SolrJConnection.getSolrServer("wikipedia");
+            int start = (currentpage - 1) * pagesize;
+
+            if (request.getParameter("type") != null) {
+                type = Integer.parseInt(request.getParameter("type"));
+            }
+
+            if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "SortedType=" + sortedType;
+            }
+
+            //</get-parameter>
+            if (request.getParameter("KeySearch") != null) {
+
+                QueryResponse rsp;
+                Map<String, Map<String, List<String>>> highLight;
+
+                keySearch = URLDecoder.decode(request.getParameter("KeySearch"), "UTF-8");
+//                out.print(keySearch);
+//                out.print(URLEncoder.encode(keySearch, "UTF-8"));
+//                out.print(URLDecoder.decode(keySearch, "UTF-8"));
+                sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
+
+                switch (type) {
+                    case 0:
+                        if (request.getParameter("sp") != null) {
+                            String sCollation = OnCheckSpelling(keySearch);
+
+                            if (sCollation != null && sCollation.equals("") == false) {
+                                request.setAttribute("Collation", sCollation);
+                            }
+                        }
+
+                        rsp = OnSearchSubmit(ClientUtils.escapeQueryChars(keySearch), start, pagesize, sortedType);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+                        sPaging += "&type=0";
+                        break;
+                    case 1:
+                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        if (highLight != null) {
+                            request.setAttribute("HighLight", highLight);
+                        }
+                        QTime = rsp.getQTime();
+                        sPaging += "&type=1";
+                        break;
+                    case 2:
+                        String facetName = "";
+                        String facetValue = "";
+                        sPaging += "&type=2";
+                        if (request.getParameter("FacetName") != null) {
+                            facetName = request.getParameter("FacetName");
+                            facetValue = request.getParameter("FacetValue");
+                            sPaging += "&FacetName=" + facetName;
+                            sPaging += "&FacetValue=" + facetValue;
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+                        break;
+                    case 3:
+                        facetName = "";
+                        facetValue = "";
+                        sPaging += "&type=3";
+                        if (request.getParameter("FacetName") != null) {
+                            facetName = request.getParameter("FacetName");
+                            sPaging += "&FacetName=" + facetName;
+                            String startDate = "";
+                            if (request.getParameter("sd") != null) {
+                                startDate = request.getParameter("sd");
+                            }
+                            String endDate = "";
+                            if (request.getParameter("ed") != null) {
+                                endDate = request.getParameter("ed");
+                            }
+                            facetValue = createFacetValue(startDate, endDate);
+                            sPaging += "&FacetValue=" + facetValue;
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
+
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        docs = rsp.getResults();
+                        QTime = rsp.getQTime();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
+            request.setAttribute("KeySearch", keySearch);
+            request.setAttribute("SortedType", sortedType);
+            request.setAttribute("Type", type);
+            if (docs != null) {
+                numRow = docs.getNumFound();
+                //numRow = docs.size();
+                int numpage = (int) (numRow / pagesize);
+
+                if (numRow % pagesize > 0) {
+                    numpage++;
+                }
+
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+                request.setAttribute("Docs", docs);
+                request.setAttribute("ListFacetDate", listFacetDate);
+                request.setAttribute("Pagging", sPaging);
+                request.setAttribute("NumRow", numRow);
+                request.setAttribute("NumPage", numpage);
+                request.setAttribute("ListFacet", listFacet);
+            }
+            String url = "/index.jsp";
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher(url);
+            rd.forward(request, response);
+        } catch (Exception e) {
+            out.print(e.getMessage());
+            //String url = "/ViSearch/index.jsp";
+            //response.sendRedirect(url);
+        } finally {
+            out.close();
+        }
+    }
+
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        //solrQuery.setQueryType("dismax");
-
+        keySearch = MyString.cleanQueryTerm(keySearch);
         String query = "";
         switch(sortedType)
         {
@@ -94,9 +251,9 @@ public class SearchWikiController extends HttpServlet {
         if (MyString.CheckSigned(keySearch)) {
             query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^5 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
         } else {
-            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+            query += "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^8 || "
                     + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
-                    + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + ")";
+                    + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^5 || wk_text_unsigned:(" + keySearch + ")";
         }
 
         solrQuery.setQuery(query);
@@ -306,6 +463,7 @@ public class SearchWikiController extends HttpServlet {
     }
 
     String OnCheckSpelling(String q) throws SolrServerException, URIException, HttpException, IOException {
+        q = MyString.cleanQueryTerm(q);
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
@@ -377,157 +535,7 @@ public class SearchWikiController extends HttpServlet {
         Map<String, FieldStatsInfo> map = rsp.getFieldStatsInfo();
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SolrServerException {
-
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        SolrDocumentList docs = new SolrDocumentList();
-        String keySearch = "";
-        int pagesize = 10;
-        int currentpage = 1;
-        int type = -1;
-        int QTime = 0;
-        long numRow = 0;
-        String sPaging = "/ViSearch/SearchWikiController?";
-        List<FacetField> listFacet = null;
-        ArrayList<FacetDateDTO> listFacetDate = null;
-        int sortedType = 0;
-        try {
-            //<get-parameter defaultstate="collapsed">
-            if (request.getParameter("currentpage") != null) {
-                currentpage = Integer.parseInt(request.getParameter("currentpage"));
-            }
-
-            server = SolrJConnection.getSolrServer("wikipedia");
-            int start = (currentpage - 1) * pagesize;
-
-            if (request.getParameter("type") != null) {
-                type = Integer.parseInt(request.getParameter("type"));
-            }
-
-            if (request.getParameter("SortedType") != null) {
-                sortedType = Integer.parseInt(request.getParameter("SortedType"));
-                sPaging += "SortedType=" + sortedType;
-            }
-
-            //</get-parameter>
-            if (request.getParameter("KeySearch") != null) {
-
-                QueryResponse rsp;
-                Map<String, Map<String, List<String>>> highLight;
-
-                keySearch = request.getParameter("KeySearch");
-                sPaging += "&KeySearch=" + keySearch;
-
-                switch (type) {
-                    case 0:
-                        if (request.getParameter("sp") != null) {
-                            String sCollation = OnCheckSpelling(keySearch);
-
-                            if (sCollation != null && sCollation.equals("") == false) {
-                                request.setAttribute("Collation", sCollation);
-                            }
-                        }
-
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=0";
-                        break;
-                    case 1:
-                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        if (highLight != null) {
-                            request.setAttribute("HighLight", highLight);
-                        }
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=1";
-                        break;
-                    case 2:
-                        String facetName = "";
-                        String facetValue = "";
-                        sPaging += "&type=2";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            facetValue = request.getParameter("FacetValue");
-                            sPaging += "&FacetName=" + facetName;
-                            sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        break;
-                    case 3:
-                        facetName = "";
-                        facetValue = "";
-                        sPaging += "&type=3";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            sPaging += "&FacetName=" + facetName;
-                            String startDate = "";
-                            if (request.getParameter("sd") != null) {
-                                startDate = request.getParameter("sd");
-                            }
-                            String endDate = "";
-                            if (request.getParameter("ed") != null) {
-                                endDate = request.getParameter("ed");
-                            }
-                            facetValue = createFacetValue(startDate, endDate);
-                            sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
-
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        docs = rsp.getResults();
-                        QTime = rsp.getQTime();
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
-            request.setAttribute("KeySearch", keySearch);
-            request.setAttribute("SortedType", sortedType);
-            request.setAttribute("Type", type);
-            if (docs != null) {
-                numRow = docs.getNumFound();
-                //numRow = docs.size();
-                int numpage = (int) (numRow / pagesize);
-
-                if (numRow % pagesize > 0) {
-                    numpage++;
-                }
-
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
-                request.setAttribute("Docs", docs);
-                request.setAttribute("ListFacetDate", listFacetDate);
-                request.setAttribute("Pagging", sPaging);
-                request.setAttribute("NumRow", numRow);
-                request.setAttribute("NumPage", numpage);
-                request.setAttribute("ListFacet", listFacet);
-            }
-            String url = "/index_1.jsp";
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher(url);
-            rd.forward(request, response);
-        } catch (Exception e) {
-            out.print(e.getMessage());
-            //String url = "/ViSearch/index.jsp";
-            //response.sendRedirect(url);
-        } finally {
-            out.close();
-        }
-    }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

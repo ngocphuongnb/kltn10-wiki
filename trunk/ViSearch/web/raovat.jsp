@@ -56,7 +56,7 @@
                 var batdau = document.getElementById("divPVTC_BD").value;
                 var  kethuc = document.getElementById("divPVTC_KT").value;
                 strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchRaoVatController?type=3&KeySearch=" + strQuery + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
+                var url = "SearchRaoVatController?type=3&KeySearch=" + encodeURIComponent(strQuery) + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
             function showPVTC(){

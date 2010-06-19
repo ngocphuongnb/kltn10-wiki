@@ -14,7 +14,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <label for="slSortedType">Sắp xếp kết quả theo:</label>
+        <div style="padding-left: 300px ; font-size:13px;">
+        Sắp xếp kết quả theo:
         <%
             int type = 0;
             if(request.getAttribute("Type")!=null)
@@ -28,7 +29,7 @@
         <input id="hfSortedType" type="hidden" value="<%
                     out.print(sortedType);
                %>"/>
-
+        </div>
         <script type="text/javascript">
             var slST = document.getElementById("slSortedType");
             var arrOpt = slST.getElementsByTagName("option");

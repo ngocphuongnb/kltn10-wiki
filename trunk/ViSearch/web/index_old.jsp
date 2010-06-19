@@ -19,32 +19,19 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
 
-        <script type="text/javascript">
-            $(function() {
-                $("#accordion").accordion({
-                    collapsible: true,
-                    header: 'div.Quickview',
-                    autoHeight: false
-                });
-                //getter
-                var active = $( "#accordion" ).accordion( "option", "active" );
-                $( "#accordion" ).accordion( "option", "active", 0 );
-            });
-        </script>
-
         <script language="javascript">
-            $(function(){
-                setInterval(
-                $.ajax({
-                    type: "POST",
-                    url: "TopSearch",
-                    cache: false,
-                    data: "SearchType=1",
-                    success: function(html){
-                        $("#tbTopSearch").append(html);
-                    }
-                }), 10000);
+            $(document).ready(function(){
             });
+            setInterval(
+            $.ajax({
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=1",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
+            }), 10000);
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -59,6 +46,7 @@
                     return;
                 else
                 {
+                    alert(encodeURIComponent(keysearch));
                     var url = "SearchWikiController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
@@ -149,15 +137,12 @@
                                 result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchWikiController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
-                            result += "<div id=\"accordion\">";
-
                             for (int i = 0; i < listdocs.size(); i++) {
                                 result += "<table style=\"font-size:13px\">";
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
                                 String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
-                                String text_raw = (listdocs.get(i).getFieldValue("wk_text_raw")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 //int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
                                 String url = title.replace(' ', '_');
@@ -184,7 +169,7 @@
                                     }
                                 }
 
-                                url = "<td><h2><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "')\">" + title_hl + "</a></h2></td>";
+                                url = "<td><b><a href=\"javascript:ClickDetail('" + URLEncoder.encode(url, "UTF-8") + "&id=" + id + "')\">" + title_hl + "</a><b></td>";
                                 result += "<tr>";
                                 result += url;
                                 result += "</tr>";
@@ -199,15 +184,13 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td>";
+                                result += "<td colspan='2'>";
                                 result += "<a href=\"SearchWikiController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
-                                result += "<tr><td><div class='Quickview'>Xem nhanh</div><div>"+text_raw+"</div></td></tr>";
-                                result += "</table><hr/>";
+                                result += "<tr><td>&nbsp;</td></tr>";
+                                result += "</table>";
                             }
-
-                            result += "</div>";
 
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
@@ -223,7 +206,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -257,7 +240,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -303,7 +286,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -363,7 +346,9 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td valign="top" id="content">
-                                        <% out.print(result);%>
+                                        <% 
+                                        out.print(result);
+                                        %>
                                     </td>
                                 </tr>
                             </table>
