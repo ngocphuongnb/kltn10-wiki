@@ -35,6 +35,14 @@ import javax.jws.WebService;
 @WebService()
 public class WSIndex {
 
+    static final int WIKI = 1;
+    static final int RAOVAT = 2;
+    static final int MUSIC = 3;
+    static final int IMAGE = 4;
+    static final int VIDEO = 5;
+    static final int NEWS = 6;
+    static final int ALL = 7;
+
     /**
      * Web service operation
      */
@@ -47,6 +55,14 @@ public class WSIndex {
         } catch (SQLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(WIKI);
+            mSolr.IndexViwiki();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -71,12 +87,18 @@ public class WSIndex {
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataRaovat")
-    public void SyncDataRaovat(@WebParam(name = "listRaovat")
-    ArrayList<RaoVatDTO> listRaovat){
+    public void SyncDataRaovat(@WebParam(name = "listRaovat") ArrayList<RaoVatDTO> listRaovat) {
         try {
             RaoVatBUS bus = new RaoVatBUS();
             bus.SyncDataRaovat(listRaovat);
         } catch (SQLException ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(RAOVAT);
+            mSolr.IndexRaoVat();
+        } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -103,8 +125,7 @@ public class WSIndex {
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataMusic")
-    public void SyncDataMusic(@WebParam(name = "listMusic")
-    ArrayList<MusicDTO> listMusic) {
+    public void SyncDataMusic(@WebParam(name = "listMusic") ArrayList<MusicDTO> listMusic) {
         try {
             MusicBUS bus = new MusicBUS();
             bus.SyncDataMusic(listMusic);
@@ -112,17 +133,22 @@ public class WSIndex {
         } catch (SQLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(MUSIC);
+            mSolr.IndexMusic();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataMusic")
-    public boolean IndexDataMusic(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataMusic(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexMusic();
@@ -133,12 +159,12 @@ public class WSIndex {
         }
         return false;
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataImage")
-    public void SyncDataImage(@WebParam(name = "listImage")
-    ArrayList<ImageDTO> listImage) {
+    public void SyncDataImage(@WebParam(name = "listImage") ArrayList<ImageDTO> listImage) {
         try {
             ImageBUS bus = new ImageBUS();
             bus.SyncDataImage(listImage);
@@ -146,17 +172,23 @@ public class WSIndex {
         } catch (SQLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(IMAGE);
+            mSolr.IndexImage();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataImage")
-    public boolean IndexDataImage(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataImage(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexImage();
@@ -167,12 +199,12 @@ public class WSIndex {
         }
         return false;
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataVideo")
-    public void SyncDataVideo(@WebParam(name = "listVideo")
-    ArrayList<VideoDTO> listVideo) {
+    public void SyncDataVideo(@WebParam(name = "listVideo") ArrayList<VideoDTO> listVideo) {
         try {
             VideoBUS bus = new VideoBUS();
             bus.SyncDataVideo(listVideo);
@@ -180,17 +212,23 @@ public class WSIndex {
         } catch (SQLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(VIDEO);
+            mSolr.IndexVideo();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataVideo")
-    public boolean IndexDataVideo(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataVideo(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexVideo();
@@ -201,12 +239,12 @@ public class WSIndex {
         }
         return false;
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "SyncDataNews")
-    public void SyncDataNews(@WebParam(name = "listNews")
-    ArrayList<NewsDTO> listNews) {
+    public void SyncDataNews(@WebParam(name = "listNews") ArrayList<NewsDTO> listNews) {
         try {
             NewsBUS bus = new NewsBUS();
             bus.SyncDataNews(listNews);
@@ -214,17 +252,23 @@ public class WSIndex {
         } catch (SQLException ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexAll(NEWS);
+            mSolr.IndexNews();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataNews")
-    public boolean IndexDataNews(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataNews(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexNews();
@@ -235,19 +279,23 @@ public class WSIndex {
         }
         return false;
     }
-     /**
+
+    /**
      * Web service operation
      */
     @WebMethod(operationName = "IndexDataAll")
-    public boolean IndexDataAll(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean IndexDataAll(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
-                ms.IndexAll();
+                ms.IndexAll(ALL);
+                ms.IndexImage();
+                ms.IndexMusic();
+                ms.IndexNews();
+                ms.IndexRaoVat();
+                ms.IndexVideo();
+                ms.IndexViwiki();
                 return true;
             } catch (Exception ex) {
                 return false;
