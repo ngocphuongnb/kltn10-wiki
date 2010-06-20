@@ -26,9 +26,13 @@ public class RaoVatBUS {
         return dao.CountRecord();
     }
 
-    public void SyncDataRaovat(ArrayList<RaoVatDTO> listPage) throws SQLException
-    {
+    public void SyncDataRaovat(ArrayList<RaoVatDTO> listPage) throws SQLException {
         RaoVatDAO dao = new RaoVatDAO();
         dao.SyncDataRaovat(listPage);
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        RaoVatDAO dao = new RaoVatDAO();
+        dao.UpdateAfterIndex(list);
     }
 }

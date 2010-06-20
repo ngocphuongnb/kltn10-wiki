@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package BUS;
 
 import DAO.VideoDAO;
@@ -10,6 +9,7 @@ import DTO.VideoDTO;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+
 /**
  *
  * @author tuandom
@@ -25,9 +25,14 @@ public class VideoBUS {
         VideoDAO dao = new VideoDAO();
         return dao.CountRecord();
     }
-     public void SyncDataVideo(ArrayList<VideoDTO> listPage) throws SQLException
-    {
+
+    public void SyncDataVideo(ArrayList<VideoDTO> listPage) throws SQLException {
         VideoDAO dao = new VideoDAO();
         dao.SyncDataVideo(listPage);
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        VideoDAO dao = new VideoDAO();
+        dao.UpdateAfterIndex(list);
     }
 }

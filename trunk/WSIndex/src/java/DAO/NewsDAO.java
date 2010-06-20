@@ -22,7 +22,7 @@ import java.util.Date;
  */
 public class NewsDAO {
 
-     public int CountRecord() throws SQLException {
+    public int CountRecord() throws SQLException {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
@@ -42,7 +42,7 @@ public class NewsDAO {
         ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-       String query = String.format("SELECT * FROM data_news where tracking_updated=1 LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM data_news where tracking_updated=1 LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
 
         NewsDTO page;
@@ -77,8 +77,8 @@ public class NewsDAO {
         cn.close();
         return list;
     }
-     public void SyncDataNews(ArrayList<NewsDTO> listPage) throws SQLException
-    {
+
+    public void SyncDataNews(ArrayList<NewsDTO> listPage) throws SQLException {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataNews(?, ?, ?, ?, ?, ?, ?)}");
@@ -91,6 +91,18 @@ public class NewsDAO {
             cs.setString(5, newsDTO.getFulltext());
             cs.setString(6, sdf.format(newsDTO.getCreated().getTime()));
             cs.setString(7, "2000-1-1");
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_news(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
             cs.executeUpdate();
         }
         cs.close();

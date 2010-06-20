@@ -27,7 +27,12 @@ public class NewsBUS {
     }
 
     public void SyncDataNews(ArrayList<NewsDTO> listPage) throws SQLException {
-         NewsDAO dao = new NewsDAO();
+        NewsDAO dao = new NewsDAO();
         dao.SyncDataNews(listPage);
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        NewsDAO dao = new NewsDAO();
+        dao.UpdateAfterIndex(list);
     }
 }

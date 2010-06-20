@@ -91,4 +91,16 @@ public class MusicDAO {
         cs.close();
         cn.close();
     }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_music(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
+    }
 }

@@ -30,4 +30,9 @@ public class ImageBUS {
         ImageDAO dao = new ImageDAO();
         dao.SyncDataImage(listPage);
     }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException{
+        ImageDAO dao = new ImageDAO();
+        dao.UpdateAfterIndex(list);
+    }
 }
