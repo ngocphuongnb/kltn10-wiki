@@ -49,6 +49,7 @@ public class ImageDAO {
             page.setId(rs.getInt("Id"));
             page.setCategory(rs.getString("Category"));
             page.setUrl(rs.getString("URL"));
+            page.setUrl_local(rs.getString("URL_Local"));
             page.setWebsite(rs.getString("Website"));
             page.setSite_title(rs.getString("Site_Title"));
             page.setSite_body(rs.getString("Site_Body"));

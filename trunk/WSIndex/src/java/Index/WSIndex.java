@@ -267,6 +267,7 @@ public class WSIndex {
         {
             SaveImageFromURL ms = new SaveImageFromURL();
             try {
+                // save img ve local va update trong mysql
                 ms.loadImage();
                 return true;
             } catch (Exception ex) {

@@ -569,6 +569,7 @@ public class MySolrJ {
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
             doc.addField("url", pagedto.getUrl());
+            doc.addField("url_local", pagedto.getUrl_local());
             doc.addField("website", pagedto.getWebsite());
             doc.addField("site_title", pagedto.getSite_title());
             doc.addField("site_title_unsigned", RemoveSignVN(pagedto.getSite_title()));
