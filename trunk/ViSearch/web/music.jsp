@@ -25,82 +25,9 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
-        <script language="javascript">
-            $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=3");
-            });
-        </script>
 
-        <script type="text/javascript">
-            $(function() {
-                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
 
-                $("#dialog").dialog("destroy");
-                var tips = $(".validateTips");
-                var name = $("#nameBookmark");
 
-                function updateTips(t) {
-                    tips
-                    .text(t)
-                    .addClass('ui-state-highlight');
-                    setTimeout(function() {
-                        tips.removeClass('ui-state-highlight', 1500);
-                    }, 500);
-                }
-
-                function checkLength(o) {
-
-                    if ( o.val().length == 0) {
-                        o.addClass('ui-state-error');
-                        updateTips("Bạn chưa nhập tên bookmark");
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                $("#addBookmark").dialog({
-                    autoOpen: false,
-                    height: 300,
-                    width: 350,
-                    modal: true,
-                    buttons: {
-                        'Đóng': function() {
-                            $(this).dialog('close');
-                        },
-                        'Thêm': function() {
-                            var bValid = true;
-                            tips.removeClass('ui-state-error');
-                            bValid = checkLength(name);
-                            if(bValid)
-                            {
-
-                                var docID = $("#hdIdValue").attr("value");
-                                var keySearch = $("#hfKeySearch").attr("value");
-                                var nameBookmark = $("#nameBookmark").attr("value");
-                                alert(keySearch);
-                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
-                                Url += "&DocID=" + docID;
-                                Url += "&SearchType=6";
-                                $("#Bookmark").load(encodeURI(Url));
-                                $(this).dialog('close');
-                            }
-                        }
-                    },close: function() {
-                        name.val('').removeClass('ui-state-error');
-                    }
-                });
-                $('#btBookmark')
-                .button()
-                .click(function() {
-                    $('#addBookmark').dialog('open');
-                });
-            });
-
-            $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=3");
-            });
-        </script>
         <script language="javascript">
             function setText()
             {
@@ -187,7 +114,7 @@
 
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -197,6 +124,7 @@
                     String strpaging = "";
                     String search_stats = "";
                     String result = "";
+                    String addBM="";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
                         QTime = request.getAttribute("QTime").toString();
@@ -259,7 +187,13 @@
                                 String BTViewlyricId = "BTViewlyricId" + i;
                                 String BTCloselyricId = "BTCloselyricId" + i;
                                 String btPlay = "btPlay" + i;
+                                String btBookmark = "btBookmark" + i;
+                                String spanBookmark = "spanBookmark" + i;
+                                String addBookmark = "addBookmark" + i;
+                                String nameBookmark = "nameBookmark" + i;
+                                String hdIdValue ="hdIdValue"+i;
 
+                                
                                 // Start Phan tracking
                                 result += "<span id='Tracking'>";
                                 result += "</span>";
@@ -284,12 +218,101 @@
         </script>
 
         <%
-                                //  End Phan tracking
-                                //  Start Bookmark
+                                        //  END Phan tracking
+
+                                        //  START Bookmark
+
+
+        %>
+        <script type="text/javascript">
+            $(function() {
+                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
+
+                $("#dialog").dialog("destroy");
+                var tips = $(".validateTips");
+               var name = $("#<%=nameBookmark%>");
+
+                function updateTips(t) {
+                    tips
+                    .text(t)
+                    .addClass('ui-state-highlight');
+                    setTimeout(function() {
+                        tips.removeClass('ui-state-highlight', 1500);
+                    }, 500);
+                }
+
+                function checkLength(o) {
+
+                    if ( o.val().length == 0) {
+                        o.addClass('ui-state-error');
+                        updateTips("Bạn chưa nhập tên bookmark");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                $('#<%=addBookmark%>').dialog({
+                    autoOpen: false,
+                    height: 300,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        'Đóng': function() {
+                            $(this).dialog('close');
+                        },
+                        'Thêm': function() {
+                            var bValid = true;
+                            tips.removeClass('ui-state-error');
+                            bValid = checkLength(name);
+                            if(bValid)
+                            {
+                                var docID = $("#<%=hdIdValue%>").attr("value");
+                                var keySearch = $("#hfKeySearch").attr("value");
+                                var nameBookmark = $("#<%=nameBookmark%>").attr("value");
+                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                Url += "&DocID=" + docID;
+                                Url += "&SearchType=3";
+                                 alert("Đã thêm vào Bookmark");
+                                $("#<%=spanBookmark%>").load(encodeURI(Url));
+                                $(this).dialog('close');
+                            }
+                        }
+                    },close: function() {
+                        name.val('').removeClass('ui-state-error');
+                    }
+                });
+                $('#<%=btBookmark%>')
+                .button()
+                .click(function() {
+                    $('#<%=addBookmark%>').dialog('open');
+                });
+            });
+
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=3");
+            });
+        </script>
+        <%
+
+
+
                                 if (session.getAttribute("Member") != null) {
-                                    result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
-                                            + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
+                                    result += "<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>"
+                                            + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
                                 }
+
+                                
+                                addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
+                                addBM += "<p class=\"validateTips\"/>";
+                                addBM += "<form name=\"frmBm"+i+"\">";
+                                addBM += " <fieldset>";
+                                addBM += "  <label for=\"name\">Tên bookmark</label>";
+                                addBM += "  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />";
+                                addBM += " </fieldset>";
+                                addBM += " </form>";
+                                addBM += "</div>";
+
                                 // END Bookmark
                                 result += "<tr><td>";
                                 result += "<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
@@ -315,6 +338,7 @@
                                 result += "<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
 
+                              
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
@@ -334,7 +358,7 @@
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -377,7 +401,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
 
         <div id="wrap_left" align="center">
@@ -418,16 +442,8 @@
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
+                        <% out.print(addBM); %>
 
-                            <div id="addBookmark" title="Thêm bookmark">
-                                <p class="validateTips"/>
-                                <form>
-                                    <fieldset>
-                                        <label for="name">Tên bookmark</label>
-                                        <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
-                                    </fieldset>
-                                </form>
-                            </div>
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>

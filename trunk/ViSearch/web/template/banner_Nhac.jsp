@@ -83,7 +83,7 @@
                     <td>
                         <div style="margin:0; border:0; padding:0; float:left"><img src="images/magnifying_glass.gif" width="26" /></div>
                         <div id="" style="float:left">
-                            <input id="txtSearch" style="width:384px" type="text" value="<% if (strQuery != null) {
+                            <input id="txtSearch" style="width:384px" type="text" value="<% if (strQuery != null && FieldId.equals("8")==false) {
                                             out.print(strQuery);
                                         }%>"/>
                            <select id="field" style="width:96px">

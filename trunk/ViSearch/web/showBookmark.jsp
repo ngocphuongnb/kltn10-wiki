@@ -31,19 +31,10 @@
 
     </head>
     <%
-                String currentPage = "/showBookmark.jsp";
-                if (request.getQueryString() != null) {
-                    currentPage = "/GetBookmarkController?";
-                    currentPage += request.getQueryString().toString();
-                }
-                session.setAttribute("CurrentPage", currentPage);
-
-
                 List<Object[]> lstBm = null;
                 if (request.getAttribute("lstBm") != null) {
                     lstBm = (List<Object[]>) request.getAttribute("lstBm");
                 }
-
     %>
     <body>
 
@@ -91,7 +82,7 @@
                                                         String link = objBm[0].toString();
                                                         String BmName = objBm[1].toString();
 
-                                                        out.print("<tr><td align=\"left\" ><a href=\"" + link + "\">" + BmName + " </a></td></tr>");
+                                                        out.print("<tr><td align=\"left\" ><a href=\"" + link + "\">" + BmName + " </a>"+"       Xóa</td></tr>");
                                                     }
                                                 }
                                     %>

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.IOException;
@@ -18,13 +17,12 @@ import javax.servlet.http.HttpSession;
 import org.me.dao.BookMarkDAO;
 import org.me.dto.MemberDTO;
 
-
 /**
  *
  * @author tuandom
  */
 public class GetBookmarkController extends HttpServlet {
-   
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,10 +31,10 @@ public class GetBookmarkController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-         try {
+        try {
             HttpSession session = request.getSession();
             MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
 
@@ -45,8 +43,7 @@ public class GetBookmarkController extends HttpServlet {
 
 
             request.setAttribute("lstBm", lstBm);
-
-             request.setAttribute("forMark", 1);
+            request.setAttribute("forMark", "1");
         } finally {
             String url = "/showBookmark.jsp";
             ServletContext sc = getServletContext();
@@ -54,14 +51,15 @@ public class GetBookmarkController extends HttpServlet {
             rd.forward(request, response);
             out.close();
         }
-    } 
+    }
 
-     private List<Object[]> getBookmart(int memberId) {
+    private List<Object[]> getBookmart(int memberId) {
         BookMarkDAO myDAO = new BookMarkDAO();
         return myDAO.GetBookmark(memberId, "visearch");
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -70,9 +68,9 @@ public class GetBookmarkController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -83,7 +81,7 @@ public class GetBookmarkController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -95,5 +93,4 @@ public class GetBookmarkController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

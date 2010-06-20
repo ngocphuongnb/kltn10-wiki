@@ -37,7 +37,6 @@ import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
-import org.me.dto.FacetDateDTO;
 
 /**
  *
@@ -95,7 +94,8 @@ public class SearchMusicController extends HttpServlet {
 
                 switch (type) {
                     case 0:
-                        if (request.getParameter("sp") != null) {
+                        // F = 8: search theo id, de sCollation se bi loi
+                        if (FieldId.equals("8")==false && request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
                             if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
@@ -242,6 +242,8 @@ public class SearchMusicController extends HttpServlet {
                 query += "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2";
             } else if (fieldId.equals("7")) {
                 query += "category:(\"" + keySearch + "\")^3 || category:(" + keySearch + ")^2";
+            } else if (fieldId.equals("8")) {
+                query += "id:" + keySearch;
             } else {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                         + "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
@@ -266,7 +268,9 @@ public class SearchMusicController extends HttpServlet {
             } else if (fieldId.equals("5")) {
                 query += "lyric:(\"" + keySearch + "\")^6 || lyric:(" + keySearch + ")^4 || "
                         + "lyric_unsigned:(\"" + keySearch + "\")^5 || lyric_unsigned:(" + keySearch + ")^3";
-            } else {
+            } else if (fieldId.equals("8")) {
+                query += "id:" + keySearch;
+            } else { // 6
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                         + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ")^7 || "
                         + "album_index:(\"" + keySearch + "\")^7 || album_index:(" + keySearch + ")^5 || "
@@ -276,7 +280,8 @@ public class SearchMusicController extends HttpServlet {
                         + "singer_index:(\"" + keySearch + "\")^1.5 || singer_index:(" + keySearch + ")^1.3 || "
                         + "singer_index_unsigned:(\"" + keySearch + "\")^1.4 || singer_index_unsigned:(" + keySearch + ")^1.2 || "
                         + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")^1.3 || "
-                        + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2";
+                        + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2 || "
+                        + "id:" + keySearch;
             }
         }
         solrQuery.setQuery(query);

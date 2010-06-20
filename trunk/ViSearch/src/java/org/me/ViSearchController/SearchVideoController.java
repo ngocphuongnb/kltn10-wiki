@@ -32,7 +32,6 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -72,9 +71,8 @@ public class SearchVideoController extends HttpServlet {
         ArrayList<FacetDateDTO> listFacetDate = null;
         QueryResponse rsp;
         Map<String, Map<String, List<String>>> highLight;
-
+        String more = "";
         try {
-
 
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -83,6 +81,10 @@ public class SearchVideoController extends HttpServlet {
             server = SolrJConnection.getSolrServer("video");
             int start = (currentpage - 1) * pagesize;
 
+            if (request.getParameter("more") != null) {
+                more = request.getParameter("more");
+            }
+
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
                 sPaging += "type=" + type;
@@ -90,6 +92,7 @@ public class SearchVideoController extends HttpServlet {
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
+                
                 sPaging += "&KeySearch=" + keySearch;
 
                 switch (type) {
@@ -101,14 +104,13 @@ public class SearchVideoController extends HttpServlet {
                             }
                         }
 
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, more);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
@@ -139,8 +141,6 @@ public class SearchVideoController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
-
                         break;
                     default:
                         break;
@@ -175,16 +175,20 @@ public class SearchVideoController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
-           if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
+        if (more.equals("detail") == false) {
+            if (MyString.CheckSigned(keySearch)) {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
+            } else {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                        + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                        + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+            }
         } else {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
-                    + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+            query += "id:" + keySearch;
         }
 
         solrQuery.setQuery(query);
@@ -212,7 +216,7 @@ public class SearchVideoController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "+(";
-           if (MyString.CheckSigned(keySearch)) {
+        if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
@@ -221,7 +225,7 @@ public class SearchVideoController extends HttpServlet {
                     + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
         query += ")";
-       query += " +(" + facetName + ":" + facetValue + ")";
+        // query += " +(" + facetName + ":" + facetValue + ")";
 
         solrQuery.setQuery(query);
 
