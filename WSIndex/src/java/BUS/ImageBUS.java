@@ -35,4 +35,8 @@ public class ImageBUS {
         ImageDAO dao = new ImageDAO();
         dao.UpdateAfterIndex(list);
     }
+    public void UpdateAfterSaveImage(int id, String localImage) throws SQLException{
+        ImageDAO dao = new ImageDAO();
+        dao.UpdateAfterSaveImage(id, localImage);
+    }
 }

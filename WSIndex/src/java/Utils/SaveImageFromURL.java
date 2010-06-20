@@ -32,7 +32,9 @@ public class SaveImageFromURL {
             list = Ibus.getDataList(start, 100);
             for(int i=0; i < list.size(); i++){
                 String filename = Integer.toString(list.get(i).getId());
-                save(list.get(i).getUrl(), "C:\\"+filename+".jpg");
+                String localImage = "C:\\"+filename+".jpg";
+                save(list.get(i).getUrl(), localImage);
+                Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
             }
             start += 100;
         }
