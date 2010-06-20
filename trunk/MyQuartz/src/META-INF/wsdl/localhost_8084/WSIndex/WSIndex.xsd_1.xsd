@@ -28,6 +28,10 @@
 
 <xs:element name="IndexDataViwikiResponse" type="tns:IndexDataViwikiResponse" />
 
+<xs:element name="SaveImage" type="tns:SaveImage" />
+
+<xs:element name="SaveImageResponse" type="tns:SaveImageResponse" />
+
 <xs:element name="SyncDataImage" type="tns:SyncDataImage" />
 
 <xs:element name="SyncDataImageResponse" type="tns:SyncDataImageResponse" />
@@ -243,6 +247,19 @@
 </xs:complexType>
 
 <xs:complexType name="IndexDataViwikiResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SaveImage">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SaveImageResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>

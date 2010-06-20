@@ -82,6 +82,12 @@
 <message name="IndexDataAllResponse">
 <part name="parameters" element="tns:IndexDataAllResponse" />
 </message>
+<message name="SaveImage">
+<part name="parameters" element="tns:SaveImage" />
+</message>
+<message name="SaveImageResponse">
+<part name="parameters" element="tns:SaveImageResponse" />
+</message>
 <portType name="WSIndex">
 <operation name="SyncDataWiki">
 <input wsam:Action="http://Index/WSIndex/SyncDataWikiRequest" message="tns:SyncDataWiki" />
@@ -134,6 +140,10 @@
 <operation name="IndexDataAll">
 <input wsam:Action="http://Index/WSIndex/IndexDataAllRequest" message="tns:IndexDataAll" />
 <output wsam:Action="http://Index/WSIndex/IndexDataAllResponse" message="tns:IndexDataAllResponse" />
+</operation>
+<operation name="SaveImage">
+<input wsam:Action="http://Index/WSIndex/SaveImageRequest" message="tns:SaveImage" />
+<output wsam:Action="http://Index/WSIndex/SaveImageResponse" message="tns:SaveImageResponse" />
 </operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
@@ -247,6 +257,15 @@
 </output>
 </operation>
 <operation name="IndexDataAll">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="SaveImage">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
