@@ -683,8 +683,10 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("body", pagedto.getFulltext());
-            doc.addField("body_unsigned", RemoveSignVN(pagedto.getFulltext()));
+            String strBody = pagedto.getFulltext().replaceAll("\\<.*?\\>", "");
+
+            doc.addField("body", strBody);
+            doc.addField("body_unsigned", RemoveSignVN(strBody));
             docs.add(doc);
             listint.add(pagedto.getId());
         }

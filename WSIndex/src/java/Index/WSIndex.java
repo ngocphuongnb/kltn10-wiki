@@ -18,6 +18,7 @@ import BUS.VideoBUS;
 import DTO.ImageDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
+import Utils.SaveImageFromURL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -247,6 +248,26 @@ public class WSIndex {
             MySolrJ ms = new MySolrJ();
             try {
                 ms.IndexAll();
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "SaveImage")
+    public boolean SaveImage(@WebParam(name = "code")
+    String code, @WebParam(name = "dateRequest")
+    Calendar dateRequest){
+        AdminBUS bus = new AdminBUS();
+        if(bus.CheckSecurity(code, dateRequest.getTime()))
+        {
+            SaveImageFromURL ms = new SaveImageFromURL();
+            try {
+                ms.loadImage();
                 return true;
             } catch (Exception ex) {
                 return false;
