@@ -80,7 +80,7 @@ public class MySolrJ {
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            list = bus.getDataList(start, 100);
+            list = bus.getDataList(0, 100);
             lResult = ImportViwiki2Solr(list, "wikipedia");
             bus.UpdateAfterIndex(lResult);
             start += 100;
@@ -100,8 +100,9 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-            list = bus.getDataList(start, 100);
-            ImportRaoVat2Solr(list, "raovat");
+            list = bus.getDataList(0, 100);
+            lResult = ImportRaoVat2Solr(list, "raovat");
+            bus.UpdateAfterIndex(lResult);
             start += 100;
         }
     }
@@ -115,7 +116,7 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-            list = bus.getDataList(start, 100);
+            list = bus.getDataList(0, 100);
             lResult = ImportMusic2Solr(list, "music");
             bus.UpdateAfterIndex(lResult);
             start += 100;
@@ -131,7 +132,7 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-            list = bus.getDataList(start, 100);
+            list = bus.getDataList(0, 100);
             lResult = ImportImage2Solr(list, "image");
             bus.UpdateAfterIndex(lResult);
             start += 100;
@@ -147,7 +148,7 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
-            list = bus.getDataList(start, 100);
+            list = bus.getDataList(0, 100);
             lResult = ImportVideo2Solr(list, "video");
             bus.UpdateAfterIndex(lResult);
             start += 100;
@@ -163,7 +164,7 @@ public class MySolrJ {
         int start = 0;
         while (start < numOfRecords) {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-            list = bus.getDataList(start, 100);
+            list = bus.getDataList(0, 100);
             lResult = ImportNews2Solr(list, "news");
             bus.UpdateAfterIndex(lResult);
             start += 100;
@@ -181,12 +182,12 @@ public class MySolrJ {
         ViwikiPageBUS Wbus = new ViwikiPageBUS();
         int numOfRecords = Wbus.CountRecord();
         int start = 0;
-        ArrayList<Integer> lResult = new ArrayList<Integer>();
+        //ArrayList<Integer> lResult = new ArrayList<Integer>();
         while (start < 300) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
             list = Wbus.getDataList(start, 100);
-            lResult = ImportViwiki2SolrAll(list, "all");
-            Wbus.UpdateAfterIndex(lResult);
+            ImportViwiki2SolrAll(list, "all");
+            //Wbus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
@@ -200,8 +201,8 @@ public class MySolrJ {
         while (start < 200) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             list = Rbus.getDataList(start, 100);
-            lResult = ImportRaoVat2SolrAll(list, "all");
-            Rbus.UpdateAfterIndex(lResult);
+            ImportRaoVat2SolrAll(list, "all");
+            //Rbus.UpdateAfterIndex(lResult);
             start += 100;
         }
         ///////////////////////
@@ -213,8 +214,8 @@ public class MySolrJ {
         while (start < 200) {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
             list = Mbus.getDataList(start, 100);
-            lResult = ImportMusic2SolrAll(list, "all");
-            Mbus.UpdateAfterIndex(lResult);
+            ImportMusic2SolrAll(list, "all");
+            //Mbus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
@@ -227,8 +228,8 @@ public class MySolrJ {
         while (start < 100) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
             list = Ibus.getDataList(start, 100);
-            lResult = ImportImage2SolrAll(list, "all");
-            Ibus.UpdateAfterIndex(lResult);
+            ImportImage2SolrAll(list, "all");
+            //Ibus.UpdateAfterIndex(lResult);
             start += 100;
         }
         ///////////////////////
@@ -240,8 +241,8 @@ public class MySolrJ {
         while (start < 100) {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
             list = Vbus.getDataList(start, 100);
-            lResult = ImportVideo2SolrAll(list, "all");
-            Vbus.UpdateAfterIndex(lResult);
+            ImportVideo2SolrAll(list, "all");
+            //Vbus.UpdateAfterIndex(lResult);
             start += 100;
         }
         ///////////////////////
@@ -253,8 +254,8 @@ public class MySolrJ {
         while (start < 200) {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
             list = Nbus.getDataList(start, 100);
-            lResult = ImportNews2SolrAll(list, "all");
-            Nbus.UpdateAfterIndex(lResult);
+            ImportNews2SolrAll(list, "all");
+            //Nbus.UpdateAfterIndex(lResult);
             start += 100;
         }
     }
