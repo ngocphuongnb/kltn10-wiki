@@ -13,6 +13,7 @@ public class ImageDTO {
     private int _id;
      private String _category;
     private String _url;
+     private String _url_local;
     private String _website;
     private String _site_title;
     private String _site_body;
@@ -20,6 +21,14 @@ public class ImageDTO {
     private float _width;
     private float _height;
     private String _size;
+
+    public void setUrl_local(String _url_local) {
+        this._url_local = _url_local;
+    }
+
+    public String getUrl_local() {
+        return _url_local;
+    }
 
     public void setId(int _id) {
         this._id = _id;
