@@ -239,6 +239,7 @@
 	<field name="category_index" type="textMusic" indexed="true" stored="false" multiValued="true"/>
 	<field name="category_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="url" type="string" indexed="false" stored="true"/>
+	<field name="url_local" type="string" indexed="false" stored="true"/>
 	<field name="website" type="string" indexed="false" stored="true"/>
 	
 	<field name="site_title" type="textMusic" indexed="true" stored="true" multiValued="true" termVectors="true"/>
