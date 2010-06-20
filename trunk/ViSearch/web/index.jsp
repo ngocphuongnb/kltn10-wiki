@@ -93,7 +93,7 @@
                 url += "&KeySearch=" + encodeURIComponent(keysearch.val()),
                 url += "&id=" + id;
                 url += "&t=" + Math.random();
-                window.location = url;
+                window.open(url, "ViWiKi", "toolbar=yes, location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,copyhistory=yes, resizable=yes");
             }
 
             function MoreLikeThis(keysearch)
