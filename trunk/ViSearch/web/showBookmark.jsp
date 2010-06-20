@@ -10,14 +10,20 @@
 <%@ page import="java.util.*"%> 
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.List"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%
-            Object obj = request.getAttribute("forMark");
+            Object obj = request.getAttribute("lstBm");
             if (obj == null) {
                 String url = "/GetBookmarkController?";
                 getServletContext().getRequestDispatcher(url).forward(request, response);
             }
+
+            List<Object[]> lstBm = null;
+            if (request.getAttribute("lstBm") != null) {
+                lstBm = (List<Object[]>) request.getAttribute("lstBm");
+            }
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,15 +33,17 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link href="style.css"rel="stylesheet" type="text/css" />
-
+        <script type="text/javascript">
+            function DeleteBM(id){
+                alert(id);
+                var url = "DeleteBookmark?id="+id;
+                window.location = url;
+            }
+            
+        </script>
 
     </head>
-    <%
-                List<Object[]> lstBm = null;
-                if (request.getAttribute("lstBm") != null) {
-                    lstBm = (List<Object[]>) request.getAttribute("lstBm");
-                }
-    %>
+
     <body>
 
         <div id="wrap_left" align="center">
@@ -53,8 +61,8 @@
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <table id="Table_01" width="975" height="130" border="0" cellpadding="0" cellspacing="0">
-                                            <tr><td><img src="images/banner-register.png" /></td></tr>
+                                        <table align=""  id="Table_01" width="975" height="130" border="0" cellpadding="0" cellspacing="0">
+                                            <tr><td><img alt="" id="" src="images/banner-register.png" /></td></tr>
                                         </table>
                                         <!-- end banner      !-->
                                     </td>
@@ -72,17 +80,19 @@
                                 <table width="500" border="0" cellspacing="0" cellpadding="0" >
 
 
-
-
                                     <%
                                                 if (lstBm != null) {
                                                     for (int i = 0; i < lstBm.size(); i++) {
                                                         Object[] objBm = new Object[2];
                                                         objBm = lstBm.get(i);
-                                                        String link = objBm[0].toString();
-                                                        String BmName = objBm[1].toString();
+                                                        String id = objBm[0].toString();
+                                                        String link = objBm[1].toString();
+                                                        String BmName = objBm[2].toString();
 
-                                                        out.print("<tr><td align=\"left\" ><a href=\"" + link + "\">" + BmName + " </a>"+"       Xóa</td></tr>");
+                                                        out.print("<tr onmouseover=\"this.className='tableBM_on'\"  onmouseout=\"this.className='tableBM_off'\"  \">");
+                                                        out.print("<td align=\"left\" ><a href=\"" + link + "\">" + BmName + "</a></td>");
+                                                        out.print("<td align=\"right\" ><input type=\"button\" value=\"Xóa\" onclick=\"DeleteBM('" + id + "')\"/></td>");
+                                                        out.print("</tr>");
                                                     }
                                                 }
                                     %>

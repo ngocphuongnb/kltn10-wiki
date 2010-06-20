@@ -39,6 +39,24 @@ public class BookMarkDAO {
         }
         return result;
     }
+    public boolean DeleteBookmark(int id, String database) {
+        boolean result = true;
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL Delete_Bookmark(?)}");
+            cs.setInt(1, id);
+
+            int n = cs.executeUpdate();
+            if (n == 0) {
+                result = false;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
 
     public List<Object[]> GetBookmark(int memberid, String database) {
         Connection cn = DataProvider.getConnection(database);
@@ -51,7 +69,7 @@ public class BookMarkDAO {
             Object[] bmObj = new Object[2];
             List<Object[]> lstBm = new ArrayList<Object[]>();
             while (rs.next()) {
-                bmObj = new Object[2];
+                bmObj = new Object[3];
 
                 String bookmark_name = rs.getString("bookmark_name");
                 String searchtype = rs.getString("searchtype");
@@ -71,8 +89,9 @@ public class BookMarkDAO {
                     link = "DetailNewsController?id=" + docid + "&KeySearch=";
                 }
 
-                bmObj[0] = link;
-                bmObj[1] = bookmark_name;
+                bmObj[0] = rs.getString("id");
+                bmObj[1] = link;
+                bmObj[2] = bookmark_name;
 
                 lstBm.add(bmObj);
             }
