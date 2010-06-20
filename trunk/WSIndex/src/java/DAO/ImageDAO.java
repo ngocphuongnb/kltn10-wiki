@@ -114,4 +114,16 @@ public class ImageDAO {
         cs.close();
         cn.close();
     }
+
+    public void UpdateAfterSaveImage(int id, String localImage) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call Update_Image_After_Save(?, ?)}");
+
+        cs.setInt(1, id);
+        cs.setString(2, localImage);
+        cs.executeUpdate();
+
+        cs.close();
+    }
 }
