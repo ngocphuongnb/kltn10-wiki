@@ -17,4 +17,8 @@ public class BookMarkBUS {
         BookMarkDAO bookMarkDAO = new BookMarkDAO();
         return bookMarkDAO.InsertBookmark(bookmark, database);
     }
+    public boolean DeleteBookmark(int id, String database) {
+        BookMarkDAO bookMarkDAO = new BookMarkDAO();
+        return bookMarkDAO.DeleteBookmark(id, database);
+    }
 }

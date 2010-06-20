@@ -2,28 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.me.dao.BookMarkDAO;
-import org.me.dto.MemberDTO;
+import org.me.bus.BookMarkBUS;
 
 /**
  *
  * @author tuandom
  */
-public class GetBookmarkController extends HttpServlet {
-   
+public class DeleteBookmark extends HttpServlet {
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -32,31 +26,18 @@ public class GetBookmarkController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-           HttpSession session = request.getSession();
-            MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
-
-            // Data wikiBookMark
-            List<Object[]> lstBm = getBookmart(memdto.getId());
-
-            request.setAttribute("lstBm", lstBm);
-            String url = "/showBookmark.jsp";
-            ServletContext sc = getServletContext();
-            RequestDispatcher rd = sc.getRequestDispatcher(url);
-            rd.forward(request, response);
-            out.close();
-        } finally { 
+            int id = Integer.parseInt(request.getParameter("id").toString());
+            BookMarkBUS bmbus = new BookMarkBUS();
+            bmbus.DeleteBookmark(id, "visearch");
+        } finally {
             out.close();
         }
-    } 
-
-     private List<Object[]> getBookmart(int memberId) {
-        BookMarkDAO myDAO = new BookMarkDAO();
-        return myDAO.GetBookmark(memberId, "visearch");
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
@@ -67,9 +48,9 @@ public class GetBookmarkController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -80,7 +61,7 @@ public class GetBookmarkController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -92,5 +73,4 @@ public class GetBookmarkController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
