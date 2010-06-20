@@ -62,8 +62,8 @@ public class VideoDAO {
         cn.close();
         return iCount;
     }
-     public void SyncDataVideo(ArrayList<VideoDTO> listPage) throws SQLException
-    {
+
+    public void SyncDataVideo(ArrayList<VideoDTO> listPage) throws SQLException {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataVideo(?, ?, ?, ?, ?)}");
@@ -74,6 +74,18 @@ public class VideoDAO {
             cs.setString(3, videoDTO.getCategory());
             cs.setString(4, videoDTO.getUrl());
             cs.setString(5, videoDTO.getDuration());
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_video(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
             cs.executeUpdate();
         }
         cs.close();

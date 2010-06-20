@@ -8,7 +8,6 @@ import DTO.ViwikiPageDTO;
 import Utils.MySolrJ;
 import com.mysql.jdbc.CallableStatement;
 import info.bliki.wiki.model.WikiModel;
-import java.awt.Point;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

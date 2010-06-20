@@ -30,4 +30,9 @@ public class MusicBUS {
         MusicDAO dao = new MusicDAO();
         dao.SyncDataMusic(listPage);
     }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        MusicDAO dao = new MusicDAO();
+        dao.UpdateAfterIndex(list);
+    }
 }

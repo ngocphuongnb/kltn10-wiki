@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DAO;
 
 import DTO.ImageDTO;
@@ -14,6 +13,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 /**
  *
  * @author tuandom
@@ -35,7 +35,7 @@ public class ImageDAO {
 //        cn.close();
 //        return iCount;
 //    }
-     public ArrayList<ImageDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
+    public ArrayList<ImageDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
@@ -56,7 +56,7 @@ public class ImageDAO {
             page.setWidth(rs.getFloat("Width"));
             page.setHeight(rs.getFloat("Height"));
             page.setSize(rs.getString("Size"));
-            
+
             list.add(page);
         }
 
@@ -64,7 +64,8 @@ public class ImageDAO {
         cn.close();
         return list;
     }
-      public int CountRecord() throws SQLException {
+
+    public int CountRecord() throws SQLException {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
@@ -79,8 +80,8 @@ public class ImageDAO {
         cn.close();
         return iCount;
     }
-      public void SyncDataImage(ArrayList<ImageDTO> listPage) throws SQLException
-    {
+
+    public void SyncDataImage(ArrayList<ImageDTO> listPage) throws SQLException {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataImage(?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
@@ -102,4 +103,15 @@ public class ImageDAO {
         cn.close();
     }
 
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_image(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
+    }
 }
