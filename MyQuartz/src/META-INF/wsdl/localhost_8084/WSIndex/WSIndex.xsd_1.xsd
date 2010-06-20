@@ -217,6 +217,7 @@
 <xs:element name="site_title" type="xs:string" minOccurs="0" />
 <xs:element name="size" type="xs:string" minOccurs="0" />
 <xs:element name="url" type="xs:string" minOccurs="0" />
+<xs:element name="url_local" type="xs:string" minOccurs="0" />
 <xs:element name="website" type="xs:string" minOccurs="0" />
 <xs:element name="width" type="xs:float" />
 </xs:sequence>
