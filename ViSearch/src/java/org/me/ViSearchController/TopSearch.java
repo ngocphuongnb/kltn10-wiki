@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.me.bus.TrackingBUS;
 
 /**
@@ -47,7 +46,13 @@ public class TopSearch extends HttpServlet {
                         sController = "SearchMusicController";
                         break;
                     case 4:
+                        sController = "SearchImageController";
+                        break;
+                    case 5:
                         sController = "SearchVideoController";
+                        break;
+                    case 6:
+                        sController = "SearchNewsController";
                         break;
                     default:
                         break;
