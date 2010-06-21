@@ -412,7 +412,7 @@ public class MySolrJ {
                 doc.addField("comment_unsigned", RemoveSignVN(pagedto.getComment()));
                 doc.addField("ip", pagedto.getIp());
                 doc.addField("restrictions", pagedto.getRestrictions());
-                doc.addField("wk_text_raw", pagedto.getText().trim());
+                doc.addField("wk_text_raw", pagedto.getText());
                 doc.addField("wk_text", pagedto.getText().replaceAll("\\<.*?\\>", ""));
                 doc.addField("wk_text_unsigned", RemoveSignVN(pagedto.getText().replaceAll("\\<.*?\\>", "")));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -453,7 +453,7 @@ public class MySolrJ {
 
             doc.addField("category", "Wikipedia");
 
-            doc.addField("body", pagedto.getText());
+            doc.addField("body", pagedto.getText().replaceAll("\\<.*?\\>", ""));
             doc.addField("body_unsigned", RemoveSignVN(pagedto.getText()));
             docs.add(doc);
             listint.add(pagedto.getId());
