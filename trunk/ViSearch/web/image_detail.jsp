@@ -69,14 +69,13 @@
                             bValid = checkLength(name);
                             if(bValid)
                             {
-
                                 var docID = $("#hdIdValue").attr("value");
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#nameBookmark").attr("value");
-                                alert(keySearch);
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=4";
+                                alert("Đã thêm vào Bookmark");
                                 $("#Bookmark").load(encodeURI(Url));
                                 $(this).dialog('close');
                             }
@@ -96,7 +95,7 @@
                 $("#tbTopSearch").load("TopSearch?SearchType=4");
             });
         </script>
-        <script language="javascript">
+        <script type="" language="javascript">
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -228,7 +227,6 @@
                                 result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
-
                                 
                                 
                                 result += "<tr><td>&nbsp;</td></tr>";
@@ -271,7 +269,6 @@
                             facet += "</table>";
                         }
                     }
-
 
                     // End get Facet
         %>
@@ -334,7 +331,7 @@
 
                              <div id="addBookmark" title="Thêm bookmark">
                                 <p class="validateTips"/>
-                                <form>
+                                <form action="">
                                     <fieldset>
                                         <label for="name">Tên bookmark</label>
                                         <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />

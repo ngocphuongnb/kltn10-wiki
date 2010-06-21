@@ -26,7 +26,7 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                //$("#tbTopSearch").load("TopSearch?SearchType=2");
+                $("#tbTopSearch").load("TopSearch?SearchType=4");
             });
         </script>
         <script language="javascript">

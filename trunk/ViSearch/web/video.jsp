@@ -210,7 +210,6 @@
                     var Url = "TrackingController?KeySearch=" + keySearch;
                     Url += "&DocID=" + docID;
                     Url += "&searchType=5";
-                    alert(Url);
                     $("#Tracking").load(encodeURI(Url));
                 });
             });
