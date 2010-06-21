@@ -29,7 +29,7 @@
                 $("#tbTopSearch").load("TopSearch?SearchType=6");
             });
         </script>
-        <script language="javascript">
+        <script type="" language="javascript">
             $.ajax({
                 type: "POST",
                 url: "TopSearch",
@@ -71,7 +71,7 @@
                 document.getElementById("divPVTC").className="display";
             }
         </script>
-        <script language="javascript">
+        <script type="" language="javascript">
             function Sort(type){
                 var sortedtype = document.getElementById('slSortedType').value;
                 //alert(sortedtype);
@@ -132,7 +132,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchRaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchNewsController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
