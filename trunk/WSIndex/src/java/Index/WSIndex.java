@@ -57,7 +57,6 @@ public class WSIndex {
         }
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(WIKI);
             mSolr.IndexViwiki();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +95,6 @@ public class WSIndex {
         }
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(RAOVAT);
             mSolr.IndexRaoVat();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,7 +133,6 @@ public class WSIndex {
         }
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(MUSIC);
             mSolr.IndexMusic();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,9 +170,15 @@ public class WSIndex {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        SaveImageFromURL ms = new SaveImageFromURL();
+        try {
+            // save img ve local va update trong mysql
+            ms.loadImage();
+        } catch (Exception ex) {
+        }
+
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(IMAGE);
             mSolr.IndexImage();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -215,7 +218,6 @@ public class WSIndex {
 
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(VIDEO);
             mSolr.IndexVideo();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -255,7 +257,6 @@ public class WSIndex {
 
         MySolrJ mSolr = new MySolrJ();
         try {
-            mSolr.IndexAll(NEWS);
             mSolr.IndexNews();
         } catch (Exception ex) {
             Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
@@ -289,7 +290,7 @@ public class WSIndex {
         if (bus.CheckSecurity(code, dateRequest.getTime())) {
             MySolrJ ms = new MySolrJ();
             try {
-                ms.IndexAll(ALL);
+                //ms.IndexAll(ALL);
                 ms.IndexImage();
                 ms.IndexMusic();
                 ms.IndexNews();
@@ -303,16 +304,14 @@ public class WSIndex {
         }
         return false;
     }
+
     /**
      * Web service operation
      */
     @WebMethod(operationName = "SaveImage")
-    public boolean SaveImage(@WebParam(name = "code")
-    String code, @WebParam(name = "dateRequest")
-    Calendar dateRequest){
+    public boolean SaveImage(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
-        if(bus.CheckSecurity(code, dateRequest.getTime()))
-        {
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
             SaveImageFromURL ms = new SaveImageFromURL();
             try {
                 // save img ve local va update trong mysql
