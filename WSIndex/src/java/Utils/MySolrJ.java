@@ -82,6 +82,7 @@ public class MySolrJ {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportViwiki2Solr(list, "wikipedia");
+            ImportViwiki2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -102,6 +103,7 @@ public class MySolrJ {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportRaoVat2Solr(list, "raovat");
+            ImportRaoVat2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -118,6 +120,7 @@ public class MySolrJ {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportMusic2Solr(list, "music");
+            ImportMusic2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -134,6 +137,7 @@ public class MySolrJ {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportImage2Solr(list, "image");
+            ImportImage2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -150,6 +154,7 @@ public class MySolrJ {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportVideo2Solr(list, "video");
+            ImportVideo2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -166,147 +171,148 @@ public class MySolrJ {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportNews2Solr(list, "news");
+            ImportNews2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
     }
 
-    public void IndexWiki2All() {
-        try {
-            ViwikiPageBUS Wbus = new ViwikiPageBUS();
-            int numOfRecords = Wbus.CountRecord();
-            int start = 0;
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            while (start < numOfRecords) {
-                ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-                list = Wbus.getDataList(start, 100);
-                ImportViwiki2SolrAll(list, "all");
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexWiki2All() {
+//        try {
+//            ViwikiPageBUS Wbus = new ViwikiPageBUS();
+//            int numOfRecords = Wbus.CountRecord();
+//            int start = 0;
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            while (start < numOfRecords) {
+//                ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
+//                list = Wbus.getDataList(start, 100);
+//                ImportViwiki2SolrAll(list, "all");
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
 
-    public void IndexRaoVat2All() {
-        try {
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            RaoVatBUS Rbus = new RaoVatBUS();
-            int numOfRecords = Rbus.CountRecord();
-            int start = 0;
-            while (start < numOfRecords) {
-                ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-                list = Rbus.getDataList(start, 100);
-                ImportRaoVat2SolrAll(list, "all");
-                //Rbus.UpdateAfterIndex(lResult);
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexRaoVat2All() {
+//        try {
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            RaoVatBUS Rbus = new RaoVatBUS();
+//            int numOfRecords = Rbus.CountRecord();
+//            int start = 0;
+//            while (start < numOfRecords) {
+//                ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
+//                list = Rbus.getDataList(start, 100);
+//                ImportRaoVat2SolrAll(list, "all");
+//                //Rbus.UpdateAfterIndex(lResult);
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
 
-    public void IndexMusic2All() {
-        try {
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            MusicBUS Mbus = new MusicBUS();
-            int numOfRecords = Mbus.CountRecord();
-            int start = 0;
-            while (start < numOfRecords) {
-                ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-                list = Mbus.getDataList(start, 100);
-                ImportMusic2SolrAll(list, "all");
-                //Mbus.UpdateAfterIndex(lResult);
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexMusic2All() {
+//        try {
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            MusicBUS Mbus = new MusicBUS();
+//            int numOfRecords = Mbus.CountRecord();
+//            int start = 0;
+//            while (start < numOfRecords) {
+//                ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
+//                list = Mbus.getDataList(start, 100);
+//                ImportMusic2SolrAll(list, "all");
+//                //Mbus.UpdateAfterIndex(lResult);
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
 
-    public void IndexVideo2All() {
-        try {
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            VideoBUS Vbus = new VideoBUS();
-            int numOfRecords = Vbus.CountRecord();
-            int start = 0;
-            while (start < numOfRecords) {
-                ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
-                list = Vbus.getDataList(start, 100);
-                ImportVideo2SolrAll(list, "all");
-                //Vbus.UpdateAfterIndex(lResult);
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexVideo2All() {
+//        try {
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            VideoBUS Vbus = new VideoBUS();
+//            int numOfRecords = Vbus.CountRecord();
+//            int start = 0;
+//            while (start < numOfRecords) {
+//                ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
+//                list = Vbus.getDataList(start, 100);
+//                ImportVideo2SolrAll(list, "all");
+//                //Vbus.UpdateAfterIndex(lResult);
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
 
-    public void IndexImage2All() {
-        try {
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            ImageBUS Ibus = new ImageBUS();
-            int numOfRecords = Ibus.CountRecord();
-            int start = 0;
-            while (start < numOfRecords) {
-                ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-                list = Ibus.getDataList(start, 100);
-                ImportImage2SolrAll(list, "all");
-                //Ibus.UpdateAfterIndex(lResult);
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexImage2All() {
+//        try {
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            ImageBUS Ibus = new ImageBUS();
+//            int numOfRecords = Ibus.CountRecord();
+//            int start = 0;
+//            while (start < numOfRecords) {
+//                ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
+//                list = Ibus.getDataList(start, 100);
+//                ImportImage2SolrAll(list, "all");
+//                //Ibus.UpdateAfterIndex(lResult);
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
+//
+//    public void IndexNews2All() {
+//        try {
+//            //ArrayList<Integer> lResult = new ArrayList<Integer>();
+//            NewsBUS Nbus = new NewsBUS();
+//            int numOfRecords = Nbus.CountRecord();
+//            int start = 0;
+//            while (start < numOfRecords) {
+//                ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
+//                list = Nbus.getDataList(start, 100);
+//                ImportNews2SolrAll(list, "all");
+//                //Nbus.UpdateAfterIndex(lResult);
+//                start += 100;
+//            }
+//        } catch (Exception ex) {
+//        }
+//    }
 
-    public void IndexNews2All() {
-        try {
-            //ArrayList<Integer> lResult = new ArrayList<Integer>();
-            NewsBUS Nbus = new NewsBUS();
-            int numOfRecords = Nbus.CountRecord();
-            int start = 0;
-            while (start < numOfRecords) {
-                ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-                list = Nbus.getDataList(start, 100);
-                ImportNews2SolrAll(list, "all");
-                //Nbus.UpdateAfterIndex(lResult);
-                start += 100;
-            }
-        } catch (Exception ex) {
-        }
-    }
+//    public void IndexAll(int i) {
+//        switch (i) {
+//            case 1:
+//                IndexWiki2All();
+//                break;
+//            case 2:
+//                IndexRaoVat2All();
+//                break;
+//            case 3:
+//                IndexMusic2All();
+//                break;
+//            case 4:
+//                IndexImage2All();
+//                break;
+//            case 5:
+//                IndexVideo2All();
+//                break;
+//            case 6:
+//                IndexNews2All();
+//                break;
+//            case 7:
+//                IndexImage2All();
+//                IndexMusic2All();
+//                IndexNews2All();
+//                IndexRaoVat2All();
+//                IndexVideo2All();
+//                IndexWiki2All();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
-    public void IndexAll(int i) {
-        switch (i) {
-            case 1:
-                IndexWiki2All();
-                break;
-            case 2:
-                IndexRaoVat2All();
-                break;
-            case 3:
-                IndexMusic2All();
-                break;
-            case 4:
-                IndexImage2All();
-                break;
-            case 5:
-                IndexVideo2All();
-                break;
-            case 6:
-                IndexNews2All();
-                break;
-            case 7:
-                IndexImage2All();
-                IndexMusic2All();
-                IndexNews2All();
-                IndexRaoVat2All();
-                IndexVideo2All();
-                IndexWiki2All();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public ArrayList<Integer> ImportMusic2Solr(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportMusic2Solr(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         MusicDTO pagedto = new MusicDTO();
@@ -356,7 +362,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportMusic2SolrAll(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportMusic2SolrAll(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         MusicDTO pagedto = new MusicDTO();
@@ -462,7 +468,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportRaoVat2Solr(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportRaoVat2Solr(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         RaoVatDTO pagedto = new RaoVatDTO();
@@ -502,7 +508,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportRaoVat2SolrAll(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportRaoVat2SolrAll(ArrayList<RaoVatDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         RaoVatDTO pagedto = new RaoVatDTO();
@@ -536,7 +542,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportVideo2Solr(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportVideo2Solr(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         VideoDTO pagedto = new VideoDTO();
@@ -570,7 +576,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportVideo2SolrAll(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportVideo2SolrAll(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         VideoDTO pagedto = new VideoDTO();
@@ -601,7 +607,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportImage2Solr(ArrayList<ImageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportImage2Solr(ArrayList<ImageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         ImageDTO pagedto = new ImageDTO();
@@ -641,7 +647,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportImage2SolrAll(ArrayList<ImageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportImage2SolrAll(ArrayList<ImageDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         ImageDTO pagedto = new ImageDTO();
@@ -673,7 +679,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportNews2Solr(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportNews2Solr(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         NewsDTO pagedto = new NewsDTO();
@@ -714,7 +720,7 @@ public class MySolrJ {
         return listint;
     }
 
-    public ArrayList<Integer> ImportNews2SolrAll(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+    private ArrayList<Integer> ImportNews2SolrAll(ArrayList<NewsDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
         NewsDTO pagedto = new NewsDTO();
