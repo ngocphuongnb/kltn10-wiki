@@ -11,7 +11,7 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.List"%>
 <%
-            Object obj = request.getAttribute("forMark");
+            Object obj = request.getAttribute("lstBm");
             if (obj == null) {
                 String url = "/GetBookmarkController?";
                 getServletContext().getRequestDispatcher(url).forward(request, response);
@@ -28,6 +28,16 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link href="style.css"rel="stylesheet" type="text/css" />
 
+        <script type="text/javascript">
+            function DeleteBM(id){
+                var url = "DeleteBookmark?id="+id;
+                window.location = url;
+            }
+            function onmouseover(nama){
+                nama.className='tableBM_on';
+                return true;
+            }
+        </script>
 
     </head>
     <%
@@ -79,10 +89,14 @@
                                                     for (int i = 0; i < lstBm.size(); i++) {
                                                         Object[] objBm = new Object[2];
                                                         objBm = lstBm.get(i);
-                                                        String link = objBm[0].toString();
-                                                        String BmName = objBm[1].toString();
+                                                        String id = objBm[0].toString();
+                                                        String link = objBm[1].toString();
+                                                        String BmName = objBm[2].toString();
 
-                                                        out.print("<tr><td align=\"left\" ><a href=\"" + link + "\">" + BmName + " </a>"+"       Xóa</td></tr>");
+                                                        out.print("<tr class=\"trBM\" onmouseover=\"onmouseover(this)\"  onmouseout=\"onmouseout(this)\"  \">");
+                                                        out.print("<td align=\"left\" ><a href=\"" + link + "\">" + BmName + "</a></td>");
+                                                        out.print("<td align=\"right\" ><input type=\"button\" value=\"Xóa\" onclick=\"DeleteBM('" + id + "')\"/></td>");
+                                                        out.print("</tr>");
                                                     }
                                                 }
                                     %>

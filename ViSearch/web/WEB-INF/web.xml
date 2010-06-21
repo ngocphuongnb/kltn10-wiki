@@ -84,6 +84,10 @@
         <servlet-name>TrackingController</servlet-name>
         <servlet-class>org.me.ViSearchController.TrackingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteBookmark</servlet-name>
+        <servlet-class>org.me.ViSearchController.DeleteBookmark</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -167,6 +171,10 @@
     <servlet-mapping>
         <servlet-name>TrackingController</servlet-name>
         <url-pattern>/TrackingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookmark</servlet-name>
+        <url-pattern>/DeleteBookmark</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
