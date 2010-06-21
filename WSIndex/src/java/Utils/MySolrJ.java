@@ -454,7 +454,7 @@ public class MySolrJ {
             doc.addField("category", "Wikipedia");
 
             doc.addField("body", pagedto.getText().replaceAll("\\<.*?\\>", ""));
-            doc.addField("body_unsigned", RemoveSignVN(pagedto.getText()));
+            doc.addField("body_unsigned", RemoveSignVN(pagedto.getText().replaceAll("\\<.*?\\>", "")));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
