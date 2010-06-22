@@ -306,7 +306,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
+                           <span><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
