@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.BufferedReader;
@@ -45,8 +44,10 @@ import org.me.Utils.Paging;
  * @author tuandom
  */
 public class SearchNewsController extends HttpServlet {
+
     SolrServer server;
-    /** 
+
+    /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
@@ -125,7 +126,7 @@ public class SearchNewsController extends HttpServlet {
                                 String title2 = docs.get(j).getFirstValue("title").toString();
                                 if (title1.trim().equals(title2.trim())) {
                                     Date date1 = (Date) docs.get(i).getFieldValue("created");
-                                        Date date2 = (Date) docs.get(j).getFieldValue("created");
+                                    Date date2 = (Date) docs.get(j).getFieldValue("created");
                                     if (date1.compareTo(date2) >= 0) {
                                         docs.remove(j);
                                         j--;
@@ -146,6 +147,7 @@ public class SearchNewsController extends HttpServlet {
                         //listFacet = rsp.getFacetFields();
                         break;
                     case 2:
+                    case 4:
                         String qf = "";
                         String qv = "";
                         if (request.getParameter("qf") != null) {
@@ -253,7 +255,7 @@ public class SearchNewsController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-           if (MyString.CheckSigned(keySearch)) {
+        if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
@@ -273,10 +275,8 @@ public class SearchNewsController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-//        solrQuery.addFacetField("site");
-//        //solrQuery.addFacetField("location");
-//        solrQuery.setFacetLimit(10);
-//        solrQuery.setFacetMinCount(1);
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
         // End Facet
 
 
@@ -292,12 +292,11 @@ public class SearchNewsController extends HttpServlet {
         return rsp;
     }
 
-
     QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "+(";
-           if (MyString.CheckSigned(keySearch)) {
+        if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
@@ -307,17 +306,19 @@ public class SearchNewsController extends HttpServlet {
         }
 
         query += ") ";
-        if(type==2) // seach chuoi facet, can ""
+
+        if (type == 2) // seach chuoi facet, can ""
+        {
             query += " +(" + queryField + ":\"" + queryValue + "\")";
-        else  // query ngay thang, ko can ""
-         query += " +(" + queryField + ":" + queryValue + ")";
+        } else // type = 4: query ngay thang, ko can ""
+        {
+            query += " +(" + queryField + ":" + queryValue + ")";
+        }
         solrQuery.setQuery(query);
 
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-//        solrQuery.addFacetField("site");
-        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -341,10 +342,10 @@ public class SearchNewsController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-       // query.addFacetField("site");
+        // query.addFacetField("site");
         //query.addFacetField("location");
-       // query.setFacetLimit(10);
-       // query.setFacetMinCount(1);
+        // query.setFacetLimit(10);
+        // query.setFacetMinCount(1);
         // End Facet
 
         query.setQueryType("/" + MoreLikeThisParams.MLT);
@@ -354,7 +355,7 @@ public class SearchNewsController extends HttpServlet {
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
         if (sortedType == 1) {
             query.set(MoreLikeThisParams.BOOST, true);
-           // query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+            // query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
         }
 
         query.setQuery("title:" + MyString.cleanQueryTerm(q));
@@ -434,9 +435,9 @@ public class SearchNewsController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -447,7 +448,7 @@ public class SearchNewsController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -459,5 +460,4 @@ public class SearchNewsController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

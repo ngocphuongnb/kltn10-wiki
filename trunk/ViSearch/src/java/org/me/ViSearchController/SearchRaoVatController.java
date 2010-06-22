@@ -97,7 +97,7 @@ public class SearchRaoVatController extends HttpServlet {
             }
 
             if (request.getParameter("KeySearch") != null) {
-                keySearch = URLDecoder.decode(request.getParameter("KeySearch"),"UTF-8");
+                keySearch = URLDecoder.decode(request.getParameter("KeySearch"), "UTF-8");
                 sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
                 QueryResponse rsp;
                 Map<String, Map<String, List<String>>> highLight;
@@ -156,7 +156,7 @@ public class SearchRaoVatController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
-                    case 2:
+                    case 2:case 4:
                         String facetName = "";
                         String facetValue = "";
                         if (request.getParameter("FacetName") != null) {
@@ -165,7 +165,7 @@ public class SearchRaoVatController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -191,7 +191,7 @@ public class SearchRaoVatController extends HttpServlet {
                             facetValue = createFacetValue(startDate, endDate);
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -371,13 +371,20 @@ public class SearchRaoVatController extends HttpServlet {
 
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int type) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         if (facetValue.equals("l")) {
             //   facetValue="["
         }
         if (!facetName.equals("") && facetName != null) {
-             keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
+            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) ";
+            if (type == 2) // seach chuoi facet, can ""
+            {
+                keySearch += " +(" + facetName + ":\"" + facetValue + "\")";
+            } else if (type == 4)// type = 4: query ngay thang, ko can ""
+            {
+                keySearch += " +(" + facetName + ":" + facetValue + ")";
+            }
             //keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + (" + facetName + ":" + facetValue + ")";
         }
         solrQuery.setQuery(keySearch);

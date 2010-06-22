@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -113,7 +112,7 @@ public class SearchMusicController extends HttpServlet {
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
-                        docs = rsp.getResults();
+                       // docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
                             request.setAttribute("HighLight", highLight);
