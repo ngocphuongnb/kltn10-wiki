@@ -383,8 +383,9 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
+
+
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
-        //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
 
         // Facet
@@ -407,14 +408,12 @@ public class SearchMusicController extends HttpServlet {
         query.setRows(pagesize);
         query.setHighlight(true);
         query.addHighlightField("title");
-        //query.addHighlightField("rv_body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
         QueryResponse rsp = server.query(query);
         return rsp;
     }
-
     String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
         String result = "";
         HttpClient client = new HttpClient();
