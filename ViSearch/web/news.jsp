@@ -254,15 +254,15 @@
 
                     // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";

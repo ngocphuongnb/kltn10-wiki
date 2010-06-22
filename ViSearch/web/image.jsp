@@ -113,7 +113,11 @@
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String url = (listdocs.get(i).getFieldValue("url")).toString();
+                                String url="";
+                                if(listdocs.get(i).getFieldValue("url_local")!=null)
+                                    url = "file:///"+(listdocs.get(i).getFieldValue("url_local")).toString();
+                                else
+                                    url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
                                 String size = (listdocs.get(i).getFieldValue("size")).toString();
@@ -136,7 +140,7 @@
                               //  result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td width=\"150\" height=\"200\" valign=\"bottom\"><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";
+                                result += "<td width=\"150\" height=\"200\" valign=\"bottom\"><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + "file:///C:/1.jpg" + "\" width=\"150\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";

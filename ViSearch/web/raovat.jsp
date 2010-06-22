@@ -263,15 +263,15 @@
 
                     // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
@@ -330,7 +330,7 @@
                                     $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
                                     $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
                                 });
-                            </script>`
+                            </script>
                         <td width="627" rowspan="2" valign="top">
                             <table>
 
