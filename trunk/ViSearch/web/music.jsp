@@ -19,7 +19,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Music - Wikipedia</title>
+        <title>Music - ViSearch</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
@@ -134,7 +134,7 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchMusicController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchMusicController?type=0&sp=1&f=6&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
@@ -161,7 +161,7 @@
                                 }
 
                                 result += "<tr>";
-                                result += "<td><b><a href=\"DetailMusicController?id=" + id + "\">" + title_hl + "</a></b></td>";
+                                result += "<td><b>" + title_hl + "</b></td>";
                                 result += "</tr>";
 
 
@@ -366,7 +366,7 @@
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Facet</div>";
+                        facet += "<div class=\"mnu\">Bộ lọc</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
