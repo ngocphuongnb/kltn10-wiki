@@ -297,7 +297,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <span style="padding-left: 300px ; font-size:13px;"><%@include file="template/sortedtype.jsp"%></span>
+                             <span><%@include file="template/sortedtype.jsp"%></span>
                         </td>
                     </tr>
                      <script type="text/javascript">
