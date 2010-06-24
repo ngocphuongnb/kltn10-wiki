@@ -43,7 +43,6 @@
     </head>
 
     <body>
-
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -79,8 +78,9 @@
                                     <tr><td align="left">Tên đăng nhập</td></tr>
                                     <tr><td  align="left" class="required"><input id="txtusername" type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idUsername" id="idUsername" />(*)</td>
                                         <td align="left"><input id="btCheckValid" type="button" value="Kiểm tra hợp lệ"/></td>
-                                        <td><span id="checkValid"/></td>
                                     </tr>
+                                     <tr><td align="left"><span id="checkValid"/></td></tr>
+
                                     <tr><td height="15"></td></tr>
 
                                     <tr><td align="left" >Mật khẩu</td></tr>
