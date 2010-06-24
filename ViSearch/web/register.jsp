@@ -12,8 +12,25 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <title>Trang chủ - ViSearch</title>
+        <title>Đăng kí tài khoản - ViSearch</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
+        <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
+        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
+
+        <script type="text/javascript">
+            $(function() {
+                $('#btCheckValid')
+                .button()
+                .click(function() {
+                    var username = $("#txtusername").attr("value");
+                    var Url = "CheckValidUsername?username=" + username;
+                    $("#Bookmark").load(encodeURI(Url));
+                    $("#checkValid").load(encodeURI(Url));
+                });
+            });
+        </script>
         <style type="text/css">
             .required {
                 color: #F00;
@@ -60,7 +77,10 @@
                                     <tr><td height="15"></td></tr>
 
                                     <tr><td align="left">Tên đăng nhập</td></tr>
-                                    <tr><td  align="left" class="required"><input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idUsername" id="idUsername" />(*)</td></tr>
+                                    <tr><td  align="left" class="required"><input id="txtusername" type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idUsername" id="idUsername" />(*)</td>
+                                        <td align="left"><input id="btCheckValid" type="button" value="Kiểm tra hợp lệ"/></td>
+                                        <td><span id="checkValid"/></td>
+                                    </tr>
                                     <tr><td height="15"></td></tr>
 
                                     <tr><td align="left" >Mật khẩu</td></tr>
