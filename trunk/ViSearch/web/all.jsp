@@ -20,10 +20,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Tổng hợp</title>
-        <link href="style.css"rel="stylesheet" type="text/css" />
+               <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("#tbTopSearch").load("TopSearch?SearchType=7");
@@ -98,6 +99,14 @@
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
+            function Tracking(docid){
+                var keySearch = document.getElementById('hfKeySearch').value;
+                var Url = "TrackingController?KeySearch=" + keySearch;
+                Url += "&DocID=" + docid;
+                Url += "&searchType=7";
+                alert(Url);
+                window.location = Url;
+            }
         </script>
 
 
@@ -169,15 +178,15 @@
                                 String subId = "";
                                 if (id.length() > 2 && id.substring(0, 2).equals("rv")) {
                                     subId = id.substring(2);
-                                    link = "<a href=\"DetailRaoVatController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    link = "<a href=\"DetailRaoVatController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
                                     type = "rv";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("news")) {
                                     subId = id.substring(4);
-                                    link = "<a href=\"DetailNewsController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    link = "<a href=\"DetailNewsController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
                                     type = "news";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("wiki")) {
                                     subId = id.substring(4);
-                                    link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
                                     type = "wiki";
                                 } else if (id.length() > 2 && id.substring(0, 2).equals("ms")) {
                                     subId = id.substring(2);
@@ -189,7 +198,7 @@
                                     type = "video";
                                 } else if (id.length() > 3 && id.substring(0, 3).equals("img")) {
                                     subId = id.substring(3);
-                                    link = "<a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    link = "<a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
                                     type = "img";
                                 }
 
@@ -207,7 +216,7 @@
                                     // Neu la music thì show window media lên
                                 } else if (type.equals("ms")) {
                                     strBody += "<tr><td>";
-                                    strBody += "<OBJECT   CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
+                                    strBody += "<OBJECT CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
                                     strBody += "<param name=\"fileName\" value=\"\">";
                                     strBody += "<param name=\"animationatStart\" value=\"false\">";
                                     strBody += "<param name=\"transparentatStart\" value=\"true\">";
@@ -228,6 +237,7 @@
                                     strBody += "</td></tr>";
 
                                     strBody += "<tr><td>";
+                                    strBody += "<span id='Tracking'></span>";
                                     strBody += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
                                     strBody += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
                                     strBody += "<param name=\"salign\" value=\"lt\" />";
@@ -237,6 +247,20 @@
                                     strBody += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
                                     strBody += "</object>";
                                     strBody += "</td></tr>";
+                                    %>
+                                    <script type="text/javascript">
+                                        $(document).ready(function(){
+                                            $("#<%=BTViewMediaId%>").click(function(){
+                                                var docID = <%=subId%>
+                                                var keySearch = $("#hfKeySearch").attr("value");
+                                                var Url = "TrackingController?KeySearch=" + keySearch;
+                                                Url += "&DocID=" + docID;
+                                                Url += "&searchType=7";
+                                                $("#Tracking").load(encodeURI(Url));
+                                            });
+                                        });
+                                    </script>
+                                    <%
                                 } else { // còn lại là rao vặt + news
                                     if (highlightBody != null && !highlightBody.isEmpty()) {
                                         body = highlightBody.get(0);
