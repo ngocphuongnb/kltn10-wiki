@@ -315,7 +315,7 @@
                                             }
                                 %>
 
-                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
+                                <div class="mnu">Tìm kiếm nhiều nhất trong tuần</div>
                                 <table id="tbTopSearch">
 
                                 </table>

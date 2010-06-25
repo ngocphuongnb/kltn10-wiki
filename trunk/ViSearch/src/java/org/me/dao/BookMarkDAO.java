@@ -23,11 +23,12 @@ public class BookMarkDAO {
         Connection cn = DataProvider.getConnection(database);
         try {
             CallableStatement cs;
-            cs = cn.prepareCall("{CALL Insert_Bookmark(?, ?, ?, ?)}");
+            cs = cn.prepareCall("{CALL Insert_Bookmark(?, ?, ?, ?, ?)}");
             cs.setInt(1, bookmark.getMemberId());
             cs.setString(2, bookmark.getDocId());
             cs.setInt(3, bookmark.getSearchType());
             cs.setString(4, bookmark.getNameBookmark());
+            cs.setInt(5, bookmark.getPriority());
 
             int n = cs.executeUpdate();
             if (n == 0) {

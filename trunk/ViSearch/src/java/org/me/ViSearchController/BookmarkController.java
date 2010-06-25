@@ -40,10 +40,12 @@ public class BookmarkController extends HttpServlet {
             BookMarkDTO bmdto = new BookMarkDTO();
             String docID = request.getParameter("DocID").toString();
             String nameBookmark = request.getParameter("NameBookmark").toString();
+            int priority = Integer.parseInt(request.getParameter("Priority").toString());
             bmdto.setDocId(docID);
             bmdto.setMemberId(memdto.getId());
             bmdto.setSearchType(searchType);
             bmdto.setNameBookmark(nameBookmark);
+            bmdto.setPriority(priority);
             BookMarkBUS bmbus = new BookMarkBUS();
             bmbus.InsertBookmark(bmdto, "visearch");
             out.print("<input type='button' disabled value='Đã thêm bookmark'/>");

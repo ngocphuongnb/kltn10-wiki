@@ -44,12 +44,14 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
+import org.me.Utils.SearchLocation;
 import org.me.dto.FacetDateDTO;
 
 /**
@@ -222,7 +224,7 @@ public class SearchWikiController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException {
         SolrQuery solrQuery = new SolrQuery();
         keySearch = MyString.cleanQueryTerm(keySearch);
         String query = "";
@@ -254,6 +256,13 @@ public class SearchWikiController extends HttpServlet {
             query += "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^8 || "
                     + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
                     + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^5 || wk_text_unsigned:(" + keySearch + ")";
+        }
+
+        SearchLocation searchLocation = new SearchLocation();
+        SolrDocumentList list = searchLocation.CheckLocation(keySearch);
+        for (SolrDocument doc : list) {
+            String slocation = doc.getFirstValue("location").toString();
+            query += String.format(" || wk_title:(\"%s\")^30 || wk_text:(\"%s\")^5 ", slocation, slocation);
         }
 
         solrQuery.setQuery(query);

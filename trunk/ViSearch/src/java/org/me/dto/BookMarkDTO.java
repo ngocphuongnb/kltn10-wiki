@@ -15,6 +15,7 @@ public class BookMarkDTO {
     private String _docId;
     private int _searchType;
     private String _nameBookmark;
+    private int _priority;
 
     public String getId() {
         return _Id;
@@ -66,6 +67,20 @@ public class BookMarkDTO {
      */
     public void setNameBookmark(String nameBookmark) {
         this._nameBookmark = nameBookmark;
+    }
+
+    /**
+     * @return the _priority
+     */
+    public int getPriority() {
+        return _priority;
+    }
+
+    /**
+     * @param priority the _priority to set
+     */
+    public void setPriority(int priority) {
+        this._priority = priority;
     }
 
    
