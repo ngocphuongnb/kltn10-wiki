@@ -4,13 +4,13 @@
 
 <xs:element name="IndexDataAllResponse" type="tns:IndexDataAllResponse" />
 
-<xs:element name="IndexDataBookmark" type="tns:IndexDataBookmark" />
-
-<xs:element name="IndexDataBookmarkResponse" type="tns:IndexDataBookmarkResponse" />
-
 <xs:element name="IndexDataImage" type="tns:IndexDataImage" />
 
 <xs:element name="IndexDataImageResponse" type="tns:IndexDataImageResponse" />
+
+<xs:element name="IndexDataLocation" type="tns:IndexDataLocation" />
+
+<xs:element name="IndexDataLocationResponse" type="tns:IndexDataLocationResponse" />
 
 <xs:element name="IndexDataMusic" type="tns:IndexDataMusic" />
 
@@ -316,14 +316,22 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="IndexDataBookmark">
+<xs:complexType name="IndexDataLocation">
 <xs:sequence>
 <xs:element name="code" type="xs:string" minOccurs="0" />
 <xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+<xs:element name="listLocation" type="tns:locationDTO" minOccurs="0" maxOccurs="unbounded" />
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="IndexDataBookmarkResponse">
+<xs:complexType name="locationDTO">
+<xs:sequence>
+<xs:element name="id" type="xs:int" />
+<xs:element name="location" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataLocationResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>
