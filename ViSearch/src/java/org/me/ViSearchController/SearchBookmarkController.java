@@ -9,10 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -72,25 +68,20 @@ public class SearchBookmarkController extends HttpServlet {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
-
-            server = SolrJConnection.getSolrServer("all");
+            server = SolrJConnection.getSolrServer("bookmark");
             int start = (currentpage - 1) * pagesize;
 
             if (request.getParameter("KeySearch") != null) {
-
                 QueryResponse rsp;
-
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
 
                 if (request.getParameter("sp") != null) {
                     String sCollation = OnCheckSpelling(keySearch);
-
                     if (sCollation != null && sCollation.equals("") == false) {
                         request.setAttribute("Collation", sCollation);
                     }
                 }
-
                 rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                 docs = rsp.getResults();
             }
