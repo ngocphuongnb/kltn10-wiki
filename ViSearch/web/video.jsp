@@ -14,7 +14,6 @@
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
-<%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
