@@ -81,7 +81,6 @@ public class SearchImageController extends HttpServlet {
             }
 
             List<FacetField> listFacet = null;
-            ArrayList<FacetDateDTO> listFacetDate = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
@@ -179,7 +178,6 @@ public class SearchImageController extends HttpServlet {
                 }
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
-                request.setAttribute("ListFacetDate", listFacetDate);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
