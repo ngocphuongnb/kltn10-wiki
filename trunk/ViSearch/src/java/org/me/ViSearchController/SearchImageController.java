@@ -37,7 +37,6 @@ import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
-import org.me.dto.FacetDateDTO;
 
 /**
  *
@@ -235,54 +234,6 @@ public class SearchImageController extends HttpServlet {
         return rsp;
     }
 
-    // Lay nhung bai viet moi nhat --> Test OK
-    ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
-        HttpClient client = new HttpClient();
-
-        String url = "http://localhost:8983/solr/raovat/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=last_update&facet.limit=10&wt=json";
-        url = URIUtil.encodeQuery(url);
-        GetMethod get = new GetMethod(url);
-
-        get.setRequestHeader(new Header("User-Agent", "localhost bot admin@localhost.com"));
-
-        int status = client.executeMethod(get);
-        String charSet = get.getResponseCharSet();
-        if (charSet == null) {
-            charSet = "UTF-8";
-        }
-        String body = convertStreamToString(get.getResponseBodyAsStream(), charSet);
-
-
-        try {
-            JSONObject json = (JSONObject) JSONSerializer.toJSON(body);
-            JSONObject ob = json.getJSONObject("facet_counts");
-            JSONObject location = ob.getJSONObject("facet_fields");
-
-            // Vi moi chi xai 1 field Location nen lay luon
-            JSONArray last_update = location.getJSONArray("last_update");
-            ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
-
-            if (last_update.size() > 0) {
-                FacetDateDTO fD = null;
-                for (int i = 0; i < last_update.size(); i++) {
-                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
-                    {
-                        fD = new FacetDateDTO();
-                        fD.setDateTime(last_update.get(i).toString());
-                    } else //  Phan tu le là số (Count)
-                    {
-                        fD.setCount(last_update.get(i).toString());
-                        myArr.add(fD);
-                    }
-                }
-            }
-            get.releaseConnection();
-            return myArr;
-        } catch (Exception x) {
-            return null;
-        }
-
-    }
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
