@@ -8,6 +8,7 @@ package myquartz;
 import impl.*;
 import java.text.ParseException;
 import java.util.Date;
+import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
