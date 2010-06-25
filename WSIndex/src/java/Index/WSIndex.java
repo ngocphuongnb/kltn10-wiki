@@ -16,6 +16,7 @@ import BUS.ImageBUS;
 import BUS.NewsBUS;
 import BUS.VideoBUS;
 import DTO.ImageDTO;
+import DTO.LocationDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
 import Utils.SaveImageFromURL;
@@ -334,6 +335,21 @@ public class WSIndex {
             try {
                 ms.IndexBookmark();
 
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+     @WebMethod(operationName = "IndexDataLocation")
+    public boolean IndexDataLocation(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "listLocation") ArrayList<LocationDTO> listLocation) {
+        AdminBUS bus = new AdminBUS();
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.IndexLocation(listLocation);
                 return true;
             } catch (Exception ex) {
                 return false;

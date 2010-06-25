@@ -14,6 +14,7 @@ import BUS.ViwikiPageBUS;
 import DTO.BookmarkDTO;
 import DTO.RaoVatDTO;
 import DTO.ImageDTO;
+import DTO.LocationDTO;
 import DTO.MusicDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
@@ -502,7 +503,8 @@ public class MySolrJ {
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
             doc.addField("contact", pagedto.getContact());
-            doc.addField("last_update", pagedto.getLastUpdate().getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            doc.addField("last_update", sdf.format(pagedto.getLastUpdate().getTime()));
             doc.addField("location", pagedto.getLocation());
             doc.addField("photo", pagedto.getPhoto());
             doc.addField("price", pagedto.getPrice());
@@ -538,7 +540,7 @@ public class MySolrJ {
             doc.addField("body", strBody);
             doc.addField("body_unsigned", RemoveSignVN(strBody));
 
-            doc.addField("category", "Rao v?t");
+            doc.addField("category", "Rao vặt");
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
@@ -797,6 +799,24 @@ public class MySolrJ {
         req.add(docs);
         UpdateResponse rsp = req.process(server);
         return listint;
+    }
+
+    public void IndexLocation(ArrayList<LocationDTO> listLocation) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException{
+        EmptyData("location");
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        for (LocationDTO loc : listLocation) {
+            doc = new SolrInputDocument();
+            doc.addField("id", loc.getId());
+            doc.addField("location", loc.getLocation());
+            doc.addField("location_unsigned", RemoveSignVN(loc.getLocation()));
+            docs.add(doc);
+        }
+        SolrServer server = getSolrServer("location"); // solrServer = music
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
     }
 }
 

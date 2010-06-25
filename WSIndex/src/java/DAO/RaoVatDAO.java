@@ -44,9 +44,9 @@ public class RaoVatDAO {
             page.setSite(rs.getString("site"));
             page.setTitle(rs.getString("title"));
             page.setUrl(rs.getString("url"));
-            Date d = rs.getDate("last_update");
-            //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //Date d = sdf.parse(last_update);
+            String last_update = rs.getString("last_update");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date d = sdf.parse(last_update);
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
             page.setLastUpdate(cl);
