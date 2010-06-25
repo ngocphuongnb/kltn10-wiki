@@ -170,7 +170,6 @@
                                 result += "</tr>";
 
 
-
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
                                 String BTCloseMediaId = "BTCloseMediaId" + i;

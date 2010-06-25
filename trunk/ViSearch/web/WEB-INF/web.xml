@@ -88,6 +88,10 @@
         <servlet-name>DeleteBookmark</servlet-name>
         <servlet-class>org.me.ViSearchController.DeleteBookmark</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckValidUsername</servlet-name>
+        <servlet-class>org.me.ViSearchController.CheckValidUsername</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -175,6 +179,10 @@
     <servlet-mapping>
         <servlet-name>DeleteBookmark</servlet-name>
         <url-pattern>/DeleteBookmark</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckValidUsername</servlet-name>
+        <url-pattern>/CheckValidUsername</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
