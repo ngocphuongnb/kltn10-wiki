@@ -33,7 +33,7 @@
                     return;
                 else
                 {
-                    var url = "SearchBookmarkController?sp=1&KeySearch=";
+                    var url = "SearchBookmarkController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     window.location = url;
                 }
@@ -243,7 +243,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <input type="text" id="txtSearchBM" size="30px"/>
+                                        <input type="text" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {out.print(strQuery);}%>"/>
                                         <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
                                     </td>
                                 </tr>
