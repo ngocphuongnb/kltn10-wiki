@@ -73,4 +73,20 @@ public class MemberDAO {
         }
         return member;
     }
+    public boolean isExist(String username, String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL isExistUsername(?)}");
+            cs.setString(1, username);
+            ResultSet rs = cs.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

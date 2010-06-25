@@ -24,4 +24,8 @@ public class MemberBUS {
         MemberDAO memDao = new MemberDAO();
         return memDao.AddNewMember(member, database);
     }
+    public boolean isExist(String username, String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MemberDAO memDao = new MemberDAO();
+        return memDao.isExist(username, database);
+    }
 }
