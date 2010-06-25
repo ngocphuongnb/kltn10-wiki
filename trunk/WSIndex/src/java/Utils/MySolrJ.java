@@ -607,6 +607,7 @@ public class MySolrJ {
             doc.addField("searchtype", pagedto.getSearchType());
             doc.addField("bookmarkname", pagedto.getBookmarkName());
             doc.addField("bookmarkname_unsigned", RemoveSignVN(pagedto.getBookmarkName()));
+            doc.addField("date_created", pagedto.getDate_create().getTime());
 
             docs.add(doc);
             listint.add(pagedto.getId());
