@@ -67,7 +67,7 @@ public class SearchBookmarkController extends HttpServlet {
         int pagesize = 10;
         int currentpage = 1;
         long numRow = 0;
-        int type;
+        int type = 0;
         String sPaging = "/ViSearch/SearchBookmarkController?";
         int sortedType = 0;
         List<FacetField> listFacet = null;
@@ -83,90 +83,99 @@ public class SearchBookmarkController extends HttpServlet {
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
-                 type = Integer.parseInt(request.getParameter("type"));
-
-                if (request.getParameter("sp") != null) {
-                    String sCollation = OnCheckSpelling(keySearch);
-                    if (sCollation != null && sCollation.equals("") == false) {
-                        request.setAttribute("Collation", sCollation);
-                    }
-                }
-                  switch (type) {
-                    case 0:
-                        if (request.getParameter("sp") != null) {
-                            String sCollation = OnCheckSpelling(keySearch);
-                            if (sCollation.equals("") == false) {
-                                request.setAttribute("Collation", sCollation);
-                            }
-                        }
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 1:
-                        rsp = OnMLT(keySearch, start, pagesize);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        if (highLight != null) {
-                            request.setAttribute("HighLight", highLight);
-                        }
-
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 2:
-                        String qf = "";
-                        String qv = "";
-                        if (request.getParameter("qf") != null) {
-                            qf = request.getParameter("qf");
-                            qv = request.getParameter("qv");
-                            sPaging += "&qf=" + qf;
-                            sPaging += "&qv=" + qv;
-                        }
-                        String facetNameValue = " +(" + qf + ":" + qv + ")";
-                        if (qf.equals("searchtype")) {
-                            // Neu la text thi them ""
-                            facetNameValue = " +(" + qf + ":\"" + qv + "\")";
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 3:
-                        facetNameValue = "";
-                        qf = "";
-                        sPaging += "&type=3";
-                        if (request.getParameter("w") != null) {
-                            //  facetName = request.getParameter("FacetName");
-                            // sPaging += "&FacetName=" + facetName;
-                            String w = "";
-                            if (request.getParameter("w") != null) {
-                                w = request.getParameter("w");
-                            }
-                            String h = "";
-                            if (request.getParameter("h") != null) {
-                                h = request.getParameter("h");
-                            }
-                            //facetNameValue = createFacetValue(w, h);
-                            //  sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
-
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        docs = rsp.getResults();
-
-
-                    default:
-                        break;
+            }
+            type = Integer.parseInt(request.getParameter("type"));
+            if (request.getParameter("sp") != null) {
+                String sCollation = OnCheckSpelling(keySearch);
+                if (sCollation != null && sCollation.equals("") == false) {
+                    request.setAttribute("Collation", sCollation);
                 }
             }
+            switch (type) {
+                case 0:
+                    if (request.getParameter("sp") != null) {
+                        String sCollation = OnCheckSpelling(keySearch);
+                        if (sCollation.equals("") == false) {
+                            request.setAttribute("Collation", sCollation);
+                        }
+                    }
+                    rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 1:
+                    rsp = OnMLT(keySearch, start, pagesize);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    if (highLight != null) {
+                        request.setAttribute("HighLight", highLight);
+                    }
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 2:
+                    String qf = "";
+                    String qv = "";
+                    if (request.getParameter("qf") != null) {
+                        qf = request.getParameter("qf");
+                        qv = request.getParameter("qv");
+                        sPaging += "&qf=" + qf;
+                        sPaging += "&qv=" + qv;
+                    }
+                    String facetNameValue = " +(" + qf + ":" + qv + ")";
+                    if (qf.equals("searchtype")) {
+                        // Neu la text thi them ""
+                        facetNameValue = " +(" + qf + ":\"" + qv + "\")";
+                    }
+                    rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 3:
+                    facetNameValue = "";
+                    qf = "";
+                    sPaging += "&type=3";
+                    if (request.getParameter("w") != null) {
+                        //  facetName = request.getParameter("FacetName");
+                        // sPaging += "&FacetName=" + facetName;
+                        String w = "";
+                        if (request.getParameter("w") != null) {
+                            w = request.getParameter("w");
+                        }
+                        String h = "";
+                        if (request.getParameter("h") != null) {
+                            h = request.getParameter("h");
+                        }
+                        //facetNameValue = createFacetValue(w, h);
+                        //  sPaging += "&FacetValue=" + facetValue;
+                    }
+                    rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    docs = rsp.getResults();
+                    break;
+                case 4:
+                    String field = "";
+                    sPaging += "&type=4";
+                    if (request.getParameter("f") != null) {
+                        field = request.getParameter("f");
+                    }
+                    rsp = OnSearchSubmitByField(field, start, pagesize);
+
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    docs = rsp.getResults();
+                    break;
+                default:
+                    break;
+            }
+
 
             request.setAttribute("KeySearch", keySearch);
             if (docs != null) {
@@ -199,7 +208,7 @@ public class SearchBookmarkController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "+(";
-       if (MyString.CheckSigned(keySearch)) {
+        if (MyString.CheckSigned(keySearch)) {
             query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8";
         } else {
             query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8 || "
@@ -211,7 +220,7 @@ public class SearchBookmarkController extends HttpServlet {
 
         solrQuery.setQuery(query);
 
-         // Facet
+        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("searchtype");
         solrQuery.setFacetLimit(10);
@@ -219,8 +228,7 @@ public class SearchBookmarkController extends HttpServlet {
         // End Facet
 
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("site_title");
-        //solrQuery.addHighlightField("body");
+        solrQuery.addHighlightField("bookmarkname");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -229,7 +237,6 @@ public class SearchBookmarkController extends HttpServlet {
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
-
 
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         SolrQuery query = new SolrQuery();
@@ -270,6 +277,31 @@ public class SearchBookmarkController extends HttpServlet {
             query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8 || "
                     + "bookmarkname_unsigned:(\"" + keySearch + "\")^9 || bookmarkname_unsigned:(" + keySearch + ")^6";
         }
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setQuery(query);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("bookmarkname");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private QueryResponse OnSearchSubmitByField(String field, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        query = "searchtype:" + field;
 
         // Facet
         solrQuery.setFacet(true);
