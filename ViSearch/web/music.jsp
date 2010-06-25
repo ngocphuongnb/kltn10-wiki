@@ -15,7 +15,6 @@
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
-<%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -25,8 +24,6 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
-
-
 
         <script language="javascript">
             function setText()
@@ -92,7 +89,6 @@
                 document.getElementById(btDong).className="hidden";
             }
         </script>
-
     </head>
 
     <body onLoad="setText();">
@@ -111,7 +107,6 @@
                         FieldId = (String) request.getAttribute("FieldId");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
-
                     }
                     // End Get strQuery
 %>
