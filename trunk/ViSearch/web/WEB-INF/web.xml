@@ -92,6 +92,10 @@
         <servlet-name>CheckValidUsername</servlet-name>
         <servlet-class>org.me.ViSearchController.CheckValidUsername</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchBookmarkController</servlet-name>
+        <servlet-class>org.me.ViSearchController.SearchBookmarkController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -183,6 +187,10 @@
     <servlet-mapping>
         <servlet-name>CheckValidUsername</servlet-name>
         <url-pattern>/CheckValidUsername</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBookmarkController</servlet-name>
+        <url-pattern>/SearchBookmarkController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
