@@ -46,7 +46,7 @@
                             url: "/ViSearch/MemberLoginController",
                             data: 'username=' + username.val() + '&password=' + password.val(),
                             success: function(html){
-                               window.location = html;
+                                window.location = html;
                             }
                         });
                         $("#login-form").dialog('close');
@@ -133,17 +133,19 @@
                         member = (MemberDTO) request.getAttribute("Member");
                         session.setAttribute("Member", member);
                     }
+                    out.print("<div style=\"float:right; margin-bottom:8px; font-size:11px\">");
                     if (member == null) {
+
+                        out.print("<a name=\"top\" href=\"register.jsp\">Đăng kí</a>&nbsp;&nbsp;");
+                        out.print("<a href=\"#\" id=\"linkLogin\">Đăng nhập</a>&nbsp;&nbsp;");
+                    } else {
+                        out.print("Xin chào <a href=\"#\">" + member.getFullName() + "</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
+                        out.print("<a href=\"showBookmark.jsp\">Hiển thị Bookmark</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
+                        out.print("<a href=\"MemberLogoutController\">Đăng xuất</a>&nbsp;&nbsp;");
+                    }
+                    out.print("</div>");
+
         %>
-        <div style="float:right; margin-bottom:8px; font-size:11px">
-            <a name="top" href="register.jsp">Đăng kí</a>&nbsp;&nbsp;
-            <a href="#" id="linkLogin">Đăng nhập</a>&nbsp;&nbsp;
-            <%                    } else {
-                            out.print("Xin chào <a href=\"#\">" + member.getFullName() + "</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
-                            out.print("<a href=\"showBookmark.jsp\">Hiển thị Bookmark</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
-                            out.print("<a href=\"MemberLogoutController\">Đăng xuất</a>&nbsp;&nbsp;");
-                        }%>
-        </div>
 
         <div id="result"/>
 

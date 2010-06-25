@@ -1,31 +1,43 @@
 <%-- 
     Document   : showBookmark
-    Created on : Jun 25, 2010, 8:12:53 PM
+    Created on : Jun 13, 2010, 6:16:24 PM
     Author     : tuandom
 --%>
 
-<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List"%>
 <%@page import="org.apache.solr.client.solrj.SolrQuery"%>
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
 <%@page import="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"%>
 <%@page import="org.apache.solr.common.SolrDocument"%>
-<%@page import="java.util.Calendar"%>
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
-<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
-<%@page import="org.apache.solr.client.solrj.response.FacetField"%>
+<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.SimpleDateFormat"%>
 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Thông tin Bookmark - ViSearch</title>
-        <link href="style.css"rel="stylesheet" type="text/css" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Hiển thị Bookmark - ViSearch</title>
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link href="style.css"rel="stylesheet" type="text/css" />
 
         <script type="text/javascript">
+            function DeleteBM(id){
+                var url = "DeleteBookmark?id="+id;
+                window.location = url;
+            }
+            function onmouseover(nama){
+                nama.className='tableBM_on';
+                return true;
+            }
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearchBM').value;
@@ -39,8 +51,8 @@
                 }
             }
         </script>
-    </head>
 
+    </head>
     <body>
         <%
                     List<Object[]> lstBm = null;
@@ -90,7 +102,7 @@
                             String id = (listdocs.get(i).getFirstValue("id")).toString();
                             String memberId = (listdocs.get(i).getFirstValue("memberid")).toString();
                             String docid = (listdocs.get(i).getFieldValue("docid")).toString();
-                            String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
+                            String searchType = (listdocs.get(i).getFieldValue("searchtype")).toString();
                             String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
                             Date date_created = (Date) (listdocs.get(i).getFieldValue("date_created"));
                             String url = "";
@@ -103,23 +115,8 @@
                                 }
                             }
 
-                            String link = "";
-                            if (searchtype.equals("1")) {
-                                link = "DetailWikiController?id=" + docid + "&KeySearch=";
-                            } else if (searchtype.equals("2")) {
-                                link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
-                            } else if (searchtype.equals("3")) {
-                                link = "SearchMusicController?type=0&sp=1&f=8&KeySearch=" + docid;
-                            } else if (searchtype.equals("4")) {
-                                link = "DetailImageController?id=" + docid + "&KeySearch=";
-                            } else if (searchtype.equals("5")) {
-                                link = "SearchVideoController?type=0&more=detail&KeySearch=" + docid;
-                            } else if (searchtype.equals("6")) {
-                                link = "DetailNewsController?id=" + docid + "&KeySearch=";
-                            }
-
                             result += "<tr>";
-                            result += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
+                            result += "<td>" + bookmarkname + "</td>";
                             result += "</tr>";
 
                             result += "<tr>";
@@ -144,56 +141,7 @@
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
-        %>
-        <%
-                    // Get Facet
-                    String facet = "";
-
-                    List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
-                    if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Bộ lọc</div>";
-                        for (int i = 0; i < listFacet.size(); i++) {
-                            facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                            facet += "<tr>";
-                            facet += "<td>";
-                            String fieldName = listFacet.get(i).getName();
-                            if (fieldName.equals("searchtype")) {
-                                facet += "<b>Chuyên mục</b>";
-                            }
-
-                            facet += "<br>";
-                            List<FacetField.Count> listCount = listFacet.get(i).getValues();
-                            if (listCount != null) {
-                                for (int j = 0; j < listCount.size(); j++) {
-                                    String fieldText = listCount.get(j).getName();
-                                    String showFieldText = "";
-                                    if (fieldText.equals("1")) {
-                                        showFieldText = "Wikipedia";
-                                    } else if (fieldText.equals("2")) {
-                                        showFieldText = "Rao vặt";
-                                    } else if (fieldText.equals("3")) {
-                                        showFieldText = "Nhạc";
-                                    } else if (fieldText.equals("4")) {
-                                        showFieldText = "Hình ảnh";
-                                    } else if (fieldText.equals("5")) {
-                                        showFieldText = "Video";
-                                    } else if (fieldText.equals("6")) {
-                                        showFieldText = "Tin tức";
-                                    }
-                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + showFieldText + "</a>";
-                                    facet += " (" + listCount.get(j).getCount() + ")";
-                                    facet += "<br>";
-                                }
-                            } else {
-                                facet += "Không tìm ra Facet<br>";
-                            }
-                            facet += "</td></tr>";
-                            facet += "</table>";
-                        }
-                    }
-
-                    // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -205,74 +153,85 @@
                                 <tr>
                                     <td style="text-align:right; margin-bottom:8px; font-size:11px">
                                         <%@include file="template/frm_login.jsp" %>
-                                    </td>
-                                </tr>
+                                    </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <table id="Table_01" width="975" border="0" cellpadding="0" cellspacing="0">
+                                        <table id="Table_01" width="975" height="130" border="0" cellpadding="0" cellspacing="0">
                                             <tr><td><img alt="" src="images/Slogan.png" /></td></tr>
                                         </table>
                                         <!-- end banner      !-->
                                     </td>
                                 </tr>
                             </table>
-                            <span></span>
-                        </td>
-                    </tr>
+                        </td></tr>
+                    <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
+                    <!-- !-->
                     <tr>
-                        <td height="20" colspan="2" align="center" valign="bottom">
-                            <div align="center" class="nav"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="200" height="33" valign="top">
-                            <div class="subtable">
-                                <% if (request.getAttribute("Docs") != null) {
-                                                out.print(facet);
-                                            }%>
-                                <table id="tbTopSearch">
+                        <td colspan="2" height="33" valign="top">
+
+                            <!-- register !-->
+                            <form class="frmRegister" name="" method="post" action="">
+
+                                <table width="500" border="0" cellspacing="0" cellpadding="0" >
+
+                                    <tr>
+                                        <td>
+                                            <input type="text" id="txtSearchBM" size="30px"/>
+                                            <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
+                                        </td>
+                                    </tr>
+                                    <tr><td><h3 class="subblockhead"> Thông tin Bookmark của bạn</h3> </td> </tr>
+                                        
+                                   
+
+                                    <%
+                                                if (lstBm != null) {
+                                                    for (int i = 0; i < lstBm.size(); i++) {
+                                                        Object[] objBm = new Object[2];
+                                                        objBm = lstBm.get(i);
+                                                        String id = objBm[0].toString();
+                                                        String link = objBm[1].toString();
+                                                        String BmName = objBm[2].toString();
+
+                                                        out.print("<tr class=\"trBM\" onmouseover=\"onmouseover(this)\"  onmouseout=\"onmouseout(this)\"  \">");
+                                                        out.print("<td align=\"left\" ><a href=\"" + link + "\">" + BmName + "</a></td>");
+                                                        out.print("<td align=\"right\" ><input type=\"button\" value=\"Xóa\" onclick=\"DeleteBM('" + id + "')\"/></td>");
+                                                        out.print("</tr>");
+                                                    }
+                                                }
+                                    %>
+
+
+                                    <tr><td height="15"></td></tr>
+                                    
                                 </table>
-                            </div>
+                                     <% out.print(result);%>
+                                     <table><tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr></table>
+                            </form>
+                            <!-- end register -->
                         </td>
-                        <td width="627" rowspan="2" valign="top">
 
-                            <table>
-                                <tr><td id="result_search"></td></tr><tr></tr>
-                            </table>
-                            <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td>
-                                        <input type="text" id="txtSearchBM" size="30px"/>
-                                        <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top" id="content">
-                                        <% out.print(result);%>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
                     </tr>
 
-                    <tr>
 
+
+                    <tr height="50"><td></td><td width="743"></td>
                     </tr>
-                    <tr><td height="30"></td></tr>
+                    <!-- -->
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
-                        <td width="100"></td>
+                        <td width="200"></td>
                         <td colspan="2" valign="top">
                             <%@include file="template/footer.jsp"%>
                         </td>
                     </tr>
                 </table>
+
             </div>
         </div>
 
     </body>
 </html>
-
 
 
