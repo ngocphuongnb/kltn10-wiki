@@ -38,9 +38,9 @@ public class CheckValidUsername extends HttpServlet {
            MemberBUS memberBus = new MemberBUS();
            boolean Result = memberBus.isExist(username, "visearch");
            if(Result)
-               out.print("<input type='button' disabled value='Đã tồn tại username này'/>");
+               out.print("<font color=\"red\">Đã tồn tại username này</font>");
            else
-               out.print("<input type='button' disabled value='Bạn có thể sử dụng username này'/>");
+               out.print("<font color=\"blue\">Bạn có thể sử dụng username này</font>");
         } finally { 
             out.close();
         }
