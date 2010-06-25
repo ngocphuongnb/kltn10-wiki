@@ -107,7 +107,7 @@
       <str name="field">bookmarknamed</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
-      <str name="spellcheckIndexDir">./spellcheckerImage2</str>
+      <str name="spellcheckIndexDir">./spellcheckerBookmark2</str>
     </lst>
     
 
@@ -117,7 +117,7 @@
       <str name="name">file</str>
       <str name="sourceLocation">spellings.txt</str>
       <str name="characterEncoding">UTF-8</str>
-      <str name="spellcheckIndexDir">./spellcheckerFileImage</str>
+      <str name="spellcheckIndexDir">./spellcheckerFileBookmark</str>
     </lst>
   </searchComponent>
   <admin>
