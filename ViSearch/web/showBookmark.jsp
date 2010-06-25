@@ -104,27 +104,46 @@
                             }
 
                             String link = "";
+                            String link1 = "";
+                            String category = "";
                             if (searchtype.equals("1")) {
                                 link = "DetailWikiController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=1";
+                                category = "Wikipedia";
                             } else if (searchtype.equals("2")) {
                                 link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=2";
+                                category = "Rao Vặt";
                             } else if (searchtype.equals("3")) {
                                 link = "SearchMusicController?type=0&sp=1&f=8&KeySearch=" + docid;
+                                link1 = "SearchBookmarkController?type=4&f=3";
+                                category = "Nhạc";
                             } else if (searchtype.equals("4")) {
                                 link = "DetailImageController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=4";
+                                category = "Hình ảnh";
                             } else if (searchtype.equals("5")) {
                                 link = "SearchVideoController?type=0&more=detail&KeySearch=" + docid;
+                                link1 = "SearchBookmarkController?type=4&f=5";
+                                category = "Video";
                             } else if (searchtype.equals("6")) {
                                 link = "DetailNewsController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=6";
+                                category = "Tin tức";
                             }
 
                             result += "<tr>";
                             result += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
                             result += "</tr>";
 
+
+                            result += "<tr>";
+                            result += "<td>Chuyên mục: " + "<a href = '"+link1+"'>" + category + "</a></td>";
+                            result += "</tr>";
+
                             result += "<tr>";
                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                            result += "<td><b>Ngày tạo:</b> " + sdf.format(date_created) + "</td>";
+                            result += "<td>Ngày tạo: " + sdf.format(date_created) + "</td>";
                             result += "</tr>";
 
                             result += "<tr><td>&nbsp;</td></tr>";
@@ -144,7 +163,7 @@
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -193,7 +212,7 @@
                     }
 
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -213,7 +232,7 @@
                                         <table id="Table_01" width="975" border="0" cellpadding="0" cellspacing="0">
                                             <tr><td><img alt="" src="images/Slogan.png" /></td></tr>
                                         </table>
-                                        <!-- end banner      !-->
+                                        <!-- end banner !-->
                                     </td>
                                 </tr>
                             </table>
@@ -241,32 +260,35 @@
                                 <tr><td id="result_search"></td></tr><tr></tr>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
-                                <tr>
+                                <tr><form action="javascript:CheckInput();" method="GET">
                                     <td>
-                                        <input type="text" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {out.print(strQuery);}%>"/>
+                                        <input type="text" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {
+                                                        out.print(strQuery);
+                                                    }%>"/>
                                         <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top" id="content">
-                                        <% out.print(result);%>
-                                    </td>
-                                </tr>
-                            </table>
+                                </form>
+                    </tr>
+                    <tr>
+                        <td valign="top" id="content">
+                            <% out.print(result);%>
                         </td>
                     </tr>
+                </table>
+                </td>
+                </tr>
 
-                    <tr>
+                <tr>
 
-                    </tr>
-                    <tr><td height="30"></td></tr>
-                    <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
-                    <tr>
-                        <td width="100"></td>
-                        <td colspan="2" valign="top">
-                            <%@include file="template/footer.jsp"%>
-                        </td>
-                    </tr>
+                </tr>
+                <tr><td height="30"></td></tr>
+                <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
+                <tr>
+                    <td width="100"></td>
+                    <td colspan="2" valign="top">
+                        <%@include file="template/footer.jsp"%>
+                    </td>
+                </tr>
                 </table>
             </div>
         </div>
