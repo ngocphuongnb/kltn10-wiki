@@ -4,12 +4,14 @@
  */
 package Utils;
 
+import BUS.BookmarkBUS;
 import BUS.RaoVatBUS;
 import BUS.ImageBUS;
 import BUS.MusicBUS;
 import BUS.NewsBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
+import DTO.BookmarkDTO;
 import DTO.RaoVatDTO;
 import DTO.ImageDTO;
 import DTO.MusicDTO;
@@ -139,6 +141,20 @@ public class MySolrJ {
             lResult = ImportImage2Solr(list, "image");
             ImportImage2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
+            start += 100;
+        }
+    }
+    public void IndexBookmark() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+
+        //EmptyData("bookmark");
+        ArrayList<Integer> lResult = new ArrayList<Integer>();
+        BookmarkBUS bus = new BookmarkBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<BookmarkDTO> list = new ArrayList<BookmarkDTO>();
+            list = bus.getDataList(0, 100);
+            lResult = ImportBookmark2Solr(list, "bookmark");
             start += 100;
         }
     }
@@ -576,6 +592,34 @@ public class MySolrJ {
         return listint;
     }
 
+    private ArrayList<Integer> ImportBookmark2Solr(ArrayList<BookmarkDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
+        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        SolrInputDocument doc;
+        BookmarkDTO pagedto = new BookmarkDTO();
+        Iterator<BookmarkDTO> iter = listpage.iterator();
+        ArrayList<Integer> listint = new ArrayList<Integer>();
+        while (iter.hasNext()) {
+            pagedto = iter.next();
+            doc = new SolrInputDocument();
+            doc.addField("id", pagedto.getId());
+            doc.addField("memberid", pagedto.getMemberId());
+            doc.addField("docid", pagedto.getDocId());
+            doc.addField("searchtype", pagedto.getSearchType());
+            doc.addField("bookmarkname", pagedto.getBookmarkName());
+            doc.addField("bookmarkname_unsigned", RemoveSignVN(pagedto.getBookmarkName()));
+
+            docs.add(doc);
+            listint.add(pagedto.getId());
+        }
+        SolrServer server = getSolrServer(solrServer); // solrServer = video
+        //server.add(docs);
+        // server.commit();
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
+        UpdateResponse rsp = req.process(server);
+        return listint;
+    }
     private ArrayList<Integer> ImportVideo2SolrAll(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
