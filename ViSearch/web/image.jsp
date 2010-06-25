@@ -114,9 +114,9 @@
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url="";
-                                if(listdocs.get(i).getFieldValue("url_local")!=null)
-                                    url = "file:///"+(listdocs.get(i).getFieldValue("url_local")).toString();
-                                else
+                              //  if(listdocs.get(i).getFieldValue("url_local")!=null)
+                               ///     url = "file:///"+(listdocs.get(i).getFieldValue("url_local")).toString();
+                               // else
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();

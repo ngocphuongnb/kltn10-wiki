@@ -172,9 +172,9 @@
                                 String body = (listdocs.get(i).getFirstValue("site_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url="";
-                                if(listdocs.get(i).getFieldValue("url_local")!=null)
-                                    url = (listdocs.get(i).getFieldValue("url_local")).toString();
-                                else
+                                //if(listdocs.get(i).getFieldValue("url_local")!=null)
+                               //     url = (listdocs.get(i).getFieldValue("url_local")).toString();
+                               // else
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String website = (listdocs.get(i).getFieldValue("website")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
