@@ -57,7 +57,39 @@
             }
 
 
-            
+            function showVideo(id)
+            {
+                // showVideo and Close all other Videos
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    MDid = 'MediaPlayer'+i;
+                    if(i!=id) // Close others
+                    {
+                        hideVideo(i);
+                    }
+                    else // and open new
+                    {
+                        document.getElementById(MDid).className="display";
+                    }
+                }
+                // Show button CloseVideo and Close bt View
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="display";
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="hidden";
+            }
+            function hideVideo(id)
+            {
+                // Hide media
+                MDid = 'MediaPlayer'+id;
+                document.getElementById(MDid).className="hidden";
+
+                // Button XemLoiNhac hide, button DongLoiNhac show
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="display";
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="hidden";
+            }
 
             function ClickDetail(link)
             {
@@ -111,6 +143,7 @@
                                 result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchAllController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
                             }
 
+                            List<String> highlightBody = null;
                             for (int i = 0; i < listdocs.size(); i++) {
                                 result += "<table style=\"font-size:13px\">";
 
@@ -122,15 +155,9 @@
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    List<String> highlightBody = highLight.get(id).get("body");
+                                    highlightBody = highLight.get(id).get("body");
                                     List<String> highlightTitle = highLight.get(id).get("title");
-                                    if (highlightBody != null && !highlightBody.isEmpty()) {
-                                        body = highlightBody.get(0);
-                                    } else {
-                                        if (body.length() > 500) {
-                                            body = body.substring(0, 500) + "...";
-                                        }
-                                    }
+
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
@@ -138,71 +165,90 @@
 
 
                                 String link = "";
-                                if (id.substring(0, 2).equals("rv")) {
-                                    link = "<a href=\"DetailRaoVatController?id=" + id.substring(2) + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                String type = "";
+                                String subId = "";
+                                if (id.length() > 2 && id.substring(0, 2).equals("rv")) {
+                                    subId = id.substring(2);
+                                    link = "<a href=\"DetailRaoVatController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    type = "rv";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("news")) {
-                                    link = "<a href=\"DetailNewsController?id=" + id.substring(4) + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    subId = id.substring(4);
+                                    link = "<a href=\"DetailNewsController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    type = "news";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("wiki")) {
-                                    link = "<a href=\"DetailWikiController?id=" + id.substring(4) + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
-                                } else if (id.substring(0, 2).equals("ms")) {
+                                    subId = id.substring(4);
+                                    link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    type = "wiki";
+                                } else if (id.length() > 2 && id.substring(0, 2).equals("ms")) {
+                                    subId = id.substring(2);
                                     link = title_hl;
+                                    type = "ms";
                                 } else if (id.length() > 5 && id.substring(0, 5).equals("video")) {
+                                    subId = id.substring(5);
                                     link = title_hl;
+                                    type = "video";
                                 } else if (id.length() > 3 && id.substring(0, 3).equals("img")) {
-                                    link = "<a href=\"DetailImageController?id=" + id.substring(3) + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    subId = id.substring(3);
+                                    link = "<a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\">" + title_hl + "</a>";
+                                    type = "img";
                                 }
 
+                                // show title
                                 result += "<tr>";
                                 result += "<td><b>" + link + "</b></td>";
                                 result += "</tr>";
 
-                                String strBody = "";
-                                // Neu la image thì show image lên
-                                String ext = body.substring(body.length() - 3);
-                                if (ext.equals("jpg") || ext.equals("png") || ext.equals("tif") || ext.equals("bmp") || ext.equals("ppm")) {
-                                    strBody = "<td valign=\"bottom\"><a href=\"DetailImageController?id=" + id.substring(3) + "&KeySearch=" + strQuery + "\"><img src=\"" + body + "\" width=\"150\" align=\"left\" /></a></td>";
-                                } else {
-                                    ext = body.substring(body.length() - 4);
-                                    if (ext.equals("jpeg")) {
-                                        strBody = "<td valign=\"bottom\"><a href=\"DetailImageController?id=" + id.substring(3) + "&KeySearch=" + strQuery + "\"><img src=\"" + body + "\" width=\"150\" align=\"left\" /></a></td>";
-                                    } // Neu la music thì show window media lên
-                                    else {
-                                        ext = body.substring(body.length() - 3);
-                                        if (ext.equals("mp3") || ext.equals("wma")) {
-                                            strBody += "<td>";
-                                            strBody += "<OBJECT   CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
-                                            strBody += "<param name=\"fileName\" value=\"\">";
-                                            strBody += "<param name=\"animationatStart\" value=\"false\">";
-                                            strBody += "<param name=\"transparentatStart\" value=\"true\">";
-                                            strBody += "<param name=\"autoStart\" value=\"false\">";
-                                            strBody += "<param name=\"showControls\" value=\"true\">";
-                                            strBody += "<param name=\"Volume\" value=\"-300\">";
-                                            strBody += "<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=0 showcontrols=1 volume=-300>";
-                                            strBody += "</OBJECT>";
-                                            strBody += "</td>";
-                                        } else {
-                                            // Neu la video thì show window media lên
-                                            ext = body.substring(body.length() - 3);
-                                            if (ext.equals("mp4")) {
-                                                result += "<object  classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
-                                                strBody += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
-                                                strBody += "<param name=\"salign\" value=\"lt\" />";
-                                                strBody += "<param name=\"quality\" value=\"high\" />";
-                                                strBody += "<param name=\"scale\" value=\"noscale\" />";
-                                                strBody += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
-                                                strBody += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
-                                                strBody += "</object>";
-                                            } else {
-                                                strBody = "<td>" + body + "</td>";
-                                            }
-                                        }
 
+                                // show body
+                                String strBody = "";
+                                // Neu la image thì body la link image --> show image lên
+                                if (type.equals("img")) {
+                                    strBody = "<tr><td valign=\"bottom\"><a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\"><img src='" + body + "' width=\"150\" align=\"left\"/></a></td></tr>";
+                                    // Neu la music thì show window media lên
+                                } else if (type.equals("ms")) {
+                                    strBody += "<tr><td>";
+                                    strBody += "<OBJECT   CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
+                                    strBody += "<param name=\"fileName\" value=\"\">";
+                                    strBody += "<param name=\"animationatStart\" value=\"false\">";
+                                    strBody += "<param name=\"transparentatStart\" value=\"true\">";
+                                    strBody += "<param name=\"autoStart\" value=\"false\">";
+                                    strBody += "<param name=\"showControls\" value=\"true\">";
+                                    strBody += "<param name=\"Volume\" value=\"-300\">";
+                                    strBody += "<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=0 showcontrols=1 volume=-300>";
+                                    strBody += "</OBJECT>";
+                                    strBody += "</td></tr>";
+
+                                } else if (type.equals("video")) {
+                                    // Neu la video thì show window media lên
+                                    String BTViewMediaId = "BTViewMediaId" + i;
+                                    String BTCloseMediaId = "BTCloseMediaId" + i;
+                                    String mediaId = "MediaPlayer" + i;
+                                    strBody += "<tr><td><input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
+                                    strBody += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" />";
+                                    strBody += "</td></tr>";
+
+                                    strBody += "<tr><td>";
+                                    strBody += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
+                                    strBody += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
+                                    strBody += "<param name=\"salign\" value=\"lt\" />";
+                                    strBody += "<param name=\"quality\" value=\"high\" />";
+                                    strBody += "<param name=\"scale\" value=\"noscale\" />";
+                                    strBody += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
+                                    strBody += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
+                                    strBody += "</object>";
+                                    strBody += "</td></tr>";
+                                } else { // còn lại là rao vặt + news
+                                    if (highlightBody != null && !highlightBody.isEmpty()) {
+                                        body = highlightBody.get(0);
+                                    } else {
+                                        if (body.length() > 500) {
+                                            body = body.substring(0, 500) + "...";
+                                        }
                                     }
+                                    strBody = "<tr><td>" + body + "</td></tr>";
                                 }
 
-                                result += "<tr>";
                                 result += strBody;
-                                result += "</tr>";
 
                                 result += "<tr>";
                                 result += "<td colspan='2'>";
@@ -227,7 +273,7 @@
                         }
                     }
                     // End get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -263,7 +309,7 @@
                         }
                     }
                     // End get Facet
-%>
+        %>
 
 
         <div id="wrap_left" align="center">
