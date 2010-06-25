@@ -179,7 +179,9 @@
                                 String addBookmark = "addBookmark" + i;
                                 String nameBookmark = "nameBookmark" + i;
                                 String hdIdValue ="hdIdValue"+i;
-                                
+
+                                // START Tracking
+
                                 result += "<tr><td>";
                                 result += "<input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
                                 result += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" /></td>";
@@ -187,10 +189,7 @@
 
                                 result += "<tr><td>";
 
-
-                                // START Tracking
-                                result += "<span id='Tracking'>";
-                                result += "</span>";
+                                result += "<span id='Tracking'></span>";
 
                                 result += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
                                 result += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
@@ -200,6 +199,8 @@
                                 result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
                                 result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
                                 result += "</object>";
+
+                                result += "</td></tr>";
 
         %>
         <script type="text/javascript">
