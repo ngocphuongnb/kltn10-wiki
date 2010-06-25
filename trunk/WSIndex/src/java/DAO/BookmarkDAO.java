@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DAO;
 
 import DTO.BookmarkDTO;
@@ -12,6 +11,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author tuandom
@@ -34,6 +36,13 @@ public class BookmarkDAO {
             page.setDocId(rs.getString("docid"));
             page.setSearchType(rs.getInt("searchtype"));
             page.setBookmarkName(rs.getString("bookmark_name"));
+
+            Date d = new Date();
+            d = rs.getDate("date_created");
+            Calendar cl = Calendar.getInstance();
+            cl.setTime(d);
+            page.setDate_create(cl);
+
             list.add(page);
         }
 
@@ -57,5 +66,4 @@ public class BookmarkDAO {
         cn.close();
         return iCount;
     }
-
 }
