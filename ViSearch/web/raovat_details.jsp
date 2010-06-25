@@ -23,9 +23,11 @@
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
 
                 $("#dialog").dialog("destroy");
+
                 var tips = $(".validateTips");
                 var name = $("#nameBookmark");
 
+                //alert("priority.val()");
                 function updateTips(t) {
                     tips
                     .text(t)
@@ -49,7 +51,7 @@
 
                 $("#addBookmark").dialog({
                     autoOpen: false,
-                    height: 300,
+                    height: 250,
                     width: 350,
                     modal: true,
                     buttons: {
@@ -65,10 +67,13 @@
                                 var docID = $("#hdIdValue").attr("value");
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#nameBookmark").attr("value");
+                                var priority = $("#addBookmark input:radio:checked").val();
+                                //alert(priority);
                                 //alert(keySearch);
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=2";
+                                Url += "&Priority=" + priority;
                                 $("#Bookmark").load(encodeURI(Url));
                                 $(this).dialog('close');
                             }
@@ -123,7 +128,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -197,7 +202,7 @@
                     }
 
                     //get SolrDocumentList
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -223,12 +228,12 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <%
                     // Get Facet
 
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -272,6 +277,10 @@
                                     <fieldset>
                                         <label for="name">Tên bookmark</label>
                                         <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                        <input type="radio" name="priority" id="private" value="0"/>
+                                        <label for="private">Riêng tư</label>
+                                        <input type="radio" name="priority" id="public" value="1" checked/>
+                                        <label for="public">Cộng đồng</label>
                                     </fieldset>
                                 </form>
                             </div>
