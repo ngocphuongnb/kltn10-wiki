@@ -88,11 +88,11 @@
 <message name="SaveImageResponse">
 <part name="parameters" element="tns:SaveImageResponse" />
 </message>
-<message name="IndexDataBookmark">
-<part name="parameters" element="tns:IndexDataBookmark" />
+<message name="IndexDataLocation">
+<part name="parameters" element="tns:IndexDataLocation" />
 </message>
-<message name="IndexDataBookmarkResponse">
-<part name="parameters" element="tns:IndexDataBookmarkResponse" />
+<message name="IndexDataLocationResponse">
+<part name="parameters" element="tns:IndexDataLocationResponse" />
 </message>
 <portType name="WSIndex">
 <operation name="SyncDataWiki">
@@ -151,9 +151,9 @@
 <input wsam:Action="http://Index/WSIndex/SaveImageRequest" message="tns:SaveImage" />
 <output wsam:Action="http://Index/WSIndex/SaveImageResponse" message="tns:SaveImageResponse" />
 </operation>
-<operation name="IndexDataBookmark">
-<input wsam:Action="http://Index/WSIndex/IndexDataBookmarkRequest" message="tns:IndexDataBookmark" />
-<output wsam:Action="http://Index/WSIndex/IndexDataBookmarkResponse" message="tns:IndexDataBookmarkResponse" />
+<operation name="IndexDataLocation">
+<input wsam:Action="http://Index/WSIndex/IndexDataLocationRequest" message="tns:IndexDataLocation" />
+<output wsam:Action="http://Index/WSIndex/IndexDataLocationResponse" message="tns:IndexDataLocationResponse" />
 </operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
@@ -284,7 +284,7 @@
 <soap:body use="literal" />
 </output>
 </operation>
-<operation name="IndexDataBookmark">
+<operation name="IndexDataLocation">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />
