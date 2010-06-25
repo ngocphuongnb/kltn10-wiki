@@ -660,7 +660,7 @@ public class MySolrJ {
 
             doc.addField("body", pagedto.getUrl());
 
-            doc.addField("category", "H�nh ?nh");
+            doc.addField("category", "Hình ảnh");
             doc.addField("title", pagedto.getSite_title());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
 
