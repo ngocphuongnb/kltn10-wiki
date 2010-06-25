@@ -196,7 +196,7 @@
                                 }
 
                                 result += "<tr>";
-                                result += "<td><a href='" + url + "' target=\"_blank\">><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
+                                result += "<td><a href='" + url + "' target=\"_blank\"><img src=\"" + url + "\" width=\"400\" align=\"left\" /></a></td>";
                                 result += "</tr>";
 
                                 result += "<tr>";
