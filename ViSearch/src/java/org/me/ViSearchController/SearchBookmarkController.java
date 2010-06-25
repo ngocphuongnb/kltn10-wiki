@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -29,6 +30,7 @@ import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.me.SolrConnection.SolrJConnection;
@@ -63,6 +65,7 @@ public class SearchBookmarkController extends HttpServlet {
         long numRow = 0;
         String sPaging = "/ViSearch/SearchBookmarkController?";
         int sortedType = 0;
+        List<FacetField> listFacet = null;
 
         try {
             if (request.getParameter("currentpage") != null) {
@@ -84,6 +87,7 @@ public class SearchBookmarkController extends HttpServlet {
                 }
                 rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                 docs = rsp.getResults();
+                listFacet = rsp.getFacetFields();
             }
 
             request.setAttribute("KeySearch", keySearch);
@@ -101,6 +105,7 @@ public class SearchBookmarkController extends HttpServlet {
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
+                request.setAttribute("ListFacet", listFacet);
             }
             String url = "/showBookmark.jsp";
             ServletContext sc = getServletContext();
@@ -123,6 +128,13 @@ public class SearchBookmarkController extends HttpServlet {
             query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8 || "
                     + "bookmarkname_unsigned:(\"" + keySearch + "\")^9 || bookmarkname_unsigned:(" + keySearch + ")^6";
         }
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
 
         solrQuery.setQuery(query);
         solrQuery.setHighlight(true);
