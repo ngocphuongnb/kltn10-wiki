@@ -32,24 +32,24 @@ public class SaveImageFromURL {
             list = Ibus.getDataList(start, 100);
             for(int i=0; i < list.size(); i++){
                 String filename = Integer.toString(list.get(i).getId());
-                String localImage = "C:\\"+filename+".jpg";
+                String localImage = "C:/"+filename+".jpg";
                 save(list.get(i).getUrl(), localImage);
                 Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
             }
             start += 100;
         }
     }
-    private void save(String ftpServer,
+    private void save(String strLink,
             String destination) throws MalformedURLException,
             IOException {
-        if (ftpServer != null && destination != null) {
+        if (strLink != null && destination != null) {
             
             // check for authentication else assume its anonymous access.
 
             BufferedInputStream bis = null;
             BufferedOutputStream bos = null;
             try {
-                URL url = new URL(ftpServer);
+                URL url = new URL(strLink);
                 URLConnection urlc = url.openConnection();
 
                 bis = new BufferedInputStream(urlc.getInputStream());

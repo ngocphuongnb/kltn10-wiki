@@ -612,7 +612,7 @@ public class MySolrJ {
             docs.add(doc);
             listint.add(pagedto.getId());
         }
-        SolrServer server = getSolrServer(solrServer); // solrServer = video
+        SolrServer server = getSolrServer(solrServer); // solrServer = bookmark
         //server.add(docs);
         // server.commit();
         UpdateRequest req = new UpdateRequest();
