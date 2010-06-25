@@ -4,6 +4,10 @@
 
 <xs:element name="IndexDataAllResponse" type="tns:IndexDataAllResponse" />
 
+<xs:element name="IndexDataBookmark" type="tns:IndexDataBookmark" />
+
+<xs:element name="IndexDataBookmarkResponse" type="tns:IndexDataBookmarkResponse" />
+
 <xs:element name="IndexDataImage" type="tns:IndexDataImage" />
 
 <xs:element name="IndexDataImageResponse" type="tns:IndexDataImageResponse" />
@@ -307,6 +311,19 @@
 </xs:complexType>
 
 <xs:complexType name="IndexDataVideoResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataBookmark">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataBookmarkResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>
