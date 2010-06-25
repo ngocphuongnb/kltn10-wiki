@@ -2,19 +2,30 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DTO;
+
+import java.util.Calendar;
 
 /**
  *
  * @author tuandom
  */
 public class BookmarkDTO {
+
     private int _id;
     private int _memberId;
     private String _docId;
     private int _searchType;
     private String _bookmarkName;
+    private Calendar _date_create;
+
+    public Calendar getDate_create() {
+        return _date_create;
+    }
+
+    public void setDate_create(Calendar _date_create) {
+        this._date_create = _date_create;
+    }
 
     public String getBookmarkName() {
         return _bookmarkName;
@@ -55,6 +66,4 @@ public class BookmarkDTO {
     public void setSearchType(int _searchType) {
         this._searchType = _searchType;
     }
-
-    
 }
