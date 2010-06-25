@@ -180,7 +180,7 @@
                                     } else if (fieldText.equals("6")) {
                                         showFieldText = "Tin tức";
                                     }
-                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + showFieldText + "</a>";
+                                    facet += "<a href = 'SearchBookmarkController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "'>" + showFieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
