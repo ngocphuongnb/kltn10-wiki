@@ -112,7 +112,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -122,7 +122,7 @@
                     String strpaging = "";
                     String search_stats = "";
                     String result = "";
-                    String addBM="";
+                    String addBM = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
                         QTime = request.getAttribute("QTime").toString();
@@ -189,9 +189,9 @@
                                 String spanBookmark = "spanBookmark" + i;
                                 String addBookmark = "addBookmark" + i;
                                 String nameBookmark = "nameBookmark" + i;
-                                String hdIdValue ="hdIdValue"+i;
+                                String hdIdValue = "hdIdValue" + i;
 
-                                
+
                                 // Start Phan tracking
                                 result += "<span id='Tracking'>";
                                 result += "</span>";
@@ -227,7 +227,7 @@
 
                 $("#dialog").dialog("destroy");
                 var tips = $(".validateTips");
-               var name = $("#<%=nameBookmark%>");
+                var name = $("#<%=nameBookmark%>");
 
                 function updateTips(t) {
                     tips
@@ -267,10 +267,12 @@
                                 var docID = $("#<%=hdIdValue%>").attr("value");
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#<%=nameBookmark%>").attr("value");
+                                var priority = $("#<%=addBookmark%> input:radio:checked").val();
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=3";
-                                 alert("Đã thêm vào Bookmark");
+                                Url += "&Priority=" + priority;
+                                alert("Đã thêm vào Bookmark");
                                 $("#<%=spanBookmark%>").load(encodeURI(Url));
                                 $(this).dialog('close');
                             }
@@ -299,13 +301,17 @@
                                             + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
                                 }
 
-                                
+
                                 addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
                                 addBM += "<p class=\"validateTips\"/>";
-                                addBM += "<form name=\"frmBm"+i+"\">";
+                                addBM += "<form name=\"frmBm" + i + "\">";
                                 addBM += " <fieldset>";
                                 addBM += "  <label for=\"name\">Tên bookmark</label>";
                                 addBM += "  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />";
+                                addBM += "<input type=\"radio\" name=\"priority\" id=\"private\" value=\"0\"/>";
+                                addBM += "<label for=\"private\">Riêng tư</label>";
+                                addBM += "<input type=\"radio\" name=\"priority\" id=\"public\" value=\"1\" checked/>";
+                                addBM += "<label for=\"public\">Chia sẻ</label>";
                                 addBM += " </fieldset>";
                                 addBM += " </form>";
                                 addBM += "</div>";
@@ -335,7 +341,7 @@
                                 result += "<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
                                 result += "</td>";
 
-                              
+
                                 result += "</tr>";
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
@@ -355,7 +361,7 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -398,7 +404,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
 
         <div id="wrap_left" align="center">
@@ -439,7 +445,7 @@
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
-                        <% out.print(addBM); %>
+                            <% out.print(addBM);%>
 
                             <table>
 

@@ -25,14 +25,16 @@
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
-        <script type="text/javascript">
+         <script type="text/javascript">
             $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
 
                 $("#dialog").dialog("destroy");
+
                 var tips = $(".validateTips");
                 var name = $("#nameBookmark");
 
+                //alert("priority.val()");
                 function updateTips(t) {
                     tips
                     .text(t)
@@ -56,7 +58,7 @@
 
                 $("#addBookmark").dialog({
                     autoOpen: false,
-                    height: 300,
+                    height: 250,
                     width: 350,
                     modal: true,
                     buttons: {
@@ -72,9 +74,11 @@
                                 var docID = $("#hdIdValue").attr("value");
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#nameBookmark").attr("value");
+                                var priority = $("#addBookmark input:radio:checked").val();
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=4";
+                                Url += "&Priority=" + priority;
                                 alert("Đã thêm vào Bookmark");
                                 $("#Bookmark").load(encodeURI(Url));
                                 $(this).dialog('close');
@@ -89,6 +93,7 @@
                 .click(function() {
                     $('#addBookmark').dialog('open');
                 });
+
             });
 
             $(document).ready(function(){
@@ -116,13 +121,6 @@
                     window.location = url;
                 }
             }
-            function SeachPVDC(strQuery){
-                var R = document.getElementById("divPVTC_R").value;
-                var  C = document.getElementById("divPVTC_C").value;
-                strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchImageController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
-                window.location = url;
-            }
             function showPVTC(){
                 document.getElementById("divPVTC").className="display";
             }
@@ -141,7 +139,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -171,11 +169,11 @@
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("site_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String url="";
+                                String url = "";
                                 //if(listdocs.get(i).getFieldValue("url_local")!=null)
-                               //     url = (listdocs.get(i).getFieldValue("url_local")).toString();
-                               // else
-                                    url = (listdocs.get(i).getFieldValue("url")).toString();
+                                //     url = (listdocs.get(i).getFieldValue("url_local")).toString();
+                                // else
+                                url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String website = (listdocs.get(i).getFieldValue("website")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
@@ -208,10 +206,8 @@
                                 result += "</tr>";
 
                                 if (session.getAttribute("Member") != null) {
-                                    result += "<span id='Bookmark'>"
-                                            + "<input id='hdIdValue' type='hidden' value='" + id + "'>";
-                                    result += "<tr><td><input id='btBookmark' type='button' value='Thêm vào bookmark'></td></tr>";
-                                    result += "</span>";
+                                    result += "<input id='hdIdValue' type='hidden' value='" + id + "'>";
+                                    result += "<tr><td><span id='Bookmark'><input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
                                 }
                                 result += "<tr>";
                                 result += "<td>Loại: " + size + "Kb - " + fileType + "</td>";
@@ -231,8 +227,8 @@
                                 result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";
                                 result += "</tr>";
-                                
-                                
+
+
                                 result += "<tr><td>&nbsp;</td></tr>";
                                 result += "</table>";
                             }
@@ -241,7 +237,7 @@
 
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -275,7 +271,7 @@
                     }
 
                     // End get Facet
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -297,7 +293,7 @@
                         result2 += "</div>";
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -333,16 +329,20 @@
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
-                             <div id="addBookmark" title="Thêm bookmark">
+                            <div id="addBookmark" title="Thêm bookmark">
                                 <p class="validateTips"/>
-                                <form action="">
+                                <form>
                                     <fieldset>
                                         <label for="name">Tên bookmark</label>
                                         <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                        <input type="radio" name="priority" id="private" value="0"/>
+                                        <label for="private">Riêng tư</label>
+                                        <input type="radio" name="priority" id="public" value="1" checked/>
+                                        <label for="public">Chia sẻ</label>
                                     </fieldset>
                                 </form>
                             </div>
-                            
+
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
