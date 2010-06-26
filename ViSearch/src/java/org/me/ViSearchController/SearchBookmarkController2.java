@@ -47,7 +47,7 @@ import org.me.dto.MemberDTO;
  *
  * @author tuandom
  */
-public class SearchBookmarkController extends HttpServlet {
+public class SearchBookmarkController2 extends HttpServlet {
 
     SolrServer server;
 

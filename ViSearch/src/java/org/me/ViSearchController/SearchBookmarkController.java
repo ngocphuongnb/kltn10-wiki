@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -24,8 +27,6 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -34,6 +35,7 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
@@ -68,7 +70,11 @@ public class SearchBookmarkController extends HttpServlet {
         String sPaging = "/ViSearch/SearchBookmarkController?";
         int sortedType = 0;
         List<FacetField> listFacet = null;
-
+        int type = -1;
+        Map<String, Map<String, List<String>>> highLight = null;
+        if (request.getParameter("type") != null) {
+            type = Integer.parseInt(request.getParameter("type"));
+        }
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -77,7 +83,7 @@ public class SearchBookmarkController extends HttpServlet {
             int start = (currentpage - 1) * pagesize;
             HttpSession session = request.getSession();
             MemberDTO mem;
-            if (request.getParameter("KeySearch") != null) {
+            if (request.getParameter("KeySearch") != null || type != -1) {
                 QueryResponse rsp;
                 keySearch = request.getParameter("KeySearch");
                 request.setAttribute("KeySearch", keySearch);
@@ -90,12 +96,60 @@ public class SearchBookmarkController extends HttpServlet {
                         request.setAttribute("Collation", sCollation);
                     }
                 }
+                switch (type) {
+                    case 0:
+                        if (session.getAttribute("Member") != null) {
+                            mem = (MemberDTO) session.getAttribute("Member");
+                            rsp = OnSearchSubmit0(keySearch, filter, mem.getId(), start, pagesize, sortedType);
+                            docs = rsp.getResults();
+                            highLight = rsp.getHighlighting();
+                            if (highLight != null) {
+                                request.setAttribute("HighLight", highLight);
+                            }
+                            listFacet = rsp.getFacetFields();
+                        }
+                        break;
+                    case 1:
+                        rsp = OnMLT(keySearch, start, pagesize);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        listFacet = rsp.getFacetFields();
+                        break;
+                    case 2:
+                        String qf = "";
+                        String qv = "";
+                        if (request.getParameter("qf") != null) {
+                            qf = request.getParameter("qf");
+                            qv = request.getParameter("qv");
+                            sPaging += "&qf=" + qf;
+                            sPaging += "&qv=" + qv;
+                        }
+                        String facetNameValue = " +(" + qf + ":" + qv + ")";
+                        if (qf.equals("searchtype")) {
+                            facetNameValue = " +(" + qf + ":\"" + qv + "\")";
+                        }
+                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        String field = "";
+                        sPaging += "&type=4";
+                        if (request.getParameter("f") != null) {
+                            field = request.getParameter("f");
+                        }
+                        rsp = OnSearchSubmitByField(field, start, pagesize);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
 
-                if (session.getAttribute("Member") != null) {
-                    mem = (MemberDTO) session.getAttribute("Member");
-                    rsp = OnSearchSubmit(keySearch, filter, mem.getId(), start, pagesize, sortedType);
-                    docs = rsp.getResults();
-                    listFacet = rsp.getFacetFields();
+                        break;
+                    default:
+                        break;
                 }
             } else {
                 if (session.getAttribute("Member") != null) {
@@ -120,6 +174,7 @@ public class SearchBookmarkController extends HttpServlet {
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
                 request.setAttribute("ListFacet", listFacet);
+                request.setAttribute("HighLight", highLight);
             }
             String url = "/showBookmark.jsp";
             ServletContext sc = getServletContext();
@@ -132,7 +187,7 @@ public class SearchBookmarkController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, String strFilter, int memberid, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmit0(String keySearch, String strFilter, int memberid, int start, int pagesize, int sortedType) throws SolrServerException {
 
         String[] arrFilter = strFilter.split("_");
 
@@ -182,6 +237,123 @@ public class SearchBookmarkController extends HttpServlet {
         return rsp;
     }
 
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+        String query = "+(";
+        if (MyString.CheckSigned(keySearch)) {
+            query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8";
+        } else {
+            query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8 || "
+                    + "bookmarkname_unsigned:(\"" + keySearch + "\")^9 || bookmarkname_unsigned:(" + keySearch + ")^6";
+        }
+        query += ")";
+        query += facetNameValue;
+
+
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("bookmarkname");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        SolrQuery query = new SolrQuery();
+
+        // Facet
+        query.setFacet(true);
+        query.addFacetField("bookmarkname");
+        query.setFacetLimit(10);
+        query.setFacetMinCount(1);
+        // End Facet
+
+        query.setQueryType("/" + MoreLikeThisParams.MLT);
+        query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
+        query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
+        query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "bookmarkname");
+
+        query.setQuery("bookmarkname:" + MyString.cleanQueryTerm(q));
+        //query.setQuery(ClientUtils.escapeQueryChars(q));
+        query.setStart(start);
+        query.setRows(pagesize);
+        query.setHighlight(true);
+        query.addHighlightField("bookmarkname");
+        query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        query.setHighlightSimplePost("</em>");
+        query.setHighlightRequireFieldMatch(true);
+        QueryResponse rsp = server.query(query);
+        return rsp;
+    }
+
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        if (MyString.CheckSigned(keySearch)) {
+            query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8";
+        } else {
+            query += "bookmarkname:(\"" + keySearch + "\")^10 || bookmarkname:(" + keySearch + ")^8 || "
+                    + "bookmarkname_unsigned:(\"" + keySearch + "\")^9 || bookmarkname_unsigned:(" + keySearch + ")^6";
+        }
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setQuery(query);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("bookmarkname");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private QueryResponse OnSearchSubmitByField(String field, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        query = "searchtype:" + field;
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setQuery(query);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("bookmarkname");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
     QueryResponse OnSearchSubmitByMember(int id, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "memberid:" + id;
@@ -193,11 +365,11 @@ public class SearchBookmarkController extends HttpServlet {
         return rsp;
     }
 
-    String OnCheckSpelling(String q) throws SolrServerException, URIException, HttpException, IOException {
+    String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/bookmark/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = "http://localhost:8983/solr/image/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
