@@ -26,6 +26,9 @@
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
 
         <script language="javascript">
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=3");
+            });
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
