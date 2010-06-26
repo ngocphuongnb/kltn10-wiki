@@ -138,7 +138,7 @@
 
 
                             result += "<tr>";
-                            result += "<td>Chuyên mục: " + "<a href = '"+link1+"'>" + category + "</a></td>";
+                            result += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
                             result += "</tr>";
 
                             result += "<tr>";
@@ -163,7 +163,7 @@
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -212,7 +212,78 @@
                     }
 
                     // End get Facet
-%>
+        %>
+        <%
+                    //START get Bookmark by user
+                    SolrDocumentList docsUser = new SolrDocumentList();
+                    String result2 = null;
+                    if (request.getAttribute("docsUser") != null) {
+                        docsUser = (SolrDocumentList) request.getAttribute("docsUser");
+
+
+                        for (int i = 0; i < docsUser.size(); i++) {
+                            result += "<table style=\"font-size:13px\">";
+
+                            // Lay noi dung cua moi field
+                            String id = (listdocs.get(i).getFirstValue("id")).toString();
+                            String memberId = (listdocs.get(i).getFirstValue("memberid")).toString();
+                            String docid = (listdocs.get(i).getFieldValue("docid")).toString();
+                            String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
+                            String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
+                            Date date_created = (Date) (listdocs.get(i).getFieldValue("date_created"));
+                            String url = "";
+
+
+                            String link = "";
+                            String link1 = "";
+                            String category = "";
+                            if (searchtype.equals("1")) {
+                                link = "DetailWikiController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=1";
+                                category = "Wikipedia";
+                            } else if (searchtype.equals("2")) {
+                                link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=2";
+                                category = "Rao Vặt";
+                            } else if (searchtype.equals("3")) {
+                                link = "SearchMusicController?type=0&sp=1&f=8&KeySearch=" + docid;
+                                link1 = "SearchBookmarkController?type=4&f=3";
+                                category = "Nhạc";
+                            } else if (searchtype.equals("4")) {
+                                link = "DetailImageController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=4";
+                                category = "Hình ảnh";
+                            } else if (searchtype.equals("5")) {
+                                link = "SearchVideoController?type=0&more=detail&KeySearch=" + docid;
+                                link1 = "SearchBookmarkController?type=4&f=5";
+                                category = "Video";
+                            } else if (searchtype.equals("6")) {
+                                link = "DetailNewsController?id=" + docid + "&KeySearch=";
+                                link1 = "SearchBookmarkController?type=4&f=6";
+                                category = "Tin tức";
+                            }
+
+                            result2 += "<tr>";
+                            result2 += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
+                            result2 += "</tr>";
+
+
+                            result2 += "<tr>";
+                            result2 += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
+                            result2 += "</tr>";
+
+                            result2 += "<tr>";
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                            result2 += "<td>Ngày tạo: " + sdf.format(date_created) + "</td>";
+                            result2 += "</tr>";
+
+                            result2 += "<tr><td>&nbsp;</td></tr>";
+                            result2 += "</table>";
+                        }
+                    }
+
+                    //END get Bookmark by user
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -262,7 +333,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr><form action="javascript:CheckInput();" method="GET">
                                     <td>
-                                        <input type="text" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {
+                                        <input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {
                                                         out.print(strQuery);
                                                     }%>"/>
                                         <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
@@ -273,6 +344,11 @@
                         <td valign="top" id="content">
                             <% out.print(result);%>
                         </td>
+                    <tr>
+                        <td>
+                            <table><tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr></table>
+                        </td>
+                    </tr>
                     </tr>
                 </table>
                 </td>
