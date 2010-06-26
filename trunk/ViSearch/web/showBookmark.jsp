@@ -28,6 +28,20 @@
         <script type="text/javascript">
             function CheckInput()
             {
+                var filter = document.getElementsByName("filter[]");
+                var arrcheck = new Array;
+                var idem = 0;
+                for (i = 0; i < filter.length; i++)
+                    if( filter[i].checked == true){
+                        arrcheck[idem] = filter[i].value;
+                        idem ++;
+                    }
+
+                if(arrcheck.length == 0)
+                {
+                    alert("Vui lòng chọn bộ lọc tìm kiếm bookmark");
+                    return false;
+                }
                 var keysearch = document.getElementById('txtSearchBM').value;
                 if(keysearch == "")
                     return;
@@ -35,8 +49,28 @@
                 {
                     var url = "SearchBookmarkController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
+                    url += "&Filter=" + arrcheck.join("_");
                     window.location = url;
                 }
+            }
+
+            function OnFilter(filter)
+            {
+                $(function(){
+                    var arr = filter.split("_");
+                    var i;
+                    for(i=0; i < arr.length; i++)
+                    {
+                        if(arr[i] == "1")
+                            $('#private').attr('checked', true);
+                        else
+                            $('#private').attr('checked', false);
+                        if(arr[i] == "2")
+                            $('#public').attr('checked', true);
+                        else
+                            $('#public').attr('checked', false);
+                    }
+                });
             }
         </script>
     </head>
@@ -49,8 +83,7 @@
                     }
         %>
 
-        <%
-                    String currentPage = "/showBookmark.jsp";
+        <%                   String currentPage = "/showBookmark.jsp";
                     if (request.getQueryString() != null) {
                         currentPage = "/SearchBookmarkController?";
                         currentPage += request.getQueryString().toString();
@@ -65,8 +98,7 @@
                     // end get String query
 
         %>
-        <%
-                    //get SolrDocumentList
+        <%                  //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
                     Map<String, Map<String, List<String>>> highLight = null;
                     int numrow = 0;
@@ -163,7 +195,7 @@
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -212,6 +244,14 @@
                     }
 
                     // End get Facet
+%>
+
+        <%
+                    if (request.getAttribute("Filter") != null) {
+                        out.print("<script type='text/javascript'>");
+                        out.print("OnFilter('" + request.getAttribute("Filter").toString() + "')");
+                        out.print("</script>");
+                    }
         %>
         <%
                     //START get Bookmark by user
@@ -333,10 +373,21 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr><form action="javascript:CheckInput();" method="GET">
                                     <td>
-                                        <input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" value="<% if (strQuery != null) {
-                                                        out.print(strQuery);
-                                                    }%>"/>
-                                        <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
+                                        <form frmSearch action="javascript:CheckInput()">
+                                               <input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
+                                                             out.print(strQuery);
+                                                         }%>"/>
+                                            <input id="hfKeySearch" type="hidden" value="<% if (strQuery != null) {
+                                                            out.print(strQuery);
+                                                        }%>"/>
+                                            <input type="button" value="Tìm kiếm" name="btSearchBM" onclick="CheckInput();"/>
+                                            <fieldset>
+                                                <legend>Tìm kiếm trên:</legend>
+                                                <input type="checkbox" name="filter[]" value="1" id="private" checked/> bookmark cá nhân
+                                                <input type="checkbox" name="filter[]" value="2" id="public"/> bookmark chia sẻ
+                                            </fieldset>
+                                            <hr/>
+                                        </form>
                                     </td>
                                 </form>
                     </tr>
