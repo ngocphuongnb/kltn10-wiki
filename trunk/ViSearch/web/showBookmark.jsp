@@ -131,7 +131,7 @@
                                 highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                 List<String> HLbookmarkname = highLight.get(id).get("bookmarkname");
                                 if (HLbookmarkname != null && !HLbookmarkname.isEmpty()) {
-                                    bookmarkname = HLbookmarkname.get(0) + "...";
+                                    bookmarkname = HLbookmarkname.get(0);
                                 }
                             }
 
