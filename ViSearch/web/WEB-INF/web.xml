@@ -96,6 +96,10 @@
         <servlet-name>SearchBookmarkController</servlet-name>
         <servlet-class>org.me.ViSearchController.SearchBookmarkController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuickViewController</servlet-name>
+        <servlet-class>org.me.ViSearchController.QuickViewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -191,6 +195,10 @@
     <servlet-mapping>
         <servlet-name>SearchBookmarkController</servlet-name>
         <url-pattern>/SearchBookmarkController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuickViewController</servlet-name>
+        <url-pattern>/QuickViewController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
