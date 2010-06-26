@@ -18,7 +18,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Music - ViSearch</title>
+        <title>ViSearch - Music</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
@@ -191,7 +191,6 @@
                                 String nameBookmark = "nameBookmark" + i;
                                 String hdIdValue = "hdIdValue" + i;
 
-
                                 // Start Phan tracking
                                 result.append("<span id='Tracking'>");
                                 result.append("</span>");
@@ -218,8 +217,6 @@
                                         //  END Phan tracking
 
                                         //  START Bookmark
-
-
         %>
         <script type="text/javascript">
             $(function() {
