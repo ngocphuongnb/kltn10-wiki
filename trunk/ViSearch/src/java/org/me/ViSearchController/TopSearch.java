@@ -53,6 +53,8 @@ public class TopSearch extends HttpServlet {
                         break;
                     case 6:
                         sController = "SearchNewsController";
+                        case 7:
+                        sController = "SearchAllController";
                         break;
                     default:
                         break;
