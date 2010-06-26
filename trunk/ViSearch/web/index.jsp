@@ -18,6 +18,7 @@
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
 
         <script type="text/javascript">
             $(function() {
@@ -170,6 +171,7 @@
                     String search_stats = "";
                     String result = "";
                     String QTime;
+                    String addBM = "";
                     if (request.getAttribute("QTime") != null) {
                         QTime = request.getAttribute("QTime").toString();
                         if (request.getAttribute("Docs") != null) {
@@ -190,7 +192,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -224,7 +226,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -270,7 +272,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -322,7 +324,7 @@
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
-
+                        
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
@@ -389,16 +391,123 @@
                                                         out.print("<td>");
                                                         out.print("<a href=\"javascript:MoreLikeThis('" + URLEncoder.encode(title, "UTF-8") + "');\">Trang tương tự...</a>");
                                                         out.print("</td>");
+
+                                                        //  START Bookmark
+                                                        String btBookmark = "btBookmark" + i;
+                                                        String spanBookmark = "spanBookmark" + i;
+                                                        String addBookmark = "addBookmark" + i;
+                                                        String nameBookmark = "nameBookmark" + i;
+                                                        String hdIdValue = "hdIdValue" + i;
+
+                                        %>
+                                        <script type="text/javascript">
+                                            $(function() {
+                                                $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
+
+                                                $("#dialog").dialog("destroy");
+                                                var tips = $(".validateTips");
+                                                var name = $("#<%=nameBookmark%>");
+
+                                                function updateTips(t) {
+                                                    tips
+                                                    .text(t)
+                                                    .addClass('ui-state-highlight');
+                                                    setTimeout(function() {
+                                                        tips.removeClass('ui-state-highlight', 1500);
+                                                    }, 500);
+                                                }
+
+                                                function checkLength(o) {
+
+                                                    if ( o.val().length == 0) {
+                                                        o.addClass('ui-state-error');
+                                                        updateTips("Bạn chưa nhập tên bookmark");
+                                                        return false;
+                                                    } else {
+                                                        return true;
+                                                    }
+                                                }
+
+                                                $('#<%=addBookmark%>').dialog({
+                                                    autoOpen: false,
+                                                    height: 300,
+                                                    width: 350,
+                                                    modal: true,
+                                                    buttons: {
+                                                        'Đóng': function() {
+                                                            $(this).dialog('close');
+                                                        },
+                                                        'Thêm': function() {
+                                                            var bValid = true;
+                                                            tips.removeClass('ui-state-error');
+                                                            bValid = checkLength(name);
+                                                            if(bValid)
+                                                            {
+                                                                var docID = $("#<%=hdIdValue%>").attr("value");
+                                                                var keySearch = $("#hfKeySearch").attr("value");
+                                                                var nameBookmark = $("#<%=nameBookmark%>").attr("value");
+                                                                var priority = $("#<%=addBookmark%> input:radio:checked").val();
+                                                                var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                                                Url += "&DocID=" + docID;
+                                                                Url += "&SearchType=1";
+                                                                Url += "&Priority=" + priority;
+                                                                alert("Đã thêm vào Bookmark");
+                                                                $("#<%=spanBookmark%>").load(encodeURI(Url));
+                                                                $(this).dialog('close');
+                                                            }
+                                                        }
+                                                    },close: function() {
+                                                        name.val('').removeClass('ui-state-error');
+                                                    }
+                                                });
+                                                $('#<%=btBookmark%>')
+                                                .button()
+                                                .click(function() {
+                                                    $('#<%=addBookmark%>').dialog('open');
+                                                });
+                                            });
+
+                                            $(document).ready(function(){
+                                                $("#tbTopSearch").load("TopSearch?SearchType=1");
+                                            });
+                                        </script>
+                                        <%
+
+
+                                                        String spBM="";
+                                                        if (session.getAttribute("Member") != null) {
+                                                            spBM += "<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>"
+                                                                    + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
+                                                        }
+                                                            out.print(spBM);
+
+                                                        addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
+                                                        addBM += "<p class=\"validateTips\"/>";
+                                                        addBM += "<form name=\"frmBm" + i + "\">";
+                                                        addBM += " <fieldset>";
+                                                        addBM += "  <label for=\"name\">Tên bookmark</label>";
+                                                        addBM += "  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />";
+                                                        addBM += "<input type=\"radio\" name=\"priority\" id=\"private\" value=\"0\"/>";
+                                                        addBM += "<label for=\"private\">Riêng tư</label>";
+                                                        addBM += "<input type=\"radio\" name=\"priority\" id=\"public\" value=\"1\" checked/>";
+                                                        addBM += "<label for=\"public\">Chia sẻ</label>";
+                                                        addBM += " </fieldset>";
+                                                        addBM += " </form>";
+                                                        addBM += "</div>";
+
+                                                        // END Bookmark
+
                                                         out.print("</tr>");
                                                         out.print("<tr><td><div class='Quickview'>Xem nhanh</div><div>" + text_raw + "</div></td></tr>");
                                                         out.print("</table><hr/>");
-                                                    }
+                    }
 
-                                                    out.print("</div>");
-                                                    out.print(result);%>
+                    out.print("</div>");
+                    out.print(result);%>
                                     </td>
                                 </tr>
                             </table>
+                                    <% out.print(addBM);%>
                         </td>
                     </tr>
 
