@@ -26,7 +26,6 @@
                 </td>
                 <td class="footer">
                     <div style="float:right"><a href="">Hướng dẫn tìm kiếm</a></div>
-                    <div style="float:right; clear:both"><a href="register.jsp">Đăng kí</a></div>
                     <div style="float:right; clear:both"><a href="#top"><img alt="" class="bt" src="images/top-32.png "/></a></div>
                 </td>
             </tr>
