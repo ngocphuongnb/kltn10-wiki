@@ -192,7 +192,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -226,7 +226,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -272,7 +272,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -324,7 +324,7 @@
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
-                        
+
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
@@ -474,12 +474,12 @@
                                         <%
 
 
-                                                        String spBM="";
+                                                        String spBM = "";
                                                         if (session.getAttribute("Member") != null) {
                                                             spBM += "<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>"
                                                                     + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
                                                         }
-                                                            out.print(spBM);
+                                                        out.print(spBM);
 
                                                         addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
                                                         addBM += "<p class=\"validateTips\"/>";
@@ -500,14 +500,14 @@
                                                         out.print("</tr>");
                                                         out.print("<tr><td><div class='Quickview'>Xem nhanh</div><div>" + text_raw + "</div></td></tr>");
                                                         out.print("</table><hr/>");
-                    }
+                                                    }
 
-                    out.print("</div>");
-                    out.print(result);%>
+                                                    out.print("</div>");
+                                                    out.print(result);%>
                                     </td>
                                 </tr>
                             </table>
-                                    <% out.print(addBM);%>
+                            <% out.print(addBM);%>
                         </td>
                     </tr>
 

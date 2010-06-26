@@ -112,7 +112,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -121,8 +121,8 @@
                     int numpage = 0;
                     String strpaging = "";
                     String search_stats = "";
-                    String result = "";
-                    String addBM = "";
+                    StringBuffer result = new StringBuffer();
+                    StringBuffer addBM = new StringBuffer();
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
                         QTime = request.getAttribute("QTime").toString();
@@ -132,11 +132,11 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchMusicController?type=0&sp=1&f=6&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchMusicController?type=0&sp=1&f=6&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
+                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
@@ -158,27 +158,27 @@
                                     }
                                 }
 
-                                result += "<tr>";
-                                result += "<td><b>" + title_hl + "</b></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td><b>" + title_hl + "</b></td>");
+                                result.append("</tr>");
 
 
-                                result += "<tr>";
-                                result += "<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + CaSi + "\"'>" + CaSi + "</a></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + CaSi + "\"'>" + CaSi + "</a></td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
-                                result += "<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + artist + "\"'>" + artist + "</a></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + artist + "\"'>" + artist + "</a></td>");
+                                result.append("</tr>");
 
 
-                                result += "<tr>";
-                                result += "<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + category + "\"'>" + category + "</a></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + category + "\"'>" + category + "</a></td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
-                                result += "<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + album + "\"'>" + album + "</a></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + album + "\"'>" + album + "</a></td>");
+                                result.append("</tr>");
 
                                 String mediaId = "MediaPlayer" + i;
                                 String lyricId = "Lyric" + i;
@@ -193,12 +193,12 @@
 
 
                                 // Start Phan tracking
-                                result += "<span id='Tracking'>";
-                                result += "</span>";
-                                result += "<tr>";
-                                result += "<td><input type=\"button\" id=\"" + btPlay + "\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />";
-                                result += "<input type=\"button\" ID=\"" + BTViewlyricId + "\" value=\"Xem lời nhạc\" onclick=\"showLyric('" + i + "');\" />";
-                                result += "<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>";
+                                result.append("<span id='Tracking'>");
+                                result.append("</span>");
+                                result.append("<tr>");
+                                result.append("<td><input type=\"button\" id=\"" + btPlay + "\" value=\"Play\" onclick=\"showMediaWindow('" + i + "');\" />");
+                                result.append("<input type=\"button\" ID=\"" + BTViewlyricId + "\" value=\"Xem lời nhạc\" onclick=\"showLyric('" + i + "');\" />");
+                                result.append("<input type=\"button\" ID=\"" + BTCloselyricId + "\" class=\"hidden\" value=\"Đóng lời nhạc\" onclick=\"hideLyric('" + i + "');\" /></td>");
 
         %>
         <script type="text/javascript">
@@ -297,54 +297,54 @@
 
 
                                 if (session.getAttribute("Member") != null) {
-                                    result += "<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>"
-                                            + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
+                                    result.append("<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>");
+                                             result.append("<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>");
                                 }
 
 
-                                addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
-                                addBM += "<p class=\"validateTips\"/>";
-                                addBM += "<form name=\"frmBm" + i + "\">";
-                                addBM += " <fieldset>";
-                                addBM += "  <label for=\"name\">Tên bookmark</label>";
-                                addBM += "  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />";
-                                addBM += "<input type=\"radio\" name=\"priority\" id=\"private\" value=\"0\"/>";
-                                addBM += "<label for=\"private\">Riêng tư</label>";
-                                addBM += "<input type=\"radio\" name=\"priority\" id=\"public\" value=\"1\" checked/>";
-                                addBM += "<label for=\"public\">Chia sẻ</label>";
-                                addBM += " </fieldset>";
-                                addBM += " </form>";
-                                addBM += "</div>";
+                                addBM.append("<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">");
+                                addBM.append("<p class=\"validateTips\"/>");
+                                addBM.append("<form name=\"frmBm" + i + "\">");
+                                addBM.append(" <fieldset>");
+                                addBM.append("  <label for=\"name\">Tên bookmark</label>");
+                                addBM.append("  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />");
+                                addBM.append("<input type=\"radio\" name=\"priority\" id=\"private\" value=\"0\"/>");
+                                addBM.append("<label for=\"private\">Riêng tư</label>");
+                                addBM.append("<input type=\"radio\" name=\"priority\" id=\"public\" value=\"1\" checked/>");
+                                addBM.append("<label for=\"public\">Chia sẻ</label>");
+                                addBM.append(" </fieldset>");
+                                addBM.append(" </form>");
+                                addBM.append("</div>");
 
                                 // END Bookmark
-                                result += "<tr><td>";
-                                result += "<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
-                                result += "<param name=\"fileName\" value=\"\">";
-                                result += "<param name=\"animationatStart\" value=\"false\">";
-                                result += "<param name=\"transparentatStart\" value=\"true\">";
-                                result += "<param name=\"autoStart\" value=\"true\">";
-                                result += "<param name=\"showControls\" value=\"true\">";
-                                result += "<param name=\"Volume\" value=\"-300\">";
-                                result += "<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>";
-                                result += "</OBJECT>";
-                                result += "</td></tr>";
+                                result.append("<tr><td>");
+                                result.append("<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">");
+                                result.append("<param name=\"fileName\" value=\"\">");
+                                result.append("<param name=\"animationatStart\" value=\"false\">");
+                                result.append("<param name=\"transparentatStart\" value=\"true\">");
+                                result.append("<param name=\"autoStart\" value=\"true\">");
+                                result.append("<param name=\"showControls\" value=\"true\">");
+                                result.append("<param name=\"Volume\" value=\"-300\">");
+                                result.append("<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>");
+                                result.append("</OBJECT>");
+                                result.append("</td></tr>");
 
-                                result += "<tr><td>";
-                                result += "<div class=\"hidden\" ID=\"" + lyricId + "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">";
-                                result += lyric;
-                                result += "</div>";
+                                result.append("<tr><td>");
+                                result.append("<div class=\"hidden\" ID=\"" + lyricId + "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">");
+                                result.append(lyric);
+                                result.append("</div>");
 
-                                result += "</td></tr>";
+                                result.append("</td></tr>");
 
-                                result += "<tr>";
-                                result += "<td colspan='2'>";
-                                result += "<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
-                                result += "</td>";
+                                result.append("<tr>");
+                                result.append("<td colspan='2'>");
+                                result.append("<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>");
+                                result.append("</td>");
 
 
-                                result += "</tr>";
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
+                                result.append("</tr>");
+                                result.append("<tr><td>&nbsp;</td></tr>");
+                                result.append("</table>");
                             }
 
 
@@ -353,15 +353,15 @@
                             numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                             strpaging = (String) request.getAttribute("Pagging");
                         }
-                        // result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        result += "Tổng số trang là: " + numpage + "<br/>";
+                        // result.append("Số kết quả tìm được là: " + numrow + "<br/>";
+                        result.append("Tổng số trang là: " + numpage + "<br/>");
                         if (numpage > 1) {
-                            result += strpaging + "<br/><br/>";
+                            result.append(strpaging + "<br/><br/>");
                         }
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -404,7 +404,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
 
         <div id="wrap_left" align="center">
