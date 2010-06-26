@@ -325,6 +325,7 @@ public class SearchWikiController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "id, wk_title, wk_text, timestamp");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
@@ -526,6 +527,7 @@ public class SearchWikiController extends HttpServlet {
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         query.setHighlightRequireFieldMatch(true);
+        query.set("fl", "id, wk_title, wk_text, timestamp");
         QueryResponse rsp = server.query(query);
         return rsp;
     }

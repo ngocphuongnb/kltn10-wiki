@@ -296,6 +296,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "id, rv_title, rv_body, photo, site, category, last_update");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
@@ -406,6 +407,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "id, rv_title, rv_body, photo, site, category, last_update");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
@@ -448,6 +450,7 @@ public class SearchRaoVatController extends HttpServlet {
         query.setHighlightFragsize(70);
         query.set(HighlightParams.SLOP, "0.5");
         query.set(HighlightParams.REGEX, "[-,/\n\"']{20,200}");
+        query.set("fl", "id, rv_title, rv_body, photo, site, category, last_update");
         QueryResponse rsp = server.query(query);
         return rsp;
     }

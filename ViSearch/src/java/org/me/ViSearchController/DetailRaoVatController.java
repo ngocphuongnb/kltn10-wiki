@@ -134,7 +134,10 @@ public class DetailRaoVatController extends HttpServlet {
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
-        } finally {
+        } catch(Exception ex){
+            out.print(ex.getMessage());
+        }
+        finally {
             out.close();
         }
     }
@@ -150,7 +153,6 @@ public class DetailRaoVatController extends HttpServlet {
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
-
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
