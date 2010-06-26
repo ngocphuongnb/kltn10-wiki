@@ -64,6 +64,8 @@ public class TopSearch extends HttpServlet {
                 String url = "";
                 for (String keysearch : arr) {
                     url = String.format("%s?type=0&sp=1&KeySearch=%s&SortedType=0", sController, keysearch);
+                    if(searchtype==3)
+                        url+="&f=6";
                     result += String.format("<tr><td><a href='%s'>%s</a></td></tr>", url, keysearch);
                 }
                 out.print(result);
