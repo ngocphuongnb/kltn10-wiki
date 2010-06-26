@@ -274,6 +274,7 @@ public class SearchWikiController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "id, wk_title, wk_text, timestamp");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }

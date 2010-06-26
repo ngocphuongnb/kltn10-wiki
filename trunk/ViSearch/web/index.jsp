@@ -25,11 +25,30 @@
                 $("#accordion").accordion({
                     collapsible: true,
                     header: 'div.Quickview',
-                    autoHeight: false
+                    autoHeight: false,
+                    active: false
+                });
+
+                $("#accordion").accordion({
+                    change: function() {
+                        var active = $("#accordion" ).accordion( "option", "active" );
+                        var divi = "#div" + active;
+                        var hfID = "#hdIdValue" + active;
+                        var id = $(hfID).val();
+                        $.ajax({
+                            type: "POST",
+                            url: "QuickViewController",
+                            data: "id=" + id,
+                            success: function(html){
+                                $(divi).html(html);
+                            }
+                        });
+                    }
                 });
                 //getter
-                var active = $( "#accordion" ).accordion( "option", "active" );
-                $( "#accordion" ).accordion( "option", "active", 0 );
+                //$( "#accordion" ).accordion( "option", "active", 0 );
+                //$("div", "#accordion").click(function() {
+                //});
             });
         </script>
 
@@ -341,12 +360,12 @@
                                                     out.print("<div id=\"accordion\">");
 
                                                     for (int i = 0; i < listdocs.size(); i++) {
-                                                        out.print("<table style=\"font-size:13px\">");
+                                                        out.print("<table style=\"font-size:13px\" width=\"100%\">");
 
                                                         // Lay noi dung cua moi field
                                                         String title = (listdocs.get(i).getFirstValue("wk_title")).toString();
                                                         String text = (listdocs.get(i).getFieldValue("wk_text")).toString();
-                                                        String text_raw = (listdocs.get(i).getFieldValue("wk_text_raw")).toString();
+                                                        //String text_raw = (listdocs.get(i).getFieldValue("wk_text_raw")).toString();
                                                         String id = (listdocs.get(i).getFieldValue("id")).toString();
                                                         //int id_link = Integer.parseInt(listdocs.get(i).getFieldValue("id_link").toString());
                                                         String url = title.replace(' ', '_');
@@ -476,7 +495,7 @@
 
                                                         String spBM = "";
                                                         if (session.getAttribute("Member") != null) {
-                                                            spBM += "<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>"
+                                                            spBM += "<tr><td><span id=\"" + spanBookmark + "\">"
                                                                     + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
                                                         }
                                                         out.print(spBM);
@@ -496,9 +515,9 @@
                                                         addBM += "</div>";
 
                                                         // END Bookmark
-
+                                                        out.print("<input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>");
                                                         out.print("</tr>");
-                                                        out.print("<tr><td><div class='Quickview'>Xem nhanh</div><div>" + text_raw + "</div></td></tr>");
+                                                        out.print("<tr><td><div class='Quickview' style=\"width:100%\">Xem nhanh</div><div id='div" + i + "'>Đang đọc dữ liệu. Vui lòng chờ...</div></td></tr>");
                                                         out.print("</table><hr/>");
                                                     }
 
