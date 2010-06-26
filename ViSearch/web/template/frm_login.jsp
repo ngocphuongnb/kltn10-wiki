@@ -140,7 +140,7 @@
                         out.print("<a href=\"#\" id=\"linkLogin\">Đăng nhập</a>&nbsp;&nbsp;");
                     } else {
                         out.print("Xin chào <a href=\"#\">" + member.getFullName() + "</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
-                        out.print("<a href=\"showBookmark.jsp\">Hiển thị Bookmark</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
+                        out.print("<a href=\"SearchBookmarkController\">Hiển thị Bookmark</a>&nbsp;&nbsp;|&nbsp;&nbsp;");
                         out.print("<a href=\"MemberLogoutController\">Đăng xuất</a>&nbsp;&nbsp;");
                     }
                     out.print("</div>");
