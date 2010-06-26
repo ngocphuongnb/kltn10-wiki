@@ -18,6 +18,7 @@ public class BookmarkDTO {
     private int _searchType;
     private String _bookmarkName;
     private Calendar _date_create;
+    private int _priority;
 
     public Calendar getDate_create() {
         return _date_create;
@@ -65,5 +66,19 @@ public class BookmarkDTO {
 
     public void setSearchType(int _searchType) {
         this._searchType = _searchType;
+    }
+
+    /**
+     * @return the _priority
+     */
+    public int getPriority() {
+        return _priority;
+    }
+
+    /**
+     * @param priority the _priority to set
+     */
+    public void setPriority(int priority) {
+        this._priority = priority;
     }
 }
