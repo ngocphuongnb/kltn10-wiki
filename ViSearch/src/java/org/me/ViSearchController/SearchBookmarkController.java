@@ -76,12 +76,12 @@ public class SearchBookmarkController extends HttpServlet {
         List<FacetField> listFacet = null;
         Map<String, Map<String, List<String>>> highLight;
         QueryResponse rsp;
-        HttpSession session = request.getSession();
-        if (session != null) {
-            MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
-            rsp = OnSearchSubmitByUser(memdto.getId(), 0, pagesize);
-            docsUser = rsp.getResults();
-        }
+//        HttpSession session = request.getSession();
+//        if (session != null) {
+//            MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
+//            rsp = OnSearchSubmitByUser(memdto.getId(), 0, pagesize);
+//            docsUser = rsp.getResults();
+//        }
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
