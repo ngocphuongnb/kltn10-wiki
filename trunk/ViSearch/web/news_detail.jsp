@@ -19,19 +19,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Tin tức</title>
-        <link href="style.css"rel="stylesheet" type="text/css" />
+      <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
        <script type="text/javascript">
-            $(function() {
+             $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
-
                 $("#dialog").dialog("destroy");
                 var tips = $(".validateTips");
                 var name = $("#nameBookmark");
 
+                //alert("priority.val()");
                 function updateTips(t) {
                     tips
                     .text(t)
@@ -50,12 +50,11 @@
                     } else {
                         return true;
                     }
-
                 }
 
                 $("#addBookmark").dialog({
                     autoOpen: false,
-                    height: 300,
+                    height: 250,
                     width: 350,
                     modal: true,
                     buttons: {
@@ -68,14 +67,16 @@
                             bValid = checkLength(name);
                             if(bValid)
                             {
-                               
                                 var docID = $("#hdIdValue").attr("value");
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#nameBookmark").attr("value");
-                                alert(keySearch);
+                                var priority = $("#addBookmark input:radio:checked").val();
+                                //alert(priority);
+                                //alert(keySearch);
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=6";
+                                Url += "&Priority=" + priority;
                                 $("#Bookmark").load(encodeURI(Url));
                                 $(this).dialog('close');
                             }
@@ -90,7 +91,6 @@
                     $('#addBookmark').dialog('open');
                 });
             });
-
             $(document).ready(function(){
                 $("#tbTopSearch").load("TopSearch?SearchType=6");
             });
@@ -209,7 +209,7 @@
                     String facet = "";
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Facet</div>";
+                        facet += "<div class=\"mnu\">Bộ lọc</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
@@ -301,6 +301,10 @@
                                     <fieldset>
                                         <label for="name">Tên bookmark</label>
                                         <input type="text" name="name" id="nameBookmark" class="text ui-widget-content ui-corner-all" />
+                                        <input type="radio" name="priority" id="private" value="0"/>
+                                        <label for="private">Riêng tư</label>
+                                        <input type="radio" name="priority" id="public" value="1" checked/>
+                                        <label for="public">Chia sẻ</label>
                                     </fieldset>
                                 </form>
                             </div>

@@ -17,7 +17,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Video - Wikipedia</title>
+        <title>Wikipedia - Video</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
         <link href="style.css"rel="stylesheet" type="text/css" />
@@ -112,7 +112,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -122,7 +122,7 @@
                     String strpaging = "";
                     String search_stats = "";
                     String result = "";
-                    String addBM="";
+                    String addBM = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
                         QTime = request.getAttribute("QTime").toString();
@@ -172,11 +172,11 @@
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
                                 String BTCloseMediaId = "BTCloseMediaId" + i;
-                                 String btBookmark = "btBookmark" + i;
+                                String btBookmark = "btBookmark" + i;
                                 String spanBookmark = "spanBookmark" + i;
                                 String addBookmark = "addBookmark" + i;
                                 String nameBookmark = "nameBookmark" + i;
-                                String hdIdValue ="hdIdValue"+i;
+                                String hdIdValue = "hdIdValue" + i;
 
                                 // START Tracking
 
@@ -217,8 +217,8 @@
 // END Tracking
 
 
-        // START Bookmark
-        %>
+                                        // START Bookmark
+%>
         <script type="text/javascript">
             $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
@@ -266,8 +266,10 @@
                                 var keySearch = $("#hfKeySearch").attr("value");
                                 var nameBookmark = $("#<%=nameBookmark%>").attr("value");
                                 var Url = "BookmarkController?NameBookmark=" + nameBookmark;
+                                var priority = $("#<%=addBookmark%> input:radio:checked").val();
                                 Url += "&DocID=" + docID;
                                 Url += "&SearchType=5";
+                                Url += "&Priority=" + priority;
                                 alert("Đã thêm vào Bookmark");
                                 $("#<%=spanBookmark%>").load(encodeURI(Url));
                                 $(this).dialog('close');
@@ -299,14 +301,18 @@
 
                                 addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
                                 addBM += "<p class=\"validateTips\"/>";
-                                addBM += "<form name=\"frmBm"+i+"\">";
+                                addBM += "<form name=\"frmBm" + i + "\">";
                                 addBM += " <fieldset>";
                                 addBM += "  <label for=\"name\">Tên bookmark</label>";
                                 addBM += "  <input type=\"text\" name=\"name\"  ID=\"" + nameBookmark + "\" class=\"text ui-widget-content ui-corner-all\" />";
+                                addBM += "<input type=\"radio\" name=\"priority\" id=\"private\" value=\"0\"/>";
+                                addBM += "<label for=\"private\">Riêng tư</label>";
+                                addBM += "<input type=\"radio\" name=\"priority\" id=\"public\" value=\"1\" checked/>";
+                                addBM += "<label for=\"public\">Chia sẻ</label>";
                                 addBM += " </fieldset>";
                                 addBM += " </form>";
                                 addBM += "</div>";
-        // END Bookmark
+                                // END Bookmark
 
                                 result += "</td></tr>";
                                 result += "<tr>";
@@ -333,7 +339,7 @@
                     }
 
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -368,7 +374,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
 
         <div id="wrap_left" align="center">
@@ -408,7 +414,7 @@
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
-<% out.print(addBM); %>
+                            <% out.print(addBM);%>
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>

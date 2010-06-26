@@ -280,7 +280,7 @@
                                         <input type="radio" name="priority" id="private" value="0"/>
                                         <label for="private">Riêng tư</label>
                                         <input type="radio" name="priority" id="public" value="1" checked/>
-                                        <label for="public">Cộng đồng</label>
+                                        <label for="public">Chia sẻ</label>
                                     </fieldset>
                                 </form>
                             </div>
