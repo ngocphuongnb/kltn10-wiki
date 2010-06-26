@@ -385,6 +385,7 @@
                                                 <legend>Tìm kiếm trên:</legend>
                                                 <input type="checkbox" name="filter[]" value="1" id="private" checked/> bookmark cá nhân
                                                 <input type="checkbox" name="filter[]" value="2" id="public"/> bookmark chia sẻ
+                                                <a href="#"> xem bookmark của tôi </a>
                                             </fieldset>
                                             <hr/>
                                         </form>
