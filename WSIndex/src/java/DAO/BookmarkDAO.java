@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import sun.security.krb5.internal.PAEncTSEnc;
 
 /**
  *
@@ -24,7 +25,7 @@ public class BookmarkDAO {
         ArrayList<BookmarkDTO> list = new ArrayList<BookmarkDTO>();
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM bookmark where priority=1 LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM bookmark where indexed=1 LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
 
         BookmarkDTO page;
@@ -36,6 +37,7 @@ public class BookmarkDAO {
             page.setDocId(rs.getString("docid"));
             page.setSearchType(rs.getInt("searchtype"));
             page.setBookmarkName(rs.getString("bookmark_name"));
+            page.setPriority(rs.getInt("priority"));
 
             Date d = new Date();
             d = rs.getDate("date_created");
