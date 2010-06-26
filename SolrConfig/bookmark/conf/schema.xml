@@ -242,6 +242,7 @@
 	<field name="bookmarkname" type="textBM" indexed="true" stored="true" />
 	<field name="bookmarkname_unsigned" type="textBM" indexed="true" stored="false"/>
 	<field name="date_created" type="date" indexed="true" stored="true"/>
+	<field name="priority" type="sint" indexed="true" stored="true" required="true" />
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
