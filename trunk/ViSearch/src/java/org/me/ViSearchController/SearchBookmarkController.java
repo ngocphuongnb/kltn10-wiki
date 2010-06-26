@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
@@ -40,6 +41,7 @@ import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
+import org.me.dto.MemberDTO;
 
 /**
  *
@@ -63,6 +65,7 @@ public class SearchBookmarkController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         SolrDocumentList docs = new SolrDocumentList();
+        SolrDocumentList docsUser = new SolrDocumentList();
         String keySearch = "";
         int pagesize = 10;
         int currentpage = 1;
@@ -73,6 +76,12 @@ public class SearchBookmarkController extends HttpServlet {
         List<FacetField> listFacet = null;
         Map<String, Map<String, List<String>>> highLight;
         QueryResponse rsp;
+        HttpSession session = request.getSession();
+        if (session != null) {
+            MemberDTO memdto = (MemberDTO) session.getAttribute("Member");
+            rsp = OnSearchSubmitByUser(memdto.getId(), 0, pagesize);
+            docsUser = rsp.getResults();
+        }
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -189,6 +198,7 @@ public class SearchBookmarkController extends HttpServlet {
 
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
+                request.setAttribute("docsUser", docsUser);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
@@ -302,6 +312,31 @@ public class SearchBookmarkController extends HttpServlet {
 
         String query = "";
         query = "searchtype:" + field;
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("searchtype");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setQuery(query);
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("bookmarkname");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private QueryResponse OnSearchSubmitByUser(int userId, int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        query = "memberid:" + userId;
 
         // Facet
         solrQuery.setFacet(true);
