@@ -27,7 +27,7 @@
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#tbTopSearch").load("TopSearch?SearchType=4");
+                $("#tbTopSearch").load("TopSearch?SearchType=5");
             });
         </script>
         <script type="" language="javascript">
@@ -342,7 +342,7 @@
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Facet</div>";
+                        facet += "<div class=\"mnu\">Bộ lọc</div>";
                         for (int i = 0; i < listFacet.size(); i++) {
                             facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
                             facet += "<tr>";
