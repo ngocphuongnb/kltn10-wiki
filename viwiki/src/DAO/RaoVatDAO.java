@@ -25,11 +25,14 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public class RaoVatDAO {
 
+    String database = "kltn";
+    String table = "ads_parsecontent";
+
     public  ArrayList<RaoVatDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
         ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-        Connection cn = DataProvider.getConnection("raovatdb");
+        Connection cn = DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM ads_posts LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM %s LIMIT %d, %d", table, start, end);
         ResultSet rs = st.executeQuery(query);
 
         RaoVatDTO page;
@@ -65,9 +68,9 @@ public class RaoVatDAO {
 
     public  int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = DataProvider.getConnection("raovatdb");
+        Connection cn = DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM ads_posts";
+        String query = "SELECT count(*) as NumRow FROM " + table;
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {

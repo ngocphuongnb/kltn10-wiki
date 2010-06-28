@@ -24,11 +24,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public class MusicDAO {
 
+    String database = "kltn";
+    String table = "media_parsecontent";
     public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
         ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("music");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM media_data LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM %s LIMIT %d, %d",table, start, end);
         ResultSet rs = st.executeQuery(query);
 
         MusicDTO page;
@@ -38,11 +40,11 @@ public class MusicDAO {
             page.setId(rs.getInt("Id"));
             page.setTitle(rs.getString("Title"));
             page.setCategory(rs.getString("Category"));
-            page.setSinger(rs.getString("Singer"));
+            page.setSinger(rs.getString("Artist"));
             page.setAlbum(rs.getString("Album"));
             page.setUrl(rs.getString("URL"));
-            page.setLyric(rs.getString("Lyric"));
-            page.setArtist(rs.getString("Artist"));
+            page.setLyric(rs.getString("Lyrics"));
+            page.setArtist(rs.getString("Author"));
 
 
             String timestamp = rs.getString("DateUpload");
@@ -64,9 +66,9 @@ public class MusicDAO {
 
     public int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("music");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM media_data";
+        String query = "SELECT count(*) as NumRow FROM " + table;
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {

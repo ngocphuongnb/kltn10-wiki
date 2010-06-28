@@ -4,6 +4,7 @@
  */
 package DAO;
 import ViSearchSyncDataService.ViwikiPageDTO;
+import info.bliki.wiki.model.WikiModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,6 @@ public class ViwikiPageDAO {
         ResultSet rs = st.executeQuery(query);
 
         ViwikiPageDTO page;
-
         while (rs.next()) {
             page = new ViwikiPageDTO();
             page.setComment(rs.getString("comment"));

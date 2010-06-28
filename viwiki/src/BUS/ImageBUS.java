@@ -24,7 +24,7 @@ public class ImageBUS {
     }
 
     public int CountRecord() throws SQLException {
-        MusicDAO dao = new MusicDAO();
+        ImageDAO  dao = new ImageDAO();
         return dao.CountRecord();
     }
 }
