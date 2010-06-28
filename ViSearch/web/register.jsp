@@ -20,16 +20,69 @@
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
 
         <script type="text/javascript">
-            $(function() {
-                $('#btCheckValid')
-                .button()
-                .click(function() {
-                    var username = $("#txtusername").attr("value");
-                    var Url = "CheckValidUsername?username=" + username;
-                    $("#Bookmark").load(encodeURI(Url));
-                    $("#checkValid").load(encodeURI(Url));
-                });
-            });
+            function CheckUserName()
+            {
+                var username = $("#txtusername").attr("value");
+                if(username.toString().length == 0)
+                {
+                    $("#rowerror").html("Bạn chưa chọn tên đăng nhập");
+                    return false;
+                }
+                else{
+                    var regex = /^[a-z]([0-9a-z_])+$/i;
+                    if(!regex.test(username))
+                    {
+                        $("#rowerror").html("Tên đăng nhập chỉ gồm các ký tự a-z, 0-9");
+                        return false;
+                    }
+                }
+                var Url = "CheckValidUsername?username=" + username;
+                $("#checkValid").load(encodeURI(Url));
+            }
+            
+            function CheckInput()
+            {
+                var error="";
+                var username = $("#txtusername").val();
+                if(username.toString().length == 0)
+                {
+                    error += "<li>Bạn chưa chọn tên đăng nhập</li>";
+                }
+                else{
+                    var regex = /^[a-z]([0-9a-z_])+$/i;
+                    if(!regex.test(username))
+                        error += "<li>Tên đăng nhập chỉ gồm các ký tự a-z, 0-9</li>";
+                }
+
+                if($("#idPassword").val().length==0)
+                    error += "<li>Bạn chưa nhập mật khẩu</li>";
+                else
+                    if($("#idPassword").val().length<4)
+                        error += "<li>Mật khẩu phải ít nhất gồm 4 ký tự</li>";
+
+                if($("#idPassword").val()!=$("#idRePassword").val())
+                    error += "<li>Mật khẩu nhập 2 lần không giống nhau</li>";
+
+                if($("#jcaptchar").val().toString().length == 0)
+                {
+                    error += "<li>Bạn chưa nhập mã xác nhận</li>";
+                }
+
+                if(error.toString().length!=0)
+                {
+                    $("#rowerror").html(error);
+                    return false;
+                }
+                var Url = "CheckValidUsername?username=" + username;
+                $("#checkValid").load(encodeURI(Url));
+
+                if($("#checkValid").html()!="<font color=\"red\">Đã tồn tại username này</font>")
+                {
+                    frmRegister.action = "RegisterMemberController";
+                    frmRegister.submit();
+                }
+
+            }
         </script>
         <style type="text/css">
             .required {
@@ -68,18 +121,18 @@
                         <td colspan="2" height="33" valign="top">
 
                             <!-- register !-->
-                            <form class="frmRegister" name="" method="post" action="RegisterMemberController">
+                            <form class="frmRegister" name="frmRegister" method="post" action="javascript:CheckInput();">
                                 <h3 class="subblockhead"> Thông tin đăng kí</h3>
                                 <table width="500" border="0" cellspacing="0" cellpadding="0" >
+                                    <tr><td><ul align="left" style="color: tomato" id="rowerror"></ul></td></tr>
+                                    <tr><td height="15"></td></tr>
                                     <tr><td  align="left">Họ và Tên</td></tr>
                                     <tr><td align="left" width="144"><input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idFullName" id="idFullName" size="45"/></td></tr>
-                                    <tr><td height="15"></td></tr>
 
                                     <tr><td align="left">Tên đăng nhập</td></tr>
-                                    <tr><td  align="left" class="required"><input id="txtusername" type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idUsername" id="idUsername" />(*)</td>
-                                        <td align="left"><input id="btCheckValid" type="button" value="Kiểm tra hợp lệ"/></td>
+                                    <tr><td align="left" class="required"><input id="txtusername" type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm'; CheckUserName();" name="idUsername" id="idUsername" />(*)</td>
                                     </tr>
-                                     <tr><td align="left"><span id="checkValid"/></td></tr>
+                                    <tr><td align="left"><span id="checkValid"/></td></tr>
 
                                     <tr><td height="15"></td></tr>
 
@@ -139,13 +192,12 @@
 
                                     <tr>
                                         <td align="left" >
-                                            <input name="btnSubmit" type="submit" value="Đăng ký" />
+                                            <input name="btnSubmit" type="submit" value="Đăng ký"/>
                                             <input type="reset" name="btnReset" id="btnReset" value="Làm lại" /></td>
                                     </tr>
-                                    <tr><td height="15"></td></tr>
-                                    <tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr>
                                 </table>
                             </form>
+                            <a href="index.jsp">Về trang chủ</a>
                             <!-- end register -->
                         </td>
 

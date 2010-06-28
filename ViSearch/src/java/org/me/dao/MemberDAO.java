@@ -46,6 +46,50 @@ public class MemberDAO {
         return result;
     }
 
+    public boolean  ChangePass(int id, String oldpass, String newpass, String database) {
+        boolean result = true;
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL change_password(?, ?, ?)}");
+            cs.setInt(1, id);
+            cs.setString(2, oldpass);
+            cs.setString(3, newpass);
+            int n = cs.executeUpdate();
+            if (n == 0) {
+                result = false;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
+    public boolean UpdateInfo(MemberDTO mem, String database) {
+        boolean result = true;
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL update_member_info(?, ?, ?, ?)}");
+            cs.setInt(1, mem.getId());
+            cs.setString(2, mem.getFullName());
+            Calendar cl = Calendar.getInstance();
+            cl = mem.getBirthDay();
+            String birthdate = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH);
+            cs.setString(3, birthdate);
+            cs.setInt(4, mem.getSex());
+            int n = cs.executeUpdate();
+            if (n == 0) {
+                result = false;
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
     public MemberDTO Login(String username, String password, String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MemberDTO member = null;
         Connection cn = DataProvider.getConnection(database);

@@ -273,7 +273,7 @@ public class SearchRaoVatController extends HttpServlet {
         }
 
         if (sortedType != 0) {
-            solrQuery.setParam(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
+            solrQuery.set(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
         }
 
         solrQuery.setQuery(keySearch);

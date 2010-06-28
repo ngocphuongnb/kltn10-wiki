@@ -83,7 +83,7 @@
                     }
         %>
 
-        <%                   String currentPage = "/showBookmark.jsp";
+        <%                   String currentPage = "showBookmark.jsp";
                     if (request.getQueryString() != null) {
                         currentPage = "/SearchBookmarkController?";
                         currentPage += request.getQueryString().toString();
