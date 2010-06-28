@@ -87,6 +87,7 @@ public class DetailRaoVatController extends HttpServlet {
                         tracking.setSearchType(2);
                         TrackingBUS tbus = new TrackingBUS();
                         tbus.InsertTracking(tracking, "visearch");
+                        tbus.UpdateKeysearch(Integer.parseInt(keySearchId), keysearch, "raovat","visearch");
                     } catch (Exception ex) {
                     }
                 }
