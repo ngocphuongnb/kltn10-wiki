@@ -28,4 +28,14 @@ public class MemberBUS {
         MemberDAO memDao = new MemberDAO();
         return memDao.isExist(username, database);
     }
+
+    public boolean  ChangePass(int id, String oldpass, String newpass, String database)
+    {
+        MemberDAO memDao = new MemberDAO();
+        return memDao.ChangePass(id, oldpass, newpass, database);
+    }
+    public boolean UpdateInfo(MemberDTO mem, String database){
+        MemberDAO memDao = new MemberDAO();
+        return memDao.UpdateInfo(mem, database);
+    }
 }

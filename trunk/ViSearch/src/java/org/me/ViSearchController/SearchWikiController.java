@@ -234,7 +234,8 @@ public class SearchWikiController extends HttpServlet {
                 query = "";
                 break;
             case 1:
-                query = "{!boost b= recip(rord(timestamp),1,1000,1000)}";
+                //query = "{!boost b=recip(ms(NOW,timestamp),3.16e-11,1,1)}";
+                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
                 break;
             case 2:
                  if (MyString.CheckSigned(keySearch))
@@ -248,7 +249,7 @@ public class SearchWikiController extends HttpServlet {
         }
 
         //Gop chung co dau va ko dau
-        //solrQuery.setQuery("wk_title:(\"" + keySearch + "\")^3 (\"" + keySearch + "\")^2 wk_title:(" + keySearch + ")^1.5 (" + keySearch + ")");
+        //query += "wk_title:(\"" + keySearch + "\")^3 || (\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 ||(" + keySearch + ")";
 
         if (MyString.CheckSigned(keySearch)) {
             query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^5 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
