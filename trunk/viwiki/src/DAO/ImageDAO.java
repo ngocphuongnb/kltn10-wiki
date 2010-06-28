@@ -8,6 +8,7 @@ package DAO;
 import ViSearchSyncDataService.ImageDTO;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
+import com.sun.org.apache.bcel.internal.generic.TABLESWITCH;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -17,12 +18,13 @@ import java.util.ArrayList;
  * @author tuandom
  */
 public class ImageDAO {
-
+String database = "kltn";
+String table = "image_parsecontent";
 public int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("image");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM data";
+        String query = "SELECT count(*) as NumRow FROM " + table;
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
@@ -33,11 +35,11 @@ public int CountRecord() throws SQLException {
         cn.close();
         return iCount;
     }
-     public static ArrayList<ImageDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
+     public ArrayList<ImageDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("image");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM data LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM %s LIMIT %d, %d", table, start, end);
         ResultSet rs = st.executeQuery(query);
 
         ImageDTO page;
