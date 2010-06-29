@@ -2,16 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
+import IndexData.WSIndex;
+import IndexData.WSIndexService;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import org.me.Utils.MyHashEncryption;
 import org.me.bus.BookMarkBUS;
 import org.me.dto.BookMarkDTO;
 import org.me.dto.MemberDTO;
@@ -21,7 +30,7 @@ import org.me.dto.MemberDTO;
  * @author VinhPham
  */
 public class BookmarkController extends HttpServlet {
-   
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -29,8 +38,7 @@ public class BookmarkController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -49,10 +57,30 @@ public class BookmarkController extends HttpServlet {
             BookMarkBUS bmbus = new BookMarkBUS();
             bmbus.InsertBookmark(bmdto, "visearch");
             out.print("<input type='button' disabled value='Đã thêm bookmark'/>");
-        } finally { 
+            try {
+                System.out.println("Start index...Bookmark");
+                Date d = new Date();
+                GregorianCalendar gcal = new GregorianCalendar();
+                gcal.setTime(d);
+                XMLGregorianCalendar date;
+                date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
+                String code = "123";
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
+                String s = sdf.format(d);
+                s = MyHashEncryption.hashPassword(s);
+                code = MyHashEncryption.hashPassword(code);
+                code += s;
+                WSIndexService service = new WSIndexService();
+                WSIndex port = service.getWSIndexPort();
+                port.indexDataBookmark(code, date);
+                System.out.println("Index finish...");
+            } catch (Exception ex) {
+                System.out.println("Index fail...");
+            }
+        } finally {
             out.close();
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -64,9 +92,9 @@ public class BookmarkController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -77,7 +105,7 @@ public class BookmarkController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -89,5 +117,4 @@ public class BookmarkController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

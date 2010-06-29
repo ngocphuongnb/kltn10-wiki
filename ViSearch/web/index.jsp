@@ -470,7 +470,7 @@
                                                                 Url += "&DocID=" + docID;
                                                                 Url += "&SearchType=1";
                                                                 Url += "&Priority=" + priority;
-                                                                alert("Đã thêm vào Bookmark");
+                                                                //alert("Đã thêm vào Bookmark");
                                                                 $("#<%=spanBookmark%>").load(encodeURI(Url));
                                                                 $(this).dialog('close');
                                                             }
