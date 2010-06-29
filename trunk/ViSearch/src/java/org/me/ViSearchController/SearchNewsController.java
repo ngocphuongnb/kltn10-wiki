@@ -156,7 +156,7 @@ public class SearchNewsController extends HttpServlet {
                             sPaging += "&qf=" + qf;
                             sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -181,7 +181,7 @@ public class SearchNewsController extends HttpServlet {
                             qv = createFacetValue(startDate, endDate);
                             sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type, sortedType);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -206,7 +206,6 @@ public class SearchNewsController extends HttpServlet {
                     numpage++;
                 }
                 request.setAttribute("Docs", docs);
-                //request.setAttribute("ListFacetDate", listFacetDate);
                 if (type != 1) {
                     sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                     request.setAttribute("NumPage", numpage);
@@ -255,6 +254,24 @@ public class SearchNewsController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 1:
+                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
@@ -263,14 +280,7 @@ public class SearchNewsController extends HttpServlet {
                     + "fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^1.6 || "
                     + "fulltext_unsigned:(\"" + keySearch + "\")^2 || fulltext_unsigned:(" + keySearch + ")^1.4";
         }
-
         solrQuery.setQuery(query);
-
-
-//        if (sortedType != 0) {
-//            solrQuery.setParam(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
-//        }
-
 
         // Facet
         solrQuery.setFacet(true);
@@ -278,7 +288,6 @@ public class SearchNewsController extends HttpServlet {
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
-
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
@@ -292,10 +301,28 @@ public class SearchNewsController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
-        String query = "+(";
+        String query="";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 1:
+                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+        query += "+(";
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
         } else {
@@ -355,7 +382,7 @@ public class SearchNewsController extends HttpServlet {
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
         if (sortedType == 1) {
             query.set(MoreLikeThisParams.BOOST, true);
-            // query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+            query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
         }
 
         query.setQuery("title:" + MyString.cleanQueryTerm(q));

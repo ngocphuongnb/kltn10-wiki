@@ -111,7 +111,6 @@ public class SearchRaoVatController extends HttpServlet {
                             }
                         }
 
-                        //NewestDocument22(keySearch, "25");
                         rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -119,7 +118,6 @@ public class SearchRaoVatController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 1://morelikethis
                         rsp = OnMLT(keySearch, pagesize, sortedType);
@@ -242,6 +240,7 @@ public class SearchRaoVatController extends HttpServlet {
         }
     }
 
+    // tuan-dm
     private String createFacetValue(String startDate, String endDate) {
         // src: dd-mm-yyyy
         // dest: 1976-03-06T23:59:59.999Z
