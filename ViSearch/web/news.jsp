@@ -291,7 +291,7 @@
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
-                                        <%@include file="template/banner_RaoVat.jsp"%>
+                                        <%@include file="template/banner_TinTuc.jsp"%>
                                     </td>
                                 </tr>
                             </table>

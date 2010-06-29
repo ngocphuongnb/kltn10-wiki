@@ -369,7 +369,7 @@
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <%@ include file="template/banner_Wiki.jsp"%>
+                                        <%@ include file="template/banner_TongHop.jsp"%>
                                         <!-- end banner      !-->
                                     </td>
                                 </tr>
