@@ -23,28 +23,28 @@ import java.util.ArrayList;
  */
 public class SaveImageFromURL {
 
-    public void loadImage() throws SQLException, ParseException, MalformedURLException, IOException{
+    public void loadImage() throws SQLException, ParseException, MalformedURLException, IOException {
         ImageBUS Ibus = new ImageBUS();
         int numOfRecords = Ibus.CountRecord();
         int start = 0;
-         while (start < numOfRecords) {
+        while (start < numOfRecords) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
             list = Ibus.getDataList(start, 100);
-            for(int i=0; i < list.size(); i++){
+            for (int i = 0; i < list.size(); i++) {
                 String filename = Integer.toString(list.get(i).getId());
-                String localImage = "C:/"+filename+".jpg";
+                String ext = getExtension(list.get(i).getUrl());
+                String localImage = "C:/VSImageDownload/" + filename + "." + ext;
                 save(list.get(i).getUrl(), localImage);
                 Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
             }
             start += 100;
         }
     }
+
     private void save(String strLink,
             String destination) throws MalformedURLException,
             IOException {
         if (strLink != null && destination != null) {
-            
-            // check for authentication else assume its anonymous access.
 
             BufferedInputStream bis = null;
             BufferedOutputStream bos = null;
@@ -79,5 +79,13 @@ public class SaveImageFromURL {
         } else {
             System.out.println("Input not available");
         }
+    }
+
+    private String getExtension(String strURL) {
+        String ext = "";
+       String[] str = strURL.split("[.]");
+        //lay cái cuối cùng chính là phần mở rộng
+        ext = str[str.length - 1];
+        return ext;
     }
 }
