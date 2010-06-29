@@ -59,17 +59,17 @@
                 $(function(){
                     var arr = filter.split("_");
                     var i;
+                    $('#private').attr('checked', false);
+                    $('#public').attr('checked', false);
                     for(i=0; i < arr.length; i++)
                     {
-                        if(arr[i] == "1")
+                        if(arr[i] == '1')
                             $('#private').attr('checked', true);
-                        else
-                            $('#private').attr('checked', false);
-                        if(arr[i] == "2")
+                        if(arr[i] == '2')
                             $('#public').attr('checked', true);
-                        else
-                            $('#public').attr('checked', false);
                     }
+                            
+
                 });
             }
         </script>
@@ -112,7 +112,7 @@
 
                         if (request.getAttribute("Collation") != null) {
                             String sCollation = (String) request.getAttribute("Collation");
-                            result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchRaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                            result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchBookmarkController?KeySearch=" + sCollation + "&Filter=1_2\">" + sCollation + "</a></b></font></p>";
                         }
 
                         for (int i = 0; i < listdocs.size(); i++) {
@@ -195,7 +195,7 @@
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -244,7 +244,7 @@
                     }
 
                     // End get Facet
-%>
+        %>
 
         <%
                     if (request.getAttribute("Filter") != null) {
@@ -323,7 +323,7 @@
                     }
 
                     //END get Bookmark by user
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -374,9 +374,9 @@
                                 <tr><form action="javascript:CheckInput();" method="GET">
                                     <td>
                                         <form frmSearch action="javascript:CheckInput()">
-                                               <input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
-                                                             out.print(strQuery);
-                                                         }%>"/>
+                                            <input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
+                                                            out.print(strQuery);
+                                                        }%>"/>
                                             <input id="hfKeySearch" type="hidden" value="<% if (strQuery != null) {
                                                             out.print(strQuery);
                                                         }%>"/>
@@ -385,7 +385,7 @@
                                                 <legend>Tìm kiếm trên:</legend>
                                                 <input type="checkbox" name="filter[]" value="1" id="private" checked/> bookmark cá nhân
                                                 <input type="checkbox" name="filter[]" value="2" id="public"/> bookmark chia sẻ
-                                                <a href="#"> xem bookmark của tôi </a>
+                                                <br/><a href="SearchBookmarkController"> xem bookmark của tôi </a>
                                             </fieldset>
                                             <hr/>
                                         </form>
