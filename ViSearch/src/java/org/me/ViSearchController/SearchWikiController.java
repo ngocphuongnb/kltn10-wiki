@@ -241,7 +241,7 @@ public class SearchWikiController extends HttpServlet {
                  if (MyString.CheckSigned(keySearch))
                      query = "keysearch:(\"" + keySearch + "\")^100 || ";
                  else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                     query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 break;
 
             default:
