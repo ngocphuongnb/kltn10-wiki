@@ -247,6 +247,8 @@
 	<field name="fulltext_unsigned" type="textNews" indexed="true" stored="false"/>
 	<field name="created" type="date" indexed="true" stored="true" default="NOW"/>
 	<field name="modified" type="date" indexed="true" stored="true" default="NOW"/>
+	<field name="keysearch" type="textNews" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="textNews" indexed="true" stored="false"/>
 	
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
