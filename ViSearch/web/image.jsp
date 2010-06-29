@@ -193,7 +193,7 @@
                                     facet += "<br>";
                                 }
                             } else {
-                                facet += "Không tìm ra Facet<br>";
+                                facet += "Không tìm ra dữ liệu<br>";
                             }
                             facet += "</td></tr>";
                             facet += "</table>";

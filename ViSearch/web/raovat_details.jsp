@@ -7,7 +7,6 @@
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
-<%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
