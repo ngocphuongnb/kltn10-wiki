@@ -253,6 +253,8 @@
 	<field name="lyric" type="textMusic" indexed="true" stored="true" multiValued="true"/>
 	<field name="lyric_unsigned" type="textMusic" indexed="true" stored="false" multiValued="true"/>
 	<field name="dateUpload" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+	<field name="keysearch" type="textMusic" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="textMusic" indexed="true" stored="false"/>
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields

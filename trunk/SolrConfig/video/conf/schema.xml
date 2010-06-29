@@ -243,7 +243,8 @@
 	<field name="category_index_unsigned" type="textVideo" indexed="true" stored="false"/>
 	<field name="url" type="string" indexed="false" stored="true"/>
 	<field name="duration" type="string" indexed="false" stored="true"/>
-	
+	<field name="keysearch" type="textVideo" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="textVideo" indexed="true" stored="false"/>
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.

@@ -241,7 +241,8 @@
 	<field name="body" type="textAll" indexed="true" stored="true"/>
 	<field name="body_unsigned" type="textAll" indexed="true" stored="false" default=""/>
 	<field name="category" type="string" indexed="true" stored="true"/>
-
+	<field name="keysearch" type="textAll" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="textAll" indexed="true" stored="false"/>
 	
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
