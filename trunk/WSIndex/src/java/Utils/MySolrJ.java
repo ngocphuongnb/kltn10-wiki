@@ -147,7 +147,7 @@ public class MySolrJ {
     }
     public void IndexBookmark() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
 
-        EmptyData("bookmark");
+        //EmptyData("bookmark");
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         BookmarkBUS bus = new BookmarkBUS();
         int numOfRecords = bus.CountRecord();
@@ -156,6 +156,7 @@ public class MySolrJ {
             ArrayList<BookmarkDTO> list = new ArrayList<BookmarkDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportBookmark2Solr(list, "bookmark");
+            bus.UpdateAfterIndex(lResult);
             start += 100;
         }
     }
