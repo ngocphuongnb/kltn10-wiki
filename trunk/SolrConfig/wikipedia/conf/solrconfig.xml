@@ -93,7 +93,7 @@
     </arr>
   </requestHandler>
 	<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">textWiKi</str>
+    <str name="queryAnalyzerFieldType">text</str>
 
     <lst name="spellchecker">
       <str name="name">default</str>
