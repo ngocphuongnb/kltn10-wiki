@@ -57,7 +57,7 @@ public class MySolrJ {
         return server;
     }
 
-    private void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException {
+    public void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException {
         SolrServer server = getSolrServer(core);
         server.deleteByQuery("*:*");
         //server.commit();

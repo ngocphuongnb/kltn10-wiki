@@ -357,4 +357,19 @@ public class WSIndex {
         }
         return false;
     }
+
+     @WebMethod(operationName = "EmptyData")
+    public boolean EmptyData(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "core") String core) {
+        AdminBUS bus = new AdminBUS();
+        if (bus.CheckSecurity(code, dateRequest.getTime())) {
+            MySolrJ ms = new MySolrJ();
+            try {
+                ms.EmptyData(core);
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        return false;
+    }
 }
