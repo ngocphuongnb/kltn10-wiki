@@ -39,14 +39,28 @@
             {
                 var keysearch = document.getElementById('txtSearch').value;
                 f = document.getElementById('field').value;
+                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
                     var url = "SearchMusicController?type=0&sp=1&f="+f+"&KeySearch=";
-                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
-                    //alert(url);
+                    url += "&SortedType=" + sortedtype;
+                    window.location = url;
+                }
+            }
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                var keysearch = document.getElementById('hfKeySearch').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchMusicController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
                     window.location = url;
                 }
             }
@@ -110,6 +124,10 @@
                         FieldId = (String) request.getAttribute("FieldId");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
+                    }
+                    int sortedType = 0;
+                    if (request.getAttribute("SortedType") != null) {
+                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // End Get strQuery
 %>
@@ -425,6 +443,7 @@
                                     </td>
                                 </tr>
                             </table>
+                                        <span><%@include file="template/sortedtype1.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
