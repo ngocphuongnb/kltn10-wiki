@@ -103,7 +103,7 @@ public class SearchRaoVatController extends HttpServlet {
                 Map<String, Map<String, List<String>>> highLight;
 
                 switch (type) {
-                    case 0:
+                    case 0://submit search
                         if (request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
                             if (!sCollation.equals("")) {
@@ -121,7 +121,7 @@ public class SearchRaoVatController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
-                    case 1:
+                    case 1://morelikethis
                         rsp = OnMLT(keySearch, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -166,7 +166,7 @@ public class SearchRaoVatController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -192,7 +192,7 @@ public class SearchRaoVatController extends HttpServlet {
                             facetValue = createFacetValue(startDate, endDate);
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, type, sortedType);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -388,13 +388,32 @@ public class SearchRaoVatController extends HttpServlet {
 
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int type) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int type, int sortedType) throws SolrServerException {
+        String str="";
+        String trackingboost="";
         SolrQuery solrQuery = new SolrQuery();
-        if (facetValue.equals("l")) {
-            //   facetValue="["
+        switch(sortedType)
+        {
+            case 0:
+                str = "";
+                trackingboost = "";
+                break;
+            case 1:
+                str = "{!boost b= recip(rord(last_update),1,1000,1000)}";
+                trackingboost = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     trackingboost = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     trackingboost = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+
+            default:
+                break;
         }
         if (!facetName.equals("") && facetName != null) {
-            keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) ";
+            keySearch = "+(" + trackingboost + "rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) ";
             if (type == 2) // seach chuoi facet, can ""
             {
                 keySearch += " +(" + facetName + ":\"" + facetValue + "\")";
@@ -402,9 +421,10 @@ public class SearchRaoVatController extends HttpServlet {
             {
                 keySearch += " +(" + facetName + ":" + facetValue + ")";
             }
-            //keySearch = "+(rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) + (" + facetName + ":" + facetValue + ")";
         }
-        solrQuery.setQuery(keySearch);
+
+        str+= keySearch;
+        solrQuery.setQuery(str);
 
         // Facet
         solrQuery.setFacet(true);
