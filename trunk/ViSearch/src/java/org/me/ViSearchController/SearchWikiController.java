@@ -307,9 +307,9 @@ public class SearchWikiController extends HttpServlet {
         String query = keySearch;
         if (facetName.equals("") == false && facetName != null) {
             if (MyString.CheckSigned(keySearch)) {
-                query += "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
+                query = "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^3 || wk_text:(\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + "))";
             } else {
-                query += "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
+                query = "+(" + trackingboost + "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^8 || "
                         + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
                         + "wk_title_unsigned:(\"" + keySearch + "\")^3 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^2 || wk_text_unsigned:(" + keySearch + "))";
             }
