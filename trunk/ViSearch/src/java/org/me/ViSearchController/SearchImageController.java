@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
@@ -66,6 +65,7 @@ public class SearchImageController extends HttpServlet {
         String sPaging = "/ViSearch/SearchImageController?";
         int type = -1;
         int QTime = 0;
+         int sortedType = 0;
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -79,6 +79,11 @@ public class SearchImageController extends HttpServlet {
                 sPaging += "type=" + type;
             }
 
+            if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "&SortedType=" + sortedType;
+            }
+            
             List<FacetField> listFacet = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
@@ -94,7 +99,7 @@ public class SearchImageController extends HttpServlet {
                                 request.setAttribute("Collation", sCollation);
                             }
                         }
-                        rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -128,7 +133,7 @@ public class SearchImageController extends HttpServlet {
                             // Neu la text thi them ""
                             facetNameValue = " +(" + facetName + ":\"" + facetValue + "\")";
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -154,7 +159,7 @@ public class SearchImageController extends HttpServlet {
                             facetNameValue = createFacetValue(w, h);
                             //  sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize, sortedType);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -195,9 +200,23 @@ public class SearchImageController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
         if (MyString.CheckSigned(keySearch)) {
             query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
                     + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
@@ -235,9 +254,24 @@ public class SearchImageController extends HttpServlet {
     }
 
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        String query = "+(";
+        String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+        query = " +(";
         if (MyString.CheckSigned(keySearch)) {
             query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
                     + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "

@@ -72,6 +72,7 @@ public class SearchVideoController extends HttpServlet {
         QueryResponse rsp;
         Map<String, Map<String, List<String>>> highLight;
         String more = "";
+         int sortedType = 0;
         try {
 
             if (request.getParameter("currentpage") != null) {
@@ -85,6 +86,11 @@ public class SearchVideoController extends HttpServlet {
                 more = request.getParameter("more");
             }
 
+             if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "&SortedType=" + sortedType;
+            }
+            
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
                 sPaging += "type=" + type;
@@ -104,7 +110,7 @@ public class SearchVideoController extends HttpServlet {
                             }
                         }
 
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, more);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, more, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -123,7 +129,6 @@ public class SearchVideoController extends HttpServlet {
 
                         // Get Facet
                         listFacet = rsp.getFacetFields();
-                        //listFacetDate = NewestUpdateDocument(keySearch, "25");
                         break;
                     case 2:
                         String facetName = "";
@@ -134,7 +139,7 @@ public class SearchVideoController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -175,9 +180,24 @@ public class SearchVideoController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        String query = "";
+         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+
         if (more.equals("detail") == false) {
             if (MyString.CheckSigned(keySearch)) {
                 query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
@@ -213,9 +233,24 @@ public class SearchVideoController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        String query = "+(";
+        String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+        query = " +(";
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
         } else {
