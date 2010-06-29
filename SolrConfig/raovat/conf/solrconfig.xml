@@ -31,6 +31,42 @@
   <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" />
   <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
   <requestHandler name="/mlt" class="solr.MoreLikeThisHandler" /> 
+  
+  <requestHandler name="dismax_boosting" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       keysearch^100  rv_title^2.5 rv_body^2 category_index
+     </str>
+     <str name="pf">
+        rv_title^2.5 rv_body category_index^0.6
+     </str>
+     <!--<str name="bf">
+        popularity^0.5 recip(price,1,1000,1000)^0.3
+     </str>-->
+     <str name="fl">
+        id, rv_title, rv_body, last_update
+     </str>
+     <str name="mm">
+        2&lt;-25%
+     </str>
+     <int name="ps">100</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">rv_title rv_body</str>
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.name.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are
+          found -->
+     <str name="f.name.hl.alternateField">rv_title</str>
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+	
+  </requestHandler>
+  
   <requestHandler name="dismax" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
@@ -66,7 +102,39 @@
 	
   </requestHandler>
   
-  <requestHandler name="dismax2" class="solr.SearchHandler" >
+  <requestHandler name="dismax_unsigned_boosting" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       keysearch^100 keysearch_unsigned^50 rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
+     </str>
+     <str name="pf">
+       rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned category_index_unsigned^0.5
+     </str>
+     <str name="fl">
+        id, rv_title, rv_body, last_update
+     </str>
+     <str name="mm">
+        2&lt;-25%
+     </str>
+     <int name="ps">100</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">rv_title rv_body</str>
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.name.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are
+          found -->
+     <str name="f.name.hl.alternateField">rv_title</str>
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+	
+  </requestHandler>
+  
+   <requestHandler name="dismax_unsigned" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>

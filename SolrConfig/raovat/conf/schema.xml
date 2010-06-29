@@ -253,7 +253,7 @@
 
  <fields>   
   <!-- general -->
-  <!-- Field danhnh cho search wikipedia --> 	
+  <!-- Field danhnh cho search raovat --> 	
 	<field name="id" type="string" indexed="true" stored="true" required="true" />   
    <field name="rv_title" type="textRaoVat" indexed="true" stored="true" multiValued="true" termVectors="true"/>
 	<field name="rv_title_unsigned" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -272,6 +272,8 @@
 	<field name="location" type="string" indexed="true" stored="true"/>
 	<field name="contact"  type="string" indexed="false" stored="true"/>
 	<field name="last_update" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+	<field name="keysearch" type="text_ws" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="text_ws" indexed="true" stored="false"/>
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
