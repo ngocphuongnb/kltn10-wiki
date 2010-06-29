@@ -19,19 +19,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Tin tức</title>
-      <link href="style.css"rel="stylesheet" type="text/css" />
+        <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
-       <script type="text/javascript">
-             $(function() {
+        <script type="text/javascript">
+            $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
                 $("#dialog").dialog("destroy");
                 var tips = $(".validateTips");
                 var name = $("#nameBookmark");
 
-                //alert("priority.val()");
                 function updateTips(t) {
                     tips
                     .text(t)
@@ -110,21 +109,9 @@
                 else
                 {
                     var url = "SearchNewsController?type=0&sp=1&KeySearch=";
-                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
-                    //alert(url);
                     window.location = url;
                 }
-            }
-            function SeachPVDC(strQuery){
-                var R = document.getElementById("divPVTC_R").value;
-                var  C = document.getElementById("divPVTC_C").value;
-                strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchNewsController?type=4&KeySearch=" + strQuery + "&FacetName=timestamp&sd="+batdau+"&ed="+kethuc;
-                window.location = url;
-            }
-            function showPVTC(){
-                document.getElementById("divPVTC").className="display";
             }
         </script>
     </head>
@@ -141,13 +128,13 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
                     Map<String, Map<String, List<String>>> highLight = null;
 
-                    String result = "";
+                    StringBuffer result = new StringBuffer();
                     String search_stats = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
@@ -159,11 +146,11 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchImageController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchImageController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
+                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
@@ -183,83 +170,77 @@
                                     }
                                 }
 
+                                result.append("<tr>");
+                                result.append("<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
-                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>";
-                                result += "</tr>";
-
-
-                                result += "<tr>";
-                                result += "<td>" + body + "</td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>" + body + "</td>");
+                                result.append("</tr>");
 
                                 if (session.getAttribute("Member") != null) {
-                                result += "<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>"
-                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>";
-                                        }
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
+                                    result.append("<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>");
+                                    result.append("<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>");
+                                }
+                                result.append("<tr><td>&nbsp;</td></tr>");
+                                result.append("</table>");
                             }
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
-                    String facet = "";
+                    StringBuffer facet = new StringBuffer();
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
-                        facet += "<div class=\"mnu\">Bộ lọc</div>";
+                        facet.append("<div class=\"mnu\">Bộ lọc</div>");
                         for (int i = 0; i < listFacet.size(); i++) {
-                            facet += "<table id=\"table_left\" width=\"100%\" border=\"0\">";
-                            facet += "<tr>";
-                            facet += "<td>";
+                            facet.append("<table id=\"table_left\" width=\"100%\" border=\"0\">");
+                            facet.append("<tr>");
+                            facet.append("<td>");
                             String fieldName = listFacet.get(i).getName();
                             if (fieldName.equals("category")) {
-                                facet += "<b>Chuyên mục</b>";
+                                facet.append("<b>Chuyên mục</b>");
                             }
-                            facet += "<br>";
+                            facet.append("<br>");
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                                    facet += " (" + listCount.get(j).getCount() + ")";
-                                    facet += "<br>";
+                                    facet.append("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>");
+                                    facet.append(" (" + listCount.get(j).getCount() + ")");
+                                    facet.append("<br>");
                                 }
                             } else {
-                                facet += "Không tìm ra Facet<br>";
+                                facet.append("Không tìm ra dữ liệu<br>");
                             }
-                            facet += "</td></tr>";
-                            facet += "</table>";
+                            facet.append("</td></tr>");
+                            facet.append("</table>");
                         }
                     }
-
-
                     // End get Facet
-        %>
+%>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
-                    String result2 = "";
-
+                    StringBuffer result2 = new StringBuffer();
                     if (request.getAttribute("Docs_MoreLikeThis") != null) {
                         listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
-                        result2 += "<div style=\"font-size:13px\">";
-                        result2 += "Một số bài viết tương tự: <br>";
+                        result2.append("<div style=\"font-size:13px\">");
+                        result2.append("Một số bài viết tương tự: <br>");
                         for (int i = 0; i < listdocs2.size(); i++) {
 
                             // Lay noi dung cua moi field
                             String id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String title = (listdocs2.get(i).getFieldValue("title")).toString();
-
-                            result2 += "<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></li>";
+                            result2.append("<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></li>");
                         }
-                        result2 += "</div>";
+                        result2.append("</div>");
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -289,7 +270,6 @@
                                             }%>
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table id="tbTopSearch">
-
                                 </table>
                             </div>
                         </td>
@@ -308,7 +288,7 @@
                                     </fieldset>
                                 </form>
                             </div>
-                            
+
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
