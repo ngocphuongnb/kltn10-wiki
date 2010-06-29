@@ -67,6 +67,7 @@ public class SearchMusicController extends HttpServlet {
         int QTime = 0;
         List<FacetField> listFacet = null;
         String FieldId = null;
+        int sortedType = 0;
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -76,10 +77,16 @@ public class SearchMusicController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
-                sPaging += "type=" + type;
+                sPaging += "&type=" + type;
             }
             if (request.getParameter("f") != null) {
                 FieldId = request.getParameter("f");
+                 sPaging += "&f=" + type;
+            }
+
+             if (request.getParameter("SortedType") != null) {
+                sortedType = Integer.parseInt(request.getParameter("SortedType"));
+                sPaging += "&SortedType=" + sortedType;
             }
 
             if (request.getParameter("KeySearch") != null) {
@@ -99,8 +106,7 @@ public class SearchMusicController extends HttpServlet {
                             }
                         }
 
-                        rsp = OnSearchSubmitByField(keySearch, FieldId, start, pagesize);
-                        // rsp = OnSearchSubmit(keySearch, start, pagesize);
+                        rsp = OnSearchSubmitByField(keySearch, FieldId, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -129,7 +135,7 @@ public class SearchMusicController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, FieldId, facetName, facetValue, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, FieldId, facetName, facetValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -170,11 +176,24 @@ public class SearchMusicController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        //solrQuery.setQueryType("dismax");
-
         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+  
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                     + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
@@ -222,10 +241,24 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitByField(String keySearch, String fieldId, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitByField(String keySearch, String fieldId, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
         if (MyString.CheckSigned(keySearch)) {
             if (fieldId.equals("1")) {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8";
@@ -302,12 +335,27 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String fieldId, String facetName, String facetValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String fieldId, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         //if (!facetName.equals("") && facetName != null) {
         //    keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
         // }
-        String query = "+(";
+        String query="";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+        query += " +(";
         if (MyString.CheckSigned(keySearch)) {
             if (fieldId.equals("1")) {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8";

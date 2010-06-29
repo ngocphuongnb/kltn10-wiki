@@ -140,7 +140,7 @@ public class SearchAllController extends HttpServlet {
                             sPaging += "&qf=" + qf;
                             sPaging += "&qv=" + qv;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize);
+                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -186,10 +186,26 @@ public class SearchAllController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
-        String query = "+(";
+        String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
+
+        query = " +(";
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
         } else {
@@ -228,6 +244,20 @@ public class SearchAllController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
+        switch(sortedType)
+        {
+            case 0:
+                query = "";
+                break;
+            case 2:
+                 if (MyString.CheckSigned(keySearch))
+                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                 else
+                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                break;
+            default:
+                break;
+        }
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^10 || body:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^8 || body:(" + keySearch + ")^3";
         } else {
