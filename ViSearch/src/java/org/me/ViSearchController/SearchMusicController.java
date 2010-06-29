@@ -68,11 +68,9 @@ public class SearchMusicController extends HttpServlet {
         List<FacetField> listFacet = null;
         String FieldId = null;
         try {
-
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
-
             server = SolrJConnection.getSolrServer("music");
             int start = (currentpage - 1) * pagesize;
 
