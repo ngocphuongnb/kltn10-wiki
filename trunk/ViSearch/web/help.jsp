@@ -100,7 +100,7 @@
                     <tr>
                         <td width="100"></td>
                         <td colspan="2" valign="top">
-                            <%@include file="template/footer.jsp"%>
+                            <%@include file="template/footer1.jsp"%>
                         </td>
                     </tr>
                 </table>
