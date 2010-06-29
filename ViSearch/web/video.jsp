@@ -40,14 +40,14 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
                     var url = "SearchVideoController?type=0&sp=1&KeySearch=";
-                    //url += keysearch.value;
                     url += encodeURIComponent(keysearch);
-                    //alert(url);
+                    url += "&SortedType=" + sortedtype;
                     window.location = url;
                 }
             }
@@ -84,6 +84,20 @@
                 var  btDong = "BTCloseMediaId" + id;
                 document.getElementById(btDong).className="hidden";
             }
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                var keysearch = document.getElementById('hfKeySearch').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchMusicController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
+                    window.location = url;
+                }
+            }
             $.ajax({
                 type: "POST",
                 url: "TopSearch",
@@ -110,6 +124,10 @@
                         strQuery = (String) request.getAttribute("KeySearch");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
+                    }
+                    int sortedType = 0;
+                    if (request.getAttribute("SortedType") != null) {
+                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // End Get strQuery
         %>
