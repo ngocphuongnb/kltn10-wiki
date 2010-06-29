@@ -75,7 +75,6 @@
                 var sortedtype = document.getElementById('slSortedType').value;
                 //alert(sortedtype);
                 var keysearch = document.getElementById('hfKeySearch').value;
-                //alert(keysearch);
                 if(keysearch == "")
                     return;
                 else

@@ -40,12 +40,14 @@
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
                 if(keysearch == "")
                     return;
                 else
                 {
                     var url = "SearchAllController?type=0&KeySearch=";
                     url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
                     window.location = url;
                 }
             }
@@ -56,8 +58,6 @@
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
-
-
             function showVideo(id)
             {
                 // showVideo and Close all other Videos
@@ -107,9 +107,22 @@
                 alert(Url);
                 window.location = Url;
             }
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                //alert(sortedtype);
+                var keysearch = document.getElementById('hfKeySearch').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchNewsController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
+                    window.location = url;
+                }
+            }
         </script>
-
-
     </head>
 
     <body onLoad="setText();">
@@ -127,6 +140,10 @@
                         strQuery = (String) request.getAttribute("KeySearch");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
+                    }
+                    int sortedType = 0;
+                    if (request.getAttribute("SortedType") != null) {
+                        sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // End Get strQuery
 
@@ -357,6 +374,7 @@
                                     </td>
                                 </tr>
                             </table>
+                                        <span><%@include file="template/sortedtype1.jsp"%></span>
                         </td>
                     </tr>
                     <tr>
