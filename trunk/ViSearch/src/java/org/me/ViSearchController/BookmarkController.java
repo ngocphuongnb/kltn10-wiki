@@ -57,26 +57,6 @@ public class BookmarkController extends HttpServlet {
             BookMarkBUS bmbus = new BookMarkBUS();
             bmbus.InsertBookmark(bmdto, "visearch");
             out.print("<input type='button' disabled value='Đã thêm bookmark'/>");
-            try {
-                System.out.println("Start index...Bookmark");
-                Date d = new Date();
-                GregorianCalendar gcal = new GregorianCalendar();
-                gcal.setTime(d);
-                XMLGregorianCalendar date;
-                date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-                String code = "123";
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-                String s = sdf.format(d);
-                s = MyHashEncryption.hashPassword(s);
-                code = MyHashEncryption.hashPassword(code);
-                code += s;
-                WSIndexService service = new WSIndexService();
-                WSIndex port = service.getWSIndexPort();
-                port.indexDataBookmark(code, date);
-                System.out.println("Index finish...");
-            } catch (Exception ex) {
-                System.out.println("Index fail...");
-            }
         } finally {
             out.close();
         }
