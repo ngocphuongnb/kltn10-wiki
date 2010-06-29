@@ -156,7 +156,8 @@ public class SearchRaoVatController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
-                    case 2:case 4:
+                    case 2:
+                    case 4:
                         String facetName = "";
                         String facetValue = "";
                         if (request.getParameter("FacetName") != null) {
@@ -266,14 +267,29 @@ public class SearchRaoVatController extends HttpServlet {
         keySearch = MyString.cleanQueryTerm(keySearch);
         SolrQuery solrQuery = new SolrQuery();
 
-        if (MyString.CheckSigned(keySearch)) {
-            solrQuery.setQueryType("dismax");
-        } else {
-            solrQuery.setQueryType("dismax2");
-        }
-
-        if (sortedType != 0) {
-            solrQuery.set(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
+        switch (sortedType) {
+            case 0:
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
+                break;
+            case 1:
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
+                solrQuery.set(DisMaxParams.BF, "recip(rord(last_update),1,1000,1000)");
+                break;
+            case 2:
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax_boosting");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned_boosting");
+                }
+                break;
         }
 
         solrQuery.setQuery(keySearch);
