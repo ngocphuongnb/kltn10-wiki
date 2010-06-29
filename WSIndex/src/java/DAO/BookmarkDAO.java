@@ -5,6 +5,7 @@
 package DAO;
 
 import DTO.BookmarkDTO;
+import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
@@ -57,7 +58,7 @@ public class BookmarkDAO {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM bookmark where priority=1"; // la public
+        String query = "SELECT count(*) as NumRow FROM bookmark where indexed=1";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
@@ -67,5 +68,17 @@ public class BookmarkDAO {
         rs.close();
         cn.close();
         return iCount;
+    }
+
+    public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        CallableStatement cs;
+        cs = (CallableStatement) cn.prepareCall("{Call update_indexed_bookmark(?)}");
+        for (int i : list) {
+            cs.setInt(1, i);
+            cs.executeUpdate();
+        }
+        cs.close();
+        cn.close();
     }
 }
