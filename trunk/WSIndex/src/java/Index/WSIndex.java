@@ -19,7 +19,9 @@ import DTO.ImageDTO;
 import DTO.LocationDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
+import Utils.MySegmenter;
 import Utils.SaveImageFromURL;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,6 +45,7 @@ public class WSIndex {
     static final int VIDEO = 5;
     static final int NEWS = 6;
     static final int ALL = 7;
+    public static boolean bInit = false;
 
     /**
      * Web service operation
@@ -371,5 +374,25 @@ public class WSIndex {
             }
         }
         return false;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getStringQuery")
+    public String getStringQuery(@WebParam(name = "strSrc")
+    String strSrc){
+        if(!bInit)
+        {
+            try {
+                MySegmenter.init();
+                bInit = true;
+            } catch (IOException ex) {
+                Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        MySegmenter seg = new MySegmenter();
+        String result = seg.getwordBoundaryMark(strSrc);
+        return result;
     }
 }
