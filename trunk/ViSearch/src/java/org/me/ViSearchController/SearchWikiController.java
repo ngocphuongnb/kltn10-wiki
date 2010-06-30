@@ -4,6 +4,8 @@
  */
 package org.me.ViSearchController;
 
+import IndexData.WSIndex;
+import IndexData.WSIndexService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,14 +46,12 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
-import org.me.Utils.SearchLocation;
 import org.me.dto.FacetDateDTO;
 
 /**
@@ -228,8 +228,7 @@ public class SearchWikiController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
         keySearch = MyString.cleanQueryTerm(keySearch);
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
@@ -238,10 +237,11 @@ public class SearchWikiController extends HttpServlet {
                 query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
 
             default:
@@ -252,19 +252,27 @@ public class SearchWikiController extends HttpServlet {
         //query += "wk_title:(\"" + keySearch + "\")^3 || (\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 ||(" + keySearch + ")";
 
         if (MyString.CheckSigned(keySearch)) {
-            query += "wk_title:(\"" + keySearch + "\")^10 || wk_text:(\"" + keySearch + "\")^5 || wk_title:(" + keySearch + ")^1.5 || wk_text:(" + keySearch + ")";
+            query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8";
+// || wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")
+            WSIndexService service = new WSIndexService();
+            WSIndex port = service.getWSIndexPort();
+
+            String seg = port.getStringQuery(keySearch);
+            seg = seg.replaceAll("[\\[\\]]", "\"");
+            query += String.format(" || wk_title:(%s)^10 || wk_text:(%s)^5 ", seg, seg);
+
         } else {
-            query += "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^8 || "
-                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^6 || "
-                    + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^5 || wk_text_unsigned:(" + keySearch + ")";
+            query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
+                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
+                    + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
         }
 
-        SearchLocation searchLocation = new SearchLocation();
-        SolrDocumentList list = searchLocation.CheckLocation(keySearch);
-        for (SolrDocument doc : list) {
-            String slocation = doc.getFirstValue("location").toString();
-            query += String.format(" || wk_title:(\"%s\")^30 || wk_text:(\"%s\")^5 ", slocation, slocation);
-        }
+//        SearchLocation searchLocation = new SearchLocation();
+//        SolrDocumentList list = searchLocation.CheckLocation(keySearch);
+//        for (SolrDocument doc : list) {
+//            String slocation = doc.getFirstValue("location").toString();
+//            query += String.format(" || wk_title:(\"%s\")^30 || wk_text:(\"%s\")^5 ", slocation, slocation);
+//        }
 
         solrQuery.setQuery(query);
         solrQuery.setHighlight(true);
@@ -283,8 +291,7 @@ public class SearchWikiController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         String str = "";
         String trackingboost = "";
-         switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 str = "";
                 trackingboost = "";
@@ -294,10 +301,11 @@ public class SearchWikiController extends HttpServlet {
                 trackingboost = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     trackingboost = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     trackingboost = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    trackingboost = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    trackingboost = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
 
             default:
@@ -547,8 +555,6 @@ public class SearchWikiController extends HttpServlet {
 
         Map<String, FieldStatsInfo> map = rsp.getFieldStatsInfo();
     }
-
-    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
