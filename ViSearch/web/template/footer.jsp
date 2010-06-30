@@ -29,7 +29,8 @@
                     <div style="float:right; clear:both"><a href="#top"><img alt="" class="bt" src="images/top-32.png "/></a></div>
                 </td>
             </tr>
-            <tr><td>&nbsp;</td></tr>
+            <tr><td>
+            </td></tr>
         </table>
     </body>
 </html>
