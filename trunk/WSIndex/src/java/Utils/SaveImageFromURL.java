@@ -33,7 +33,7 @@ public class SaveImageFromURL {
             for (int i = 0; i < list.size(); i++) {
                 String filename = Integer.toString(list.get(i).getId());
                 String ext = getExtension(list.get(i).getUrl());
-                String localImage = "C:/VSImageDownload/" + filename + "." + ext;
+                String localImage = "VSImageDownload/" + filename + "." + ext;
                 save(list.get(i).getUrl(), localImage);
                 Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
             }
