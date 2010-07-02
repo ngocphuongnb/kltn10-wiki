@@ -4,8 +4,6 @@
  */
 package org.me.ViSearchController;
 
-import IndexData.WSIndex;
-import IndexData.WSIndexService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +48,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MySegmenter;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 import org.me.dto.FacetDateDTO;
@@ -224,9 +223,10 @@ public class SearchWikiController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         keySearch = MyString.cleanQueryTerm(keySearch);
+        //keySearch = keySearch.trim().replaceAll(" ", " +");
         String query = "";
         switch (sortedType) {
             case 0:
@@ -244,6 +244,13 @@ public class SearchWikiController extends HttpServlet {
                 }
                 break;
 
+            case 3:
+                MySegmenter myseg = new MySegmenter();
+                String seg = myseg.getwordBoundaryMark(keySearch);
+                seg = seg.replaceAll("[\\[\\]]", "\"");
+                query = "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^20";
+                query += String.format(" || wk_title:(%s)^10 || wk_text:(%s)^5 ", seg, seg);
+                break;
             default:
                 break;
         }
@@ -251,28 +258,15 @@ public class SearchWikiController extends HttpServlet {
         //Gop chung co dau va ko dau
         //query += "wk_title:(\"" + keySearch + "\")^3 || (\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 ||(" + keySearch + ")";
 
-        if (MyString.CheckSigned(keySearch)) {
-            query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8";
-// || wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")
-            WSIndexService service = new WSIndexService();
-            WSIndex port = service.getWSIndexPort();
-
-            String seg = port.getStringQuery(keySearch);
-            seg = seg.replaceAll("[\\[\\]]", "\"");
-            query += String.format(" || wk_title:(%s)^10 || wk_text:(%s)^5 ", seg, seg);
-
-        } else {
-            query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
-                    + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
-                    + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+        if (sortedType != 3) {
+            if (MyString.CheckSigned(keySearch)) {
+                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^100 || wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")";
+            } else {
+                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
+                        + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
+                        + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+            }
         }
-
-//        SearchLocation searchLocation = new SearchLocation();
-//        SolrDocumentList list = searchLocation.CheckLocation(keySearch);
-//        for (SolrDocument doc : list) {
-//            String slocation = doc.getFirstValue("location").toString();
-//            query += String.format(" || wk_title:(\"%s\")^30 || wk_text:(\"%s\")^5 ", slocation, slocation);
-//        }
 
         solrQuery.setQuery(query);
         solrQuery.setHighlight(true);

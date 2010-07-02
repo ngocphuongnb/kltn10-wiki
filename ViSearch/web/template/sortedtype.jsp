@@ -15,16 +15,17 @@
     </head>
     <body>
         <div style="padding-left: 300px ; font-size:13px;">
-        Sắp xếp kết quả theo:
+        Đánh giá kết quả:
         <%
             int type = 0;
             if(request.getAttribute("Type")!=null)
                 type = Integer.parseInt(request.getAttribute("Type").toString());
         %>
         <select name="slSortedType" id="slSortedType" onChange="Sort(<%=type%>);">
-            <option value="0">Theo độ liên quan</option>
+            <option value="0">Ưu tiên độ liên quan</option>
             <option value="1">Ưu tiên ngày gần hơn</option>
-            <option value="2">Theo lịch sử tìm kiếm</option>
+            <option value="2">Ưu tiên lịch sử tìm kiếm</option>
+            <option value="3">Sử dụng tách từ tiếng Việt</option>
         </select>
         <input id="hfSortedType" type="hidden" value="<%
                     out.print(sortedType);
