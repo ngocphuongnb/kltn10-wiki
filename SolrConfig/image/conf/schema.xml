@@ -166,7 +166,7 @@
     </fieldType>
 	
 	
-    <fieldType name="textMusic" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="textImage" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
 		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -236,24 +236,24 @@
   <!-- Field danhnh cho search image --> 	
 	<field name="id" type="string" indexed="true" stored="true" required="true" />
 	<field name="category" type="string" indexed="true" stored="true"/>
-	<field name="category_index" type="textMusic" indexed="true" stored="false" multiValued="true"/>
-	<field name="category_index_unsigned" type="textMusic" indexed="true" stored="false"/>
+	<field name="category_index" type="textImage" indexed="true" stored="false" multiValued="true"/>
+	<field name="category_index_unsigned" type="textImage" indexed="true" stored="false"/>
 	<field name="url" type="string" indexed="false" stored="true"/>
 	<field name="url_local" type="string" indexed="false" stored="true"/>
 	<field name="website" type="string" indexed="false" stored="true"/>
 	
-	<field name="site_title" type="textMusic" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-	<field name="site_title_unsigned" type="textMusic" indexed="true" stored="false" multiValued="true"/>
+	<field name="site_title" type="textImage" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+	<field name="site_title_unsigned" type="textImage" indexed="true" stored="false" multiValued="true"/>
 
-	<field name="site_body" type="textMusic" indexed="true" stored="true" multiValued="true"/>
-	<field name="site_body_unsigned" type="textMusic" indexed="true" stored="false" multiValued="true"/>
+	<field name="site_body" type="textImage" indexed="true" stored="true" multiValued="true"/>
+	<field name="site_body_unsigned" type="textImage" indexed="true" stored="false" multiValued="true"/>
 	
 	<field name="fileType" type="string" indexed="false" stored="true"/>
 	<field name="width" type="sfloat" indexed="true" stored="true"/>
 	<field name="height" type="sfloat" indexed="true" stored="true"/>
 	<field name="size" type="string" indexed="true" stored="true"/>
-   <field name="keysearch" type="textMusic" indexed="true" stored="false"/>
-   <field name="keysearch_unsigned" type="textMusic" indexed="true" stored="false"/>
+   <field name="keysearch" type="textImage" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="textImage" indexed="true" stored="false"/>
 	
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.
