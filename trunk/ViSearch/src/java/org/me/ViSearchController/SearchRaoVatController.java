@@ -42,6 +42,7 @@ import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MySegmenter;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 import org.me.dto.FacetDateDTO;
@@ -262,7 +263,7 @@ public class SearchRaoVatController extends HttpServlet {
         return result;
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         keySearch = MyString.cleanQueryTerm(keySearch);
         SolrQuery solrQuery = new SolrQuery();
 
@@ -289,8 +290,16 @@ public class SearchRaoVatController extends HttpServlet {
                     solrQuery.setQueryType("dismax_unsigned_boosting");
                 }
                 break;
+            case 3:
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
+                MySegmenter seg = new MySegmenter();
+                keySearch = seg.getwordBoundaryMark(keySearch);
+                break;
         }
-
         solrQuery.setQuery(keySearch);
 
         // Facet
