@@ -129,6 +129,7 @@
                                     <tr><td  align="left">Họ và Tên</td></tr>
                                     <tr><td align="left" width="144"><input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" name="idFullName" id="idFullName" size="45"/></td></tr>
 
+                                    <tr><td height="15"></td></tr>
                                     <tr><td align="left">Tên đăng nhập</td></tr>
                                     <tr><td align="left" class="required"><input id="txtusername" type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm'; CheckUserName();" name="idUsername" id="idUsername" />(*)</td>
                                     </tr>
@@ -185,19 +186,21 @@
                                     <tr><td  align="left" class="required">
                                             <span id="idCaptcha"></span>
                                             <img id="captchaImage" src="jcaptcha.jpg" align="middle"/>
-                                            <br/><input  align="left" type="text" name="jcaptcha" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="jcaptchar"/>
-                                            (*)
-                                        </td></tr>
-                                    <tr><td height="15"></td></tr>
+                                            <br/><input  align="left" type="text" name="jcaptcha" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="jcaptchar"/>(*)
+                                        </td>
+                                    </tr>
 
+                                    <tr><td height="15"></td></tr>
                                     <tr>
                                         <td align="left" >
                                             <input name="btnSubmit" type="submit" value="Đăng ký"/>
                                             <input type="reset" name="btnReset" id="btnReset" value="Làm lại" /></td>
                                     </tr>
+                                    <tr>
+                                        <td align="center" ><a href="index.jsp">Về trang chủ</a></td>
+                                    </tr>
                                 </table>
                             </form>
-                            <a href="index.jsp">Về trang chủ</a>
                             <!-- end register -->
                         </td>
 
