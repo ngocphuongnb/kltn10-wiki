@@ -308,7 +308,6 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 out.print("<div  class=\"mnu\">Ngày đăng</div>" + facetD);
@@ -316,8 +315,7 @@
                                              
                                 <div class="mnu">Tìm kiếm nhiều</div>
                                 <table  id="tbTopSearch">
-                                </table>
-                                
+                                </table> 
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">

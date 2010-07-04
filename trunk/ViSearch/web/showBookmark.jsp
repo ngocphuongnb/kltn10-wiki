@@ -196,6 +196,42 @@
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     //get SolrDocumentList
         %>
+        <%                  //get Newest SolrDocumentList
+                    SolrDocumentList NewestDocs = new SolrDocumentList();
+                    StringBuffer result3 = new StringBuffer();
+                    String link = "";
+                    if (request.getAttribute("NewestDocs") != null) {
+                        NewestDocs = (SolrDocumentList) request.getAttribute("NewestDocs");
+                        result3.append("<table style=\"font-size:13px\">");
+                        for (int i = 0; i < NewestDocs.size(); i++) {
+
+                            // Lay noi dung cua moi field
+                            String docid = (listdocs.get(i).getFieldValue("docid")).toString();
+                            String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
+                            String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
+
+                            if (searchtype.equals("1")) {
+                                link = "DetailWikiController?id=" + docid + "&KeySearch=";
+                            } else if (searchtype.equals("2")) {
+                                link = "DetailRaoVatController?id=" + docid + "&KeySearch=";
+                            } else if (searchtype.equals("3")) {
+                                link = "SearchMusicController?type=0&sp=1&f=8&KeySearch=" + docid;
+                            } else if (searchtype.equals("4")) {
+                                link = "DetailImageController?id=" + docid + "&KeySearch=";
+                            } else if (searchtype.equals("5")) {
+                                link = "SearchVideoController?type=0&more=detail&KeySearch=" + docid;
+                            } else if (searchtype.equals("6")) {
+                                link = "DetailNewsController?id=" + docid + "&KeySearch=";
+                            }
+
+                            result3.append("<tr>");
+                            result3.append("<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>");
+                            result3.append("</tr>");
+                        }
+                        result3.append("</table>");
+                    }
+                    //get Newest SolrDocumentList
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -260,7 +296,9 @@
                     if (request.getAttribute("docsUser") != null) {
                         docsUser = (SolrDocumentList) request.getAttribute("docsUser");
 
-
+                        link = "";
+                        String link1 = "";
+                        String category = "";
                         for (int i = 0; i < docsUser.size(); i++) {
                             result += "<table style=\"font-size:13px\">";
 
@@ -274,9 +312,7 @@
                             String url = "";
 
 
-                            String link = "";
-                            String link1 = "";
-                            String category = "";
+
                             if (searchtype.equals("1")) {
                                 link = "DetailWikiController?id=" + docid + "&KeySearch=";
                                 link1 = "SearchBookmarkController?type=4&f=1";
@@ -358,12 +394,12 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                <% if (request.getAttribute("Docs") != null) {
-                                                out.print(facet);
+                            <div class="mnu">Bookmark mới</div>
+                            
+                                <% if (request.getAttribute("NewestDocs") != null) {
+                                                out.print(result3);
                                             }%>
-                                <table id="tbTopSearch">
-                                </table>
-                            </div>
+                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
@@ -372,7 +408,7 @@
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr><form action="javascript:CheckInput();" method="GET">
-                                    <td>
+                                    <td>&nbsp;
                                         <form frmSearch action="javascript:CheckInput()">
                                             <input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
                                                             out.print(strQuery);
