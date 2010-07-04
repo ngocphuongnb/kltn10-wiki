@@ -9,13 +9,11 @@
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
 <%@page import="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"%>
 <%@page import="org.apache.solr.common.SolrDocument"%>
-<%@page import="java.util.Calendar"%>
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.*"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
-<%@page import="org.me.dto.FacetDateDTO"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -191,32 +189,32 @@
 
 
                                 String link = "";
-                                String type = "";
+                                String stype = "";
                                 String subId = "";
                                 if (id.length() > 2 && id.substring(0, 2).equals("rv")) {
                                     subId = id.substring(2);
                                     link = "<a href=\"DetailRaoVatController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
-                                    type = "rv";
+                                    stype = "rv";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("news")) {
                                     subId = id.substring(4);
                                     link = "<a href=\"DetailNewsController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
-                                    type = "news";
+                                    stype = "news";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("wiki")) {
                                     subId = id.substring(4);
                                     link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
-                                    type = "wiki";
+                                    stype = "wiki";
                                 } else if (id.length() > 2 && id.substring(0, 2).equals("ms")) {
                                     subId = id.substring(2);
                                     link = title_hl;
-                                    type = "ms";
+                                    stype = "ms";
                                 } else if (id.length() > 5 && id.substring(0, 5).equals("video")) {
                                     subId = id.substring(5);
                                     link = title_hl;
-                                    type = "video";
+                                    stype = "video";
                                 } else if (id.length() > 3 && id.substring(0, 3).equals("img")) {
                                     subId = id.substring(3);
                                     link = "<a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
-                                    type = "img";
+                                    stype = "img";
                                 }
 
                                 // show title
@@ -228,10 +226,10 @@
                                 // show body
                                 String strBody = "";
                                 // Neu la image thì body la link image --> show image lên
-                                if (type.equals("img")) {
+                                if (stype.equals("img")) {
                                     strBody = "<tr><td valign=\"bottom\"><a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\"><img src='" + body + "' width=\"150\" align=\"left\"/></a></td></tr>";
                                     // Neu la music thì show window media lên
-                                } else if (type.equals("ms")) {
+                                } else if (stype.equals("ms")) {
                                     strBody += "<tr><td>";
                                     strBody += "<OBJECT CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
                                     strBody += "<param name=\"fileName\" value=\"\">";
@@ -244,7 +242,7 @@
                                     strBody += "</OBJECT>";
                                     strBody += "</td></tr>";
 
-                                } else if (type.equals("video")) {
+                                } else if (stype.equals("video")) {
                                     // Neu la video thì show window media lên
                                     String BTViewMediaId = "BTViewMediaId" + i;
                                     String BTCloseMediaId = "BTCloseMediaId" + i;

@@ -48,6 +48,7 @@
                     var url = "SearchVideoController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
+                //    alert(url);
                     window.location = url;
                 }
             }
@@ -415,6 +416,7 @@
                                     </td>
                                 </tr>
                             </table>
+                                        <span><%@include file="template/sortedtype1.jsp"%></span>
                         </td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
