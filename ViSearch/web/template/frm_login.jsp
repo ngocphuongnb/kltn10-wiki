@@ -155,7 +155,7 @@
                 <fieldset>
                     <label for="username">Tên đăng nhập</label><br/>
                     <input type="text" id="username" class="text ui-widget-content ui-corner-all" /><br/>
-                    <label for="password">Password</label><br/>
+                    <label for="password">Mật khẩu</label><br/>
                     <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
                 </fieldset>
             </form>
