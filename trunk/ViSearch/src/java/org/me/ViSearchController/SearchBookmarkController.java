@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -63,6 +64,7 @@ public class SearchBookmarkController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         SolrDocumentList docs = new SolrDocumentList();
+        SolrDocumentList NewestDocs = new SolrDocumentList();
         String keySearch = "";
         int pagesize = 10;
         int currentpage = 1;
@@ -71,6 +73,7 @@ public class SearchBookmarkController extends HttpServlet {
         int sortedType = 0;
         List<FacetField> listFacet = null;
         int type = -1;
+        QueryResponse rsp;
         Map<String, Map<String, List<String>>> highLight = null;
         if (request.getParameter("type") != null) {
             type = Integer.parseInt(request.getParameter("type"));
@@ -84,7 +87,7 @@ public class SearchBookmarkController extends HttpServlet {
             HttpSession session = request.getSession();
             MemberDTO mem;
             if (request.getParameter("KeySearch") != null || type != -1) {
-                QueryResponse rsp;
+
                 keySearch = request.getParameter("KeySearch");
                 request.setAttribute("KeySearch", keySearch);
                 sPaging += "&KeySearch=" + keySearch;
@@ -154,7 +157,6 @@ public class SearchBookmarkController extends HttpServlet {
             } else {
                 if (session.getAttribute("Member") != null) {
                     mem = (MemberDTO) session.getAttribute("Member");
-                    QueryResponse rsp;
                     rsp = OnSearchSubmitByMember(mem.getId(), start, pagesize, sortedType);
                     docs = rsp.getResults();
                 }
@@ -167,9 +169,11 @@ public class SearchBookmarkController extends HttpServlet {
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-
+                rsp = OnSearchSubmitNewestDocument(0, 10);
+                NewestDocs = rsp.getResults();
                 sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
+                request.setAttribute("NewestDocs", NewestDocs);
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
                 request.setAttribute("NumPage", numpage);
@@ -329,7 +333,7 @@ public class SearchBookmarkController extends HttpServlet {
         return rsp;
     }
 
-    private QueryResponse OnSearchSubmitByField(String field, int start, int pagesize) throws SolrServerException {
+    QueryResponse OnSearchSubmitByField(String field, int start, int pagesize) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
@@ -350,6 +354,29 @@ public class SearchBookmarkController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    QueryResponse OnSearchSubmitNewestDocument(int start, int pagesize) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String queryValue = "";
+        String query = "";
+        Calendar cl = Calendar.getInstance();
+        String str1thangqua = cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH)
+                + "T" + cl.get(Calendar.HOUR_OF_DAY) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND) + "." + cl.get(Calendar.MILLISECOND) + "Z";
+
+        queryValue = "[" + str1thangqua + " TO NOW]";
+
+        query += " +(date_created:" + queryValue + ")";
+
+        solrQuery.setQuery(query);
+
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "docid, searchtype, bookmarkname");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
