@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.me.bus.ParameterBUS;
-import org.omg.CORBA.INITIALIZE;
+
 
 /**
  *
