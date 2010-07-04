@@ -21,14 +21,14 @@
                         Copyright 2010 by:<br/>
                         <b>Đỗ Minh Tuấn</b> - 0612513 - Email: <a href="mailto:fcmtuan@gmail.com">fcmtuan@gmail.com</a><br/>
                         <b>Phạm Thế Vinh</b> - 0612577 - Email: <a href="mailto:vinhpham.it@gmail.com">vinhpham.it@gmail.com</a><br/>
-                        GVHD: <b>Nguyễn Tuấn Khang</b>
+                        GVHD: <b>Nguyễn Tấn Trần Minh Khang - Nguyễn Tuấn Khang</b>
                     </p>
                 </td>
                 <td class="footer">
                     <div style="float:right; clear:both"><a href="#top"><img alt="" class="bt" src="images/top-32.png "/></a></div>
                 </td>
             </tr>
-            <tr><td>&nbsp;</td></tr>
+            <tr><td height="8"></td></tr>
         </table>
     </body>
 </html>
