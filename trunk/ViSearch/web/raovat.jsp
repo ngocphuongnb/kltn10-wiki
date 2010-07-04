@@ -318,7 +318,7 @@
                                                 out.print("<div  class=\"mnu\">Ngày cập nhật</div>" + facetD);
                                             }%>
 
-                                <div class="mnu">Tìm kiếm nhiều nhất trong ngày</div>
+                                <div class="mnu">Tìm kiếm nhiều</div>
                                 <table  id="tbTopSearch">
 
                                 </table>
