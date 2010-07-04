@@ -24,7 +24,7 @@ public class SolrJConnection {
     }
 
     public static SolrServer getSolrServer(String core) throws MalformedURLException {
-        if(_url=="")
+        if(_url.equals(""))
             init();
         String url = _url + core;
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
