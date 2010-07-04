@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.me.bus.ParameterBUS;
+import org.omg.CORBA.INITIALIZE;
 
 /**
  *
@@ -15,20 +16,16 @@ import org.me.bus.ParameterBUS;
  */
 public class SolrJConnection {
     private static String _url = "";
-
-    public static SolrServer getSolrServer() throws MalformedURLException {
-        String url = "http://localhost:8983/solr";
-        CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-        return server;
-    }
-
-    private void init()
+    
+    private static void init()
     {
         ParameterBUS parbus = new ParameterBUS();
         _url = parbus.GetParameter("SolrAddress", "visearch");
     }
 
     public static SolrServer getSolrServer(String core) throws MalformedURLException {
+        if(_url=="")
+            init();
         String url = _url + core;
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
         return server;
