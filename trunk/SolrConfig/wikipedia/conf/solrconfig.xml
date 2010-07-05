@@ -32,31 +32,134 @@
   <requestHandler name="/update" class="solr.XmlUpdateRequestHandler" />
   <requestHandler name="/admin/" class="org.apache.solr.handler.admin.AdminHandlers" />
   <requestHandler name="/mlt" class="solr.MoreLikeThisHandler" /> 
+  <requestHandler name="dismax_boosting" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       keysearch^50 wk_title^3 wk_text
+     </str>
+     <str name="pf">
+       keysearch^100 wk_title^10 wk_text^3
+     </str>
+     <!--<str name="bf">
+        popularity^0.5 recip(price,1,1000,1000)^0.3
+     </str>-->
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+     <str name="mm">
+        5&lt;-25%
+     </str>
+     <int name="qs">100</int>
+	 <int name="ps">0</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">wk_title wk_text</str>
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.name.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are
+          found -->
+     <str name="f.name.hl.alternateField">wk_title</str>
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+	
+  </requestHandler>
+  
   <requestHandler name="dismax" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        wk_title^3 wk_text^2 wk_title_unsigned^1.5 wk_text_unsigned
+       wk_title^3 wk_text
      </str>
      <str name="pf">
-        wk_title^2 wk_text^1.5
+        wk_title^10 wk_text^3
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
      </str>-->
      <str name="fl">
-        id, wk_title, wk_text
+        id, wk_title, wk_text, timestamp
      </str>
      <str name="mm">
-        2&lt;-25%
+        5&lt;-25%
      </str>
-     <int name="ps">100</int>
+     <int name="qs">100</int>
+	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
-     <str name="hl.fl">wk_text wk_title</str>
+     <str name="hl.fl">wk_title wk_text</str>
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.name.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are
+          found -->
+     <str name="f.name.hl.alternateField">wk_title</str>
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+	
+  </requestHandler>
+  
+  <requestHandler name="dismax_unsigned_boosting" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       keysearch^50 keysearch_unsigned^20 wk_title^3 wk_text^1.5 wk_title_unsigned^2 wk_body_unsigned
+     </str>
+     <str name="pf">
+       keysearch^100 keysearch_unsigned^50 wk_title^10 wk_text^3 wk_title_unsigned^10 wk_body_unsigned^3
+     </str>
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+     <str name="mm">
+		5&lt;-25%
+     </str>
+     <int name="qs">100</int>
+	 <int name="ps">0</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">wk_title wk_text</str>
+     <!-- for this field, we want no fragmenting, just highlighting -->
+     <str name="f.name.hl.fragsize">0</str>
+     <!-- instructs Solr to return the field itself if no query terms are
+          found -->
+     <str name="f.name.hl.alternateField">wk_title</str>
+     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+    </lst>
+	
+  </requestHandler>
+  
+   <requestHandler name="dismax_unsigned" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.01</float>
+     <str name="qf">
+       wk_title^3 wk_text wk_title_unsigned^3 wk_text_unsigned
+     </str>
+     <str name="pf">
+       wk_title^10 wk_text^3 wk_title_unsigned^10 wk_text_unsigned^3
+     </str>
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+     <str name="mm">
+        5&lt;-25%
+     </str>
+     <int name="qs">100</int>
+	 <int name="ps">0</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">wk_title wk_text</str>
      <!-- for this field, we want no fragmenting, just highlighting -->
      <str name="f.name.hl.fragsize">0</str>
      <!-- instructs Solr to return the field itself if no query terms are
