@@ -52,7 +52,8 @@
      <str name="mm">
         2&lt;-25%
      </str>
-     <int name="ps">100</int>
+     <int name="qs">100</int>
+	 <int name="ps">10</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -87,7 +88,8 @@
      <str name="mm">
         2&lt;-25%
      </str>
-     <int name="ps">100</int>
+     <int name="qs">100</int>
+	 <int name="ps">10</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -108,10 +110,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-       keysearch^100 keysearch_unsigned^50 rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
+       keysearch^100 keysearch_unsigned^50 rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
      </str>
      <str name="pf">
-       rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned category_index_unsigned^0.5
+       rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned category_index_unsigned^0.5
      </str>
      <str name="fl">
         id, rv_title, rv_body, last_update
@@ -119,7 +121,8 @@
      <str name="mm">
         2&lt;-25%
      </str>
-     <int name="ps">100</int>
+     <int name="qs">100</int>
+	 <int name="ps">10</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -140,10 +143,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-       rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
+       rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
      </str>
      <str name="pf">
-       rv_title1^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned category_index_unsigned^0.5
+       rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
      </str>
      <str name="fl">
         id, rv_title, rv_body, last_update
@@ -151,7 +154,8 @@
      <str name="mm">
         2&lt;-25%
      </str>
-     <int name="ps">100</int>
+     <int name="qs">100</int>
+	 <int name="ps">10</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
