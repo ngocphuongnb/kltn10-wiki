@@ -45,6 +45,7 @@ import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -125,7 +126,7 @@ public class SearchWikiController extends HttpServlet {
                             }
                         }
 
-                        rsp = OnSearchSubmit(ClientUtils.escapeQueryChars(keySearch), start, pagesize, sortedType);
+                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -224,60 +225,107 @@ public class SearchWikiController extends HttpServlet {
     }
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, IOException {
+//        SolrQuery solrQuery = new SolrQuery();
+//        keySearch = MyString.cleanQueryTerm(keySearch);
+//        //keySearch = keySearch.trim().replaceAll(" ", " +");
+//        String query = "";
+//        switch (sortedType) {
+//            case 0:
+//                query = "";
+//                break;
+//            case 1:
+//                //query = "{!boost b=recip(ms(NOW,timestamp),3.16e-11,1,1)}";
+//                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+//                break;
+//            case 2:
+//                if (MyString.CheckSigned(keySearch)) {
+//                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+//                } else {
+//                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+//                }
+//                break;
+//
+//            case 3:
+//                MySegmenter myseg = new MySegmenter();
+//                String seg = myseg.getwordBoundaryMark(keySearch);
+//                seg = seg.replaceAll("[\\[\\]]", "\"");
+//                query = "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^20";
+//                query += String.format(" || wk_title:(%s)^10 || wk_text:(%s)^5 ", seg, seg);
+//                break;
+//            default:
+//                break;
+//        }
+//
+//        //Gop chung co dau va ko dau
+//        //query += "wk_title:(\"" + keySearch + "\")^3 || (\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 ||(" + keySearch + ")";
+//
+//        if (sortedType != 3) {
+//            if (MyString.CheckSigned(keySearch)) {
+//                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^100 || wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")";
+//            } else {
+//                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
+//                        + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
+//                        + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
+//            }
+//        }
+//
+//        solrQuery.setQuery(query);
+//        solrQuery.setHighlight(true);
+//        solrQuery.addHighlightField("wk_title");
+//        solrQuery.addHighlightField("wk_text");
+//        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+//        solrQuery.setHighlightSimplePost("</em>");
+//        solrQuery.setHighlightRequireFieldMatch(true);
+//        solrQuery.setStart(start);
+//        solrQuery.setRows(pagesize);
+//        solrQuery.set("fl", "id, wk_title, wk_text, timestamp");
+//        QueryResponse rsp = server.query(solrQuery);
+//        return rsp;
+
         SolrQuery solrQuery = new SolrQuery();
-        keySearch = MyString.cleanQueryTerm(keySearch);
-        //keySearch = keySearch.trim().replaceAll(" ", " +");
-        String query = "";
+
         switch (sortedType) {
             case 0:
-                query = "";
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
                 break;
             case 1:
-                //query = "{!boost b=recip(ms(NOW,timestamp),3.16e-11,1,1)}";
-                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
+                solrQuery.set(DisMaxParams.BF, "recip(rord(timestamp),1,1000,1000)");
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                    solrQuery.setQueryType("dismax_boosting");
                 } else {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    solrQuery.setQueryType("dismax_unsigned_boosting");
                 }
                 break;
-
             case 3:
-                MySegmenter myseg = new MySegmenter();
-                String seg = myseg.getwordBoundaryMark(keySearch);
-                seg = seg.replaceAll("[\\[\\]]", "\"");
-                query = "wk_title:(\"" + keySearch + "\")^20 || wk_text:(\"" + keySearch + "\")^20";
-                query += String.format(" || wk_title:(%s)^10 || wk_text:(%s)^5 ", seg, seg);
-                break;
-            default:
+                if (MyString.CheckSigned(keySearch)) {
+                    solrQuery.setQueryType("dismax");
+                } else {
+                    solrQuery.setQueryType("dismax_unsigned");
+                }
+                MySegmenter seg = new MySegmenter();
+                keySearch = seg.getwordBoundaryMark(keySearch);
                 break;
         }
+        solrQuery.setQuery(keySearch);
 
-        //Gop chung co dau va ko dau
-        //query += "wk_title:(\"" + keySearch + "\")^3 || (\"" + keySearch + "\")^2 || wk_title:(" + keySearch + ")^1.5 ||(" + keySearch + ")";
-
-        if (sortedType != 3) {
-            if (MyString.CheckSigned(keySearch)) {
-                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^100 || wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")";
-            } else {
-                query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
-                        + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
-                        + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
-            }
-        }
-
-        solrQuery.setQuery(query);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("wk_title");
         solrQuery.addHighlightField("wk_text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
-        solrQuery.set("fl", "id, wk_title, wk_text, timestamp");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
@@ -337,12 +385,12 @@ public class SearchWikiController extends HttpServlet {
         HttpClient client = new HttpClient();
 
         //String url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + numDays + "DAYS&facet.date.end=NOW/DAY%2B1DAY&facet.field=timestamp&facet.limit=10&wt=json";
-        String url = "";
+        String url = SolrJConnection.getURL("wikipedia");
         keySearch = URIUtil.encodeQuery(keySearch);
         if (endDay != null && "".equals(endDay.trim()) == false) {
-            url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY-" + endDay + "DAYS&facet.date.gap=%2B1DAY&wt=json";
+            url += "/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY-" + endDay + "DAYS&facet.date.gap=%2B1DAY&wt=json";
         } else {
-            url = "http://localhost:8983/solr/wikipedia/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY&facet.date.gap=%2B1DAY&wt=json";
+            url += "/select/?q=" + keySearch + "&facet=true&facet.date=timestamp&facet.date.start=NOW/DAY-" + startDay + "DAYS&facet.date.end=NOW/DAY&facet.date.gap=%2B1DAY&wt=json";
         }
 
         GetMethod get = new GetMethod(url);
@@ -370,21 +418,7 @@ public class SearchWikiController extends HttpServlet {
             //JSONArray arrTime = location.getJSONArray("timestamp");
             ArrayList<FacetDateDTO> myArr = new ArrayList<FacetDateDTO>();
 
-//            if (last_update.size() > 0) {
-//                FacetDateDTO fD = null;
-//                for (int i = 0; i < last_update.size(); i++) {
-//                    if (i % 2 == 0)// Phan tu chan la Ngay (Value)
-//                    {
-//                        fD = new FacetDateDTO();
-//                        fD.setDateTime(last_update.get(i).toString());
-//                    } else //  Phan tu le là số (Count)
-//                    {
-//                        fD.setCount(last_update.get(i).toString());
-//                        myArr.add(fD);
-//                    }
-//                }
-//            }
-            //  ArrayList arrL = (ArrayList) last_update.values();
+
             String test = last_update.toString();
             test = test.substring(1, test.length() - 1);
             String[] strArr = test.split(",");
@@ -399,20 +433,7 @@ public class SearchWikiController extends HttpServlet {
                     myArr.add(fD);
                 }
             }
-            // if (last_update.size() > 0) {
-            //     FacetDateDTO fD = null;
-            //     for (int i = 0; i < last_update.size()-2; i++) {
-            //       fD = new FacetDateDTO();
-            //last_update.g
-            // last_update.
-            //       String label = last_update.getJSONObject(i).getString("labels");
-            //String docs = last_update.getJSONObject(i).getString("docs");
-            // last_update.get
-            //.get
-            //fD.setCount(last_update.get(i).toString());
-            // myArr.add(fD);
-            //    }
-            //  }
+
             get.releaseConnection();
             return myArr;
         } catch (Exception x) {
@@ -444,7 +465,8 @@ public class SearchWikiController extends HttpServlet {
         List<ClusterRecord> result = new ArrayList<ClusterRecord>();
 
         HttpClient client = new HttpClient();
-        String url = "http://localhost:8983/solr/wikipedia/clustering?q=" + query + "&rows=" + rows + "&wt=json";
+        String url = SolrJConnection.getURL("wikipedia");
+        url += "/clustering?q=" + query + "&rows=" + rows + "&wt=json";
 
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
@@ -481,7 +503,8 @@ public class SearchWikiController extends HttpServlet {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
-        String url = "http://localhost:8983/solr/wikipedia/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
+        String url = SolrJConnection.getURL("wikipedia");
+        url += "/spell?q=" + q + "&spellcheck=true&spellcheck.collate=true&spellcheck.dictionary=jarowinkler&wt=json";
         url = URIUtil.encodeQuery(url);
         GetMethod get = new GetMethod(url);
 
@@ -529,7 +552,6 @@ public class SearchWikiController extends HttpServlet {
         query.addHighlightField("wk_text");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
-        query.setHighlightRequireFieldMatch(true);
         query.set("fl", "id, wk_title, wk_text, timestamp");
         QueryResponse rsp = server.query(query);
         return rsp;

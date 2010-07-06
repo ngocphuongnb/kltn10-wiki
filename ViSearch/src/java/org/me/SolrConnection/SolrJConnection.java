@@ -30,4 +30,12 @@ public class SolrJConnection {
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
         return server;
     }
+
+    public static String getURL(String core)
+    {
+        if(_url.equals(""))
+            init();
+        String url = _url + core;
+        return url;
+    }
 }
