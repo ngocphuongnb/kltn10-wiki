@@ -52,7 +52,7 @@
      <str name="mm">
         5&lt;-25%
      </str>
-     <int name="qs">100</int>
+     <int name="qs">8</int>
 	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
@@ -77,7 +77,7 @@
        wk_title^3 wk_text
      </str>
      <str name="pf">
-        wk_title^10 wk_text^3
+        wk_title^10 wk_text^7
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -88,7 +88,7 @@
      <str name="mm">
         5&lt;-25%
      </str>
-     <int name="qs">100</int>
+     <int name="qs">8</int>
 	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
@@ -121,7 +121,7 @@
      <str name="mm">
 		5&lt;-25%
      </str>
-     <int name="qs">100</int>
+     <int name="qs">8</int>
 	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
@@ -146,7 +146,7 @@
        wk_title^3 wk_text wk_title_unsigned^3 wk_text_unsigned
      </str>
      <str name="pf">
-       wk_title^10 wk_text^3 wk_title_unsigned^10 wk_text_unsigned^3
+       wk_title^10 wk_text^3 wk_title_unsigned^15 wk_text_unsigned^5
      </str>
      <str name="fl">
         id, wk_title, wk_text, timestamp
@@ -154,7 +154,7 @@
      <str name="mm">
         5&lt;-25%
      </str>
-     <int name="qs">100</int>
+     <int name="qs">8</int>
 	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
