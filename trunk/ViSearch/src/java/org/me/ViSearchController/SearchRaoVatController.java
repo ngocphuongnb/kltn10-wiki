@@ -264,7 +264,7 @@ public class SearchRaoVatController extends HttpServlet {
     }
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
-        keySearch = MyString.cleanQueryTerm(keySearch);
+        //keySearch = MyString.cleanQueryTerm(keySearch);
         SolrQuery solrQuery = new SolrQuery();
 
         switch (sortedType) {
@@ -317,10 +317,10 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.addHighlightField("rv_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
+        //solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
-        solrQuery.set("fl", "id, rv_title, rv_body, photo, site, category, last_update");
+        //solrQuery.set("fl", "id, rv_title, rv_body, photo, site, category, last_update");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
