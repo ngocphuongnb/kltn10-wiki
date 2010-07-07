@@ -6,6 +6,7 @@ package org.me.bus;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import org.me.dao.MemberDAO;
 import org.me.dto.MemberDTO;
 
@@ -37,5 +38,9 @@ public class MemberBUS {
     public boolean UpdateInfo(MemberDTO mem, String database){
         MemberDAO memDao = new MemberDAO();
         return memDao.UpdateInfo(mem, database);
+    }
+    public ArrayList<MemberDTO> GetListMember(String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MemberDAO memDao = new MemberDAO();
+        return memDao.GetListMember(database);
     }
 }

@@ -5,7 +5,6 @@
 package org.me.Utils;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
