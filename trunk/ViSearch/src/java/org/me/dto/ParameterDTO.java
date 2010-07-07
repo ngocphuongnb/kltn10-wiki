@@ -10,11 +10,11 @@ package org.me.dto;
  * @author VinhPham
  */
 public class ParameterDTO {
-     private String _Id;
+     private int _Id;
       private String _Name;
        private String _Value;
 
-    public String getId() {
+    public int getId() {
         return _Id;
     }
 
@@ -26,7 +26,7 @@ public class ParameterDTO {
         return _Value;
     }
 
-    public void setId(String _Id) {
+    public void setId(int _Id) {
         this._Id = _Id;
     }
 

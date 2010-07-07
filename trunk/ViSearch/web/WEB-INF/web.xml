@@ -104,6 +104,10 @@
         <servlet-name>MemberInfoController</servlet-name>
         <servlet-class>org.me.ViSearchController.MemberInfoController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadConfigController</servlet-name>
+        <servlet-class>org.me.admin.LoadConfigController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>MemberInfoController</servlet-name>
         <url-pattern>/MemberInfoController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadConfigController</servlet-name>
+        <url-pattern>/LoadConfigController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
