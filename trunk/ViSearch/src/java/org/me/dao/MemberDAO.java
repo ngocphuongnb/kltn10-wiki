@@ -4,6 +4,7 @@
  */
 package org.me.dao;
 
+import com.mysql.jdbc.Statement;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.CallableStatement;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import org.me.Utils.MyHashEncryption;
 import org.me.dto.MemberDTO;
@@ -132,5 +134,33 @@ public class MemberDAO {
             ex.printStackTrace();
         }
         return false;
+    }
+
+     public ArrayList<MemberDTO> GetListMember(String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            String query = "Select * from member";
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            MemberDTO member;
+            while (rs.next()) {
+                member = new MemberDTO();
+                Calendar cl = Calendar.getInstance();
+                Date date = rs.getDate("birthday");
+                cl.setTime(date);
+                member.setBirthDay(cl);
+                member.setFullName(rs.getString("fullname"));
+                member.setId(rs.getInt("ID"));
+                member.setPass(rs.getString("pass"));
+                member.setSex(rs.getInt("sex"));
+                member.setUserName(rs.getString("username"));
+                list.add(member);
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
     }
 }
