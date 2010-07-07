@@ -5,11 +5,13 @@
 
 package org.me.dao;
 
+import com.mysql.jdbc.Statement;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import org.me.dto.ParameterDTO;
 /**
  *
@@ -52,5 +54,27 @@ public class ParameterDAO {
             ex.printStackTrace();
         }
         return value;
+    }
+
+    public ArrayList<ParameterDTO> GetList(String database){
+        ArrayList<ParameterDTO> list = new ArrayList<ParameterDTO>();
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            String query = "select * from parameter";
+            Statement st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            ParameterDTO pdto;
+            while (rs.next()) {
+                pdto = new ParameterDTO();
+                pdto.setId(Integer.parseInt(rs.getString("id")));
+                pdto.setName(rs.getString("name"));
+                pdto.setValue(rs.getString("value"));
+                list.add(pdto);
+            }
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
     }
 }
