@@ -56,6 +56,20 @@ public class ParameterDAO {
         return value;
     }
 
+    public void updateParameter(String database, String param, String value){
+        Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL Update_Parameter(?, ?)}");
+            cs.setString(1,param);
+            cs.setString(2, value);
+            cs.executeUpdate();
+      
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
     public ArrayList<ParameterDTO> GetList(String database){
         ArrayList<ParameterDTO> list = new ArrayList<ParameterDTO>();
         Connection cn = DataProvider.getConnection(database);
@@ -69,6 +83,7 @@ public class ParameterDAO {
                 pdto.setId(Integer.parseInt(rs.getString("id")));
                 pdto.setName(rs.getString("name"));
                 pdto.setValue(rs.getString("value"));
+                pdto.setDecription(rs.getString("decription"));
                 list.add(pdto);
             }
             cn.close();

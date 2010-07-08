@@ -16,6 +16,12 @@
         <title>Trang cấu hình</title>
         <link href="style.css" rel="stylesheet" type="text/css" />
         <link href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" type="text/css" />
+          <script type="text/javascript">
+            function OnSubmit(){
+                // chua kiem tra loi
+               
+            }
+            </script>
     </head>
 
     <body>
@@ -48,13 +54,14 @@
                                             list = (ArrayList<ParameterDTO>) request.getAttribute("ListParameter");
                             %>
                             <h2>Cấu hình cho hệ thống</h2>
-                            <form action="javascript:OnSubmit()">
+                            <form action="SaveConfigController">
                                 <table border="1px" cellpadding="0" cellspacing="0" width="60%" class="ui-widget-content">
                                     <tr>
                                         <th>Têm tham số</th>
                                         <th>Giá trị</th>
+                                        <th>Mô tả</th>
                                     </tr>
-                                    <%
+                                    <% int i=1;
                                                                                 for(ParameterDTO par:list) {
                                                                                 %>
                                                                                 <tr>
@@ -63,17 +70,26 @@
                                                                                         <input type="hidden" id="hf<%out.print(par.getName());%>" value="<%=par.getId()%>"/>
                                                                                     </td>
                                                                                     <td>
-                                                                                        <%if(par.getName().equals("code"))%>
-                                                                                        <input type="text" id="vl<%out.print(par.getName());%>" value="<%=par.getValue()%>"/>
+                                                                                        <%if(par.getName().equals("Value"))%>
+                                                                                        <input type="text" size="35" name="<%out.print(par.getName());%>" value="<%=par.getValue()%>"/>
+                                                                                    </td>
+
+                                                                                     <td>
+                                                                                        <%=par.getDecription()%>
                                                                                     </td>
                                                                                 </tr>
                                     <%
-                                                                                }
+                                                                               i++; }
                                     %>
+                                    </table>
+                                    <table>
                                     <tr>
-                                        <td colspan="2" align="center"><input type="submit" value="Lưu"></td>
+                                        <td  align="center"><input type="submit" value="Lưu"></td>
+                                        <td  align="center"><input type="button" onclick="javascript:history.back(1)" value="Hủy"></td>
+                                        <td  align="center"><input type="submit" value="Khôi phục cài đặt mặc định"></td>
                                     </tr>
-                                </table>
+                                        </table>
+                                
                             </form>
                             <%
                                         }
@@ -95,7 +111,6 @@
 
             </div>
         </div>
-
     </body>
 </html>
 

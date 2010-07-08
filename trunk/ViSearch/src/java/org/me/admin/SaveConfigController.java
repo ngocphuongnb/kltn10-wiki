@@ -6,22 +6,19 @@ package org.me.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.me.bus.ParameterBUS;
-import org.me.dto.ParameterDTO;
 
 /**
  *
- * @author VinhPham
+ * @author tuandom
  */
-public class LoadConfigController extends HttpServlet {
+public class SaveConfigController extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -32,25 +29,30 @@ public class LoadConfigController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            HttpSession session = request.getSession();
-//            if (session.getAttribute("admin") != null) {
-                ArrayList<ParameterDTO> list = new ArrayList<ParameterDTO>();
-                ParameterBUS bus = new ParameterBUS();
-                list = bus.GetList("visearch");
-                request.setAttribute("ListParameter", list);
-                String url = "/admin/config.jsp";
-                ServletContext sc = getServletContext();
-                RequestDispatcher rd = sc.getRequestDispatcher(url);
-                rd.forward(request, response);
-//            } else {
-//                out.println("Bạn không có quyền truy cập vào trang này");
-//            }
-        } catch (Exception ex) {
-            out.println(ex.getMessage());
+            ParameterBUS bus = new ParameterBUS();
+
+            String time_range = request.getParameter("time_range");
+            String SolrAddress = request.getParameter("SolrAddress");
+            String TimeIndexBM = request.getParameter("TimeIndexBookmark");
+            String TimeIndexTracking = request.getParameter("TimeIndexTracking");
+            String TimeTopSearch = request.getParameter("TimeTopSearch");
+            String RecordPaging = request.getParameter("RecordPaging");
+
+            bus.updateParameter("visearch", "time_range", time_range);
+            bus.updateParameter("visearch", "SolrAddress", SolrAddress);
+            bus.updateParameter("visearch", "TimeIndexBookmark", TimeIndexBM);
+            bus.updateParameter("visearch", "TimeIndexTracking", TimeIndexTracking);
+            bus.updateParameter("visearch", "TimeTopSearch", TimeTopSearch);
+            bus.updateParameter("visearch", "RecordPaging", RecordPaging);
+
+            String url = "/admin/config.jsp";
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher(url);
+            rd.forward(request, response);
+
         } finally {
             out.close();
         }

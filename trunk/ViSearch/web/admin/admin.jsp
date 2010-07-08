@@ -40,7 +40,7 @@
                     <!-- !-->
                     <tr>
                         <td colspan="2" height="33" valign="top">
-                            <h1>các chức năng quản lý của admin</h1>
+                            <h1>Các chức năng quản lý của Admin</h1>
                             <a href="/ViSearch/LoadConfigController">Cấu hình hệ thống</a>
                             <a href="/ViSearch/LoadAllMemberController">Quản lý thành viên</a>
                         </td>

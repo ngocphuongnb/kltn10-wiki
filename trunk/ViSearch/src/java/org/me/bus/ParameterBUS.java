@@ -23,4 +23,8 @@ public class ParameterBUS {
         ParameterDAO pardao = new ParameterDAO();
         return pardao.GetList(database);
     }
+    public void updateParameter(String database, String param, String value) {
+        ParameterDAO pardao = new ParameterDAO();
+        pardao.updateParameter(database, param, value);
+    }
 }

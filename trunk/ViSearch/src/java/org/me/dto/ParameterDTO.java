@@ -13,6 +13,15 @@ public class ParameterDTO {
      private int _Id;
       private String _Name;
        private String _Value;
+       private String _Decription;
+
+    public void setDecription(String _Decription) {
+        this._Decription = _Decription;
+    }
+
+    public String getDecription() {
+        return _Decription;
+    }
 
     public int getId() {
         return _Id;
