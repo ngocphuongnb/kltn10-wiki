@@ -29,7 +29,7 @@
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
                                         <table id="Table_01" width="975" height="130" border="0" cellpadding="0" cellspacing="0">
-                                            <tr><td><img src="../images/banner-register.png" /></td></tr>
+                                            <tr><td><img src="../images/BannerAdmin.png" /></td></tr>
                                         </table>
                                         <!-- end banner      !-->
                                     </td>
@@ -40,8 +40,9 @@
                     <!-- !-->
                     <tr>
                         <td colspan="2" height="33" valign="top">
-
-                            
+                            <h1>các chức năng quản lý của admin</h1>
+                            <a href="/ViSearch/LoadConfigController">Cấu hình hệ thống</a>
+                            <a href="/ViSearch/LoadAllMemberController">Quản lý thành viên</a>
                         </td>
                     </tr>
 
