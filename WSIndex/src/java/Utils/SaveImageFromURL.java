@@ -23,22 +23,16 @@ import java.util.ArrayList;
  */
 public class SaveImageFromURL {
 
-    public void loadImage() throws SQLException, ParseException, MalformedURLException, IOException {
+    public void loadImage(ArrayList<ImageDTO> list) throws SQLException, ParseException, MalformedURLException, IOException {
         ImageBUS Ibus = new ImageBUS();
-        int numOfRecords = Ibus.CountRecord();
-        int start = 0;
-        while (start < numOfRecords) {
-            ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
-            list = Ibus.getDataList(start, 100);
-            for (int i = 0; i < list.size(); i++) {
-                String filename = Integer.toString(list.get(i).getId());
-                String ext = getExtension(list.get(i).getUrl());
-                String localImage = "VSImageDownload/" + filename + "." + ext;
-                save(list.get(i).getUrl(), localImage);
-                Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
-            }
-            start += 100;
+        for (int i = 0; i < list.size(); i++) {
+            String filename = Integer.toString(list.get(i).getId());
+            String ext = getExtension(list.get(i).getUrl());
+            String localImage = "VSImageDownload/" + filename + "." + ext;
+            save(list.get(i).getUrl(), localImage);
+            Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
         }
+
     }
 
     private void save(String strLink,
@@ -48,6 +42,8 @@ public class SaveImageFromURL {
 
             BufferedInputStream bis = null;
             BufferedOutputStream bos = null;
+
+
             try {
                 URL url = new URL(strLink);
                 URLConnection urlc = url.openConnection();
@@ -57,22 +53,33 @@ public class SaveImageFromURL {
                         destination));
 
                 int i;
+                
                 while ((i = bis.read()) != -1) {
                     bos.write(i);
+
+
                 }
             } finally {
                 if (bis != null) {
                     try {
                         bis.close();
+
+
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
+
+
                     }
                 }
                 if (bos != null) {
                     try {
                         bos.close();
+
+
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
+
+
                     }
                 }
             }
@@ -82,10 +89,13 @@ public class SaveImageFromURL {
     }
 
     private String getExtension(String strURL) {
-        String ext = "";
-       String[] str = strURL.split("[.]");
+        String ext = "jpg";
+        String[] str = strURL.split("[.]");
         //lay cái cuối cùng chính là phần mở rộng
         ext = str[str.length - 1];
+        if(ext.contains("&"))
+            ext = ext.split("[&%]")[0];
         return ext;
+
     }
 }

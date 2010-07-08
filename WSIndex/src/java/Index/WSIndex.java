@@ -19,7 +19,6 @@ import DTO.ImageDTO;
 import DTO.LocationDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
-import Utils.MySegmenter;
 import Utils.SaveImageFromURL;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -45,7 +44,6 @@ public class WSIndex {
     static final int VIDEO = 5;
     static final int NEWS = 6;
     static final int ALL = 7;
-    public static boolean bInit = false;
 
     /**
      * Web service operation
@@ -177,7 +175,7 @@ public class WSIndex {
         SaveImageFromURL ms = new SaveImageFromURL();
         try {
             // save img ve local va update trong mysql
-            ms.loadImage();
+            ms.loadImage(listImage);
         } catch (Exception ex) {
         }
 
@@ -316,10 +314,10 @@ public class WSIndex {
     public boolean SaveImage(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest) {
         AdminBUS bus = new AdminBUS();
         if (bus.CheckSecurity(code, dateRequest.getTime())) {
-            SaveImageFromURL ms = new SaveImageFromURL();
             try {
-                // save img ve local va update trong mysql
-                ms.loadImage();
+
+                MySolrJ ms = new MySolrJ();
+                ms.SaveImage();
                 return true;
             } catch (Exception ex) {
                 return false;
@@ -327,6 +325,7 @@ public class WSIndex {
         }
         return false;
     }
+
     /**
      * Web service operation
      */
@@ -346,7 +345,7 @@ public class WSIndex {
         return false;
     }
 
-     @WebMethod(operationName = "IndexDataLocation")
+    @WebMethod(operationName = "IndexDataLocation")
     public boolean IndexDataLocation(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "listLocation") ArrayList<LocationDTO> listLocation) {
         AdminBUS bus = new AdminBUS();
         if (bus.CheckSecurity(code, dateRequest.getTime())) {
@@ -361,7 +360,7 @@ public class WSIndex {
         return false;
     }
 
-     @WebMethod(operationName = "EmptyData")
+    @WebMethod(operationName = "EmptyData")
     public boolean EmptyData(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "core") String core) {
         AdminBUS bus = new AdminBUS();
         if (bus.CheckSecurity(code, dateRequest.getTime())) {
@@ -375,24 +374,8 @@ public class WSIndex {
         }
         return false;
     }
-
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "getStringQuery")
-    public String getStringQuery(@WebParam(name = "strSrc")
-    String strSrc){
-        if(!bInit)
-        {
-            try {
-                MySegmenter.init();
-                bInit = true;
-            } catch (IOException ex) {
-                Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        MySegmenter seg = new MySegmenter();
-        String result = seg.getwordBoundaryMark(strSrc);
-        return result;
-    }
+//    @WebMethod(operationName = "Cong2So")
+//    public int Cong2So(@WebParam(name = "x") int x, @WebParam(name = "y") int y) {
+//        return x + y;
+//    }
 }
