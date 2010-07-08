@@ -211,7 +211,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -245,7 +245,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -291,7 +291,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -308,13 +308,17 @@
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
+                                        <% String ngaygio="";%>
                                         <%@ include file="template/banner_Wiki.jsp"%>
                                         <!-- end banner      !-->
                                     </td>
                                 </tr>
                             </table>
-                            <span><%@include file="template/sortedtype.jsp"%></span>
                         </td>
+                    </tr>
+                    <tr>
+                        <td width="30%" align="middle"><%=ngaygio%></td>
+                        <td width="70%" align="middle"><%@include file="template/sortedtype.jsp"%></td>
                     </tr>
                     <tr>
                         <td height="20" colspan="2" align="center" valign="bottom">
