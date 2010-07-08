@@ -45,12 +45,6 @@ public class MySolrJ {
 
     public static int ierror;
 
-    private SolrServer getSolrServer() throws MalformedURLException {
-        String url = "http://localhost:8983/solr";
-        CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
-        return server;
-    }
-
     private SolrServer getSolrServer(String core) throws MalformedURLException {
         String url = "http://localhost:8983/solr/" + core;
         CommonsHttpSolrServer server = new CommonsHttpSolrServer(url);
@@ -75,24 +69,28 @@ public class MySolrJ {
     }
 
     public void IndexViwiki() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+        //EmptyData("wikipedia");
         ViwikiPageBUS bus = new ViwikiPageBUS();
         int numOfRecords = bus.CountRecord();
-        System.out.print("Num records found: " + numOfRecords);
+        //System.out.print("Num records found: " + numOfRecords);
         int start = 0;
-        ierror = 0;
+        //ierror = 0;
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            list = bus.getDataList(0, 100);
+            list = bus.getDataList(0, 50);
             lResult = ImportViwiki2Solr(list, "wikipedia");
-            ImportViwiki2SolrAll(list, "all");
+            try {
+                ImportViwiki2SolrAll(list, "all");
+            } catch (Exception ex) {
+            }
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
-        FileWriter writer = new FileWriter(new File("error.txt"));
-        writer.write("Num of records error:" + ierror);
-        writer.close();
+//        FileWriter writer = new FileWriter(new File("error.txt"));
+//        writer.write("Num of records error:" + ierror);
+//        writer.close();
     }
 
     public void IndexRaoVat() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
@@ -145,6 +143,7 @@ public class MySolrJ {
             start += 100;
         }
     }
+
     public void IndexBookmark() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
 
         //EmptyData("bookmark");
@@ -211,7 +210,6 @@ public class MySolrJ {
 //        } catch (Exception ex) {
 //        }
 //    }
-
 //    public void IndexRaoVat2All() {
 //        try {
 //            //ArrayList<Integer> lResult = new ArrayList<Integer>();
@@ -228,7 +226,6 @@ public class MySolrJ {
 //        } catch (Exception ex) {
 //        }
 //    }
-
 //    public void IndexMusic2All() {
 //        try {
 //            //ArrayList<Integer> lResult = new ArrayList<Integer>();
@@ -245,7 +242,6 @@ public class MySolrJ {
 //        } catch (Exception ex) {
 //        }
 //    }
-
 //    public void IndexVideo2All() {
 //        try {
 //            //ArrayList<Integer> lResult = new ArrayList<Integer>();
@@ -262,7 +258,6 @@ public class MySolrJ {
 //        } catch (Exception ex) {
 //        }
 //    }
-
 //    public void IndexImage2All() {
 //        try {
 //            //ArrayList<Integer> lResult = new ArrayList<Integer>();
@@ -296,7 +291,6 @@ public class MySolrJ {
 //        } catch (Exception ex) {
 //        }
 //    }
-
 //    public void IndexAll(int i) {
 //        switch (i) {
 //            case 1:
@@ -329,7 +323,6 @@ public class MySolrJ {
 //                break;
 //        }
 //    }
-
     private ArrayList<Integer> ImportMusic2Solr(ArrayList<MusicDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -395,7 +388,7 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("category", "Nh?c");
+            doc.addField("category", "Nhạc");
             doc.addField("body", pagedto.getUrl());
 
             docs.add(doc);
@@ -403,13 +396,13 @@ public class MySolrJ {
         }
 
         SolrServer server = getSolrServer(solrServer); // solrServer = music
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -445,10 +438,12 @@ public class MySolrJ {
 
 
             SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
-            UpdateRequest req = new UpdateRequest();
-            req.setAction(ACTION.COMMIT, false, false);
-            req.add(docs);
-            UpdateResponse rsp = req.process(server);
+            server.add(docs);
+            server.commit();
+//            UpdateRequest req = new UpdateRequest();
+//            req.setAction(ACTION.COMMIT, false, false);
+//            req.add(docs);
+//            UpdateResponse rsp = req.process(server);
             return listint;
         } catch (Exception ex) {
             System.out.print(ex.getMessage());
@@ -479,10 +474,12 @@ public class MySolrJ {
 
 
         SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -518,12 +515,12 @@ public class MySolrJ {
             listint.add(pagedto.getId());
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = raovat
-        //server.add(docs);
-        // server.commit();
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -551,13 +548,13 @@ public class MySolrJ {
 
 
         SolrServer server = getSolrServer(solrServer); // solrServer = raovat
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -586,12 +583,12 @@ public class MySolrJ {
             listint.add(pagedto.getId());
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = video
-        //server.add(docs);
-        // server.commit();
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -617,14 +614,15 @@ public class MySolrJ {
             listint.add(pagedto.getId());
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = bookmark
-        //server.add(docs);
-        // server.commit();
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
+
     private ArrayList<Integer> ImportVideo2SolrAll(ArrayList<VideoDTO> listpage, String solrServer) throws MalformedURLException, SolrServerException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -647,12 +645,12 @@ public class MySolrJ {
             listint.add(pagedto.getId());
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = video
-        //server.add(docs);
-        // server.commit();
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -686,13 +684,13 @@ public class MySolrJ {
         }
 
         SolrServer server = getSolrServer(solrServer); // solrServer =image
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -718,13 +716,13 @@ public class MySolrJ {
         }
 
         SolrServer server = getSolrServer(solrServer); // solrServer =image
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -759,13 +757,13 @@ public class MySolrJ {
         }
 
         SolrServer server = getSolrServer(solrServer); // solrServer = news
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
@@ -793,17 +791,17 @@ public class MySolrJ {
             listint.add(pagedto.getId());
         }
         SolrServer server = getSolrServer(solrServer); // solrServer = news
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
-    public void IndexLocation(ArrayList<LocationDTO> listLocation) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException{
+    public void IndexLocation(ArrayList<LocationDTO> listLocation) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
         EmptyData("location");
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
         SolrInputDocument doc;
@@ -815,10 +813,27 @@ public class MySolrJ {
             docs.add(doc);
         }
         SolrServer server = getSolrServer("location"); // solrServer = music
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+        server.add(docs);
+        server.commit();
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
+    }
+
+    public void SaveImage() throws SQLException, ParseException, MalformedURLException, SolrServerException, IOException {
+        SaveImageFromURL ms = new SaveImageFromURL();
+        ArrayList<Integer> lResult = new ArrayList<Integer>();
+        ImageBUS Ibus = new ImageBUS();
+        int numOfRecords = Ibus.CountRecordNotLocal();
+        int start = 0;
+        while (start < numOfRecords) {
+            ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
+            list = Ibus.getListNotLocal(0, 100);
+            lResult = ImportImage2Solr(list, "image");
+            ImportImage2SolrAll(list, "all");
+            Ibus.UpdateAfterIndex(lResult);
+            start += 100;
+        }
     }
 }
-

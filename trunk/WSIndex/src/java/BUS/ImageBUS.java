@@ -21,9 +21,19 @@ public class ImageBUS {
         return dao.getDataList(start, end);
     }
 
+    public ArrayList<ImageDTO> getListNotLocal(int start, int end) throws SQLException, ParseException {
+        ImageDAO dao = new ImageDAO();
+        return dao.getListNotLocal(start, end);
+    }
+
     public int CountRecord() throws SQLException {
         ImageDAO dao = new ImageDAO();
         return dao.CountRecord();
+    }
+
+     public int CountRecordNotLocal() throws SQLException {
+        ImageDAO dao = new ImageDAO();
+        return dao.CountRecordNotLocal();
     }
 
     public void SyncDataImage(ArrayList<ImageDTO> listPage) throws SQLException {

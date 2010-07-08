@@ -66,11 +66,58 @@ public class ImageDAO {
         return list;
     }
 
+    public ArrayList<ImageDTO> getListNotLocal(int start, int end) throws SQLException, ParseException, java.text.ParseException {
+        ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Statement st = (Statement) cn.createStatement();
+        String query = String.format("select * from data_image where URL_local is null LIMIT %d, %d", start, end);
+        ResultSet rs = st.executeQuery(query);
+
+        ImageDTO page;
+
+        while (rs.next()) {
+            page = new ImageDTO();
+            page.setId(rs.getInt("Id"));
+            page.setCategory(rs.getString("Category"));
+            page.setUrl(rs.getString("URL"));
+            page.setUrl_local(rs.getString("URL_Local"));
+            page.setWebsite(rs.getString("Website"));
+            page.setSite_title(rs.getString("Site_Title"));
+            page.setSite_body(rs.getString("Site_Body"));
+            page.setFileType(rs.getString("FileType"));
+            page.setWidth(rs.getFloat("Width"));
+            page.setHeight(rs.getFloat("Height"));
+            page.setSize(rs.getString("Size"));
+
+            list.add(page);
+        }
+
+        rs.close();
+        cn.close();
+        return list;
+    }
+
     public int CountRecord() throws SQLException {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM data_image where tracking_updated=1";
+        ResultSet rs = st.executeQuery(query);
+
+        if (rs.next()) {
+            iCount = rs.getInt("NumRow");
+        }
+
+        rs.close();
+        cn.close();
+        return iCount;
+    }
+
+    public int CountRecordNotLocal() throws SQLException {
+        int iCount = 0;
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Statement st = (Statement) cn.createStatement();
+        String query = "SELECT count(*) as NumRow FROM data_image where URL_Local is null";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
