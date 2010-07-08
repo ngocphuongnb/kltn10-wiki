@@ -23,7 +23,7 @@ import org.me.dto.MemberDTO;
  */
 public class MemberDAO {
 
-    public boolean  AddNewMember(MemberDTO member, String database) {
+    public boolean AddNewMember(MemberDTO member, String database) {
         boolean result = true;
         Connection cn = DataProvider.getConnection(database);
         try {
@@ -48,7 +48,7 @@ public class MemberDAO {
         return result;
     }
 
-    public boolean  ChangePass(int id, String oldpass, String newpass, String database) {
+    public boolean ChangePass(int id, String oldpass, String newpass, String database) {
         boolean result = true;
         Connection cn = DataProvider.getConnection(database);
         try {
@@ -119,6 +119,7 @@ public class MemberDAO {
         }
         return member;
     }
+
     public boolean isExist(String username, String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         Connection cn = DataProvider.getConnection(database);
         try {
@@ -136,11 +137,11 @@ public class MemberDAO {
         return false;
     }
 
-     public ArrayList<MemberDTO> GetListMember(String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ArrayList<MemberDTO> GetListMember(String database, int start, int pagesize) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();
         Connection cn = DataProvider.getConnection(database);
         try {
-            String query = "Select * from member";
+            String query = String.format("Select * from member limit %s, %s", start, pagesize);
             Statement st = (Statement) cn.createStatement();
             ResultSet rs = st.executeQuery(query);
             MemberDTO member;
@@ -162,5 +163,21 @@ public class MemberDAO {
             ex.printStackTrace();
         }
         return list;
+    }
+
+    public int Count() throws SQLException {
+        int iCount = 0;
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Statement st = (Statement) cn.createStatement();
+        String query = "SELECT count(*) as NumRow FROM member";
+        ResultSet rs = st.executeQuery(query);
+
+        if (rs.next()) {
+            iCount = rs.getInt("NumRow");
+        }
+
+        rs.close();
+        cn.close();
+        return iCount;
     }
 }

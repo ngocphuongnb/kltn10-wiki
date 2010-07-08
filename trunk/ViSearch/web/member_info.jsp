@@ -282,8 +282,9 @@
                                                 <input type="radio" name="radio" id="idNu" value="0" />
                                                 <label for="idNu">Nữ</label>
                                                 <input name="radio" type="radio" id="idKhongTietLo" value="2"/>
-                                                <label for="idKhongTietLo">Không tiết lộ</label></td>
-                                            <input type="hidden" id="hfSex" value="<%=member.getSex()%>"/>
+                                                <label for="idKhongTietLo">Không tiết lộ</label>
+                                                <input type="hidden" id="hfSex" value="<%=member.getSex()%>"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" align="center">
@@ -295,7 +296,7 @@
                                     <span id="updateResult"/>
                                 </div>
                             </form>
-                                        <p><a href="index.jsp">Về trang chủ</a></p>                            <!-- end register -->
+                            <p><a href="index.jsp">Về trang chủ</a></p>                            <!-- end register -->
                             <%
                                         } else
                                             response.sendRedirect("index.jsp");
