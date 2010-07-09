@@ -35,27 +35,27 @@ public class LoadAllMemberController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
-        int pagesize = 10;
-        int currentpage = 1;
-        String sPaging = "/ViSearch/SearchAllController?";
-        int numRow = 0;
+        //int pagesize = 2;
+        //int currentpage = 1;
+        String sPaging = "/ViSearch/LoadAllMemberController?";
+        //int numRow = 0;
         try {
             MemberBUS membus = new MemberBUS();
-            if (request.getParameter("currentpage") != null) {
-                currentpage = Integer.parseInt(request.getParameter("currentpage"));
-            }
-            int start = (currentpage - 1) * pagesize;
-            numRow = membus.Count();
-            int numpage = (int) (numRow / pagesize);
-
-            if (numRow % pagesize > 0) {
-                numpage++;
-            }
-            sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+//            if (request.getParameter("currentpage") != null) {
+//                currentpage = Integer.parseInt(request.getParameter("currentpage"));
+//            }
+//            int start = (currentpage - 1) * pagesize;
+//            numRow = membus.Count();
+//            int numpage = (int) (numRow / pagesize);
+//
+//            if (numRow % pagesize > 0) {
+//                numpage++;
+//            }
+            //sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
             ArrayList<MemberDTO> ListMember = new ArrayList<MemberDTO>();
-            ListMember = membus.GetListMember("visearch", start, pagesize);
+            ListMember = membus.GetListMember("visearch");
             request.setAttribute("ListMember", ListMember);
-            request.setAttribute("Paging", sPaging);
+            //request.setAttribute("Paging", sPaging);
             String url = "/admin/member_management.jsp";
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);

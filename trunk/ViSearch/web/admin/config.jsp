@@ -84,9 +84,9 @@
                                     </table>
                                     <table>
                                     <tr>
-                                        <td  align="center"><input type="submit" value="Lưu"></td>
-                                        <td  align="center"><input type="button" onclick="javascript:history.back(1)" value="Hủy"></td>
-                                        <td  align="center"><input type="submit" value="Khôi phục cài đặt mặc định"></td>
+                                        <td  align="center"><input type="submit" value="Lưu"/></td>
+                                        <td  align="center"><input type="button" onclick="javascript:history.back(1)" value="Hủy"/></td>
+                                        <td  align="center"><input type="submit" value="Khôi phục cài đặt mặc định"/></td>
                                     </tr>
                                         </table>
                                 
