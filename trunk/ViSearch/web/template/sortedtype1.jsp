@@ -25,6 +25,7 @@
         <select name="slSortedType" id="slSortedType" onChange="Sort(<%=type%>);">
             <option value="0">Theo độ liên quan</option>
             <option value="2">Theo lịch sử tìm kiếm</option>
+            <option value="3">Sử dụng tách từ tiếng Việt</option>
         </select>
         <input id="hfSortedType" type="hidden" value="<%
                     out.print(sortedType);

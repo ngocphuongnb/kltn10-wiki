@@ -8,7 +8,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
-<%@page import="java.util.*, java.text.SimpleDateFormat"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -108,8 +107,5 @@
             </table>
         </form>
     </body>
-    <%
-    Calendar clen = Calendar.getInstance();
-    ngaygio = "Ngày "+clen.get(Calendar.DAY_OF_MONTH) + "-" + (clen.get(Calendar.MONTH) + 1) + "-" + clen.get(Calendar.YEAR);
-    %>
+  
 </html>

@@ -17,6 +17,7 @@
         <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/clock.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
 
@@ -158,7 +159,7 @@
         </script>
     </head>
 
-    <body onLoad="setText();">
+    <body>
         <%
                     String currentPage = "/index.jsp";
                     if (request.getQueryString() != null) {
@@ -211,7 +212,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -245,7 +246,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <%
                     // Get Facet date
@@ -291,7 +292,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -308,7 +309,6 @@
                                 <tr>
                                     <td width="974" valign="top">
                                         <!-- banner here !-->
-                                        <% String ngaygio="";%>
                                         <%@ include file="template/banner_Wiki.jsp"%>
                                         <!-- end banner      !-->
                                     </td>
@@ -317,7 +317,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="30%" align="middle"><%=ngaygio%></td>
+                        <td style="font-size:12px;" width="30%" align="middle">
+                            <script type="" language="javascript">goforit();</script>
+                            <span id="clock"/></td>
                         <td width="70%" align="middle"><%@include file="template/sortedtype.jsp"%></td>
                     </tr>
                     <tr>

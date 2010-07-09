@@ -22,6 +22,7 @@
         <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/clock.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -295,8 +296,13 @@
                                     </td>
                                 </tr>
                             </table>
-                             <span><%@include file="template/sortedtype.jsp"%></span>
                         </td>
+                        <tr>
+                        <td style="font-size:12px;" width="30%" align="middle">
+                            <script type="" language="javascript">goforit();</script>
+                            <span id="clock"/></td>
+                        <td width="70%" align="middle"><%@include file="template/sortedtype.jsp"%></td>
+                    </tr>
                     </tr>
                      <script type="text/javascript">
                                 $(function(){
