@@ -19,10 +19,9 @@ import DTO.MusicDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -821,7 +820,7 @@ public class MySolrJ {
 //        UpdateResponse rsp = req.process(server);
     }
 
-    public void SaveImage() throws SQLException, ParseException, MalformedURLException, SolrServerException, IOException {
+    public void SaveImage() throws SQLException, ParseException, MalformedURLException, SolrServerException, IOException, URISyntaxException {
         SaveImageFromURL ms = new SaveImageFromURL();
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         ImageBUS Ibus = new ImageBUS();
@@ -830,6 +829,7 @@ public class MySolrJ {
         while (start < numOfRecords) {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
             list = Ibus.getListNotLocal(0, 100);
+            ms.loadImage(list);
             lResult = ImportImage2Solr(list, "image");
             ImportImage2SolrAll(list, "all");
             Ibus.UpdateAfterIndex(lResult);

@@ -20,7 +20,6 @@ import DTO.LocationDTO;
 import DTO.NewsDTO;
 import DTO.VideoDTO;
 import Utils.SaveImageFromURL;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
