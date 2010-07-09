@@ -21,6 +21,12 @@
                 // chua kiem tra loi
                
             }
+            function Back(){
+                 window.location = "admin/admin.jsp";
+            }
+            function Reset(){
+                 window.location = "LoadSettingDefault";
+            }
             </script>
     </head>
 
@@ -54,8 +60,20 @@
                                             list = (ArrayList<ParameterDTO>) request.getAttribute("ListParameter");
                             %>
                             <h2>Cấu hình cho hệ thống</h2>
+                             <%
+                                        if (request.getAttribute("Msg") != null) {
+                                            String msg = (String)request.getAttribute("Msg");
+                                            out.print("<h3><font color=red>"+msg+"</font></h3>");
+                                           }
+                            %>
+                             <%
+                                        if (request.getAttribute("Msg2") != null) {
+                                            String msg = (String)request.getAttribute("Msg2");
+                                            out.print("<h3><font color=red>"+msg+"</font></h3>");
+                                           }
+                            %>
                             <form action="SaveConfigController">
-                                <table border="1px" cellpadding="0" cellspacing="0" width="60%" class="ui-widget-content">
+                                <table style="font-size:12px;" border="1px" cellpadding="0" cellspacing="0" width="60%" class="ui-widget-content">
                                     <tr>
                                         <th>Têm tham số</th>
                                         <th>Giá trị</th>
@@ -71,7 +89,7 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <%if(par.getName().equals("Value"))%>
-                                                                                        <input type="text" size="35" name="<%out.print(par.getName());%>" value="<%=par.getValue()%>"/>
+                                                                                        <input type="text" class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';"  size="35" name="<%out.print(par.getName());%>" value="<%=par.getValue()%>"/>
                                                                                     </td>
 
                                                                                      <td>
@@ -85,8 +103,8 @@
                                     <table>
                                     <tr>
                                         <td  align="center"><input type="submit" value="Lưu"/></td>
-                                        <td  align="center"><input type="button" onclick="javascript:history.back(1)" value="Hủy"/></td>
-                                        <td  align="center"><input type="submit" value="Khôi phục cài đặt mặc định"/></td>
+                                        <td  align="center"><input type="button" onclick="Back()" value="Hủy"/></td>
+                                        <td  align="center"><input type="button" onclick="Reset()" value="Khôi phục cài đặt mặc định"/></td>
                                     </tr>
                                         </table>
                                 
