@@ -6,23 +6,20 @@ package org.me.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.lang.reflect.Member;
+import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.me.Utils.Paging;
 import org.me.bus.MemberBUS;
-import org.me.dto.MemberDTO;
 
 /**
  *
  * @author VinhPhamXP
  */
-public class LoadAllMemberController extends HttpServlet {
+public class UpdateRoleController extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,20 +36,21 @@ public class LoadAllMemberController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             if (session.getAttribute("admin") != null) {
-                MemberBUS membus = new MemberBUS();
-                ArrayList<MemberDTO> ListMember = new ArrayList<MemberDTO>();
-                ListMember = membus.GetListMember("visearch");
-                request.setAttribute("ListMember", ListMember);
-                String url = "/admin/member_management.jsp";
-                ServletContext sc = getServletContext();
-                RequestDispatcher rd = sc.getRequestDispatcher(url);
-                rd.forward(request, response);
+                if (request.getParameter("id")!=null) {
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    int value = Integer.parseInt(request.getParameter("vl"));
+                    MemberBUS membus = new MemberBUS();
+                    if(membus.UpdateRole(id, value, "visearch"))
+                        out.print("1");
+                    else
+                        out.print("0");
+                }
             } else {
-                out.print("Bạn không có quyền truy cập trang này");
+                out.print("Bạn không có quyền truy cập và trang này");
             }
-        } catch (Exception ex) {
+        } catch(Exception ex){
             out.print(ex.getMessage());
-        } finally {
+        }finally {
             out.close();
         }
     }

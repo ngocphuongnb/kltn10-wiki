@@ -21,13 +21,96 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
         <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+
+        <style type="text/css" title="currentStyle">
+            @import "css/demo_page.css";
+            @import "css/demo_table.css";
+        </style>
+
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
                 $('#tbManagement').dataTable();
             } );
         </script>
+
         <script language="javascript" type="text/javascript">
-            
+            function CheckAdmin(id)
+            {
+                var bCheck = "#cbAdmin" + id;
+                var sCheck = "#chk" + id;
+                var btDel = "#btDel" + id;
+                var val;
+                if($(bCheck).attr("checked") == 1)
+                {
+                    val = 1;
+                }
+                else
+                    val = 0;
+                $.ajax({
+                    type: 'POST',
+                    url: "/ViSearch/UpdateRoleController",
+                    data: 'id='+ id + '&vl=' + val,
+                    success: function(html){
+                        if(html=="1")
+                        {
+                            alert("Đã cập nhật");
+                            if(val==1)
+                            {
+                                $(sCheck).attr("disabled", "disabled");
+                                $(btDel).attr("disabled", "disabled");
+                            }
+                            else
+                            {
+                                $(sCheck).attr("disabled", "");
+                                $(btDel).attr("disabled", "");
+                            }
+                        }
+                    else
+                        alert("Lỗi");
+                }
+            });
+    }
+
+function DeleteMember(id)
+{
+    var kq = confirm("Bạn thật sự muốn xóa");
+    if(kq)
+    {
+        var url="DeleteMemberController?";
+        //var value  = "&value=" + arrcheck.join('-');
+        url += "arrID=" + id;
+        url += "&t=" + Math.random();
+        window.location = url;
+    }
+}
+
+function DeleteSelect()
+{
+    var arrcheck = new Array;
+    var field = document.getElementsByName('chbox[]');
+    var idem = 0;
+    for (i = 0; i < field.length; i++)
+        if( field[i].checked == true){
+            arrcheck[idem] = field[i].value;
+            idem ++;
+        }
+    if(idem > 0)
+    {
+        var kq = confirm("Bạn thật sự muốn xóa");
+        if(kq)
+        {
+            var url="DeleteMemberController?";
+            var arrID  = "arrID=" + arrcheck.join('-');
+            url += arrID;
+            url += "&t=" + Math.random();
+            window.location = url;
+        }
+    }
+    else
+    {
+        alert("Không có dòng nào được chọn");
+    }
+}
         </script>
 
         <style type="text/css">
@@ -63,7 +146,7 @@
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <!-- !-->
                     <tr>
-                        <td colspan="2" height="33" valign="top">
+                        <td colspan="2" height="33" valign="top" style="font-size: small">
                             <%
                                         int admin = -1;
                                         if (session.getAttribute("admin") != null) {
@@ -74,7 +157,7 @@
                                             ArrayList<MemberDTO> list = (ArrayList<MemberDTO>) request.getAttribute("ListMember");
                             %>
                             <h1>Quản lý thành viên</h1>
-                            <table id="tbManagement">
+                            <table id="tbManagement" cellpadding="0" cellspacing="0" border="0" class="display">
                                 <thead>
                                     <tr>
                                         <th>Chọn</th>
@@ -92,7 +175,7 @@
                                                                                 for (MemberDTO mem : list) {
                                     %>
                                     <tr>
-                                        <td><input name="chbox[]" type="checkbox" value = "<%=mem.getId()%>" <%if (mem.getRole() == 1) {
+                                        <td><input id="chk<%=mem.getId()%>" name="chbox[]" type="checkbox" value = "<%=mem.getId()%>" <%if (mem.getRole() == 1) {
                                                                                                                                 out.print("disabled");
                                                                                                                             }%>/></td>
                                         <td><%=mem.getFullName()%></td>
@@ -116,13 +199,11 @@
 
                                         <%
                                                                                                                             if (mem.getRole() == 0) {%>
-                                                   <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" onclick="CheckAdmin(this)" <%if (mem.getRole() == 1) {
-                                                                                                                                                                            out.print("disabled");
-                                                                                                                                                                        }%>/></td>
-                                            <%
-                                                                                                                                                                        } else {
-                                            %>
-                                                   <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" checked onclick="CheckAdmin(this)" <%if (mem.getRole() == 1) {
+                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" onclick="CheckAdmin(<%=mem.getId()%>)"/></td>
+                                        <%
+                                                                                                                                                                    } else {
+                                        %>
+                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" checked onclick="CheckAdmin(<%=mem.getId()%>)" <%if (mem.getId() == admin) {
                                                                                                                                                                             out.print("disabled");
                                                                                                                                                                         }%>/></td>
                                             <%
@@ -132,11 +213,11 @@
                                             <%
                                                                                                                                 if (mem.getRole() == 1) {
                                             %>
-                                            <button class="delele" onclick="alert('hehe');" disabled>
+                                            <button id="btDel<%=mem.getId()%>" class="delele" onclick="DeleteMember(<%out.print(mem.getId());%>);" disabled>
                                                 Xóa
                                             </button>
                                             <%} else {%>
-                                            <button class="delele" onclick="alert('hehe');">
+                                            <button id="btDel<%=mem.getId()%>" class="delele" onclick="DeleteMember(<%out.print(mem.getId());%>);">
                                                 Xóa
                                             </button>
                                             <%}%>
@@ -147,14 +228,13 @@
                                     %>
                                 </tbody>
                             </table>
-                            <input id="btXoaChon" type="button" value="Xoá dòng được chọn"/>
+                            <input id="btXoaChon" type="button" value="Xoá dòng được chọn" onclick="DeleteSelect();"/>
                             <%
-                                            if (request.getAttribute("Paging") != null) {
-                                                String paging = request.getAttribute("Paging").toString();
-                                                out.println(paging);
-                                            }
                                         }
                             %>
+                            <p>
+                                <a href="admin/admin.jsp">Trang chủ admin</a>
+                            </p>
                         </td>
                     </tr>
 

@@ -866,9 +866,9 @@
                 "sProcessing": "Processing...",
                 "sLengthMenu": "Hiển thị _MENU_ dòng",
                 "sZeroRecords": "No matching records found",
-                "sInfo": "HIển thị từ dòng _START_ tới _END_ tên tổng cộng _TOTAL_ dòng",
+                "sInfo": "HIển thị từ dòng _START_ tới _END_ trên _TOTAL_ dòng thu được",
                 "sInfoEmpty": "Showing 0 to 0 of 0 entries",
-                "sInfoFiltered": "(filtered from _MAX_ total entries)",
+                "sInfoFiltered": "(tổng cộng _MAX_ dòng)",
                 "sInfoPostFix": "",
                 "sSearch": "Tìm kiếm:",
                 "sUrl": "",
@@ -3956,7 +3956,6 @@
             var sName = (oSettings.sTableId === "") ? "" : 'name="'+oSettings.sTableId+'_length"';
             var sStdMenu =
             '<select size="1" '+sName+'>'+
-            '<option value="5">5</option>'+
             '<option value="10">10</option>'+
             '<option value="25">25</option>'+
             '<option value="50">50</option>'+

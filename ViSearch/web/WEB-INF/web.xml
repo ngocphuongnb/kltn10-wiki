@@ -112,6 +112,14 @@
         <servlet-name>LoadAllMemberController</servlet-name>
         <servlet-class>org.me.admin.LoadAllMemberController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteMemberController</servlet-name>
+        <servlet-class>org.me.admin.DeleteMemberController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateRoleController</servlet-name>
+        <servlet-class>org.me.admin.UpdateRoleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -223,6 +231,14 @@
     <servlet-mapping>
         <servlet-name>LoadAllMemberController</servlet-name>
         <url-pattern>/LoadAllMemberController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteMemberController</servlet-name>
+        <url-pattern>/DeleteMemberController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateRoleController</servlet-name>
+        <url-pattern>/UpdateRoleController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
