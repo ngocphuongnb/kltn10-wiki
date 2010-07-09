@@ -113,6 +113,14 @@
         <servlet-class>org.me.admin.LoadAllMemberController</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>SaveConfigController</servlet-name>
+        <servlet-class>org.me.admin.SaveConfigController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadSettingDefault</servlet-name>
+        <servlet-class>org.me.admin.LoadSettingDefault</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>DeleteMemberController</servlet-name>
         <servlet-class>org.me.admin.DeleteMemberController</servlet-class>
     </servlet>
@@ -231,6 +239,14 @@
     <servlet-mapping>
         <servlet-name>LoadAllMemberController</servlet-name>
         <url-pattern>/LoadAllMemberController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveConfigController</servlet-name>
+        <url-pattern>/SaveConfigController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadSettingDefault</servlet-name>
+        <url-pattern>/LoadSettingDefault</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteMemberController</servlet-name>
