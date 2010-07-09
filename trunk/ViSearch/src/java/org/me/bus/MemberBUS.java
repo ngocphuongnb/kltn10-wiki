@@ -50,8 +50,18 @@ public class MemberBUS {
         return memDao.GetListMember(database);
     }
 
-    public int Count() throws SQLException {
+    public int Count(String database) throws SQLException {
         MemberDAO memDao = new MemberDAO();
-        return memDao.Count();
+        return memDao.Count(database);
+    }
+
+    public boolean Delete(int id, String database) throws SQLException {
+     MemberDAO memDao = new MemberDAO();
+        return memDao.Delete(id, database);
+    }
+
+    public boolean UpdateRole(int id, int val , String database) throws SQLException {
+     MemberDAO memDao = new MemberDAO();
+        return memDao.UpdateRole(id, val, database);
     }
 }

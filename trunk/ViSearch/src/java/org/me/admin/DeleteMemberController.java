@@ -6,23 +6,18 @@ package org.me.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import org.me.Utils.Paging;
 import org.me.bus.MemberBUS;
-import org.me.dto.MemberDTO;
 
 /**
  *
  * @author VinhPhamXP
  */
-public class LoadAllMemberController extends HttpServlet {
+public class DeleteMemberController extends HttpServlet {
 
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,22 +32,19 @@ public class LoadAllMemberController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            HttpSession session = request.getSession();
-            if (session.getAttribute("admin") != null) {
+            if (request.getParameter("arrID") != null) {
+                String strArrID = request.getParameter("arrID");
+                String[] arrID = strArrID.split("-");
                 MemberBUS membus = new MemberBUS();
-                ArrayList<MemberDTO> ListMember = new ArrayList<MemberDTO>();
-                ListMember = membus.GetListMember("visearch");
-                request.setAttribute("ListMember", ListMember);
-                String url = "/admin/member_management.jsp";
-                ServletContext sc = getServletContext();
-                RequestDispatcher rd = sc.getRequestDispatcher(url);
-                rd.forward(request, response);
-            } else {
-                out.print("Bạn không có quyền truy cập trang này");
+                for (int i = 0; i < arrID.length; i++) {
+                    membus.Delete(Integer.parseInt(arrID[i]), "visearch");
+                }
             }
-        } catch (Exception ex) {
+            response.sendRedirect("LoadAllMemberController");
+        }
+        catch(Exception ex){
             out.print(ex.getMessage());
-        } finally {
+        }finally {
             out.close();
         }
     }

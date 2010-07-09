@@ -92,6 +92,19 @@ public class MemberDAO {
         return result;
     }
 
+    public boolean UpdateRole(int id, int val, String database) throws SQLException {
+        boolean bresult = false;
+        Connection cn = (Connection) DataProvider.getConnection(database);
+        Statement st = (Statement) cn.createStatement();
+        String query = String.format("Update member set role=%d where id=%d",val, id);
+
+        int i = st.executeUpdate(query);
+        if(i>0)
+            bresult = true;
+        cn.close();
+        return bresult;
+    }
+
     public MemberDTO Login(String username, String password, String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MemberDTO member = null;
         Connection cn = DataProvider.getConnection(database);
@@ -168,9 +181,9 @@ public class MemberDAO {
         return list;
     }
 
-    public int Count() throws SQLException {
+    public int Count(String database) throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM member";
         ResultSet rs = st.executeQuery(query);
@@ -182,5 +195,18 @@ public class MemberDAO {
         rs.close();
         cn.close();
         return iCount;
+    }
+
+    public boolean Delete(int id, String database) throws SQLException {
+        boolean bresult = false;
+        Connection cn = (Connection) DataProvider.getConnection(database);
+        Statement st = (Statement) cn.createStatement();
+        String query = "Delete from member where id=" + id;
+
+        int i = st.executeUpdate(query);
+        if(i>0)
+            bresult = true;
+        cn.close();
+        return bresult;
     }
 }
