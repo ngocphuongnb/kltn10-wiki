@@ -27,4 +27,8 @@ public class ParameterBUS {
         ParameterDAO pardao = new ParameterDAO();
         pardao.updateParameter(database, param, value);
     }
+    public void settingDefaultParameter(String database) {
+        ParameterDAO pardao = new ParameterDAO();
+        pardao.settingDefaultParameter(database);
+    }
 }

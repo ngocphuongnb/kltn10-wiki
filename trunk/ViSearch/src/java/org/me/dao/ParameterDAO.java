@@ -92,4 +92,17 @@ public class ParameterDAO {
         }
         return list;
     }
+
+    public void settingDefaultParameter(String database) {
+         Connection cn = DataProvider.getConnection(database);
+        try {
+            CallableStatement cs;
+            cs = cn.prepareCall("{CALL Default_Parameter()}");
+              cs.executeUpdate();
+
+            cn.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
