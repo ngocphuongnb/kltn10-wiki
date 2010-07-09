@@ -220,7 +220,7 @@
                                 result += "</tr>";
 
                                 result += "<tr>";
-                                result += "<td><a href='" + website + "' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
+                                result += "<td><a href='http://" + website + "' target=\"_blank\">Tới trang web</a>&nbsp;|&nbsp;";
                                 result += "<a href='" + url + "' target=\"_blank\">Hình ảnh đầy đủ</a>&nbsp;|&nbsp;";
                                 result += "<a href=\"SearchImageController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
                                 result += "</td>";

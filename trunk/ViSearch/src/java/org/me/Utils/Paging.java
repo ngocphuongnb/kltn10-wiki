@@ -21,7 +21,7 @@ public class Paging {
             if(numpage ==1 )
                 return "";
 
-//            if (currentpage > 1) {
+//           if (currentpage > 1) {
 //                page = currentpage - 1;
 //                Paging = "<a href=\"" + URL + "&currentpage=1\"><img style=\"border:none\" src='images/btFirst.png' onmouseover=\"this.src='images/btFirstMouseOver.png';\" onmouseout=\"this.src='images/btFirst.png';\"  align='absmiddle'/></a>";
 //                Paging += "<a href=\"" + URL + "&currentpage=" + page + "\"><img style=\"border:none\" src='images/btPrevious.png' onmouseover=\"this.src='images/btPreviousMouseOver.png';\" onmouseout=\"this.src='images/btPrevious.png';\" align='absmiddle'/></a> ";
