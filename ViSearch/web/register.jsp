@@ -71,15 +71,20 @@
                 if(error.toString().length!=0)
                 {
                     $("#rowerror").html(error);
-                    return false;
+                    //return false;
                 }
-                var Url = "CheckValidUsername?username=" + username;
-                $("#checkValid").load(encodeURI(Url));
+                else{
+                    if($("#checkValid").html() == "")
+                    {
+                        var Url = "CheckValidUsername?username=" + username;
+                        $("#checkValid").load(encodeURI(Url));
+                    }
 
-                if($("#checkValid").html()!="<font color=\"red\">Đã tồn tại username này</font>")
-                {
-                    frmRegister.action = "RegisterMemberController";
-                    frmRegister.submit();
+                    if($("#checkValid").html()!="<font color=\"red\">Đã tồn tại username này</font>")
+                    {
+                        document.forms["frmRegister"].action = "RegisterMemberController";
+                        document.forms["frmRegister"].submit();
+                    }
                 }
 
             }

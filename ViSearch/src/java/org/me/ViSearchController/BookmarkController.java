@@ -4,23 +4,13 @@
  */
 package org.me.ViSearchController;
 
-import IndexData.WSIndex;
-import IndexData.WSIndexService;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import org.me.Utils.MyHashEncryption;
 import org.me.bus.BookMarkBUS;
 import org.me.dto.BookMarkDTO;
 import org.me.dto.MemberDTO;

@@ -18,6 +18,7 @@ public class MemberDTO {
     private String _fullName;
     private Calendar _birthDay;
     private int _sex;
+    private int _role;
 
     /**
      * @return the _id
@@ -101,5 +102,19 @@ public class MemberDTO {
      */
     public void setSex(int sex) {
         this._sex = sex;
+    }
+
+    /**
+     * @return the _role
+     */
+    public int getRole() {
+        return _role;
+    }
+
+    /**
+     * @param role the _role to set
+     */
+    public void setRole(int role) {
+        this._role = role;
     }
 }

@@ -112,6 +112,7 @@ public class MemberDAO {
                 member.setPass(rs.getString("pass"));
                 member.setSex(rs.getInt("sex"));
                 member.setUserName(rs.getString("username"));
+                member.setRole(rs.getInt("role"));
             }
             cn.close();
         } catch (SQLException ex) {
@@ -137,11 +138,12 @@ public class MemberDAO {
         return false;
     }
 
-    public ArrayList<MemberDTO> GetListMember(String database, int start, int pagesize) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ArrayList<MemberDTO> GetListMember(String database/*, int start, int pagesize*/) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         ArrayList<MemberDTO> list = new ArrayList<MemberDTO>();
         Connection cn = DataProvider.getConnection(database);
         try {
-            String query = String.format("Select * from member limit %s, %s", start, pagesize);
+            //String query = String.format("Select * from member limit %s, %s", start, pagesize);
+            String query = String.format("Select * from member");
             Statement st = (Statement) cn.createStatement();
             ResultSet rs = st.executeQuery(query);
             MemberDTO member;
@@ -156,6 +158,7 @@ public class MemberDAO {
                 member.setPass(rs.getString("pass"));
                 member.setSex(rs.getInt("sex"));
                 member.setUserName(rs.getString("username"));
+                member.setRole(rs.getInt("role"));
                 list.add(member);
             }
             cn.close();

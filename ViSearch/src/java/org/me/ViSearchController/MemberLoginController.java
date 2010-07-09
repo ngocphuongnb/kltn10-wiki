@@ -42,7 +42,8 @@ public class MemberLoginController extends HttpServlet {
             MemberDTO user = membus.Login(_username, _pass, "visearch");
             if (user != null) {
                 session.setAttribute("Member", user);
-                session.setAttribute("admin", true);
+                if(user.getRole()==1)
+                    session.setAttribute("admin", true);
             }
             String url = session.getAttribute("CurrentPage").toString();
             out.print("/ViSearch" + url);

@@ -19,36 +19,16 @@
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+                $('#tbManagement').dataTable();
+            } );
+        </script>
         <script language="javascript" type="text/javascript">
-            function CheckOrUncheckAll(checkAll)
-            {
-                var qcheck = checkAll.checked;
-                var field = document.getElementsByName('chbox[]');
-
-                if(qcheck == true)
-                {
-                    for (i = 0; i < field.length; i++)
-                        field[i].checked = true;
-                }
-                else
-                {
-                    for (i = 0; i < field.length; i++)
-                        field[i].checked = false;
-                }
-            }
-            function checkSelectAll(chkbx)
-            {
-                if(chkbx.checked == false)
-                    document.getElementsByName('chkall')[0].checked = false;
-                else{
-                    var field = document.getElementsByName('chbox[]');
-                    document.getElementsByName('chkall')[0].checked = true;
-                    for (i = 0; i < field.length; i++)
-                        if(field[i].checked == false)
-                    {
-                        document.getElementsByName('chkall')[0].checked = false;
-                    }
-                }
+            function CallUpdate(id) {
+                $('#update-form').dialog('open');
             }
             function checkSex(id)
             {
@@ -59,6 +39,26 @@
                 else
                     $("#idKhongTietLo" + id).attr("checked","checked");
             }
+            $(function() {
+                $("#update-form").dialog({
+                    autoOpen: false,
+                    height: 350,
+                    width: 350,
+                    modal: true,
+                    buttons: {
+                        'Thôi': function() {
+                            $(this).dialog('close');
+                        },
+                        'Đăng nhập': function() {
+                            requestLogin();
+                        }
+
+                    },
+                    close: function() {
+                        allFields.val('').removeClass('ui-state-error');
+                    }
+                });
+            });
         </script>
     </head>
 
@@ -91,42 +91,80 @@
                                             ArrayList<MemberDTO> list = (ArrayList<MemberDTO>) request.getAttribute("ListMember");
                             %>
                             <h1>Quản lý thông tin thành viên</h1>
-                            <table>
-                                <tr>
-                                    <th><input name="chkall" type="checkbox" onclick="CheckOrUncheckAll(this);"/></th>
-                                    <th>Họ tên</th>
-                                    <th>Tên đăng nhập</th>
-                                    <th>Ngày sinh</th>
-                                    <th>Giới tính</th>
-                                </tr>
-                                <%
-                                                                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                                                                            for (MemberDTO mem : list) {
-                                %>
-                                <tr>
-                                    <td><input name="chbox[]" type="checkbox" onclick="checkSelectAll(this);" value = "<%=mem.getId()%>"/></td>
-                                    <td><input id="" type="text" onchange="" value = "<%=mem.getFullName()%>"/></td>
-                                    <td><input id="" type="text" onchange="" value = "<%=mem.getUserName()%>"/></td>
-                                    <td><input id="" type="text" onchange="" value = "<%=sdf.format(mem.getBirthDay().getTime())%>"/></td>
-                                    <td><input type="radio" name="radio<%=mem.getId()%>" id="idNam<%=mem.getId()%>" value="1" />
-                                        <label for="idNam">Nam</label>
-                                        <input type="radio" name="radio<%=mem.getId()%>" id="idNu<%=mem.getId()%>" value="0" />
-                                        <label for="idNu">Nữ</label>
-                                        <input type="radio" name="radio<%=mem.getId()%>" id="idKhongTietLo<%=mem.getId()%>" value="2"/>
-                                        <label for="idKhongTietLo">Không tiết lộ</label>
-                                        <input type="hidden" id="hfSex<%=mem.getId()%>" value="<%=mem.getSex()%>"/>
-                                    </td>
-                                    <script type="text/javascript">
-                                        checkSex("<%=mem.getId()%>");
-                                    </script>
-                                </tr>
-                                <%
-                                                                            }
-                                %>
+                            <table id="tbManagement">
+                                <thead>
+                                    <tr>
+                                        <th>Chọn</th>
+                                        <th>Họ tên</th>
+                                        <th>Tên đăng nhập</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th>Quyền admin</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                                                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                                                                                for (MemberDTO mem : list) {
+                                    %>
+                                    <tr>
+                                        <td><input name="chbox[]" type="checkbox" value = "<%=mem.getId()%>"/></td>
+                                        <td><input id="" type="text" onchange="" value = "<%=mem.getFullName()%>" disabled/></td>
+                                        <td><input id="" type="text" onchange="" value = "<%=mem.getUserName()%>" disabled/></td>
+                                        <td><input id="" type="text" onchange="" value = "<%=sdf.format(mem.getBirthDay().getTime())%>" disabled/></td>
+                                        <td><input type="radio" name="radio<%=mem.getId()%>" id="idNam<%=mem.getId()%>" value="1" disabled/>
+                                            <label for="idNam">Nam</label>
+                                            <input type="radio" name="radio<%=mem.getId()%>" id="idNu<%=mem.getId()%>" value="0" disabled/>
+                                            <label for="idNu">Nữ</label>
+                                            <input type="radio" name="radio<%=mem.getId()%>" id="idKhongTietLo<%=mem.getId()%>" value="2" disabled/>
+                                            <label for="idKhongTietLo">Không tiết lộ</label>
+                                            <input type="hidden" id="hfSex<%=mem.getId()%>" value="<%=mem.getSex()%>" disabled/>
+                                        </td>
+                                        <script type="text/javascript">
+                                            checkSex("<%=mem.getId()%>");
+                                        </script>
+
+                                        <%
+                                                                                                                            if (mem.getRole() == 0) {%>
+                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" disabled/></td>
+                                        <%
+                                                                                                                                                                    } else {
+                                        %>
+                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" checked disabled/></td>
+                                        <%
+                                                                                                                            }
+                                        %>
+                                        <td>
+                                            <input id="btCN<%=mem.getId()%>" type="button" value="Cập nhật" onclick="CallUpdate(<%=mem.getId()%>);"/>
+                                            <input id="btXoa<%=mem.getId()%>" type="button" value="Xoá"/>
+                                        </td>
+                                    </tr>
+                                    <%
+                                                                                }
+                                    %>
+                                </tbody>
                             </table>
+                            <input id="btXoaChon" type="button" value="Xoá dòng được chọn"/>
                             <%
+                                            if (request.getAttribute("Paging") != null) {
+                                                String paging = request.getAttribute("Paging").toString();
+                                                out.println(paging);
+                                            }
                                         }
                             %>
+
+                            <div id="update-form" title="Cập nhật thông tin">
+                                <p class="validateTips">Vui lòng nhập thông tin đăng nhập.</p>
+                                <form id="frmLogin">
+                                    <fieldset>
+                                        <label for="username">Tên đăng nhập</label><br/>
+                                        <input type="text" id="username" class="text ui-widget-content ui-corner-all" /><br/>
+                                        <label for="password">Mật khẩu</label><br/>
+                                        <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+                                    </fieldset>
+                                </form>
+                            </div>
                         </td>
                     </tr>
 

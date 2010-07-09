@@ -40,9 +40,14 @@ public class MemberBUS {
         MemberDAO memDao = new MemberDAO();
         return memDao.UpdateInfo(mem, database);
     }
-    public ArrayList<MemberDTO> GetListMember(String database, int start, int pagesize) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+//    public ArrayList<MemberDTO> GetListMember(String database, int start, int pagesize) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+//        MemberDAO memDao = new MemberDAO();
+//        return memDao.GetListMember(database, start, pagesize);
+//    }
+
+     public ArrayList<MemberDTO> GetListMember(String database) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MemberDAO memDao = new MemberDAO();
-        return memDao.GetListMember(database, start, pagesize);
+        return memDao.GetListMember(database);
     }
 
     public int Count() throws SQLException {
