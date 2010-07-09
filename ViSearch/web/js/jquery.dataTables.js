@@ -866,7 +866,7 @@
                 "sProcessing": "Processing...",
                 "sLengthMenu": "Hiển thị _MENU_ dòng",
                 "sZeroRecords": "No matching records found",
-                "sInfo": "HIển thị từ dòng _START_ tới _END_ trên _TOTAL_ dòng thu được",
+                "sInfo": "Hiển thị từ dòng _START_ tới _END_ trên _TOTAL_ dòng thu được",
                 "sInfoEmpty": "Showing 0 to 0 of 0 entries",
                 "sInfoFiltered": "(tổng cộng _MAX_ dòng)",
                 "sInfoPostFix": "",
