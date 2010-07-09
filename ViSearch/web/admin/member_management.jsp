@@ -6,7 +6,7 @@
 
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="org.me.dto.MemberDTO"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" session="true"%>
 <%@ page import="java.sql.*" errorPage="" %>
 <%@ page import="java.util.*"%>
 
@@ -27,39 +27,17 @@
             } );
         </script>
         <script language="javascript" type="text/javascript">
-            function CallUpdate(id) {
-                $('#update-form').dialog('open');
-            }
-            function checkSex(id)
-            {
-                if ($("#hfSex"+id).val() == "0")
-                    $("#idNu" + id).attr("checked","checked");
-                else if ($("#hfSex" + id).val() == "1")
-                    $("#idNam" + id).attr("checked","checked");
-                else
-                    $("#idKhongTietLo" + id).attr("checked","checked");
-            }
-            $(function() {
-                $("#update-form").dialog({
-                    autoOpen: false,
-                    height: 350,
-                    width: 350,
-                    modal: true,
-                    buttons: {
-                        'Thôi': function() {
-                            $(this).dialog('close');
-                        },
-                        'Đăng nhập': function() {
-                            requestLogin();
-                        }
-
-                    },
-                    close: function() {
-                        allFields.val('').removeClass('ui-state-error');
-                    }
-                });
-            });
+            
         </script>
+
+        <style type="text/css">
+            button.delele{
+                background-image:url(images/delete.png);
+                background-repeat: no-repeat;
+                background-position: left;
+                padding-left:25px;
+            }
+        </style>
     </head>
 
     <body>
@@ -87,10 +65,15 @@
                     <tr>
                         <td colspan="2" height="33" valign="top">
                             <%
+                                        int admin = -1;
+                                        if (session.getAttribute("admin") != null) {
+                                            admin = Integer.parseInt(session.getAttribute("admin").toString());
+                                        }
+
                                         if (request.getAttribute("ListMember") != null) {
                                             ArrayList<MemberDTO> list = (ArrayList<MemberDTO>) request.getAttribute("ListMember");
                             %>
-                            <h1>Quản lý thông tin thành viên</h1>
+                            <h1>Quản lý thành viên</h1>
                             <table id="tbManagement">
                                 <thead>
                                     <tr>
@@ -109,35 +92,54 @@
                                                                                 for (MemberDTO mem : list) {
                                     %>
                                     <tr>
-                                        <td><input name="chbox[]" type="checkbox" value = "<%=mem.getId()%>"/></td>
-                                        <td><input id="" type="text" onchange="" value = "<%=mem.getFullName()%>" disabled/></td>
-                                        <td><input id="" type="text" onchange="" value = "<%=mem.getUserName()%>" disabled/></td>
-                                        <td><input id="" type="text" onchange="" value = "<%=sdf.format(mem.getBirthDay().getTime())%>" disabled/></td>
-                                        <td><input type="radio" name="radio<%=mem.getId()%>" id="idNam<%=mem.getId()%>" value="1" disabled/>
-                                            <label for="idNam">Nam</label>
-                                            <input type="radio" name="radio<%=mem.getId()%>" id="idNu<%=mem.getId()%>" value="0" disabled/>
-                                            <label for="idNu">Nữ</label>
-                                            <input type="radio" name="radio<%=mem.getId()%>" id="idKhongTietLo<%=mem.getId()%>" value="2" disabled/>
-                                            <label for="idKhongTietLo">Không tiết lộ</label>
-                                            <input type="hidden" id="hfSex<%=mem.getId()%>" value="<%=mem.getSex()%>" disabled/>
+                                        <td><input name="chbox[]" type="checkbox" value = "<%=mem.getId()%>" <%if (mem.getRole() == 1) {
+                                                                                                                                out.print("disabled");
+                                                                                                                            }%>/></td>
+                                        <td><%=mem.getFullName()%></td>
+                                        <td><%=mem.getUserName()%></td>
+                                        <td><%=sdf.format(mem.getBirthDay().getTime())%></td>
+                                        <td>
+                                            <%
+                                                                                                                                if (mem.getSex() == 0) {
+                                                                                                                                    out.print("Nữ");
+                                                                                                                                } else {
+                                                                                                                                    if (mem.getSex() == 1) {
+                                                                                                                                        out.print("Nam");
+                                                                                                                                    } else {
+                                                                                                                                        out.print("Không tiết lộ");
+                                                                                                                                    }
+                                                                                                                                }
+
+
+                                            %>
                                         </td>
-                                        <script type="text/javascript">
-                                            checkSex("<%=mem.getId()%>");
-                                        </script>
 
                                         <%
                                                                                                                             if (mem.getRole() == 0) {%>
-                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" disabled/></td>
-                                        <%
-                                                                                                                                                                    } else {
-                                        %>
-                                        <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" checked disabled/></td>
-                                        <%
-                                                                                                                            }
-                                        %>
+                                                   <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" onclick="CheckAdmin(this)" <%if (mem.getRole() == 1) {
+                                                                                                                                                                            out.print("disabled");
+                                                                                                                                                                        }%>/></td>
+                                            <%
+                                                                                                                                                                        } else {
+                                            %>
+                                                   <td><input id="cbAdmin<%=mem.getId()%>" type="checkbox" checked onclick="CheckAdmin(this)" <%if (mem.getRole() == 1) {
+                                                                                                                                                                            out.print("disabled");
+                                                                                                                                                                        }%>/></td>
+                                            <%
+                                                                                                                                }
+                                            %>
                                         <td>
-                                            <input id="btCN<%=mem.getId()%>" type="button" value="Cập nhật" onclick="CallUpdate(<%=mem.getId()%>);"/>
-                                            <input id="btXoa<%=mem.getId()%>" type="button" value="Xoá"/>
+                                            <%
+                                                                                                                                if (mem.getRole() == 1) {
+                                            %>
+                                            <button class="delele" onclick="alert('hehe');" disabled>
+                                                Xóa
+                                            </button>
+                                            <%} else {%>
+                                            <button class="delele" onclick="alert('hehe');">
+                                                Xóa
+                                            </button>
+                                            <%}%>
                                         </td>
                                     </tr>
                                     <%
@@ -153,18 +155,6 @@
                                             }
                                         }
                             %>
-
-                            <div id="update-form" title="Cập nhật thông tin">
-                                <p class="validateTips">Vui lòng nhập thông tin đăng nhập.</p>
-                                <form id="frmLogin">
-                                    <fieldset>
-                                        <label for="username">Tên đăng nhập</label><br/>
-                                        <input type="text" id="username" class="text ui-widget-content ui-corner-all" /><br/>
-                                        <label for="password">Mật khẩu</label><br/>
-                                        <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-                                    </fieldset>
-                                </form>
-                            </div>
                         </td>
                     </tr>
 

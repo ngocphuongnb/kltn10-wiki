@@ -336,7 +336,7 @@ public class SearchImageController extends HttpServlet {
         query.addHighlightField("site_body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
-        query.setHighlightRequireFieldMatch(true);
+        //query.setHighlightRequireFieldMatch(true);
         QueryResponse rsp = server.query(query);
         return rsp;
     }

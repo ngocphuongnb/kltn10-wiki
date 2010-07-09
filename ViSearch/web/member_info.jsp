@@ -263,7 +263,7 @@
                                                                                                 }
                                                     %>
                                                 </select>
-                                                <input type="hidden" id="hfMonth" value="<%=member.getBirthDay().get(Calendar.MONTH)%>"/>
+                                                <input type="hidden" id="hfMonth" value="<%=member.getBirthDay().get(Calendar.MONTH) + 1%>"/>
                                                 /
                                                 <select name="idYear" id="idYear">
                                                     <%
