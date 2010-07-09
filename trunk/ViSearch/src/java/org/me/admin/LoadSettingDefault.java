@@ -37,6 +37,11 @@ public class LoadSettingDefault extends HttpServlet {
         try {
            ParameterBUS bus = new ParameterBUS();
            bus.settingDefaultParameter("visearch");
+           String url = "/LoadConfigController";
+            request.setAttribute("Msg2", "Đã khôi phục cài đặt thành công");
+            ServletContext sc = getServletContext();
+            RequestDispatcher rd = sc.getRequestDispatcher(url);
+            rd.forward(request, response);  
         } finally { 
             out.close();
         }

@@ -48,7 +48,8 @@ public class SaveConfigController extends HttpServlet {
             bus.updateParameter("visearch", "TimeTopSearch", TimeTopSearch);
             bus.updateParameter("visearch", "RecordPaging", RecordPaging);
 
-            String url = "/admin/config.jsp";
+            String url = "/LoadConfigController";
+            request.setAttribute("Msg", "Đã cập nhật thành công");
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
