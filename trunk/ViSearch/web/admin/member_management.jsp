@@ -14,7 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Trang quản lý thành viên</title>
+        <title>ViSearch - Trang quản lý thành viên</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
@@ -156,7 +156,7 @@ function DeleteSelect()
                                         if (request.getAttribute("ListMember") != null) {
                                             ArrayList<MemberDTO> list = (ArrayList<MemberDTO>) request.getAttribute("ListMember");
                             %>
-                            <h1>Quản lý thành viên</h1>
+                            <h1  align="middle">Quản lý thành viên</h1>
                             <table id="tbManagement" cellpadding="0" cellspacing="0" border="0" class="display">
                                 <thead>
                                     <tr>
