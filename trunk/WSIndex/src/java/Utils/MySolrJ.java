@@ -345,9 +345,9 @@ public class MySolrJ {
             doc.addField("artist_index", pagedto.getArtist());
             doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
 
-            doc.addField("singer", pagedto.getSinger());
-            doc.addField("singer_index", pagedto.getSinger());
-            doc.addField("singer_index_unsigned", RemoveSignVN(pagedto.getSinger()));
+            doc.addField("author", pagedto.getAuthor());
+            doc.addField("author_index", pagedto.getAuthor());
+            doc.addField("author_index_unsigned", RemoveSignVN(pagedto.getAuthor()));
 
             doc.addField("category", pagedto.getCategory());
             doc.addField("category_index", pagedto.getCategory());
@@ -356,19 +356,19 @@ public class MySolrJ {
             doc.addField("url", pagedto.getUrl());
             doc.addField("lyric", pagedto.getLyric());
             doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
-            doc.addField("dateUpload", pagedto.getDayUpload().getTime());
+           // doc.addField("dateUpload", pagedto.getDayUpload().getTime());
             docs.add(doc);
             listint.add(pagedto.getId());
         }
 
         SolrServer server = getSolrServer(solrServer); // solrServer = music
-        //server.add(docs);
-        // server.commit();
+        server.add(docs);
+        server.commit();
 
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
         return listint;
     }
 
