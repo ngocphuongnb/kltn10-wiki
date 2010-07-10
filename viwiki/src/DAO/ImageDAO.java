@@ -8,7 +8,6 @@ package DAO;
 import ViSearchSyncDataService.ImageDTO;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-import com.sun.org.apache.bcel.internal.generic.TABLESWITCH;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;

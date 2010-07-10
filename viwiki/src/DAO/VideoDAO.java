@@ -4,14 +4,13 @@
  */
 package DAO;
 
-import DAO.DataProvider;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import ViSearchSyncDataService.VideoDTO;
 
 /**
@@ -19,12 +18,13 @@ import ViSearchSyncDataService.VideoDTO;
  * @author tuandom
  */
 public class VideoDAO {
-
+String database = "kltn";
+String table = "video_parsecontent";
     public  ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("video");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM data LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM %s LIMIT %d, %d", table, start, end);
         ResultSet rs = st.executeQuery(query);
 
         VideoDTO page;
@@ -48,7 +48,7 @@ public class VideoDAO {
 
     public int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("video");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM data";
         ResultSet rs = st.executeQuery(query);
