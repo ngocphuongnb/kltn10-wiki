@@ -161,11 +161,11 @@
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String CaSi = (listdocs.get(i).getFieldValue("singer")).toString();
+                                String CaSi = (listdocs.get(i).getFieldValue("artist")).toString();
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
                                 String album = (listdocs.get(i).getFieldValue("album")).toString();
                                 String lyric = (listdocs.get(i).getFieldValue("lyric")).toString();
-                                String artist = (listdocs.get(i).getFieldValue("artist")).toString();
+                                String author = (listdocs.get(i).getFieldValue("author")).toString();
 
                                 String title_hl = title;
 
@@ -187,13 +187,13 @@
                                 result.append("</tr>");
 
                                 result.append("<tr>");
-                                result.append("<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + artist + "\"'>" + artist + "</a></td>");
+                                result.append("<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + author + "\"'>" + author + "</a></td>");
                                 result.append("</tr>");
-
 
                                 result.append("<tr>");
                                 result.append("<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + category + "\"'>" + category + "</a></td>");
                                 result.append("</tr>");
+
 
                                 result.append("<tr>");
                                 result.append("<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + album + "\"'>" + album + "</a></td>");
@@ -314,7 +314,7 @@
 
                                 if (session.getAttribute("Member") != null) {
                                     result.append("<tr><td><span id=\"" + spanBookmark + "\"><input  id=\"" + hdIdValue + "\"  type='hidden' value='" + id + "'/>");
-                                             result.append("<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>");
+                                    result.append("<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>");
                                 }
 
 
@@ -333,17 +333,8 @@
                                 addBM.append("</div>");
 
                                 // END Bookmark
-                                result.append("<tr><td>");
-                                result.append("<OBJECT class=\"hidden\" ID=\"" + mediaId + "\" CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">");
-                                result.append("<param name=\"fileName\" value=\"\">");
-                                result.append("<param name=\"animationatStart\" value=\"false\">");
-                                result.append("<param name=\"transparentatStart\" value=\"true\">");
-                                result.append("<param name=\"autoStart\" value=\"true\">");
-                                result.append("<param name=\"showControls\" value=\"true\">");
-                                result.append("<param name=\"Volume\" value=\"-300\">");
-                                result.append("<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=1 showcontrols=1 volume=-300>");
-                                result.append("</OBJECT>");
-                                result.append("</td></tr>");
+
+                                result.append("<tr><td><div class=\"hidden\" ID=\"" + mediaId + "\">" + url + "</div></td></tr>");
 
                                 result.append("<tr><td>");
                                 result.append("<div class=\"hidden\" ID=\"" + lyricId + "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">");
@@ -396,20 +387,23 @@
                             if (fieldName.equals("category")) {
                                 facet += "<b>Thể loại:</b>";
                             }
-                            if (fieldName.equals("singer")) {
-                                facet += "<b>Ca sĩ:</b>";
+                            if (fieldName.equals("author")) {
+                                facet += "<b>Nhạc sĩ:</b>";
                             }
                             if (fieldName.equals("artist")) {
-                                facet += "<b>Nhạc sĩ:</b>";
+                                facet += "<b>Ca sĩ:</b>";
                             }
                             facet += "<br>";
                             List<FacetField.Count> listCount = listFacet.get(i).getValues();
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
-                                    facet += " (" + listCount.get(j).getCount() + ")";
-                                    facet += "<br>";
+
+                                    if (fieldText!=null && fieldText.equals("")==false && fieldText.equals("\n")==false) {
+                                        facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                        facet += " (" + listCount.get(j).getCount() + ")";
+                                        facet += "<br>";
+                                    }
                                 }
                             } else {
                                 facet += "Không tìm ra dữ liệu<br>";
@@ -445,7 +439,7 @@
                                 </tr>
                             </table>     
                         </td>
-                        <tr>
+                    <tr>
                         <td style="font-size:12px;" width="30%" align="middle">
                             <script type="" language="javascript">goforit();</script>
                             <span id="clock"/></td>
