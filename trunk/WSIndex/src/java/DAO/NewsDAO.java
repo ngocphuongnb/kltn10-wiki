@@ -51,24 +51,15 @@ public class NewsDAO {
             page = new NewsDTO();
             page.setId(rs.getInt("id"));
             page.setTitle(rs.getString("title"));
-            page.setIntrotext(rs.getString("introtext"));
-            page.setFulltext(rs.getString("fulltext"));
-            page.setCategory(rs.getString("category"));
-            String created = rs.getString("created");
+            page.setBody(rs.getString("body"));
+
+            String created = rs.getString("last_update");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = sdf.parse(created);
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
-            page.setCreated(cl);
+            page.setLast_update(cl);
 
-//            created = rs.getString("modified");
-//            if (created.equals("0000-00-00 00:00:00") == false) {
-//                sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                d = sdf.parse(created);
-//                cl = Calendar.getInstance();
-//                cl.setTime(d);
-//                page.setModified(cl);
-//            }
 
             list.add(page);
         }
@@ -86,11 +77,12 @@ public class NewsDAO {
         for (NewsDTO newsDTO : listPage) {
             cs.setInt(1, newsDTO.getId());
             cs.setString(2, newsDTO.getTitle());
-            cs.setString(3, newsDTO.getCategory());
-            cs.setString(4, newsDTO.getIntrotext());
-            cs.setString(5, newsDTO.getFulltext());
-            cs.setString(6, sdf.format(newsDTO.getCreated().getTime()));
-            cs.setString(7, "2000-1-1");
+            cs.setString(3, newsDTO.getBody());
+            cs.setString(4, newsDTO.getCategory());
+            cs.setString(5, newsDTO.getSite());
+            cs.setString(6, newsDTO.getUrl());
+            cs.setString(7, newsDTO.getPhoto());
+            cs.setString(8, sdf.format(newsDTO.getLast_update().getTime()));
             cs.executeUpdate();
         }
         cs.close();
