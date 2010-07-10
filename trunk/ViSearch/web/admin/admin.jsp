@@ -35,14 +35,24 @@
                                     </td>
                                 </tr>
                             </table>
-                        </td></tr>
+                        </td>
+                    </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <!-- !-->
+
                     <tr>
-                        <td colspan="2" height="33" valign="top">
+                        <td height="20" colspan="1" align="center" valign="middle"><img src="../images/Administrator.jpg"/></td>
+                        <td style="font-size: 12px" colspan="1" height="33" valign="top">
                             <h1>Các chức năng quản lý của Admin</h1>
                             <a href="/ViSearch/LoadConfigController">Cấu hình hệ thống</a><br/>
                             <a href="/ViSearch/LoadAllMemberController">Quản lý thành viên</a>
+                        </td>
+                    </tr>
+
+                     <tr>
+                        <td height="20" colspan="1" align="center" valign="middle"></td>
+                        <td style="font-size: 12px" colspan="1" height="33" valign="top">
+                            <a href="../">Trang chủ admin</a>
                         </td>
                     </tr>
 
