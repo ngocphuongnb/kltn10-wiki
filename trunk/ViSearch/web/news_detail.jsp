@@ -154,14 +154,16 @@
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
-                                String body = (listdocs.get(i).getFirstValue("fulltext")).toString();
+                                String body = (listdocs.get(i).getFirstValue("body")).toString();
+                                String site = (listdocs.get(i).getFirstValue("site")).toString();
+                                String photo = (listdocs.get(i).getFirstValue("photo")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
                                     List<String> highlightTitle = highLight.get(id).get("title");
-                                    List<String> highlightBody = highLight.get(id).get("fulltext");
+                                    List<String> highlightBody = highLight.get(id).get("body");
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
@@ -173,6 +175,15 @@
                                 result.append("<tr>");
                                 result.append("<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>");
                                 result.append("</tr>");
+
+                                 result.append("<tr>");
+                                result.append("<td>Nguồn: " + site + "</td>");
+                                result.append("</tr>");
+
+                                 result.append("<tr>");
+                                result.append("<td><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>");
+                                result.append("</tr>");
+
 
                                 result.append("<tr>");
                                 result.append("<td>" + body + "</td>");
