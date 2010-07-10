@@ -32,7 +32,7 @@ minutes="0"+minutes
 if (seconds<=9)
 seconds="0"+seconds
 //change font size here
-var cdate=dayarray[day]+", ngày "+daym+" "+montharray[month]+" "+year+" | "+hours+":"+minutes+":"+seconds
+var cdate=dayarray[day]+", ngày "+daym+" "+montharray[month]+" năm "+year+" | "+hours+":"+minutes+":"+seconds
 if (document.all)
 document.all.clock.innerHTML=cdate
 else if (document.getElementById)
