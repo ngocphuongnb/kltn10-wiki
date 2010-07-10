@@ -10,13 +10,10 @@ import com.mysql.jdbc.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+
 
 /**
  *
@@ -40,21 +37,20 @@ public class MusicDAO {
             page.setId(rs.getInt("Id"));
             page.setTitle(rs.getString("Title"));
             page.setCategory(rs.getString("Category"));
-            page.setSinger(rs.getString("Artist"));
+            page.setArtist(rs.getString("Artist"));
             page.setAlbum(rs.getString("Album"));
             page.setUrl(rs.getString("URL"));
             page.setLyric(rs.getString("Lyrics"));
-            page.setArtist(rs.getString("Author"));
+            page.setAuthor(rs.getString("Author"));
 
-
-            String timestamp = rs.getString("DateUpload");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date d = sdf.parse(timestamp);
-            GregorianCalendar gcal = new GregorianCalendar();
-            gcal.setTime(d);
-            XMLGregorianCalendar date;
-            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-            page.setDayUpload(date);
+//            String timestamp = rs.getString("DateUpload");
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Date d = sdf.parse(timestamp);
+//            GregorianCalendar gcal = new GregorianCalendar();
+//            gcal.setTime(d);
+//            XMLGregorianCalendar date;
+//            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
+//            page.setDayUpload(date);
 
             list.add(page);
         }

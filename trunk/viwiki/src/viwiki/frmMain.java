@@ -330,7 +330,7 @@ public class frmMain extends javax.swing.JDialog {
 
         WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
-        System.out.println("Num found: " + numRecord);
+        System.out.println("Video: Num found: " + numRecord);
         int start = 0;
         while (start < numRecord) {
             System.out.println("Sync form " + start + " to " + (start + 100));
@@ -347,7 +347,7 @@ public class frmMain extends javax.swing.JDialog {
         WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
         int start = 0;
-        System.out.println("Num found: " + numRecord);
+        System.out.println("Syns Music: Num found: " + numRecord);
         while (start < numRecord) {
             System.out.println("Sync form " + start + " to " + (start + 100));
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
