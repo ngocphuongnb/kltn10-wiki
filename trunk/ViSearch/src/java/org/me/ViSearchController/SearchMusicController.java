@@ -81,7 +81,7 @@ public class SearchMusicController extends HttpServlet {
             }
             if (request.getParameter("f") != null) {
                 FieldId = request.getParameter("f");
-                 sPaging += "&f=" + type;
+                 sPaging += "&f=" +FieldId;
             }
 
              if (request.getParameter("SortedType") != null) {
@@ -198,8 +198,8 @@ public class SearchMusicController extends HttpServlet {
             query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                     + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
                     + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
-                    + "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ") || "
-                    + "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ")";
+                    + "author:(\"" + keySearch + "\") || author:(" + keySearch + ") || "
+                    + "artist:(\"" + keySearch + "\")^2 || artist:(" + keySearch + ")";
 
         } else {
             query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
@@ -208,10 +208,10 @@ public class SearchMusicController extends HttpServlet {
                     + "album_index_unsigned:(\"" + keySearch + "\")^5 || album_index_unsigned:(" + keySearch + ")^3 || "
                     + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
                     + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
-                    + "singer:(\"" + keySearch + "\")^2 || singer:(" + keySearch + ") || "
-                    + "artist:(\"" + keySearch + "\") || artist:(" + keySearch + ") || "
-                    + "artist_index_unsigned:(\"" + keySearch + "\") || artist_index_unsigned:(" + keySearch + ") || "
-                    + "singer_index_unsigned:(\"" + keySearch + "\") || singer_index_unsigned:(" + keySearch + ")";
+                    + "artist:(\"" + keySearch + "\")^2 || artist:(" + keySearch + ") || "
+                    + "author:(\"" + keySearch + "\") || author:(" + keySearch + ") || "
+                    + "author_index_unsigned:(\"" + keySearch + "\") || author_index_unsigned:(" + keySearch + ") || "
+                    + "author_index_unsigned:(\"" + keySearch + "\") || author_index_unsigned:(" + keySearch + ")";
         }
         solrQuery.setQuery(query);
         //if(MyString.CheckSigned(keySearch))
@@ -224,8 +224,8 @@ public class SearchMusicController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("singer");
         solrQuery.addFacetField("artist");
+        solrQuery.addFacetField("author");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -265,9 +265,9 @@ public class SearchMusicController extends HttpServlet {
             } else if (fieldId.equals("2")) {
                 query += "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4";
             } else if (fieldId.equals("3")) {
-                query += "singer_index:(\"" + keySearch + "\")^2 || singer_index:(" + keySearch + ")";
-            } else if (fieldId.equals("4")) {
                 query += "artist_index:(\"" + keySearch + "\")^2 || artist_index:(" + keySearch + ")";
+            } else if (fieldId.equals("4")) {
+                query += "author_index:(\"" + keySearch + "\")^2 || author_index:(" + keySearch + ")";
             } else if (fieldId.equals("5")) {
                 query += "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2";
             } else if (fieldId.equals("7")) {
@@ -278,8 +278,8 @@ public class SearchMusicController extends HttpServlet {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                         + "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
-                        + "singer_index:(\"" + keySearch + "\")^2 || singer_index:(" + keySearch + ") || "
-                        + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")";
+                        + "artist_index:(\"" + keySearch + "\")^2 || artist_index:(" + keySearch + ") || "
+                        + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")";
             }
 
         } else { // no sign
@@ -290,11 +290,11 @@ public class SearchMusicController extends HttpServlet {
                 query += "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
                         + "album_index_unsigned:(\"" + keySearch + "\")^5 || album_index_unsigned:(" + keySearch + ")^3";
             } else if (fieldId.equals("3")) {
-                query += "singer_index:(\"" + keySearch + "\")^6 || singer_index:(" + keySearch + ")^4 || "
-                        + "singer_index_unsigned:(\"" + keySearch + "\")^5 || singer_index_unsigned:(" + keySearch + ")^3";
-            } else if (fieldId.equals("4")) {
                 query += "artist_index:(\"" + keySearch + "\")^6 || artist_index:(" + keySearch + ")^4 || "
                         + "artist_index_unsigned:(\"" + keySearch + "\")^5 || artist_index_unsigned:(" + keySearch + ")^3";
+            } else if (fieldId.equals("4")) {
+                query += "author_index:(\"" + keySearch + "\")^6 || author_index:(" + keySearch + ")^4 || "
+                        + "author_index_unsigned:(\"" + keySearch + "\")^5 || author_index_unsigned:(" + keySearch + ")^3";
             } else if (fieldId.equals("5")) {
                 query += "lyric:(\"" + keySearch + "\")^6 || lyric:(" + keySearch + ")^4 || "
                         + "lyric_unsigned:(\"" + keySearch + "\")^5 || lyric_unsigned:(" + keySearch + ")^3";
@@ -307,10 +307,10 @@ public class SearchMusicController extends HttpServlet {
                         + "album_index_unsigned:(\"" + keySearch + "\")^6 || album_index_unsigned:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^1.8 || "
                         + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
-                        + "singer_index:(\"" + keySearch + "\")^1.5 || singer_index:(" + keySearch + ")^1.3 || "
-                        + "singer_index_unsigned:(\"" + keySearch + "\")^1.4 || singer_index_unsigned:(" + keySearch + ")^1.2 || "
                         + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")^1.3 || "
                         + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2 || "
+                        + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")^1.3 || "
+                        + "author_index_unsigned:(\"" + keySearch + "\")^1.4 || author_index_unsigned:(" + keySearch + ")^1.2 || "
                         + "id:" + keySearch;
             }
         }
@@ -318,8 +318,9 @@ public class SearchMusicController extends HttpServlet {
 
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("singer");
+        
         solrQuery.addFacetField("artist");
+        solrQuery.addFacetField("author");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -362,17 +363,17 @@ public class SearchMusicController extends HttpServlet {
             } else if (fieldId.equals("2")) {
                 query += "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4";
             } else if (fieldId.equals("3")) {
-                query += "singer_index:(\"" + keySearch + "\")^2 || singer_index:(" + keySearch + ")";
-            } else if (fieldId.equals("4")) {
                 query += "artist_index:(\"" + keySearch + "\")^2 || artist_index:(" + keySearch + ")";
+            } else if (fieldId.equals("4")) {
+                query += "author_index:(\"" + keySearch + "\")^2 || author_index:(" + keySearch + ")";
             } else if (fieldId.equals("5")) {
                 query += "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2";
             } else {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                         + "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
-                        + "singer_index:(\"" + keySearch + "\")^2 || singer_index:(" + keySearch + ") || "
-                        + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")";
+                        + "artist_index:(\"" + keySearch + "\")^2 || artist_index:(" + keySearch + ") || "
+                        + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")";
             }
 
         } else { // no sign
@@ -383,11 +384,11 @@ public class SearchMusicController extends HttpServlet {
                 query += "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
                         + "album_index_unsigned:(\"" + keySearch + "\")^5 || album_index_unsigned:(" + keySearch + ")^3";
             } else if (fieldId.equals("3")) {
-                query += "singer_index:(\"" + keySearch + "\")^6 || singer_index:(" + keySearch + ")^4 || "
-                        + "singer_index_unsigned:(\"" + keySearch + "\")^5 || singer_index_unsigned:(" + keySearch + ")^3";
-            } else if (fieldId.equals("4")) {
                 query += "artist_index:(\"" + keySearch + "\")^6 || artist_index:(" + keySearch + ")^4 || "
                         + "artist_index_unsigned:(\"" + keySearch + "\")^5 || artist_index_unsigned:(" + keySearch + ")^3";
+            } else if (fieldId.equals("4")) {
+                query += "author_index:(\"" + keySearch + "\")^6 || author_index:(" + keySearch + ")^4 || "
+                        + "author_index_unsigned:(\"" + keySearch + "\")^5 || author_index_unsigned:(" + keySearch + ")^3";
             } else if (fieldId.equals("5")) {
                 query += "lyric:(\"" + keySearch + "\")^6 || lyric:(" + keySearch + ")^4 || "
                         + "lyric_unsigned:(\"" + keySearch + "\")^5 || lyric_unsigned:(" + keySearch + ")^3";
@@ -398,10 +399,10 @@ public class SearchMusicController extends HttpServlet {
                         + "album_index_unsigned:(\"" + keySearch + "\")^6 || album_index_unsigned:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^1.8 || "
                         + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
-                        + "singer_index:(\"" + keySearch + "\")^1.5 || singer_index:(" + keySearch + ")^1.3 || "
-                        + "singer_index_unsigned:(\"" + keySearch + "\")^1.4 || singer_index_unsigned:(" + keySearch + ")^1.2 || "
                         + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")^1.3 || "
-                        + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2";
+                        + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2 || "
+                        + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")^1.3 || "
+                        + "author_index_unsigned:(\"" + keySearch + "\")^1.4 || author_index_unsigned:(" + keySearch + ")^1.2";
             }
         }
         query += ")";
@@ -411,8 +412,8 @@ public class SearchMusicController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.addFacetField("singer");
         solrQuery.addFacetField("artist");
+        solrQuery.addFacetField("author");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -437,8 +438,8 @@ public class SearchMusicController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        query.addFacetField("singer");
         query.addFacetField("artist");
+        query.addFacetField("author");
         query.setFacetLimit(10);
         query.setFacetMinCount(1);
         // End Facet
