@@ -52,6 +52,10 @@ public class NewsDAO {
             page.setId(rs.getInt("id"));
             page.setTitle(rs.getString("title"));
             page.setBody(rs.getString("body"));
+            page.setSite(rs.getString("site"));
+            page.setUrl(rs.getString("url"));
+            page.setPhoto(rs.getString("photo"));
+            page.setCategory(rs.getString("category"));
 
             String created = rs.getString("last_update");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -72,7 +76,7 @@ public class NewsDAO {
     public void SyncDataNews(ArrayList<NewsDTO> listPage) throws SQLException {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
-        cs = (CallableStatement) cn.prepareCall("{Call SyncDataNews(?, ?, ?, ?, ?, ?, ?)}");
+        cs = (CallableStatement) cn.prepareCall("{Call SyncDataNews(?, ?, ?, ?, ?, ?, ?, ?)}");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (NewsDTO newsDTO : listPage) {
             cs.setInt(1, newsDTO.getId());
@@ -86,7 +90,6 @@ public class NewsDAO {
             cs.executeUpdate();
         }
         cs.close();
-        cn.close();
     }
 
     public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
