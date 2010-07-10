@@ -742,14 +742,14 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("introtext", pagedto.getIntrotext());
-            doc.addField("introtext_unsigned", RemoveSignVN(pagedto.getIntrotext()));
+            doc.addField("body", pagedto.getBody());
+            doc.addField("body_unsigned", RemoveSignVN(pagedto.getBody()));
 
-            doc.addField("fulltext", pagedto.getFulltext());
-            doc.addField("fulltext_unsigned", RemoveSignVN(pagedto.getFulltext()));
+            doc.addField("site", pagedto.getSite());
+            doc.addField("url", pagedto.getSite());
+            doc.addField("photo", pagedto.getSite());
 
-            doc.addField("created", pagedto.getCreated().getTime());
-            //doc.addField("modified", pagedto.getModified().getTime());
+            doc.addField("last_update", pagedto.getLast_update().getTime());
 
             docs.add(doc);
             listint.add(pagedto.getId());
@@ -759,6 +759,10 @@ public class MySolrJ {
         server.add(docs);
         server.commit();
 
+
+        UpdateRequest req = new UpdateRequest();
+        req.setAction(ACTION.COMMIT, false, false);
+        req.add(docs);
 //        UpdateRequest req = new UpdateRequest();
 //        req.setAction(ACTION.COMMIT, false, false);
 //        req.add(docs);
@@ -782,7 +786,7 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            String strBody = pagedto.getFulltext().replaceAll("\\<.*?\\>", "");
+            String strBody = pagedto.getBody().replaceAll("\\<.*?\\>", "");
 
             doc.addField("body", strBody);
             doc.addField("body_unsigned", RemoveSignVN(strBody));
