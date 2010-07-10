@@ -746,8 +746,8 @@ public class MySolrJ {
             doc.addField("body_unsigned", RemoveSignVN(pagedto.getBody()));
 
             doc.addField("site", pagedto.getSite());
-            doc.addField("url", pagedto.getSite());
-            doc.addField("photo", pagedto.getSite());
+            doc.addField("url", pagedto.getUrl());
+            doc.addField("photo", pagedto.getPhoto());
 
             doc.addField("last_update", pagedto.getLast_update().getTime());
 
