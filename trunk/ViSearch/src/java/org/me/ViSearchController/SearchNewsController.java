@@ -125,8 +125,8 @@ public class SearchNewsController extends HttpServlet {
                                 String title1 = docs.get(i).getFirstValue("title").toString();
                                 String title2 = docs.get(j).getFirstValue("title").toString();
                                 if (title1.trim().equals(title2.trim())) {
-                                    Date date1 = (Date) docs.get(i).getFieldValue("created");
-                                    Date date2 = (Date) docs.get(j).getFieldValue("created");
+                                    Date date1 = (Date) docs.get(i).getFieldValue("last_update");
+                                    Date date2 = (Date) docs.get(j).getFieldValue("last_update");
                                     if (date1.compareTo(date2) >= 0) {
                                         docs.remove(j);
                                         j--;
@@ -165,23 +165,20 @@ public class SearchNewsController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 3:
-                        qf = "";
                         qv = "";
-                        if (request.getParameter("qf") != null) {
-                            qf = request.getParameter("qf");
-                            sPaging += "&qf=" + qf;
-                            String startDate = "";
-                            if (request.getParameter("sd") != null) {
-                                startDate = request.getParameter("sd");
-                            }
-                            String endDate = "";
-                            if (request.getParameter("ed") != null) {
-                                endDate = request.getParameter("ed");
-                            }
-                            qv = createFacetValue(startDate, endDate);
-                            sPaging += "&qv=" + qv;
+
+                        String startDate = "";
+                        if (request.getParameter("sd") != null) {
+                            startDate = request.getParameter("sd");
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, type, sortedType);
+                        String endDate = "";
+                        if (request.getParameter("ed") != null) {
+                            endDate = request.getParameter("ed");
+                        }
+                        qv = createFacetValue(startDate, endDate);
+                        sPaging += "&qv=" + qv;
+
+                        rsp = OnSearchSubmitStandard(keySearch, null, qv, start, pagesize, type, sortedType);
 
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -254,8 +251,7 @@ public class SearchNewsController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
@@ -263,22 +259,23 @@ public class SearchNewsController extends HttpServlet {
                 query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
         }
 
         if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
                     + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^1.6 || "
-                    + "fulltext_unsigned:(\"" + keySearch + "\")^2 || fulltext_unsigned:(" + keySearch + ")^1.4";
+                    + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                    + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
         }
         solrQuery.setQuery(query);
 
@@ -291,7 +288,7 @@ public class SearchNewsController extends HttpServlet {
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("introtext");
+        solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -304,9 +301,8 @@ public class SearchNewsController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
 
-        String query="";
-        switch(sortedType)
-        {
+        String query = "";
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
@@ -314,22 +310,23 @@ public class SearchNewsController extends HttpServlet {
                 query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
         }
         query += "+(";
         if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^2";
+            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
                     + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "fulltext:(\"" + keySearch + "\")^2.5 || fulltext:(" + keySearch + ")^1.6 || "
-                    + "fulltext_unsigned:(\"" + keySearch + "\")^2 || fulltext_unsigned:(" + keySearch + ")^1.4";
+                    + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                    + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
         }
 
         query += ") ";
@@ -339,7 +336,7 @@ public class SearchNewsController extends HttpServlet {
             query += " +(" + queryField + ":\"" + queryValue + "\")";
         } else // type = 4: query ngay thang, ko can ""
         {
-            query += " +(" + queryField + ":" + queryValue + ")";
+            query += " +(last_update:" + queryValue + ")";
         }
         solrQuery.setQuery(query);
 
@@ -352,7 +349,7 @@ public class SearchNewsController extends HttpServlet {
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("introtext");
+        solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -369,10 +366,9 @@ public class SearchNewsController extends HttpServlet {
         // Facet
         query.setFacet(true);
         query.addFacetField("category");
-        // query.addFacetField("site");
-        //query.addFacetField("location");
-        // query.setFacetLimit(10);
-        // query.setFacetMinCount(1);
+
+        query.setFacetLimit(10);
+        query.setFacetMinCount(1);
         // End Facet
 
         query.setQueryType("/" + MoreLikeThisParams.MLT);
@@ -391,7 +387,7 @@ public class SearchNewsController extends HttpServlet {
         query.setRows(100);
         query.setHighlight(true);
         query.addHighlightField("title");
-        query.addHighlightField("introtext");
+        query.addHighlightField("body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
         //query.set(HighlightParams.ALTERNATE_FIELD, "wk_title");
