@@ -10,8 +10,8 @@ Bản mẫu Gnunote,MediaWiki Copyright,MediaWiki Gnunote
 MediaWiki Watchdetails,MediaWiki Watchlist details
 MediaWiki Pagemovedtext,$4
 SEA Games,Đại hội Thể thao Đông Nam Á,Đại hội thể thao Đông Nam Á,Đông Nam Á Vận Hội,Đại hội Thể thao Bán đảo Đông Nam Á,Sea Games
-Vùng Đông Bắc Việt Nam,Vùng Đông Bắc  Việt Nam ,Miền Đông Bắc Bộ,Đông Bắc Việt Nam,Đông Bắc Bắc Bộ,Vùng Đông Bắc,Đông Bắc bộ Việt Nam
-Quận Ba Ðình,Ba Đình,Ba Đình  quận ,Quận Ba Đình,Ba Ðình
+Vùng Đông Bắc Việt Nam,Miền Đông Bắc Bộ,Đông Bắc Việt Nam,Đông Bắc Bắc Bộ,Vùng Đông Bắc,Đông Bắc bộ Việt Nam
+Quận Ba Ðình,Ba Đình,Ba Đình quận
 Wikipedia Help,Help Mục lục,Wikipedia Trợ giúp,Trợ giúp Trợ giúp,Trợ giúp
 Wikipedia Administrators,Wikipedia Bảo quản viên,Wikipedia Quản trị viên,Wikipedia Sysop,Wikipedia Người quản lí,Wikipedia Quản lý,Wikipedia Quản lý viên,Wikipedia Người quản lý,Wikipedia BQV,Wikipedia Bảo trì viên,WP BQV
 Liên Hợp Quốc,Liên_Hiệp_Quốc
@@ -23,17 +23,14 @@ Ca na đa,Canada,Ca Na Đa,Gia Nã Đại,Nước tự trị Gia Nã Đại,Cana
 Voice of America,VOA,Đài Tiếng nói Hoa Kỳ,Ðài Tiếng Nói Hoa Kỳ,Ðài tiếng nói Hoa Kỳ,Tiếng nói Hoa Kỳ
 Lu xi a na,Louisiana,Tiểu bang Louisiana
 Bản mẫu Vfd,Tiêu bản Mời biểu quyết,Bản mẫu Bỏ phiếu xoá,Bản mẫu VfD,Bản mẫu Bỏ phiếu xóa,Bản mẫu Biểu quyết xóa,Bản mẫu Đề nghị xóa
-Wikipedia Bắt đầu bản dịch mới,Wikipedia Bắt đầu bản dịch về Wikipedia mới
-Wikipedia Thông tin/2004/1,Wikipedia Tin tức/2004/01,Wikipedia Thông tin/2004/01
 Trang Cộng Đồng,Wikipedia Cộng đồng,Wikipedia Trang Cộng Đồng,Wikipedia Cộng Đồng,Cộng đồng Wikipedia,Cộng đồng wikipedia
 Wikipedia Nói về Wikipedia,Wikipedia Giới thiệu,Wikipedia Nói về,Wikipedia About
-03 tháng 4,3 tháng 4,3 tháng 04,03 tháng 04
 Trang Chính/Trang thử,User Mxn/Trang_Chính
 Thảo luận Trang Chính/Trang thử,User_talk Mxn/Trang_Chính
 Chúa nhật,Chủ nhật,Chủ Nhật,Chúa Nhật
 TPHCM,Thành phố Hồ Chí Minh,Thành Phố Hồ Chí Minh,TpHCM,Tên gọi Sài gòn,Hồ Chí Minh  thành phố ,Tp. Hồ Chí Minh,TP.HCM,TP Hồ Chí Minh,TP. Hồ Chí Minh,Tp.HCM,Tp Hồ Chí Minh,TP. HCM,TP.Hồ Chí Minh,Tp. HCM,TP HCM
 Vi Tính,Máy tính,Máy vi tính,Vi tính,Điện toán,Máy tính điện tử
-Nguyễn Sinh Cung,Hồ Chí Minh,Nguyễn Tất Thành,Nguyễn ái Quốc,Bác Hồ,Nguyễn Ái Quốc,Nguyễn Sinh Côn,Ông Ké,Hồ Chủ tịch,Già Thu,Hồ Chủ Tịch,Chủ tịch Hồ Chí Minh,Bác hồ,Hồ chủ tịch,Lý Thụy,Văn Ba,Tống Văn Sơ
+Hồ Chí Minh,Nguyễn Sinh Cung,Nguyễn Tất Thành,Nguyễn ái Quốc,Bác Hồ,Nguyễn Ái Quốc,Nguyễn Sinh Côn,Hồ Chủ tịch,Già Thu,Hồ Chủ Tịch,Chủ tịch Hồ Chí Minh,Bác hồ,Hồ chủ tịch,Lý Thụy,Văn Ba,Tống Văn Sơ
 Wikipedia Election Notice,Wikipedia Thông_báo_về_bầu_cử Ban quản lý Wikimedia
 Bản mẫu CIA world factbook,Tiêu bản PD USGov CIA WF,Bản mẫu CIA World Factbook
 Chữ nôm,Chữ Nôm,Nôm
@@ -53,16 +50,6 @@ MediaWiki CompactTOC2,Template CompactTOC2
 MediaWiki CompactTOCwithnumbers,Template CompactTOCwithnumbers
 MediaWiki GFDL,Template GFDL,Bản mẫu Gfdl,Bản mẫu FDL,Bản mẫu Fdl,Bản mẫu GNU FDL,Bản mẫu Gnu fdl,Bản mẫu Gnu fdl,Bản mẫu GNU FDL,Bản mẫu GDFL,Bản mẫu Đồng ý hiến cho wiki,Thảo luận Thành viên Mxn/2006
 MediaWiki Hoa Kỳ,Template Hoa Kỳ
-MediaWiki Lịch tháng 3,Template Lịch tháng 3,Bản mẫu Lịch tháng 03
-MediaWiki Lịch tháng 4,Template Lịch tháng 4,Bản mẫu Lịch tháng 04
-MediaWiki Ngày kỷ niệm 12 04,Wikipedia Ngày này năm xưa/04/12,Bản mẫu Ngày kỷ niệm 12 04
-MediaWiki Ngày kỷ niệm 16 04,Wikipedia Ngày này năm xưa/04/16,Bản mẫu Ngày kỷ niệm 16 04
-MediaWiki Ngày kỷ niệm 23 03,Wikipedia Ngày này năm xưa/03/23,Bản mẫu Ngày kỷ niệm 23 03
-MediaWiki Ngày kỷ niệm 24 03,Wikipedia Ngày này năm xưa/03/24,Bản mẫu Ngày kỷ niệm 24 03
-MediaWiki Ngày kỷ niệm 25 03,Wikipedia Ngày này năm xưa/03/25,Bản mẫu Ngày kỷ niệm 25 03
-MediaWiki Ngày kỷ niệm 27 03,Wikipedia Ngày này năm xưa/03/27,Bản mẫu Ngày kỷ niệm 27 03
-MediaWiki Ngày kỷ niệm 28 03,Wikipedia Ngày này năm xưa/03/28,Bản mẫu Ngày kỷ niệm 28 03
-MediaWiki Ngày kỷ niệm 29 03,Wikipedia Ngày này năm xưa/03/29,Bản mẫu Ngày kỷ niệm 29 03
 MediaWiki OPEC,Template OPEC
 MediaWiki Sitesupportpage,Template Sitesupportpage
 MediaWiki Tháng,Template Tháng
@@ -76,21 +63,13 @@ Liên Bang Nga,Nga,Liên bang Nga,Nước Nga,Cộng hòa Liên bang Nga
 Ayumi,Hamasaki Ayumi,Ayu,Ayumi Hamasaki
 Wikipedia Thông tin,Wikipedia Tin tức
 Mã nguồn mở,Phần mềm nguồn mở,Phần mềm mã nguồn mở,Nguồn mở
-Wikipedia Thông tin/2003/11,Wikipedia Tin tức/2003/11
-Wikipedia Thông tin/2003/12,Wikipedia Tin tức/2003/12
-Wikipedia Thông tin/2004/03,Wikipedia Tin tức/2004/03
-Wikipedia Thông tin/2004/05,Wikipedia Tin tức/2004/05
-Wikipedia Thông tin/2004/08,Wikipedia Tin tức/2004/08
 Đông dương,Đông Dương,Ðông Dương,Bán đảo Đông Dương,Bán đảo Trung Ấn,Đông Nam Á lục địa,Đông Nam Á đại lục,Bán đảo Ấn Trung,Indochine,Bán đảo Ấn Hoa,Bán đảo Trung Ấn
 Chiến tranh Đông dương,Chiến tranh Đông Dương,Chiến tranh chống Thực dân Pháp,Chiến tranh Đông Dương  1945 1954 ,Chiến tranh Đông Dương lần thứ nhất,Chiến tranh Việt   Pháp,Chiến tranh Pháp Việt,Chiến tranh Việt Pháp,Kháng Chiến Chống Pháp,AE nhap KCCP,Cuộc chiến Việt Pháp,Chiến tranh Đông Dương lần thứ 1,Chiến tranh Việt Pháp  1946 1954 
 Chiến tranh vùng Vịnh lần 1,Chiến tranh vùng Vịnh,Chiến tranh Vịnh lần 1,Cuộc chiến Vịnh Péc xích,Cuộc chiến Vùng Vịnh lần thứ nhất,Chiến tranh Vùng Vịnh,Chiến tranh vùng vịnh,Chiến dịch Lá chắn Sa mạc,Chiến dịch Bão táp Sa mạc,Chiến dịch Bão Sa mạc,Chiến tranh Vịnh Ba Tư,Cuộc chiến vùng Vịnh lần thứ 1,Chiến tranh Vùng vịnh 1991
 Thích Ca Mâu Ni,Thích ca Mâu ni,Thích Ca Mầu Ni,Phật tổ,Phật Thích ca,Phật Thích Ca,Thích ca mâu ni,Thích Ca,Thích ca,Thích ca,Phật Tổ Như Lai,Phật Thích Ca Mâu Ni,Phật Thích ca,Đức Phật Thích Ca
-Jesus,Giê su,Đức Chúa Giê xu,Giêxu,Chúa Giê xu,Giêsu,Giêsu Kitô,Giêsu kitô,Giê su Ki tô,Giê su ki tô,Giêxu Kitô,Giê xu Ki tô,Giê xu ki tô,Giêxu kitô,Chúa Giê su,Chúa Giê su,Chúa Giêsu,Chúa Giê xu,Chúa Giêxu,Chúa Jesus,Chúa Jêsus,Jêsus,Jêsus Christ,Giê xu,Jesus Christ,Yêsu,Chúa Kitô,Chúa Ki tô,Thảo luận Thành viên Conbo/Lưu 1,Chúa Jêsu,Jêsu
+Jesus,Giê su,Đức Chúa Giê xu,Giêxu,Chúa Giê xu,Giêsu,Giêsu Kitô,Giêsu kitô,Giê su Ki tô,Giê su ki tô,Giêxu Kitô,Giê xu Ki tô,Giê xu ki tô,Giêxu kitô,Chúa Giê su,Chúa Giê su,Chúa Giêsu,Chúa Giê xu,Chúa Giêxu,Chúa Jesus,Chúa Jêsus,Jêsus,Jêsus Christ,Giê xu,Jesus Christ,Yêsu,Chúa Kitô,Chúa Ki tô,Chúa Jêsu,Jêsu
 Wikipedia Thảo Luận,Wikipedia Thảo luận,WP TL
 Wikipedia Quyền,Wikipedia Quyền tác giả,Wikipedia Bản quyền,Wikipedia Các vấn đề về bản quyền,Wikipedia Copyright,Wikipedia Tác quyền,WP QTG,WP BANQUYEN
-Thời sự/2004/01,Tháng 1 năm 2004
-Thời sự/2004/02,Tháng 2 năm 2004
-Thời sự/2004/03,Tháng 3 năm 2004
 Đạo Phật,Phật giáo,Phật học,Giáo lý nhà Phật,Phật giáo Nguyên thủy,Phật Giáo,Phật giáo tại Myanma,Phật gia
 GFDL,Giấy phép Tài liệu Tự do GNU,GNU Free Documentation License,GNU FDL,Bản Quyền về Tài Liệu Miễn Phí,Giấy phép sử dụng văn bản miễn phí GNU,Giấy phép văn bản tự do GNU,Giấy phép sử dụng văn bản tự do GNU,Giấy phép sử dụng văn bản tự do gnu,Giấy Phép Sử Dụng Văn Bản Tự Do GNU,Giấy phép Văn bản Tự do GNU
 Text of the GNU Free Documentation License,Wikipedia Nguyên văn Giấy phép Tài liệu Tự do GNU,Wikipedia Text of the GNU Free Documentation License,Wikipedia Nguyên văn của GNU Free Documentation License,Wikipedia Bản Quyền về Tài Liệu Miễn Phí,Wikipedia Nguyên văn Bản Quyền về Tài Liệu Miễn Phí của GNU,Wikipedia GFDL,Wikipedia Giấy Phép Sử Dụng Văn Bản Tự Do GNU,Wikipedia Nguyên văn Giấy Phép Sử Dụng Văn Bản Tự Do GNU,Wikipedia Nguyên văn Giấy phép Văn bản Tự do GNU
@@ -98,7 +77,6 @@ Y tế học,khoa học sức khỏe,Khoa học sức khoẻ
 Bản mẫu Catmore,Tiêu bản Bài chính thể loại,Bản mẫu Liên kết bài chủ đề 2,Bản mẫu Catmore2,Bản mẫu Liên kết bài chủ đề
 Sinh vật học,Sinh học
 Việt Nam Cộng Hoà,Việt Nam Cộng hòa,Lịch sử Việt Nam Cộng Hoà,Cộng Hòa Việt Nam,VNCH,Việt Nam cộng hòa,Việt Nam Cộng hoà,Việt Nam Cộng Hòa,Chính quyền miền Nam Việt Nam,Chính quyền Sài Gòn
-Đại Số,Đại số
 Corn Toss,Cornhole,Corntoss,Corn toss
 Chát,nhắn tin nhanh,IM,Tin nhắn nhanh trực tuyến,Tin nhắn tức khắc,Tin nhắn nhanh
 Wikipedia Stub,Wikipedia Bài sơ khai,Wikipedia Bài mớm,Wikipedia Bài sơ thảo,Wikipedia Sơ khai,WP SOKHAI,WP STUB
@@ -125,7 +103,6 @@ Khoa học về sức khỏe,Khoa học sức khỏe
 Wikipedia Vfd,Wikipedia Biểu quyết xoá bài,Wikipedia Bỏ phiếu cho xoá đi,Wikipedia VfD,WP XB,WP BQXB,Wikipedia Biểu quyết xóa bài
 Newfoundland and Labrador,Newfoundland và Labrador
 Thành viên Tnguyen/Gioi thieu truong Dai Hoc ky thuat Aachen tai CHLB Duc,User Tnguyen/
-Thảo luận Wikipedia Tin tức/2004/12,MediaWiki talk Savearticle
 Cyclo,Xích lô
 Thảo luận Bài thơ thần của Ngô Quyền,Talk Nam quốc sơn hà
 Thảo luận Thành viên Teppi,User Teppi
@@ -153,9 +130,6 @@ Thảo luận Ngô Ðình Diệm,Talk Ngô Đình Diệm
 Wikipedia Bảng dụng ngữ,Wikipedia Từ điển thuật ngữ,Wikipedia Thuật ngữ
 Wikipedia Tiêu chuẩn bài,Wikipedia Cẩm nang về văn phong,Wikipedia Cẩm nang phong cách viết,Wikipedia Tiêu chuẩn,Wikipedia Cẩm nang văn phong,WP CNVVP,WP VANPHONG
 Tổng sản phẩm trong tỉnh,tổng sản phẩm nội địa,GDP
-Bản mẫu Lịch 31 ngày bắt đầu Chủ Nhật,Tiêu bản Lịch 31 ngày bắt đầu chủ nhật
-Bản mẫu Lịch tháng 02,Template Lịch tháng 2
-Bản mẫu Lịch tháng 05,Template Lịch tháng 5
 Giơ ne vơ,Genève,Nhật Nội Ngỏa,Giơnevơ,Geneva
 UTC,Giờ phối hợp quốc tế,Utc,Giờ Phối hợp Quốc tế,Giờ UTC
 Hyđrô,Hiđrô,Hydrogen,Khinh khí,Hydrô,Hidro,Hydro,Hy đrô,Hyđro,Nguyên tử hidro,Hi đrô
@@ -200,12 +174,6 @@ SIĐA,AIDS,Hội chứng suy giảm miễn dịch mắc phải,HIV/AIDS,Bệnh A
 Thảo luận Thành Phố Hồ Chí Minh,Talk Thành phố Hồ Chí Minh
 Địa Cầu,Trái Đất,Trái đất,Quả đất,Địa cầu,Quả Đất
 ERP,Hoạch định tài nguyên doanh nghiệp
-Wikipedia Sách hướng dẫn Tìm kiếm và Đọc bài,Wikipedia Sách hướng dẫn/Tìm kiếm và đọc bài,Wikipedia Hướng dẫn/Tìm kiếm và đọc bài
-Wikipedia Sách hướng dẫn Viết bài,Wikipedia Sách hướng dẫn/Viết bài,Wikipedia Hướng dẫn/Viết bài
-Wikipedia Sách hướng dẫn Phương châm về biên soạn,Wikipedia Sách hướng dẫn/Phương châm về biên soạn,Wikipedia Hướng dẫn/Phương châm về biên soạn
-Wikipedia Sách hướng dẫn Quyền tác giả,Wikipedia Sách hướng dẫn/Quyền tác giả,Wikipedia Hướng dẫn/Quyền tác giả
-Wikipedia Sách hướng dẫn Quản lí,Wikipedia Sách hướng dẫn/Quản lí,Wikipedia Sách hướng dẫn/Quản lý,Wikipedia Hướng dẫn/Quản lý,Wikipedia Hướng dẫn/Quản lí
-Thảo luận Wikipedia Sách hướng dẫn Quản lí,Thảo luận Wikipedia Sách hướng dẫn/Quản lí
 Wikipedia Sách hướng dẫn Giao lưu và Thảo luận,Wikipedia Sách hướng dẫn/Giao lưu và thảo luận,Wikipedia Sách hướng dẫn/Giao lưu và Thảo luận
 Chữ thập đỏ Quốc tế,Phong trào Chữ thập đỏ và Trăng lưỡi liềm đỏ quốc tế,Hội Chữ thập đỏ,Phong trào Chữ thập đỏ   Trăng lưỡi liềm đỏ Quốc tế,Phong trào Chữ thập đỏ – Trăng lưỡi liềm đỏ quốc tế,Phong trào Chữ thập đỏ,Phong trào CTĐ TLLĐ quốc tế,Phong trào CTĐ TLLĐ Quốc tế,Phong trào CTĐ TLLĐ,Phong trào CTĐ–TLLĐ quốc tế,Phong trào CTĐ–TLLĐ Quốc tế,Phong trào CTĐ–TLLĐ,Phong trào CTĐ/TLLĐ quốc tế,Phong trào CTĐ/TLLĐ Quốc tế,Phong trào CTĐ/TLLĐ,Chữ thập đỏ quốc tế,Phong trào Chữ thập Đỏ   Trăng lưỡi liềm Đỏ quốc tế,Hội Chữ Thập Đỏ,Phong trào Chữ thập đỏ   Trăng lưỡi liềm đỏ quốc tế,Liên hiệp các Hội Chữ thập Đỏ quốc tế,Uỷ ban Chữ thập Đỏ quốc tế,Hội Hồng Thập Tự,Hội Hồng Thập Tự Quốc tế,Hồng Thập Tự,Chữ thập đỏ  biểu trưng ,Chữ thập đỏ,Chữ Thập Đỏ,Hội Chữ thập Đỏ
 Xứ Lạng,Lạng Sơn,VN 09,Xứ Lạng Sơn,Tỉnh Lạng Sơn
@@ -323,18 +291,8 @@ Kim tinh,Sao Kim,Sao Hôm,Sao hôm,Sao mai,Kim Tinh,Sao Mai
 Tiểu bang Nữu Ước,Tiểu bang New York,Tiểu bang Niu Oóc,New York  tiểu bang ,New York State,State of New York,NY,Tiểu bang Niu Yooc,Bang Niu Yooc,Bang New York
 Bản mẫu Bài viết nổi bật,Template Bài viết chọn lọc
 Wikipedia Bài viết nổi bật,Wikipedia Bài viết chọn lọc,Wikipedia Những bài viết nổi bật,Bài viết chọn lọc,Wikipedia Chọn lọc,Wikipedia Bài viết xuất sắc,WP BVCL
-Tháng 3,Tháng ba,Tháng 03
-Tháng 4,Tháng tư,Tháng 04
 Năm xuân phân,Năm chí tuyến,Năm chí tuyến trung bình
 Công giáo Rôma,Giáo hội Công giáo Rôma,Công giáo La Mã,Giáo hội công giáo Rôma,Giáo Hội Công Giáo Rôma,Giáo Hội Công Giáo Rô ma,Giáo hội công giáo Rô ma,Công Giáo La Mã,Công giáo La mã,Công giáo La Mã,Công Giáo La Mã,Giáo hội Công giáo La mã,Giáo hội công giáo La Mã,Giáo Hội Công Giáo La Mã,Giáo hội Công giáo La Mã,Giáo hội Thiên Chúa Giáo La Mã,Giáo hội Thiên Chúa Giáo Rôma,Thiên Chúa giáo La Mã,Giáo hội Thiên chúa La Mã,Giáo hội Công giáo Roma,Giáo hội Công giáo,Hội nghị Giáo hội Thiên Chúa La Mã,Cơ đốc giáo La Mã,Giáo hội Thiên Chúa giáo La Mã,Nhà thờ Cơ đốc giáo La Mã,Giáo hội Công giáo La Mã,Hội Thánh Công giáo
-Tháng 1,tháng một,Tháng 01
-Tháng 5,tháng năm,Tháng 05
-Tháng 6,tháng sáu,Tháng 06
-Tháng 7,tháng bảy,Tháng 07
-Tháng 8,tháng tám,Tháng 08
-Tháng 9,tháng chín,Tháng 09
-Tháng 10,tháng mười
-Tháng 11,tháng mười một
 Lịch dương,Lịch Gregory,Lịch Tây,Lịch Gregorian,Lịch Grêgôri,Tây lịch
 Lịch âm,âm lịch,Lịch mặt trăng
 Chính thống giáo đông phương,Chính Thống giáo Đông phương,Chính Thống Giáo Đông Phương,Chính thống giáo phương đông,Chính thống giáo Đông phương,Giáo hội Chính thống giáo Đông phương,Chính Thống giáo Đông Phương,Chính thống giáo,Chính Thống,Chính Thống giáo,Chính Thống Giáo
@@ -432,30 +390,8 @@ Kde domov muj,Kde domov můj,Quốc ca Séc,Quốc ca Cộng hòa Séc,Quốc ca
 Andre Trương Trọng Thi,Trương Trọng Thi,André Trương Trọng Thi
 Vàng kim,Vàng kim loại  màu |Vàng kim loại
 Vi sóng,vi ba,Sóng vi ba
-Qđ,QĐ
-Vv,VV
-Xh,XH
-Vn,VN
-Vh,VH
-Tn,TN
-Tp,TP
 Thảo luận Hệ đo lường quốc tế,Talk SI
 Si,SI  định hướng 
-Qh,QH
-Ql,QL
-Pc,PC
-Pt,PT
-Lđ,LĐ
-Hq,HQ
-Đc,ĐC
-Đh,ĐH
-Đn,ĐN
-Đt,ĐT
-Bđ,BĐ
-Âl,ÂL
-Am,AM
-Cq,CQ
-Cn,CN
 Hệ ngôn ngữ Nam Á,Hệ ngôn ngữ Nam Á,Ngữ hệ Nam Á
 Thảo luận Thể loại Hệ ngôn ngữ Nam Á,Category talk Hệ ngôn ngữ Nam Á
 Thảo luận Bản mẫu Thông tin/Quốc gia,Template talk Tóm tắt về quốc gia,Thảo luận Bản mẫu Tóm tắt về Quốc gia
@@ -590,15 +526,6 @@ Thảo luận Wikipedia Thảo Luận,Thảo luận Wikipedia Thảo luận
 Wikipedia Thảo Luận/Lưu 1,Wikipedia Thảo luận/Lưu 1
 Petrus Ký,Trương Vĩnh Ký
 Hubble Space Telescope,Kính viễn vọng không gian Hubble,HST,Kính thiên văn Hubble,Kiếng thiên văn Hubble,Kiếng viễn vọng Hubble,Kiếng viễn vọng không gian Hubble,Hubbie,Kính viễn vọng Không gian Hubble,Kính viễn vọng Habơn,Kính viễn vọng Hubble,Đài thiên văn vũ trụ Hubble,Kính viễn vọng vũ trụ Hubble
-Bản mẫu Trước tháng 1,Template Trước tháng 01
-Bản mẫu Trước tháng 2,Template Trước tháng 02
-Bản mẫu Trước tháng 3,Template Trước tháng 03
-Bản mẫu Trước tháng 4,Template Trước tháng 04
-Bản mẫu Trước tháng 5,Template Trước tháng 05
-Bản mẫu Trước tháng 6,Template Trước tháng 06
-Bản mẫu Trước tháng 7,Template Trước tháng 07
-Bản mẫu Trước tháng 8,Template Trước tháng 08
-Bản mẫu Trước tháng 9,Template Trước tháng 09
 Hidden Markov model,Mô hình Markov ẩn,HMM,Hidden Markov Model
 Bản mẫu Lịch 30 ngày bắt đầu thứ 4,Template Lịch 30 ngày bắt đầu thứ tư
 OS,Hệ điều hành
@@ -1565,14 +1492,6 @@ Thành Đại La,Thành cổ Hà Nội,Thành Thăng Long,Thành Hà Nội,Hoàn
 Bắc Triều Tiên,Cộng hòa Dân chủ Nhân dân Triều Tiên,Bắc Hàn,Cộng hòa dân chủ nhân dân Triều Tiên,CHDCND Triều Tiên,Triều Tiên  CHDCND ,Cộng hoà Dân chủ Nhân dân Triều Tiên,Cộng Hoà Dân Chủ Nhân Dân Triều Tiên,Triều Tiên Dân chủ chủ nghĩa Nhân dân Cộng hòa quốc
 Thảo luận Nguyễn Văn Thuận,Thảo luận Phanxicô Xaviê Nguyễn Văn Thuận
 Phạm Minh Mẫn,Gioan Baotixita Phạm Minh Mẫn,Jean Baptiste Phạm Minh Mẫn,Jean Baptiste Phạm Minh Mẫn
-Wikipedia Bàn tham khảo/Lưu1,Wikipedia Bàn tham khảo/Lưu200509
-Wikipedia Bàn tham khảo/Lưu2,Wikipedia Bàn tham khảo/Lưu200510
-Chiến tranh Việt Nam/Miền Bắc 59,Chiến tranh Việt Nam  miền Bắc, 1954 1959 
-Thảo luận Chiến tranh Việt Nam/Miền Bắc 59,Thảo luận Chiến tranh Việt Nam  miền Bắc, 1954 1959 
-Chiến tranh Việt Nam/Miền Nam 59,Chiến tranh Việt Nam  miền Nam, 1954 1959 
-Thảo luận Chiến tranh Việt Nam/Miền Nam 59,Thảo luận Chiến tranh Việt Nam  miền Nam, 1954 1959 
-Chiến tranh Việt Nam/Miền Nam 65,Chiến tranh Việt Nam  miền Nam, 1960 1965 
-Thảo luận Chiến tranh Việt Nam/Miền Nam 65,Thảo luận Chiến tranh Việt Nam  miền Nam, 1960 1965 
 Cấp gió,Thang sức gió Beaufort
 Cải tổ,Perestroika,Cải Tổ,Cải cách kinh tế Liên Xô
 Cải cách,Đổi mới,Đổi Mới,Thời kì đổi mới,Chính sách Đổi Mới,Chính sách đổi mới,Thời kỳ Đổi mới
@@ -1875,148 +1794,6 @@ Wikipedia Newarticletext/ns/Thảo luận Thành viên,Wikipedia Newarticletext/
 Wikipedia Newarticletext/ns,MediaWiki Newarticletext
 Nhà triết học,Triết gia
 Bản mẫu Main,Tiêu bản Chính,Bản mẫu Bài chính,Bản mẫu Main articles,Bản mẫu Bài chi tiết,Bản mẫu Main article
-Png,PNG
-09 tháng 6,9 tháng 6,9 tháng 06,09 tháng 06
-10 tháng 06,10 tháng 6
-11 tháng 06,11 tháng 6
-12 tháng 06,12 tháng 6
-13 tháng 06,13 tháng 6
-14 tháng 06,14 tháng 6
-15 tháng 06,15 tháng 6
-16 tháng 06,16 tháng 6
-17 tháng 06,17 tháng 6
-18 tháng 06,18 tháng 6
-19 tháng 06,19 tháng 6
-20 tháng 06,20 tháng 6
-21 tháng 06,21 tháng 6
-22 tháng 06,22 tháng 6
-23 tháng 06,23 tháng 6
-24 tháng 06,24 tháng 6
-25 tháng 06,25 tháng 6
-26 tháng 06,26 tháng 6,Ngày 26 tháng 6
-27 tháng 06,27 tháng 6
-28 tháng 06,28 tháng 6
-29 tháng 06,29 tháng 6
-30 tháng 06,30 tháng 6
-01 tháng 7,1 tháng 7,1 tháng 07,01 tháng 07
-02 tháng 7,2 tháng 7,2 tháng 07,02 tháng 07
-03 tháng 7,3 tháng 7,3 tháng 07,03 tháng 07
-04 tháng 7,4 tháng 7,4 tháng 07,04 tháng 07
-05 tháng 7,5 tháng 7,5 tháng 07,05 tháng 07
-06 tháng 7,6 tháng 7,6 tháng 07,06 tháng 07
-07 tháng 7,7 tháng 7,7 tháng 07,07 tháng 07
-08 tháng 7,8 tháng 7,8 tháng 07,08 tháng 07
-09 tháng 7,9 tháng 7,9 tháng 07,09 tháng 07
-10 tháng 07,10 tháng 7
-11 tháng 07,11 tháng 7
-12 tháng 07,12 tháng 7
-13 tháng 07,13 tháng 7
-14 tháng 07,14 tháng 7
-15 tháng 07,15 tháng 7
-16 tháng 07,16 tháng 7
-17 tháng 07,17 tháng 7
-18 tháng 07,18 tháng 7
-19 tháng 07,19 tháng 7
-20 tháng 07,20 tháng 7
-21 tháng 07,21 tháng 7
-22 tháng 07,22 tháng 7
-23 tháng 07,23 tháng 7
-24 tháng 07,24 tháng 7
-25 tháng 07,25 tháng 7
-26 tháng 07,26 tháng 7
-27 tháng 07,27 tháng 7
-28 tháng 07,28 tháng 7
-29 tháng 07,29 tháng 7
-30 tháng 07,30 tháng 7
-31 tháng 07,31 tháng 7
-01 tháng 8,1 tháng 8,1 tháng 08,01 tháng 08
-02 tháng 8,2 tháng 8,2 tháng 08,02 tháng 08
-03 tháng 8,3 tháng 8,3 tháng 08,03 tháng 08
-04 tháng 8,4 tháng 8,4 tháng 08,04 tháng 08
-05 tháng 8,5 tháng 8,5 tháng 08,05 tháng 08
-06 tháng 8,6 tháng 8,6 tháng 08,06 tháng 08
-07 tháng 8,7 tháng 8,7 tháng 08,07 tháng 08
-08 tháng 8,8 tháng 8,8 tháng 08,08 tháng 08
-09 tháng 8,9 tháng 8,9 tháng 08,09 tháng 08
-10 tháng 08,10 tháng 8
-11 tháng 08,11 tháng 8
-12 tháng 08,12 tháng 8
-13 tháng 08,13 tháng 8
-14 tháng 08,14 tháng 8
-15 tháng 08,15 tháng 8
-16 tháng 08,16 tháng 8
-17 tháng 08,17 tháng 8
-18 tháng 08,18 tháng 8
-19 tháng 08,19 tháng 8
-20 tháng 08,20 tháng 8
-21 tháng 08,21 tháng 8
-22 tháng 08,22 tháng 8
-23 tháng 08,23 tháng 8,Ngày 23 tháng 8
-24 tháng 08,24 tháng 8
-25 tháng 08,25 tháng 8
-26 tháng 08,26 tháng 8,26/08
-27 tháng 08,27 tháng 8
-28 tháng 08,28 tháng 8
-29 tháng 08,29 tháng 8
-30 tháng 08,30 tháng 8
-31 tháng 08,31 tháng 8
-01 tháng 9,1 tháng 9,1 tháng 09,01 tháng 09
-02 tháng 9,2 tháng 9,2 tháng 09,02 tháng 09
-03 tháng 9,3 tháng 9,3 tháng 09,03 tháng 09
-04 tháng 9,4 tháng 9,4 tháng 09,04 tháng 09
-05 tháng 9,5 tháng 9,5 tháng 09,05 tháng 09
-06 tháng 9,6 tháng 9,6 tháng 09,06 tháng 09
-07 tháng 9,7 tháng 9,7 tháng 09,07 tháng 09
-08 tháng 9,8 tháng 9,8 tháng 09,08 tháng 09
-09 tháng 9,9 tháng 9,9 tháng 09,09 tháng 09
-10 tháng 09,10 tháng 9
-11 tháng 09,11 tháng 9
-12 tháng 09,12 tháng 9
-13 tháng 09,13 tháng 9
-14 tháng 09,14 tháng 9,Ngày 14 tháng 9
-15 tháng 09,15 tháng 9
-16 tháng 09,16 tháng 9
-17 tháng 09,17 tháng 9
-18 tháng 09,18 tháng 9
-19 tháng 09,19 tháng 9
-20 tháng 09,20 tháng 9
-21 tháng 09,21 tháng 9
-22 tháng 09,22 tháng 9
-23 tháng 09,23 tháng 9
-24 tháng 09,24 tháng 9,24/09,24/9,24.9.,24.9
-25 tháng 09,25 tháng 9
-26 tháng 09,26 tháng 9
-27 tháng 09,27 tháng 9
-28 tháng 09,28 tháng 9
-29 tháng 09,29 tháng 9
-30 tháng 09,30 tháng 9
-01 tháng 10,1 tháng 10
-02 tháng 10,2 tháng 10
-03 tháng 10,3 tháng 10
-04 tháng 10,4 tháng 10
-05 tháng 10,5 tháng 10
-06 tháng 10,6 tháng 10
-07 tháng 10,7 tháng 10
-08 tháng 10,8 tháng 10
-09 tháng 10,9 tháng 10
-01 tháng 11,1 tháng 11
-02 tháng 11,2 tháng 11
-03 tháng 11,3 tháng 11,Ngày 3 tháng 11
-04 tháng 11,4 tháng 11
-05 tháng 11,5 tháng 11
-06 tháng 11,6 tháng 11
-07 tháng 11,7 tháng 11
-08 tháng 11,8 tháng 11
-09 tháng 11,9 tháng 11
-01 tháng 12,1 tháng 12
-02 tháng 12,2 tháng 12
-03 tháng 12,3 tháng 12
-04 tháng 12,4 tháng 12
-05 tháng 12,5 tháng 12
-06 tháng 12,6 tháng 12
-07 tháng 12,7 tháng 12
-08 tháng 12,8 tháng 12
-09 tháng 12,9 tháng 12
 Bảo Quốc Huân Chương,Bảo quốc Huân chương
 Hồ núi Thang Hen,Hồ Thang Hen
 Thảo luận Hồ núi Thang Hen,Thảo luận Hồ Thang Hen
@@ -2546,13 +2323,6 @@ Quý Mẹo,Quý Mão
 Ất Mẹo,Ất Mão
 Kurow,Kurów
 Xâm lược Iraq năm 2003,Cuộc tấn công Iraq 2003,Cuộc xâm lược Iraq, 2003,Cuộc xâm lược Iraq  2003 ,Cuộc xâm lược Iraq 2003,Xâm lược Iraq, 2003,Xâm lược Iraq  2003 ,Xâm lược Iraq 2003,Cuộc xâm chiếm Iraq năm 2003,Chiến dịch Iraq 2003,Cuộc xâm lược Iraq năm 2003,Cuộc tấn công Iraq năm 2003
-Theo năm 2005,2005,Theo 2005,Tại thời điểm 2005,Vào năm 2005,Tới năm 2005
-Theo năm 2000,2000,Theo 2000,Tại thời điểm 2000,Vào năm 2000,Tới năm 2000
-Theo năm 2001,2001,Theo 2001,Tại thời điểm 2001,Vào năm 2001,Tới năm 2001
-Theo năm 2002,2002,Theo 2002,Tại thời điểm 2002,Vào năm 2002,Tới năm 2002
-Theo năm 2003,2003,Theo 2003,Tại thời điểm 2003,Vào năm 2003,Tới năm 2003
-Theo năm 2004,2004,Theo 2004,Tại thời điểm 2004,Vào năm 2004,Tới năm 2004
-Theo năm 2006,2006,Theo 2006,Vào năm 2006,Tại thời điểm 2006,Tới năm 2006
 Cúp C1,Cúp các đội vô địch bóng đá quốc gia châu Âu,European Cup,UEFA Champions League,Cúp các đội vô địch quốc gia châu Âu,Cúp C1 châu Âu,Champions League,Champion League
 FC Barcelona,F.C. Barcelona,Futbol Club Barcelona,Barça,Câu lạc bộ bóng đá Barcelona,Barcelona F.C.,Barcelona FC
 Thảo luận FC Barcelona,Thảo luận F.C. Barcelona
@@ -22564,3 +22334,603 @@ IS 2,Xe tăng Iosif Stalin,IS 3
 Chân Văn Đạt,Martin Yan
 Văn chương Việt Nam,văn học Việt Nam
 SadoseJa,Hoàng tử Sado
+phở, quán phở, quan pho
+laptop, máy tính xách tay, notebook, may tinh xach tay
+café, cafe, coffee, cà phê
+rượu, ruou
+pho, phở
+kem, ice cream
+trà, trà sữa, trà, tra, tra sua, trà sữa trân châu, tra sua tran chau
+trà đạo, tra dao
+chè, che
+ca cao, chocolate, socola
+sữa, sua, sữa tươi, sua tuoi
+sinh tố, sinh to
+Bia, beer, đại lý bia, dai ly bia
+Bar, club
+quán ăn vườn, quan an vuon
+quán ăn gia đình, quan dinh gia dinh
+nước ngọt, nuoc ngot
+nước giải khát, nuoc giai khat
+sữa đậu nành, sua dau nanh
+nước ép trái cây, nuoc ep trai cay, nước ép, nuoc ep, Juice Station
+nước mía, nuoc mia
+nước suối, nuoc suoi
+nước khoáng, nuoc khoang
+yaourt, sữa chua, sua chua
+công nghệ thực phẩm, cong nghe thuc pham
+bánh ngọt, banh ngot, bakery, bánh kẹo, banh keo
+cửa hàng, cua hang
+bánh bía, banh bia
+thực phẩm, thuc pham
+mứt trái cây, mut trai cay
+khách sạn, khach san, hotel, nhà nghỉ, nha nghi, hotel mini, khách sạn mini, khach san mini
+công viên, cong vien, công viên nước, cong vien nuoc, water park
+travel, tourim, tourist, lữ hành, lu hanh, du lịch, di lich
+resort, khu du lich, khu du lich 
+bún, bun
+hủ tíu, hu tiu, hủ tiếu, hu tieu
+gỏi, goi
+quán ốc, quan oc
+làng nướng, lang nuong, làng ẩm thực, lang am thuc
+quán ăn gia đình, quan an gia dinh
+nhà hàng, nha hang
+quán ăn sân vườn, quan an san vuon
+Ác,	Ác nghiệt, dữ, độc ác, hung, hung ác, tàn ác
+Ảnh,	Bóng, chân dung, hình
+Ao,	Ao chuôm, chuôm, đầm, hồ
+Áp,	Cạnh, gí, kề, sát
+Áp dụng,	Ứng dụng, vận dụng
+Ăn,	Chén, mời, xơi
+Ăn mày,	Ăn xin, hành khất, khất thực
+Ăn gian,	Ăn lận, ăn lường, ăn quỵt
+Ăn trộm,	Ăn cắp, ăn cướp
+Ấm,	Ấm áp, ấm cúng
+Ấn,	Bấm, chặn, đè, lèn, nén
+Ba,	Bố, cha, thầy, tía
+Bá,	Bíu, chống, dựa, tì, tựa, vịn
+Bã,	Cặn, cặn bã
+Bạc,	Bạc bẽo, bạc đãi, bạc tình, bội bạc, bội nghĩa, lật lọng, tệ bạc, trở mặt
+Bàn,	Bàn bạc, dàn xếp, đàm phán, điều đình, hiệp thương, hội đàm, thảo luận, thương lượng, trao đổi
+Bạn,	Bạn bè, bạn hữu, bằng hữu, bầu bạn
+Bảo,	Báo, báo cáo, chỉ, chỉ bảo, dạy dỗ
+Bằng,	Ngang
+Bằng lòng,	Hài lòng, mãn nguyện, thỏa lòng, vui lòng, vừa lòng, vừa ý
+Bệ,	Bục
+Bên,	Cạnh, mé
+Bênh,	Bảo vệ, bênh vực, che chở
+Biết,	Am tường, hiểu biết, lõi, sành, sành sỏi, thạo, thành thạo, tỏ, tường, tường tận
+Bó,	Buộc, cột, ràng, thắt, trói
+Bọc,	Bao, bao bọc, bao phủ, đùm, gói, phủ
+Bọn,	Bầy, đàn, đám, đoàn, lũ, nhóm, phe, phường, toán, tốp, tụi
+Bỗng,	Bất chợt, bất ngờ, bỗng nhiên, chợt, đột nhiên, thình lình, thoắt, tình cờ
+Bỡ ngỡ,	Ngơ ngác
+Bụng,	Dạ, lòng
+Buồn,	Ảm đạm, bùi ngùi, đăm chiêu, phiền, rầu, sầu, ủ, dột, ủ rũ
+Bứt,	Bẻ, hái, ngắt, rứt, vặt
+Cảm ơn,	Cảm tạ, đa tạ, tạ ơn
+Căn bản,	Cơ bản
+Cắt,	Băm, bổ, chặt, chém, cưa, phang, phát, thái, xắn, xắt, xẻ, xén, xẻo
+Cắt nghĩa,	Giảng giải, giảng nghĩa, giải nghĩa, giải thích
+Cân,	Đong, khảo, lường
+Cần,	Cấp, cấp bách, gấp, gấp rút, kíp, vội, vội vã, vội vàng
+Chán,	Bứ, chán chê, chán chường, chán ngán, chán ngấy
+Chăm chút,	Chăm bẵm, chăm lo, chăm nom, chăm sóc, săn sóc, trông nom
+Chắn,	Cản, cản trở, chặn, chèn, ngáng, ngăn, ngăn cản, ngăn cấm
+Chắt,	Gạn, lọc
+Chậm,	Chậm trễ, muộn, muộn màng, trễ
+Chần chừ,	Do dự, lần chần, lưỡng lự, ngần ngừ, phân vân
+Chật,	Chật chội, chật hẹp, chật ních, chẽn, hẹp
+Chen,	Lách, len, len lỏi, luồn
+Chế,	Chế giễu, chế nhạo, giễu cợt, nhạo báng
+Chênh vênh,	Cheo veo, chon von, chơi vơi, chông chênh, vắt vẻo
+Chết,	Băng hà, bỏ xác, chầu chúa, chầu phật, chầu trời, hy sinh, khuất, mất, nghẻo, qua đời, quy tiên, tạ thế, tắt thở, thác, từ trần, yên nghỉ
+Chia,	Bửa, chia rẽ, phân, rẽ, tách, tẽ, xẻ
+Chiếm,	Chiếm đoạt, chiếm hữu, choán
+Chiều,	Chiều chuộng, cưng, nuông
+Chìm,	Đắm, ngập
+Chín suối,	Âm phủ, cửu tuyền, suối vàng
+Chịu,	Cam chịu, cam lòng, đành, đành chịu, đành lòng
+Cho,	Ban, biếu, tặng, biếu xén, cấp, dâng, hiến, phát, tặng, tiến, truy tặng
+Chó,	Cầy, khuyển
+Choáng,	Bất tỉnh, choáng váng, mê, mê man, ngất
+Chói,	Chói chang, chói lòa, chói lọi, lóa
+Chòm,	Bụi, cụm, đám
+Chọn,	Chọn lọc, kén, kén chọn, lựa, lựa chọn, tuyển
+Chỗ,	Chốn, nơi
+Chối,	Khước từ, thoái thác, từ, từ chối
+Chôn,	An táng, chôn cất, mai táng, vùi
+Chồng,	Lang quân, phu quân
+Chống,	Chống cự, đối chọi, đối địch, đối kháng, đương đầu, kháng cự
+Chờ,	Chầu chực, chờ đợi, chực, đợi, đợi chờ, mong, ngóng
+Chợ,	Chợ búa
+Chơi,	Dạo, du lịch, ngao du, nhởn
+Chu đáo,	Chỉn chu, chu tất, trọn vẹn, vẹn toàn
+Chú ý,	Chú tâm, chú trọng, để ý, lưu tâm
+Chủ yếu,	Chính, chính yếu, cốt yếu
+Chuẩn y,	Y
+Chùm,	Nải
+Chữ,	Văn tự
+Chừa,	Bỏ, cai
+Chứa,	Đựng, tích, tích trữ, trữ
+Chửa,	Có bầu, có mang, mang thai
+Chữa,	Sửa, sữa chữa, tu bổ, tu sửa
+Chửi,	Bới, chửi bới, chửi rủa, lăng mạ, mạt sát, rủa
+Chứng nhận,	Thị thực
+Chừng,	Chừng mực, hạn độ, mức độ
+Co,	Chun, co cụm, rụt, rút
+Cọ,	Chà, chà xát, kỳ, xát
+Cọc,	Cột, cột trụ
+Cong,	Cong queo, khúc khuỷu, quanh co
+Còng,	Gù
+Cô đơn,	Bơ vơ, cô độc, cô quạnh, đơn độc, lẻ loi, thui thủi, trơ trọi
+Cố,	Cố gắng, gượng, nỗ lực, ra sức, ráng
+Cố chấp,	Bảo thủ, ngoan cố
+Cố ý,	Cố tình
+Cỗ,	Cỗ bàn, tiệc, tiệc tùng, yến tiệc
+Công chúng,	Dân chúng, đại chúng, quần chúng
+Công nhận,	Chứng nhận, chứng thực, thừa nhận, xác minh
+Công trình,	Sản phẩm, tác phẩm
+Công nghiệp,	Công nghệ, kỹ nghệ
+Cổng,	Cửa
+Cởi,	Gỡ, tháo
+Cơn,	Trận
+Cũ,	Cổ, cổ hủ, cổ lỗ, cũ kỹ, cũ rích
+Cục,	Cục cằn, cục súc
+Cùn,	Nhụt
+Cuối,	Bét, chót, cuối cùng, kết thúc, rốt
+Cuốn,	Cuộn, quấn
+Cuống,	Bối rối, cuống cuồng, cuống quýt, hối hả, luống cuống, rối rít
+Cứng,	Chắc, rắn
+Cười,	Cười duyên, cười cợt, cười mát, cười ruồi, mỉm cười, nhoẻn
+Cứu,	Cứu chữa, cứu giúp, cứu hộ, cứu vãn, cứu vớt, cứu tế
+Dại,	Cuồng, dại dột, dở hơi, dở người, đần, đần độn, điên, gàn, hâm, hâm hấp, hấp, lẩn thẩn, ngớ ngẩn, ngốc, ngu, ngu ngốc, rồ
+Dạm,	Ướm
+Dáng,	Bộ, dáng, vẻ, dạng, điệu, điệu bộ, nét, vẻ
+Dành,	Dành dụm, dè sẻn, tiết kiệm
+Dạo,	Độ hồi
+Dạy,	Bảo, chỉ bảo, dạy bảo, dạy dỗ
+Dầu khí,	Dầu hỏa, dầu hôi, dầu lửa, dầu mỏ, dầu tây
+Dây,	Chão, chạc, dây nhợ, dợ, nhợ, thừng
+Dẻo,	Mềm
+Dễ,	Dễ dàng, dễ dãi
+Diễn đạt,	Bày tỏ, biểu đạt, biểu thị, diễn tả, trình bày
+Diễn văn,	Diễn thuyết, diễn từ
+Diễn đài,	Diễn đàn
+Diễn viên,	Đào kép, đào hát, kép hát
+Dính dáng,	Can dự, dính dấp, dính líu, liên can, liên lụy, liên quan
+Dịp,	Cơ hội, thời cơ
+Dìu dặt,	Khoan thai, Ung dung
+Do,	Bởi, bởi vì, tự, vì
+Dò,	Do thám, dò la, dò xét, thám thính, thăm dò
+Dọa,	Dọa dẫm, dọa nạt, đe, đe nẹt, hăm dọa, nạt, nạt nộ
+Dọn,	Dọn dẹp, thu dọn, vun vén
+Dòng dõi,	Dòng giống, dòng họ, dòng tộc
+Du côn,	Côn đồ, du đãng
+Đại để,	Đại khái, đại loại
+Đại bác,	Ca nông, pháo
+Đàn bà,	Gái, phụ nữ
+Đang tâm,	Đành, nỡ
+Đáng,	Xứng, xứng đáng
+Đánh,	Đá, đạp, đấm, đập, nện, quật, tát, thụi
+Đào,	Bới, đục, khoan, khoét, khơi, móc, moi
+Đau,	Buốt, đau đớn, nhói, nhức, xót, xót xa
+Đày,	Đày ải, đày đọa, hành hạ, giày vò
+Đặc,	Đông, quánh
+Đằng,	Bên, mé, phía
+Đắp,	Che, che đậy, đắp điếm, đậy, đậy điện, phủ
+Đặt,	Bịa, bịa đặt, đặt điều, đơm đặt
+Đâm,	Châm, chọc, chích, tiêm, thọc
+Đầy,	ăm ắp, chan chứa, chan hòa, đầy ắp, đầy tràn, đẫy, giàn giụa, lênh láng, tràn
+Đẩy,	ẩy, xô, xô đẩy
+Đè,	áp bức, áp chế, đè nén, nén, ức, ức hiếp
+Đen,	đen giòn, đen kịt, đen ngòm, đen sạm, đen sì, đen thui, đen trũi, thâm
+Đen,	đen đủi, không may, rủi ro, xúi quẩy
+Đẽo,	bào, gọt, gọt giũa, vót
+Đẹp,	dễ coi, diễm lệ, đẹp đẽ, lộng lẫy, mỹ lệ, xinh, xinh đẹp, xinh tươi, xinh xắn, xinh xẻo
+Để,	cất, đặt, kê, xếp
+Đếm,	điểm, kiểm kê
+Đền,	bù, bồi thường, đền bù
+Đến,	tới
+Đểu,	đểu cáng, đểu giả, xỏ lá
+Đi,	chuồn, cút, lên, đường, xéo
+Địa phương,	địa hạt, khu vực
+Điếc,	nặng tai, nghễnh ngãng
+Điên cuồng,	điên dại, điên khùng
+Đồn,	bốt, tháp canh, trạm gác, vọng gac
+Điều,	điều khoản, khoản
+Đính,	cài, gài, gắn, khâu
+Định,	ấn định, chực, dự định, lăm le, tấp tểnh, toan
+Đỉnh,	chỏm, chóp, ngọn
+Đỏ,	đỏ au, đỏ chót, đỏ gay, đỏ hỏn, đỏ loét, đỏ lòm, đỏ ối, đỏ rực, đỏ tía, đỏ ửng
+Đòi,	đòi hỏi, đề nghị, yêu cầu, yêu sách
+Đoạn,	đốt, khúc, mẫu
+Đón,	đón tiếp, đón rước, hoan nghênh, nghênh tiếp, rước
+Đòn càn,	đòn gánh, đòn khiêng, đòn ống, đòn xóc
+Độ,	chừng, phỏng
+Đọng,	dồn, tắc, ùn, ứ, ứ đọng
+Đóng,	khép, nhắm
+Đồ dùng,	đồ đạc, vật dụng
+Đố,	cuộc, đánh cuộc, đánh đố, thách, thách thức
+Đổ,	sập, sụp, sụp đổ, ụp
+Đối phó,	ứng phó
+Đồi,	cồn, đống, gò, ụ
+Đổi,	biến hóa, đổi thay, thay, thay đổi
+Đối xử,	ăn ở, cư xử, đối đãi, xử sự, xử thế
+Đông,	đông đúc, nhộn nhịp, sầm uất, tấp nập
+Động đậy,	cựa quậy, nhúc nhích
+Đốt,	châm, nhen, nhóm, thắp
+Đỡ,	hứng, nâng
+Đời,	kiếp
+Đúng,	chính, đích, trúng
+Đụng,	chạm, đụng chạm, va chạm, va, vấp
+Đuổi,	khai trừ, tống cổ, xua, xua đuổi
+Đưa,	dẫn, dắt, dắt díu, dìu
+Êm,	êm ả, êm ái, êm ắng, êm dịu, êm đềm
+Gã,	hắn, lão, tên, y
+Gác,	lầu
+Gạch,	kẻ, vạch
+Gan,	gan dạ, gan góc, gan lì, gan liền
+Gạt,	hắt, hất, tát, té
+Gắn bó,	khăng khít, ràng buộc
+Găng,	căng, căng thẳng
+Gặp,	bắt gặp, gặp gỡ
+Gần,	gần gũi
+Gấp,	cấp tốc, gấp gáp, gấp rút, kíp
+Gập ghềnh,	gồ ghề, khấp khểnh, mấp mô
+Gật,	gật gù
+Gầy,	còm, gầy còm, gầy đét, gầy gò, gầy guộc, gầy nhom
+Gậy,	can, côn, gậy gộc, hèo, trượng
+Ghen,	ghen ghét, ghen tị, ghen tuông
+Ghẹo,	châm chọc, chọc, chòng, chòng ghẹo, giỡn, trêu, trêu chọc, trêu ghẹo
+Ghét,	ghét bỏ, ghẻ lạnh
+Ghê,	đanh đá, đáo để, ghê gớm
+Gia đình,	gia quyến, nhà
+Già,	già cả, già nua
+Giá,	giá cả, giá trị
+Giả vờ,	giả bộ, giả danh, giả dạng, giả hiệu, giả mạo, giả tảng
+Giải tán,	tan
+Giam,	giam cầm, giam cấm, giam giữ, giam hãm,nhốt
+Giảm,	bớt, hạ, giảm bớt, giảm sút
+Gian,	gian dối, gian giảo, gian lận, gian ngoan, gian tham, gian trá
+Giản dị,	đơn giản, đơn sơ
+Gián điệp,	mật thám, thám tử
+Giao tiếp,	giao dịch, giao thiệp, tiếp kiến
+Giao tiếp,	gửi, gửi gắm, giao phó, kí thác, phó, ủy thác
+Giao kèo,	hợp đồng
+Giáo dục,	đào tạo, rèn luyện
+Giáo viên,	giáo sư, giảng viên, nhà giáo, thầy giáo
+Giàu,	giàu có, giàu sang, phú quý
+Giãy,	giãy giụa, giãy nảy
+Giặc,	giặc cỏ, giặc giã
+Giặt,	giặt giạ, giặt giũ, giặt khô
+Giận,	dỗi, giận dỗi, giận dữ, giận hờn, hờn, hờn dỗi, hờn giận, phẫn nộ, phẫn uất, tức giận
+Giấu,	cất giấu, giấu giếm, ỉm, lấp liếm
+Giấy,	giấy má, giấy tờ
+Gièm,	gièm pha
+Gieo,	ném, rải, rắc, vãi
+Gió,	bão, bão táp, bão tố, gió lốc, gió máy, giông, giông bão, giông tố
+Giỏi,	cao tay, cao thủ, cừ, cừ khôi, khá, khéo, tài, tài ba, tài cán, tài danh, tài đức, tài giỏi, tài hoa, tài tình, thông thạo
+Giỗ,	Cúng giỗ, chạp, giỗ chạp, giổ tễt
+Giống,	Giống như, hao hao, hệt, na ná, như, tựa, tương tự, chủng, chủng lọai, giống nòi, loài, loại, nòi giống
+Giới hạn,	Hạn chế, phạm vi, ranh giới
+Giúp,	Đỡ, giúp đỡ, dùm, hộ, hỗ trợ, tương hỗ, tương trợ, trợ giúp, trợ lực
+Giữ,	Bảo hộ, bảo vệ, gìn giữ, giữ gìn, giữ rịt
+Góa,	Góa bụa
+Góc,	khóe, xó
+Gọi,	Gào, hô, hô hào, hô háo, kêu, kêu ca, kêu gọi, kêu la, kêu nài, kêu van, la, la hét, la làng, la lối
+Gọn,	Gọn gàng, gọn ghẽ, gọn lỏn
+Góp,	chung, gom, hùn
+Gợi,	khêu, khêu gợi
+Ghê,	ghê gớm, ghê rợn, ghê tởm, kinh, kinh dị, kinh hãi, kinh hoàng, kinh hoảng, kinh khủng, khủng khiếp
+Gượng,	bắt buộc, gắng gượng, gắng sức, gắng ép , gượng gạo, gượng nhẹ
+Hà tiện,	bủn xỉn, chắc bóp, chắt chiu, dè, dè sẻn, keo, keo kiệt, tiết kiệm
+Hạch,	bắt bẻ, hạch lạc, hạch sách, họach, họach họe
+Hai,	cặp, đôi
+Hại,	hao, hao phí, hao tổn, tốn, tốn kém, tốn phí, tổn, tổn hại, tổn hao, tổn thất, thiệt, thiệt hại, thiệt thòi
+Hầm hồ,	hồ đồ
+Hầm hồ,	cầm, giữ, kìm, kìm hãm
+Hang,	hầm, hố, hốc, huyệt, lỗ
+Hàng xóm,	láng giềng
+Hàng,	dãy, rặng
+Hàng,	hàng họ, hàng hóa, hóa vật, thương phẩm, vật phẩm
+Hấp dẫn,	cuốn hút, lôi cuốn, quyến rũ, thu hút
+Hèn,	đê hèn, đớn hèn, hèn hạ, hèn kém, hèn mạt, hèn mọn, hèn nhát, thấp hèn
+Hết lòng,	hết mình, hết mực, hết sức, nhiệt tình, ra sức, tận tâm, tận tụy, tận tình
+Hết,	cạn, hết nhãn, kiệt, nhẵn, sạch, trụi
+Hiền,	dịu dàng, dịu hiền, dịu ngọt, hiền dịu, hiền hậu, hiền hòa, hiền khô, hiền lành, hiền từ, hiền thục, lành, thùy mị
+Hiện,	bây giờ, hiện tại, hiện nay
+Học lực,	khả năng, năng lực, trình độ
+Hỏi,	căn vặn, chất vấn, tìm hiểu, tra hỏi, tra khảo
+Hoàn cảnh,	cảnh huống, tình cảnh, tình hình, tình huống, tình thế
+Hoãn,	dừng, đình, ngừng, thôi
+Hoang,	hoang phí, hoang tòang, lãng phí, phí phạm, phung phí
+Hối,	ăn năn, ân hận, hối cải, hối hận, hối lỗi, hối tiếc
+Hổ,	cọp, hùm, ông ba mươi
+Hỗn,	hỗn hào, hỗn láo, hỗn xược, láo, láo tóet, nhờn, xấc láo, xấc xược
+Hợp,	ăn ý, hợp ý, phù hợp, thích hợp
+Hư,	hỏng, hư đốn, hư hỏng
+Hứng,	hóng
+Hương,	nhang
+Ít,	chút, hiếm, một tẹo, tí
+Kết cục,	chung quy, rốt cục
+Kiện,	kêu, khiếu nại, thưa
+Khai mạc,	bắt đầu, mở đầu, mở màn
+Khái niệm,	Luận điểm, quan điểm, quan niệm
+Khái quát,	bao quát, tổng quát
+Khám phá,	phát hiện, phát kiến, phát minh
+Khay,	cơi
+Khăn,	khăn tay, mùi xoa
+Khập khiểng,	cà nhắc, tập tễnh, thọt
+Khâu,	chằm, mạng, may, vá
+Khen,	biểu dương, ca ngợi, ca tụng, khen ngợi, tán tụng, tuyên dương
+Khinh,	coi thường , khinh bỉ, khinh khi, khinh miệt, khinh rẻ, miệt thị, rẻ, rẻ rúng
+Kho,	kho tàng, nhà kho
+Khó,	hiểm hóc, hóc búa, khó khăn, ngặt nghèo
+Khoe,	khoe khoang, khoe mẽ
+Khỏe,	khỏe khoắn, khỏe mạnh, mạnh
+Khỏi,	bình phục, đỡ, lành
+Khô,	hanh, khô cạn, khô khan, khô rốc, khô không, khốc, khô ráo, nỏ, ráo
+Không phận,	bầu trời, vùng trời
+Khởi xướng,	đề xướng
+khuy,	cúc
+khuya,	khuya khoắt
+khuây,	khuây khỏa, nguôi
+khuyến khích,	cổ động, cổ vũ, cổ xúy, động viên
+kiêng,	kiêng cử, kiêng khem, kiêng kỵ
+kiêệt xuất,	xuất chúng
+kiêu,	kiêu căng, kiêu hãnh, kiêu ngạo, lên mặt, ngạo mạn
+kín,	bí mật, kín đáo
+kính,	cung kính, kính cẩn, kính trọng, tôn kính
+kỹ,	cặn kẽ, cẩn thận, kỹ càng, kỹ lưỡng
+lạ,	dị kì, kì ảo , kì lạ, kì quái, lạ lùng
+lác,	lé, hiếng
+lác đác,	lẻ tẻ, tản mát, tản mạn, rải rác
+làm dáng,	đỏm dáng, làm đỏm, tô điểm, trang điểm
+làm sao,	cớ sao, sao, tại sao, vì sao
+làm việc,	công tác
+lan can`,	ban công, bao lơn
+lang,	bác sĩ, lương y, thầy thuốc, y sĩ
+lang thang,	lang bạt, loăng quăng
+làng,	bản, làng mạc, thôn
+lành,	lành lặn, nguyên vẹn
+lãnh đạo,	chỉ đạo, chỉ huy, điều khiển
+lạnh,	giá, lạnh lẽo, rét, rét mướt
+lảo đảo,	chếnh chóang
+lay,	lắc, rung
+lạy,	bái, lễ, lễ bái, vái
+lăn,	lăn chiêng, lăn lốc, lăn lộn
+lăng nhăng,	nhăng nhít
+lần,	đợt, lượt, phen, phiên
+lẩn,	chuồn, lảng, lẻn, lủi, tránh, trốn, trốn tránh
+lấp lóe ,	lập lòe. Lấp loáng
+lầy,	lầy lội, lội
+lấp lóe ,	thập thò
+lấp lánh,	long lanh, lóng lánh, óng ánh
+lâu dài,	trường kì
+leo,	trèo, trèo leo
+lệch,	chếch, chênh chếch, chênh lệch, xiên
+lệnh,	mệnh lệnh
+ly dị,	bỏ, ly hôn
+lìa,	bỏ, biệt ly, ly biệt
+liều,	liều lỉnh, liều mạng, liều mình
+lính,	binh, bộ đội, chiến sỉ, quân, quân nhân
+lo,	băn khoăn, e ngại, lo lắng, lo ngại, lo phiền, lo sợ
+ló,	hở, lòi, lộ, thò
+loanh quanh,	luẩn quẩn, quanh quẩn
+lôi thôi,	lằng nhằng, rắc rối
+lồi,	nhô, trồi
+lỗi,	tội, tội lỗi, tội vạ
+lộn xộn,	bát nháo, láo nháo, nhốn nháo
+lơ đãng,	đãng trí, lơ lễnh
+lợn,	heo
+lúc,	khi, thời
+lục đục,	bất hòa, lủng củng, mâu thuẩn
+luồn cúi,	luồn lỏi, luồn lọt
+lười,	chây lười, lười biếng, lười nhác
+lưu lóat,	trơn tru, trôi chảy
+mả,	lăng, lăng tẩm, mộ, mồ
+mảnh,	mảng, mảu, miếng, phiến
+mang,	bê, khiêng, vác, xách
+mát,	mát mẻ
+máu,	huyết, tiết
+mắc,	giắt, vướng, vướng mắc
+mặc,	bận, choàng, khoác, vận
+mặt,	mặt mày, mặt mũi
+maầm,	búp, chồi, lộc, mộng, nõn, nhánh
+mất,	mất mát, thất lạc, tổn thất
+mẫu,	kiểu, kiểu mẫu, khuôn, khuôn mẫu
+mẫu mực,	mực thước
+mấy,	bao nhiêu
+mẹ,	má, mạ, bu, bủ, bầm, u
+mê,	ham mê, mải, mải mê, mải miết, miệt mài, say, say đắm, say mê, say sưa
+mềm,	dẻo, nhũn, mõm
+miệng,	mỏ, mõm, mồm
+mò,	lần, mò mẫm
+mó ,	mân mê, mân mó, sờ
+mọc,	nẩy, nhú
+mòn,	hao, hao mòn, sứt
+mong,	ao ướt, hy vọng, mong chờ, ao ước
+mỏng,	mong manh, mỏng manh, mỏng mảnh
+moót,	lượm, nhặt
+mối,	nguyệt lão, ông tơ
+mộng,	chiêm bao, mơ
+mờ,	lờ mờ, lù mù, nhòa, tờ mờ 
+mù,	lòa, quáng gà, thong manh
+mua,	buôn, cất, tậu, sắm, mua sắm, mua sam, ban, bán
+muôn đời,	muôn thuở, thiên cổ, vạn cổ, vạn đại, vạn kiếp
+muốn,	thèm thuồng, thèm
+mửa,	nôn, ọe, ộc, thổ, trớ
+mười,	chục, mươi
+mưu,	kế, mẹo, mưu cơ, mưu đồ, mưu kế, mưu mẹo, mưu mô
+nát,	nát nhừ, nhừ
+nằm,	nằm khoèo, nằm khểnh, ngả lưng
+nắm,	cầm, giữ, kìm, kìm hãm
+năng lực,	khả năng, tài, tài năng
+nặng,	nặng nề, nặng trĩu
+nấu,	nấu nướng, thổi
+ngã,	té, trượt
+ngạc nhiên,	kinh ngạc, sửng sốt
+ngay,	ngay thẳng, thẳng
+ngắn,	cột, cụt, ngắn ngủn, ngắn ngủi
+ngẩn,	ngẩn ngơ
+nghèo,	nghèo đói, nghèo khó, nghèo khổ, nghèo nàn, túng, túng bấn
+nghề,	nghề nghiệp, nghề ngỗng
+nghi,	ngờ, ngờ vực, nghi hoặc, nghi kị, nghi ngại, nghi ngờ, nghi vấn
+nghỉ,	nghỉ ngơi
+nghỉ,	lo nghỉ, nghỉ ngợi, suy nghỉ
+nghịch,	nghịch ngợm
+nghiêm,	ngặt, ngặt nghèo, nghiêm chỉnh, nghiêm khắc, nghiêm ngặt, nghiêm trang
+nghìn,	ngàn, thiên
+ngoan,	ngoan ngoãn
+nguy,	nguy khốn, nguy hiểm, nguy kịch
+nhan đề,	đầu đề, tiêu đề, đề
+nhàn,	an nhàn, nhàn cư, nhàn hạ, nhàn rỗi, nhàn tản, rỗi
+nhanh,	chóng, chóng vánh, mau, nhanh chóng, nhanh nhạy, nhanh nhẩu, nhanh nhẹn, thoăn thoắt
+nhạt,	nhàn nhạt, nhạt nhẽo, nhạt phòe, nhạt thếch
+nhẹ,	nhẹ bổng, nhẹ nhàng, nhẹ nhõm, nhẹ tênh
+nhiệt thành,	nhiệt huyết, nhiệt tâm, nhiệt tình
+nhiều,	khối, ối
+nhọc,	mệt, mệt mỏi, mệt nhòai, mệt nhọc, mệt lử, nhọc mệt, nhọc nhằn, vất vả
+như,	giông giống, hao hao, giống, hệt, tực như, tương tự
+nhưng,	nhưng mà, song, tuy nhiên, tuy vậy
+nhường,	nhiịn, nhún mình, nhún nhường, nhường nhịn, nhượng bộ
+niềm nở,	ân cần, đon đả, vồn vả
+niịnh,	nịnh bợ, nịnh đầm, nịnh hót, nịnh nọt, nnịnh thần
+no,	ấm no, no đủ, no nê
+nói ,	đề đạt, đề xuất, phát biểu, thưa, trình bày
+non,	non nớt, non trẻ, thơ bé, trẻ, trẻ con
+non sông,	đất nước, nước nhà, quốc giá, tổ quốc
+nòng,	cốt, cốt cánm cột trụ, nồng cốt
+nóng,	bức, nóng bức, oi
+nợ,	nợ nần
+ô,	dù, lọng
+ồn,	ầm, ồn ã, ồn ào
+ổn,	ổn định, ổn thỏa, ổn
+ở,	tại
+phai,	nhạt
+phẳng,	bằng phẳng, nhăn nhụi, phẳng lặng, phẳng lì, phẳng phiu
+phép,	điều luật, luật lệ, phép tắc, quy định, quy tắc
+phơi,	bày, phơi bày
+quà,	bánh trái, quà bánh, quà cáp
+quay,	ngoặt, quanh, quặt, rẽ, vòng
+quét,	quyết dọn, quýet tước
+rã,	lìa, rã rời, rời, tan , tan rã
+rác,	rác rưởi, rơm rác
+rách,	rách bươm, rách nát, rách rưới, rách tươm , tọac
+rám,	nám, sạm
+rạn,	rạn nứt , nứt
+rậm,	dày, rậm rạp, rậm rì, um tùm
+rẻ,	rẻ mạt, 
+rỉ,	ngấm, rò, rò rỉ, thấm
+riêng,	riêng biệt, riêng tây, riêng tư, tư
+rõ,	rõ ràng, rõ rệt
+roi,	hèo, roi vọt
+rót,	đỗ, tưới, tuôn, xói
+rôm,	rôm sảy, sẩy
+rộng,	bao la, bát ngát, mênh mông, rộng rãi
+rơi,	rớt, sa
+rút,	chui, chui rúc, rúc ráy
+run,	lập cập, lẩy bẩy, run rẩy
+rung,	lúc lắc, rung rinh
+rút,,	kéo, lôi
+rửa,	gột, gột rửa, rửa ráy, tắm rửa, tẩy rửa
+sai,	khuyết điểm, sai lầm, thiếu xót
+saạch,	sạch bong, sạch sẽ, tinh khiết
+sáng suốt,	sáng dạ, sáng láng, sáng ý, thông minh
+sáng suốt,	sáng choang, sáng loáng, sáng quắc , sáng rực, sáng sủa, sáng tỏ, sáng trưng
+sạt,	lở, sụt
+sâu,	sâu sắc, thâm thúy, thâm trầm
+sệ,	sai, trĩu
+so,	sánh, so sánh, ví, ví von
+sổ,	bong, buột, tuột
+sợ,	e, hãi, hoảng, hoảng hồn, hoảng hốt, hoảng sợ, kinh hãi, kinh hoàng, kinh hồn, kinh sợ, kiêng dè, ngại
+sứt,	mẻ, sứt mẻ, sứt sẹo
+tái,	tái mét, tái nhợt, tái ngắt
+tải,	chở, đưa
+tán ,	chà xát, giã, nghiền
+tản mát,	rải rác, rời rạc
+tanh,	tanh tưởi
+ta,	tao, tôi, tớ
+tạt,	ghé, rẽ
+tập hợp,	tập kết, tập trung, tụ tập
+tất,	cả, hết thảy, tòan bộ, tất cả, tất thảy
+tê,	bại liệt, bại, ê, tê liệt
+tha,	ân xá, buông tha, tha bổng, thả
+tham,	tham lam, tham ô
+than,	kêu ca, phàn nàn, than thở, than vãn
+thành,	trở nên, trở thành
+thăm,	thăm hỏi
+thâm ,	hiểm độc, thâm độc, thâm hiểm
+thấm,	nhiễm, thấm nhuần, thấm thía
+thân,	mật thiết, thân ái, thân mật, thân thuộc, thân thích, thân thiện, thân thiết, thân yêu
+thẹn,	mắc cỡ, ngượng, ngượng ngập,ngượng ngùng, ngượng nghịu, thẹn thòn, thẹn thùng, xấu hổ
+theo,	a dua, theo dõi, theo đòi, theo đuổi, theo gót
+thề,	thề bồi, thề nguyền, thề thốt
+thêm,	tăng, thêm thắt
+thêu,	dệt, thuê dệt, thuê thùa
+thi,	đua, ganh đua, thi đua, thi thố
+thi sĩ ,	nhà thơ, thi nhân
+thích,	đã, thỏa, thỏa mãn, thỏa thuê, thỏa thích, thú, thú vị, thích thú, thích chí, thích ý, ưa
+thiêng,	linh, linh thiêng, thiêng liêng
+thiếu,	hao, hao hụt, hụt, thiếu hụt
+thông gia,	dâu gia, sui gia
+thời gian,	giai đọan, thời giờ, thời kỳ
+thơm,	thơm lừng, thơm lựng, thơm nức, thơm ngát, thơm phức, thơm sực, thơm tho
+thù,	oán, oán hận, oán trách, thù oán, thù địch, thù hằn, thù ghét, thù nghịch
+thua,	bại, thất bại, thua kém, thua thiệt
+thúc,	cổ động, cổ vũ, cổ xúy, động viên
+thuê,	mượn, mướn, thuê mướn
+thuyền,	bè, đò, mảng, phà, thuyền bè, xà lan
+thứ,	bậc, hạng, thứ bậc, thứ hạng, thứ tự
+thừa,	dư, dư dả, dư dật, dư thừa, thừa mứa, thừa thải
+thường,	hay, luôn, luôn luôn, năng, thường kì, thường thường, thường xuyên
+tiền,	tiền bạc, tiền của, tiền nong, tiền tài, tiền tệ
+tiến,	phát triển, tiến bộ
+tiện,	tiện dụng, tiện lợi, thuận tiện
+tiễn,	đưa, tống tiễn, tiễn biệt, tiễn đưa
+tiêu,	chi, chi phí, chi tiêu, tiêu pha, tiêu xài, xài
+tìm,	kiếm, tìm hiểu, tìm kiếm, tìm tòi
+tin,	tin cẩn, tin cậy, tin tưởng
+tinh,	tinh anh, tinh khôn, tinh ma, tinh nghịch, tinh quái, tinh ranh, tinh thông
+to,	lớn, to con, to kềnh, to lớn, to tát, to tướng, to xù, vĩ đại
+tỏ,	tỏ tường, rõ, rõ rệt
+tố cáo,	tố giác, vạch mặt, vạch trần
+tồi,	tồi tệ, tệ, tệ hại
+tơi,	tả tơi, tơi bời, tơi tả
+trách,	trách cứ, trách mắng, trách móc
+tranh,	giành, giành giật, tranh chấp, tranh đấu, tranh đua, tranh giành
+trắng,	trăng trắng, trắng bạch, trắng bóc, trắng bốp, trắng dã, trắng hếu, trắng lốp, trắng muốt, trắng ngà, trắng ngần, trắng nỏn, trắng ởn, trắng phau, trắng tinh, trắng tóat, trắng trẻo, trắng xóa
+trật tự,	thứ tự, trình tự
+trỏ,	chỉ, chỉ trỏ
+tròn,	tròn trịa, tròn trĩnh, tròn xoe
+trôi,	nổi, trôi nổi
+tuy,	tuy nhiên, tuy thế, tuy vậy
+u ám,	âm u, tối tăm
+úa,	héo, héo hon
+uốn,	nắn
+ướt,	ướt át, ướt đẫm, ướt sũng
+vay,	mượn, vay mượn
+vắng,	vắng ngắt, vắng tanh, vắng vẻ
+vặt,	lặt vặt, tủn mủn, vặt vãnh, vụn vặt
+vấn,	chít
+viết,	chép, ghi, viết lách
+vọt,	phun, phụt, phì
+vội,	bộp chộp, hấp hấp, tất tả, vội vả, vội vàng
+vốn,	vốn liếng
+vờ,	vờ vĩnh, vờ vờ
+vỡ,	bể
+vợ,	phu nhân
+vui,	mừng, mừng rỡ, nô nức, phấn chấn, phấn khởi, vui vẻ, vui mừng, sung sướng, sướng rơn, vui sướng
+vụn,	nát, vụn nát, vụn vặt
+vụng,	lén lút, vụng trộm
+xa,	xa cách, xa thẳm, xa vời, xa xa, xa xăm, xa xôi
+xanh,	xanh biết, xanh dợn, xanh lơ, xanh ngắt, xanh rì, xanh rờn, xanh tươi, xanh um
+xâm chiếm,	thôn tính, xâm lăng, xâm lấn, xâm lược
+xâu,	luồn, xỏ
+xấu,	xấu xa, xấu xí
+xin,	nài, nài nỉ, van, van lơn, van nài
+xong,	hoàn thành, kết thúc, xong xui
+yên,	yên tĩnh, yên lặng, yên ổn
+yêu,	yêu đương, yêu mến, yêu thương
+yếu,	yếu đuối, yếu ớt

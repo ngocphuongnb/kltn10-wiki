@@ -36,12 +36,12 @@
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
-     <float name="tie">0.01</float>
+     <float name="tie">0.1</float>
      <str name="qf">
        keysearch^50 wk_title^3 wk_text
      </str>
      <str name="pf">
-       keysearch^100 wk_title^10 wk_text^3
+       keysearch^100 wk_title^5 wk_text^3
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -50,10 +50,9 @@
         id, wk_title, wk_text, timestamp
      </str>
      <str name="mm">
-        5&lt;-25%
+        4&lt;-25%
      </str>
-     <int name="qs">8</int>
-	 <int name="ps">0</int>
+	 <int name="ps">4</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -72,12 +71,12 @@
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
-     <float name="tie">0.01</float>
+     <float name="tie">0.1</float>
      <str name="qf">
        wk_title^3 wk_text
      </str>
      <str name="pf">
-        wk_title^10 wk_text^7
+        wk_title^9 wk_text^7
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -86,10 +85,10 @@
         id, wk_title, wk_text, timestamp
      </str>
      <str name="mm">
-        5&lt;-25%
+        4&lt;-25%
      </str>
-     <int name="qs">8</int>
-	 <int name="ps">0</int>
+     
+	 <int name="ps">4</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -108,7 +107,7 @@
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
-     <float name="tie">0.01</float>
+     <float name="tie">0.1</float>
      <str name="qf">
        keysearch^50 keysearch_unsigned^20 wk_title^3 wk_text^1.5 wk_title_unsigned^2 wk_body_unsigned
      </str>
@@ -119,10 +118,10 @@
         id, wk_title, wk_text, timestamp
      </str>
      <str name="mm">
-		5&lt;-25%
+		4&lt;-25%
      </str>
-     <int name="qs">8</int>
-	 <int name="ps">0</int>
+     
+	 <int name="ps">4</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -141,7 +140,7 @@
     <lst name="defaults">
      <str name="defType">dismax</str>
      <str name="echoParams">explicit</str>
-     <float name="tie">0.01</float>
+     <float name="tie">0.1</float>
      <str name="qf">
        wk_title^3 wk_text wk_title_unsigned^3 wk_text_unsigned
      </str>
@@ -152,10 +151,10 @@
         id, wk_title, wk_text, timestamp
      </str>
      <str name="mm">
-        5&lt;-25%
+        4&lt;-25%
      </str>
-     <int name="qs">8</int>
-	 <int name="ps">0</int>
+     
+	 <int name="ps">4</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
