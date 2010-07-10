@@ -4,7 +4,7 @@
  */
 package DAO;
 import ViSearchSyncDataService.ViwikiPageDTO;
-import info.bliki.wiki.model.WikiModel;
+//import info.bliki.wiki.model.WikiModel;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

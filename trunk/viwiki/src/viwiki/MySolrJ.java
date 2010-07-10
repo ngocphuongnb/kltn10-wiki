@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package viwiki;
-import com.lowagie.text.pdf.codec.postscript.ParseException;
+//import com.lowagie.text.pdf.codec.postscript.ParseException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,31 +53,31 @@ public class MySolrJ {
         return helper.removeUnicodeSign(src);
     }
 
-    public void IndexLocation(String filename) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
-        FileReader fr = new FileReader(filename);
-        BufferedReader br = new BufferedReader(fr);
-        String s = "";
-        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-        SolrInputDocument doc;
-        int id = 0;
-        while ((s = br.readLine()) != null) {
-            id++;
-            doc = new SolrInputDocument();
-            doc.addField("id", String.valueOf(id));
-            doc.addField("location", s);
-            doc.addField("location_unsigned", RemoveSignVN(s));
-            docs.add(doc);
-        }
-
-        SolrServer server = getSolrServer("location"); // solrServer = music
-        server.add(docs);
-        server.commit();
-
-        UpdateRequest req = new UpdateRequest();
-        req.setAction(ACTION.COMMIT, false, false);
-        req.add(docs);
-        UpdateResponse rsp = req.process(server);
-    }
+//    public void IndexLocation(String filename) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+//        FileReader fr = new FileReader(filename);
+//        BufferedReader br = new BufferedReader(fr);
+//        String s = "";
+//        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+//        SolrInputDocument doc;
+//        int id = 0;
+//        while ((s = br.readLine()) != null) {
+//            id++;
+//            doc = new SolrInputDocument();
+//            doc.addField("id", String.valueOf(id));
+//            doc.addField("location", s);
+//            doc.addField("location_unsigned", RemoveSignVN(s));
+//            docs.add(doc);
+//        }
+//
+//        SolrServer server = getSolrServer("location"); // solrServer = music
+//        server.add(docs);
+//        server.commit();
+//
+//        UpdateRequest req = new UpdateRequest();
+//        req.setAction(ACTION.COMMIT, false, false);
+//        req.add(docs);
+//        UpdateResponse rsp = req.process(server);
+//    }
 //    public void ImportWiki2Solr(ArrayList<ViwikiPageDTO> listpage, int start) throws MalformedURLException, SolrServerException, IOException {
 //        Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 //        SolrInputDocument doc;
