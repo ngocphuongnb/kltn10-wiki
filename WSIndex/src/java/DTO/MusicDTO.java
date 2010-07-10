@@ -14,13 +14,21 @@ public class MusicDTO {
 
     private int _id;
     private String _title;
-    private String _singer;
+    private String _author;
     private String _album;
     private String _category;
     private String _url;
     private String artist;
     private String _lyric;
     private Calendar _dayUpload;
+
+    public void setAuthor(String _author) {
+        this._author = _author;
+    }
+
+    public String getAuthor() {
+        return _author;
+    }
 
     public void setId(int _id) {
         this._id = _id;
@@ -29,7 +37,6 @@ public class MusicDTO {
     public int getId() {
         return _id;
     }
-
 
     public void setArtist(String artist) {
         this.artist = artist;
@@ -55,9 +62,7 @@ public class MusicDTO {
         return _lyric;
     }
 
-    public String getSinger() {
-        return _singer;
-    }
+   
 
     public String getTitle() {
         return _title;
@@ -83,9 +88,7 @@ public class MusicDTO {
         this._lyric = _lyric;
     }
 
-    public void setSinger(String _singer) {
-        this._singer = _singer;
-    }
+  
 
     public void setTitle(String _title) {
         this._title = _title;

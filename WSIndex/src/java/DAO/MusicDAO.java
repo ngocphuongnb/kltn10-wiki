@@ -35,18 +35,18 @@ public class MusicDAO {
             page.setId(rs.getInt("Id"));
             page.setTitle(rs.getString("Title"));
             page.setCategory(rs.getString("Category"));
-            page.setSinger(rs.getString("Singer"));
+            page.setAuthor(rs.getString("Author"));
             page.setAlbum(rs.getString("Album"));
             page.setUrl(rs.getString("URL"));
             page.setLyric(rs.getString("Lyric"));
             page.setArtist(rs.getString("Artist"));
 
-            Date d = new Date();
-            d = rs.getDate("DateUpload");
-
-            Calendar cl = Calendar.getInstance();
-            cl.setTime(d);
-            page.setDayUpload(cl);
+//            Date d = new Date();
+//            d = rs.getDate("DateUpload");
+//            Calendar cl = Calendar.getInstance();
+//            cl.setTime(d);
+            //page.setDayUpload(cl);
+            
             list.add(page);
         }
 
@@ -74,18 +74,18 @@ public class MusicDAO {
     {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
-        cs = (CallableStatement) cn.prepareCall("{Call SyncDataMusic(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cs = (CallableStatement) cn.prepareCall("{Call SyncDataMusic(?, ?, ?, ?, ?, ?, ?, ?)}");
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (MusicDTO musicDTO : listPage) {
             cs.setInt(1, musicDTO.getId());
             cs.setString(2, musicDTO.getTitle());
-            cs.setString(3, musicDTO.getSinger());
+            cs.setString(3, musicDTO.getArtist());
             cs.setString(4, musicDTO.getAlbum());
             cs.setString(5, musicDTO.getCategory());
             cs.setString(6, musicDTO.getUrl());
-            cs.setString(7, musicDTO.getArtist());
+            cs.setString(7, musicDTO.getAuthor());
             cs.setString(8, musicDTO.getLyric());
-            cs.setString(9, sdf.format(musicDTO.getDayUpload().getTime()));
+            //cs.setString(9, sdf.format(musicDTO.getDayUpload().getTime()));
             cs.executeUpdate();
         }
         cs.close();
