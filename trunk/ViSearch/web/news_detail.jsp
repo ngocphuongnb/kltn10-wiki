@@ -143,7 +143,6 @@
                         if (request.getAttribute("Docs") != null) {
                             listdocs = (SolrDocumentList) request.getAttribute("Docs");
 
-                            search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
                                 result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchImageController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
