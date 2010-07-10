@@ -119,7 +119,7 @@
                     int numrow = 0;
                     int numpage = 0;
                     String strpaging = "";
-                    String result = "";
+                    StringBuffer result = new StringBuffer();
                     String search_stats = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
@@ -131,53 +131,62 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchNewsController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchNewsController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
+                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
-                                String body = (listdocs.get(i).getFirstValue("introtext")).toString();
+                                String body = (listdocs.get(i).getFirstValue("body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                Date created = (Date) (listdocs.get(i).getFieldValue("created"));
+                                Date created = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String title_hl = title;
 
 
-                                if (request.getAttribute("HighLight") != null) {
+                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                    List<String> highlightBody = highLight.get(id).get("introtext");
+                                    List<String> highlightBody = highLight.get(id).get("body");
                                     List<String> highlightTitle = highLight.get(id).get("title");
                                     if (highlightBody != null && !highlightBody.isEmpty()) {
                                         body = highlightBody.get(0) + "...";
+                                    } else {
+                                        if (body.length() > 100) {
+                                            body = body.substring(0, 100) + "...";
+                                        }
                                     }
                                     if (highlightTitle != null && !highlightTitle.isEmpty()) {
                                         title_hl = highlightTitle.get(0);
                                     }
+                                } else {
+                                    if (title.length() > 100) {
+                                        title_hl = title.substring(0, 100) + "...";
+                                    }
+                                    if (body.length() > 100) {
+                                        body = body.substring(0, 100) + "...";
+                                    }
                                 }
 
-                                result += "<tr>";
-                                result += "<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>");
+                                result.append("</tr>");
 
 
-                                result += "<tr>";
-                                result += "<td>" + body + "</td>";
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td>" + body + "</td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
+                                result.append("<tr>");
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                                result += "<td><b>Ngày đăng: </b> " + sdf.format(created) + "</td>";
-                                result += "</tr>";
+                                result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
-                                result += "<td>";
-                                result += "<a href=\"SearchNewsController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
-                                result += "</td>";
-                                result += "</tr>";
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
+                                result.append("<tr><td>");
+                                result.append("<a href=\"SearchNewsController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>");
+                                result.append("</td></tr>");
+                                result.append("<tr><td>&nbsp;</td></tr>");
+                                result.append("</table>");
                             }
 
                             // Phan trang
@@ -189,9 +198,9 @@
                         }
                         //result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         if (numpage > 1) {
-                            result += "Tổng số trang là: " + numpage + "<br/>";
+                            result.append("Tổng số trang là: " + numpage + "<br/>");
                         }
-                        result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
+                        result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>");
                     }
                     //get SolrDocumentList
 %>
@@ -253,15 +262,15 @@
 
                     // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qf=created&qv=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
