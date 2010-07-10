@@ -26,9 +26,9 @@ public class NewsDAO {
 
     public  int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("news");
+        Connection cn = (Connection) DataProvider.getConnection("kltn");
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM jos_content";
+        String query = "SELECT count(*) as NumRow FROM news_parsecontent";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
@@ -42,9 +42,9 @@ public class NewsDAO {
 
     public ArrayList<NewsDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
         ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("news");
+        Connection cn = (Connection) DataProvider.getConnection("kltn");
         Statement st = (Statement) cn.createStatement();
-        String query = String.format("SELECT * FROM jos_content LIMIT %d, %d", start, end);
+        String query = String.format("SELECT * FROM news_parsecontent LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
 
         NewsDTO page;
@@ -53,27 +53,23 @@ public class NewsDAO {
             page = new NewsDTO();
             page.setId(rs.getInt("id"));
             page.setTitle(rs.getString("title"));
-            page.setIntrotext(rs.getString("introtext"));
-            page.setFulltext(rs.getString("fulltext"));
+            page.setBody(rs.getString("body"));
+            page.setSite(rs.getString("site"));
+            page.setUrl(rs.getString("url"));
+            page.setPhoto(rs.getString("photo"));
 
-            String timestamp = rs.getString("created");
+            String timestamp = rs.getString("last_update");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = sdf.parse(timestamp);
             GregorianCalendar gcal = new GregorianCalendar();
             gcal.setTime(d);
             XMLGregorianCalendar date;
             date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-            page.setCreated(date);
+            page.setLastUpdate(date);
 
-            page.setCategory("nước hoa, mỹ phẩm");
+            page.setCategory(rs.getString("category"));
 
-//            timestamp = rs.getString("modified");
-//            sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            d = sdf.parse(timestamp);
-//            gcal = new GregorianCalendar();
-//            gcal.setTime(d);
-//            date = DatatypeFactory.newInstance().newXMLGregorianCalendar(gcal);
-            //page.setModified(date);
+
 
             list.add(page);
         }

@@ -364,13 +364,14 @@ public class frmMain extends javax.swing.JDialog {
         WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
         int start = 0;
+        System.out.println(String.format("Syns %d data News", numRecord));
         while (start < numRecord) {
-            System.out.println(String.format("importing rows from %d to %d", start, start + 1000));
+            System.out.println(String.format("importing rows from %d to %d", start, start + 100));
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
             NewsBUS bus = new NewsBUS();
-            list = bus.getDataList(start, 1000);
+            list = bus.getDataList(start, 100);
             port.syncDataNews(list);
-            start += 1000;
+            start += 100;
         }
     }
 ////
