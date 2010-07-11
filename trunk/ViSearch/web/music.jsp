@@ -345,7 +345,7 @@
 
                                 result.append("<tr>");
                                 result.append("<td colspan='2'>");
-                                result.append("<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>");
+                                result.append("<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title.trim()) + "\">Trang tương tự...</a>");
                                 result.append("</td>");
 
 

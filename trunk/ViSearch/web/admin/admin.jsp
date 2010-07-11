@@ -52,7 +52,7 @@
                      <tr>
                         <td height="20" colspan="1" align="center" valign="middle"></td>
                         <td style="font-size: 12px" colspan="1" height="33" valign="top">
-                            <a href="../">Trang chủ admin</a>
+                            <a href="../">Trang chủ ViSearch</a>
                         </td>
                     </tr>
 
