@@ -17,8 +17,6 @@ import BUS.RaoVatBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import ViSearchSyncDataService.*;
-import ViSearchSyncDataService.WSIndex;
-import ViSearchSyncDataService.WSIndexService;
 //import info.bliki.wiki.dump.WikiXMLParser;
 //import info.bliki.wiki.model.WikiModel;
 import java.awt.Cursor;
