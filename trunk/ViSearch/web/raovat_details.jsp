@@ -142,7 +142,6 @@
                             String body = (listdocs.get(i).getFirstValue("body")).toString();
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
-                            String score = (listdocs.get(i).getFieldValue("score")).toString();
                             String site = (listdocs.get(i).getFieldValue("site")).toString();
                             String location = "";
                             String contact = "";
