@@ -337,19 +337,19 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("album", pagedto.getAlbum());
+            doc.addField("album", pagedto.getAlbum().trim());
             doc.addField("album_index", pagedto.getAlbum());
             doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
 
-            doc.addField("artist", pagedto.getArtist());
+            doc.addField("artist", pagedto.getArtist().trim());
             doc.addField("artist_index", pagedto.getArtist());
             doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
 
-            doc.addField("author", pagedto.getAuthor());
+            doc.addField("author", pagedto.getAuthor().trim());
             doc.addField("author_index", pagedto.getAuthor());
             doc.addField("author_index_unsigned", RemoveSignVN(pagedto.getAuthor()));
 
-            doc.addField("category", pagedto.getCategory());
+            doc.addField("category", pagedto.getCategory().trim());
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
 
