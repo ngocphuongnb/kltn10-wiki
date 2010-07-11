@@ -77,7 +77,7 @@ public class SearchMusicController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
-                sPaging += "&type=" + type;
+                sPaging += "type=" + type;
             }
             if (request.getParameter("f") != null) {
                 FieldId = request.getParameter("f");
@@ -449,7 +449,6 @@ public class SearchMusicController extends HttpServlet {
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
         query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
         query.setQuery("title:" + MyString.cleanQueryTerm(q));
-        //query.setQuery(ClientUtils.escapeQueryChars(q));
         query.setStart(start);
         query.setRows(pagesize);
         query.setHighlight(true);
