@@ -4,6 +4,7 @@
     Author     : tuandom
 --%>
 
+<%@page import="org.apache.solr.client.solrj.util.ClientUtils"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.apache.solr.client.solrj.SolrQuery"%>
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
@@ -13,11 +14,11 @@
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
 <%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
-<%@page import="org.apache.solr.client.solrj.response.FacetField"%>
+<%@page import="org.apache.solr.client.solrj.response.FacetField, org.apache.commons.httpclient.util.URIUtil"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Wikipedia - Video</title>
+        <title>ViSearch - Video</title>
         <link href="style.css"rel="stylesheet" type="text/css" />
         <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
         <link href="style.css"rel="stylesheet" type="text/css" />
@@ -31,83 +32,83 @@
                 $("#tbTopSearch").load("TopSearch?SearchType=5");
             });
         </script>
-        <script type="" language="javascript">
+        <script language="javascript">
             function setText()
             {
-                var keysearch = document.getElementById('txtSearch').value;
-                if(keysearch=="")
-                    document.getElementById('txtSearch').focus();
+            var keysearch = document.getElementById('txtSearch').value;
+            if(keysearch=="")
+            document.getElementById('txtSearch').focus();
             }
             function CheckInput()
             {
-                var keysearch = document.getElementById('txtSearch').value;
-                var sortedtype = document.getElementById('slSortedType').value;
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchVideoController?type=0&sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                //    alert(url);
-                    window.location = url;
-                }
+            var keysearch = document.getElementById('txtSearch').value;
+            var sortedtype = document.getElementById('slSortedType').value;
+            if(keysearch == "")
+            return;
+            else
+            {
+            var url = "SearchVideoController?type=0&sp=1&KeySearch=";
+            url += encodeURIComponent(keysearch);
+            url += "&SortedType=" + sortedtype;
+            //    alert(url);
+            window.location = url;
+            }
             }
             function showVideo(id)
             {
-                // showVideo and Close all other Videos
-                count = document.getElementsByTagName('OBJECT').length;
-                for(var i=0; i < count; i++){
-                    MDid = 'MediaPlayer'+i;
-                    if(i!=id) // Close others
-                    {
-                        hideVideo(i);
-                    }
-                    else // and open new
-                    {
-                        document.getElementById(MDid).className="display";
-                    }
-                }
-                // Show button CloseVideo and Close bt View
-                var  btDong = "BTCloseMediaId" + id;
-                document.getElementById(btDong).className="display";
-                var btxem = 'BTViewMediaId'+id;
-                document.getElementById(btxem).className="hidden";
+            // showVideo and Close all other Videos
+            count = document.getElementsByTagName('OBJECT').length;
+            for(var i=0; i < count; i++){
+            MDid = 'MediaPlayer'+i;
+            if(i!=id) // Close others
+            {
+            hideVideo(i);
+            }
+            else // and open new
+            {
+            document.getElementById(MDid).className="display";
+            }
+            }
+            // Show button CloseVideo and Close bt View
+            var  btDong = "BTCloseMediaId" + id;
+            document.getElementById(btDong).className="display";
+            var btxem = 'BTViewMediaId'+id;
+            document.getElementById(btxem).className="hidden";
             }
             function hideVideo(id)
             {
-                // Hide media
-                MDid = 'MediaPlayer'+id;
-                document.getElementById(MDid).className="hidden";
+            // Hide media
+            MDid = 'MediaPlayer'+id;
+            document.getElementById(MDid).className="hidden";
 
-                // Button XemLoiNhac hide, button DongLoiNhac show
-                var btxem = 'BTViewMediaId'+id;
-                document.getElementById(btxem).className="display";
-                var  btDong = "BTCloseMediaId" + id;
-                document.getElementById(btDong).className="hidden";
+            // Button XemLoiNhac hide, button DongLoiNhac show
+            var btxem = 'BTViewMediaId'+id;
+            document.getElementById(btxem).className="display";
+            var  btDong = "BTCloseMediaId" + id;
+            document.getElementById(btDong).className="hidden";
             }
             function Sort(type){
-                var sortedtype = document.getElementById('slSortedType').value;
-                var keysearch = document.getElementById('hfKeySearch').value;
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchMusicController?sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                    url += "&type=" + type;
-                    window.location = url;
-                }
+            var sortedtype = document.getElementById('slSortedType').value;
+            var keysearch = document.getElementById('hfKeySearch').value;
+            if(keysearch == "")
+            return;
+            else
+            {
+            var url = "SearchMusicController?sp=1&KeySearch=";
+            url += encodeURIComponent(keysearch);
+            url += "&SortedType=" + sortedtype;
+            url += "&type=" + type;
+            window.location = url;
+            }
             }
             $.ajax({
-                type: "POST",
-                url: "TopSearch",
-                cache: false,
-                data: "SearchType=5",
-                success: function(html){
-                    $("#tbTopSearch").append(html);
-                }
+            type: "POST",
+            url: "TopSearch",
+            cache: false,
+            data: "SearchType=5",
+            success: function(html){
+            $("#tbTopSearch").append(html);
+            }
             });
         </script>
     </head>
@@ -141,7 +142,7 @@
                     int numpage = 0;
                     String strpaging = "";
                     String search_stats = "";
-                    String result = "";
+                    StringBuffer result = new StringBuffer();
                     String addBM = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
@@ -152,19 +153,17 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchVideoController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchVideoController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
+                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
-                                String duration = (listdocs.get(i).getFieldValue("duration")).toString();
-
 
                                 String title_hl = title;
 
@@ -176,18 +175,8 @@
                                     }
                                 }
 
-                                result += "<tr>";
-                                result += "<td><b>" + title_hl + "</b></td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>Thể Loại: " + "<a href = 'SearchVideoController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td>";
-                                result += "</tr>";
-
-                                result += "<tr>";
-                                result += "<td>Thời gian: " + duration + "</td>";
-                                result += "</tr>";
-
+                                result.append("<tr><td><b>" + title_hl + "</b></td></tr>");
+                                result.append("<tr><td>Thể Loại: " + "<a href = 'SearchVideoController?type=3&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>");
 
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
@@ -200,25 +189,14 @@
 
                                 // START Tracking
 
-                                result += "<tr><td>";
-                                result += "<input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
-                                result += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" /></td>";
-                                result += "</tr>";
+                                result.append("<tr><td>");
+                                result.append("<input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />");
+                                result.append("<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" /></td>");
+                                result.append("</tr>");
 
-                                result += "<tr><td>";
-
-                                result += "<span id='Tracking'></span>";
-
-                                result += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
-                                result += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
-                                result += "<param name=\"salign\" value=\"lt\" />";
-                                result += "<param name=\"quality\" value=\"high\" />";
-                                result += "<param name=\"scale\" value=\"noscale\" />";
-                                result += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
-                                result += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
-                                result += "</object>";
-
-                                result += "</td></tr>";
+                                result.append("<tr><td>");
+                                result.append("<span id='Tracking'></span>");
+                                result.append("<tr><td><div class=\"hidden\" ID=\"" + mediaId + "\">" + url + "</div></td></tr>");
 
         %>
         <script type="text/javascript">
@@ -315,8 +293,8 @@
 
 
                                 if (session.getAttribute("Member") != null) {
-                                    result += "<tr><td><span id=\"" + spanBookmark + "\"><input id=\"" + hdIdValue + "\" type='hidden' value='" + id + "'/>"
-                                            + "<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>";
+                                    result.append("<tr><td><span id=\"" + spanBookmark + "\"><input id=\"" + hdIdValue + "\" type='hidden' value='" + id + "'/>");
+                                    result.append("<input id=\"" + btBookmark + "\" type='button' value='Thêm vào bookmark'/></span></td></tr>");
                                 }
 
                                 addBM += "<div id=\"" + addBookmark + "\" title=\"Thêm bookmark\">";
@@ -334,15 +312,13 @@
                                 addBM += "</div>";
                                 // END Bookmark
 
-                                result += "</td></tr>";
-                                result += "<tr>";
-                                result += "<td colspan='2'>";
-                                result += "<a href=\"SearchVideoController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>";
-                                result += "</td>";
+                                result.append("</td></tr>");
+                                result.append("<tr><td colspan='2'>");
+                                result.append("<a href=\"SearchVideoController?type=1&KeySearch=" + URIUtil.encodeAll(title) + "\">Trang tương tự...</a>");
+                                result.append("</td>");
 
-                                result += "</tr>";
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
+                                result.append("</tr><tr><td>&nbsp;</td></tr></table>");
+
                             }
 
 
@@ -352,9 +328,9 @@
                             strpaging = (String) request.getAttribute("Pagging");
                         }
                         // result += "Số kết quả tìm được là: " + numrow + "<br/>";
-                        result += "Tổng số trang là: " + numpage + "<br/>";
+                        result.append("Tổng số trang là: " + numpage + "<br/>");
                         if (numpage > 1) {
-                            result += strpaging + "<br/><br/>";
+                            result.append(strpaging + "<br/><br/>");
                         }
                     }
 
@@ -381,7 +357,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URLEncoder.encode(fieldText, "UTF-8") + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }

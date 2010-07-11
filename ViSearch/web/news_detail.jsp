@@ -12,7 +12,7 @@
 <%@page import="org.apache.solr.common.SolrDocumentList"%>
 <%@page import="org.apache.solr.common.SolrInputDocument"%>
 <%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
-<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*"%>
+<%@page import="java.util.*, java.net.*,java.util.Map, org.apache.commons.httpclient.util.*, java.text.SimpleDateFormat"%>
 <%@page import="org.apache.solr.client.solrj.response.FacetField"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -155,7 +155,11 @@
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("body")).toString();
                                 String site = (listdocs.get(i).getFirstValue("site")).toString();
+                                Date created = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String photo = (listdocs.get(i).getFirstValue("photo")).toString();
+                                String[] arrPhoto = photo.split("\n");
+                                if(arrPhoto.length>1)
+                                    photo=arrPhoto[0];
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String title_hl = title;
 
@@ -183,6 +187,10 @@
                                 result.append("<td><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>");
                                 result.append("</tr>");
 
+                                 result.append("<tr>");
+                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                                result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
+                                result.append("</tr>");
 
                                 result.append("<tr>");
                                 result.append("<td>" + body + "</td>");
