@@ -50,7 +50,7 @@ String table = "video_parsecontent";
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM data";
+        String query = "SELECT count(*) as NumRow FROM video_parsecontent";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {
