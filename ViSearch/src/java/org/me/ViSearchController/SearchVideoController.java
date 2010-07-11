@@ -32,6 +32,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -75,6 +76,11 @@ public class SearchVideoController extends HttpServlet {
          int sortedType = 0;
         try {
 
+            if (request.getParameter("type") != null) {
+                type = Integer.parseInt(request.getParameter("type"));
+                sPaging += "type=" + type;
+            }
+
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
@@ -91,10 +97,7 @@ public class SearchVideoController extends HttpServlet {
                 sPaging += "&SortedType=" + sortedType;
             }
             
-            if (request.getParameter("type") != null) {
-                type = Integer.parseInt(request.getParameter("type"));
-                sPaging += "type=" + type;
-            }
+            
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
@@ -131,6 +134,7 @@ public class SearchVideoController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 2:
+                        case 3:
                         String facetName = "";
                         String facetValue = "";
                         if (request.getParameter("FacetName") != null) {
@@ -139,7 +143,7 @@ public class SearchVideoController extends HttpServlet {
                             sPaging += "&FacetName=" + facetName;
                             sPaging += "&FacetValue=" + facetValue;
                         }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
+                        rsp = OnSearchSubmitStandard(type, keySearch, facetName, facetValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -220,10 +224,8 @@ public class SearchVideoController extends HttpServlet {
         solrQuery.setFacetMinCount(1);
         // End Facet
 
-
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-        // solrQuery.addHighlightField("rv_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
@@ -233,7 +235,7 @@ public class SearchVideoController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
         switch(sortedType)
@@ -250,20 +252,21 @@ public class SearchVideoController extends HttpServlet {
             default:
                 break;
         }
-        query = " +(";
+        query += " +(";
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
         } else {
             query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
                     + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                    + "category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1.3 || "
                     + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
         query += ")";
-        // query += " +(" + facetName + ":" + facetValue + ")";
+        if(type==2)
+            query += " +(" + facetName + ":\"" + ClientUtils.escapeQueryChars(facetValue) + "\")";
+
 
         solrQuery.setQuery(query);
-
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");

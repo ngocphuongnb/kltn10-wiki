@@ -141,23 +141,22 @@ public class SearchImageController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
-                    case 3:
+                    case 3: // search theo kich thuoc anh
                         facetNameValue = "";
                         facetValue = "";
                         sPaging += "&type=3";
                         if (request.getParameter("w") != null) {
-                            //  facetName = request.getParameter("FacetName");
-                            // sPaging += "&FacetName=" + facetName;
                             String w = "";
                             if (request.getParameter("w") != null) {
                                 w = request.getParameter("w");
+                                sPaging += "&w=" +w;
                             }
                             String h = "";
                             if (request.getParameter("h") != null) {
                                 h = request.getParameter("h");
+                                sPaging += "&h=" +h;
                             }
                             facetNameValue = createFacetValue(w, h);
-                            //  sPaging += "&FacetValue=" + facetValue;
                         }
                         rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize, sortedType);
 
@@ -271,7 +270,7 @@ public class SearchImageController extends HttpServlet {
             default:
                 break;
         }
-        query = " +(";
+        query += " +(";
         if (MyString.CheckSigned(keySearch)) {
             query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
                     + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "
@@ -286,7 +285,6 @@ public class SearchImageController extends HttpServlet {
         }
         query += ")";
         query += facetNameValue;
-
 
         solrQuery.setQuery(query);
 

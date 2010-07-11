@@ -338,9 +338,7 @@ public class SearchMusicController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String fieldId, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        //if (!facetName.equals("") && facetName != null) {
-        //    keySearch = "+(title:(" + keySearch + ") title:(" + keySearch + ") category_index:(" + keySearch + ")) + " + facetName + ":\"" + facetValue + "\"";
-        // }
+  
         String query="";
         switch(sortedType)
         {
@@ -357,6 +355,7 @@ public class SearchMusicController extends HttpServlet {
                 break;
         }
         query += " +(";
+        // Neu co dau
         if (MyString.CheckSigned(keySearch)) {
             if (fieldId.equals("1")) {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8";
