@@ -133,9 +133,9 @@
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url="";
-                              //  if(listdocs.get(i).getFieldValue("url_local")!=null)
-                               ///     url = "file:///"+(listdocs.get(i).getFieldValue("url_local")).toString();
-                               // else
+                             //   if(listdocs.get(i).getFieldValue("url_local")!=null)
+                              //     url = "../../bin/"+(listdocs.get(i).getFieldValue("url_local")).toString();
+                             //  else
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
@@ -154,9 +154,7 @@
                                     title_hl = title.substring(0, 20) + "...";
                                 }
 
-                             //   result += "<tr>";
-                              //  result += "<td><b><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
-                              //  result += "</tr>";
+                           
 
                                 result += "<tr>";
                                 result += "<td width=\"150\" height=\"200\" valign=\"bottom\"><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";

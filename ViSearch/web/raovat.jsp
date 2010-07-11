@@ -21,64 +21,64 @@
 
         <script type="" language="javascript">
             $(function(){
-                $.ajax({
-                    type: "POST",
-                    url: "TopSearch",
-                    cache: false,
-                    data: "SearchType=2",
-                    success: function(html){
-                        $("#tbTopSearch").append(html);
-                    }
-                });
+            $.ajax({
+            type: "POST",
+            url: "TopSearch",
+            cache: false,
+            data: "SearchType=2",
+            success: function(html){
+            $("#tbTopSearch").append(html);
+            }
+            });
             });
             function setText()
             {
-                var keysearch = document.getElementById('txtSearch').value;
-                if(keysearch=="")
-                    document.getElementById('txtSearch').focus();
+            var keysearch = document.getElementById('txtSearch').value;
+            if(keysearch=="")
+            document.getElementById('txtSearch').focus();
             }
 
             function CheckInput()
             {
-                var keysearch = document.getElementById('txtSearch').value;
-                var sortedtype = document.getElementById('slSortedType').value;
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                    window.location = url;
-                }
+            var keysearch = document.getElementById('txtSearch').value;
+            var sortedtype = document.getElementById('slSortedType').value;
+            if(keysearch == "")
+            return;
+            else
+            {
+            var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
+            url += encodeURIComponent(keysearch);
+            url += "&SortedType=" + sortedtype;
+            window.location = url;
+            }
             }
             function SeachPVDC(strQuery){
-                var batdau = document.getElementById("divPVTC_BD").value;
-                var  kethuc = document.getElementById("divPVTC_KT").value;
-                strQuery =  encodeURIComponent(strQuery);
-                var url = "SearchRaoVatController?type=3&KeySearch=" + encodeURIComponent(strQuery) + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
-                window.location = url;
+            var batdau = document.getElementById("divPVTC_BD").value;
+            var  kethuc = document.getElementById("divPVTC_KT").value;
+            strQuery =  encodeURIComponent(strQuery);
+            var url = "SearchRaoVatController?type=3&KeySearch=" + encodeURIComponent(strQuery) + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
+            window.location = url;
             }
             function showPVTC(){
-                document.getElementById("divPVTC").className="display";
+            document.getElementById("divPVTC").className="display";
             }
         </script>
         <script type="" language="javascript">
             function Sort(type){
-                var sortedtype = document.getElementById('slSortedType').value;
-                //alert(sortedtype);
-                var keysearch = document.getElementById('hfKeySearch').value;
-                //alert(keysearch);
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchRaoVatController?sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&SortedType=" + sortedtype;
-                    url += "&type=" + type;
-                    window.location = url;
-                }
+            var sortedtype = document.getElementById('slSortedType').value;
+            //alert(sortedtype);
+            var keysearch = document.getElementById('hfKeySearch').value;
+            //alert(keysearch);
+            if(keysearch == "")
+            return;
+            else
+            {
+            var url = "SearchRaoVatController?sp=1&KeySearch=";
+            url += encodeURIComponent(keysearch);
+            url += "&SortedType=" + sortedtype;
+            url += "&type=" + type;
+            window.location = url;
+            }
             }
         </script>
     </head>
@@ -171,6 +171,7 @@
                                 result += url;
                                 result += "</tr>";
 
+                               
                                 result += "<tr>";
                                 result += "<td>" + body + "</td>";
                                 result += "</tr>";
@@ -204,7 +205,7 @@
                         result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -241,7 +242,7 @@
                     }
 
                     // End get Facet
-%>
+        %>
         <%
                     // Get query date
                     String facetD = "";
@@ -287,7 +288,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-%>
+        %>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -330,35 +331,35 @@
                                 </table>
                             </div>
                         </td>
-                        <script type="text/javascript">
-                                $(function(){
-                                    $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
-                                    $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
-                                });
-                            </script>
-                        <td width="627" rowspan="2" valign="top">
-                            <table>
+                    <script type="text/javascript">
+                        $(function(){
+                            $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
+                            $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
+                        });
+                    </script>
+                    <td width="627" rowspan="2" valign="top">
+                        <table>
 
-                                <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
-                                <%  if (request.getParameter(
-                                                    "FacetValue") != null) {
-                                                out.print("<tr><td id=\"top-header\">");
-                                                out.print(">> " + request.getParameter("FacetValue"));
-                                                out.print("</td></tr>");
-                                            }
-                                %>
-                            </table>
-                            <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
+                            <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                            <%  if (request.getParameter(
+                                                "FacetValue") != null) {
+                                            out.print("<tr><td id=\"top-header\">");
+                                            out.print(">> " + request.getParameter("FacetValue"));
+                                            out.print("</td></tr>");
+                                        }
+                            %>
+                        </table>
+                        <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
 
-                                <tr>
-                                    <td  valign="top" id="content">
-                                        <% out.print(result);%>
+                            <tr>
+                                <td  valign="top" id="content">
+                                    <% out.print(result);%>
 
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
                     </tr>
 
                     <tr>
