@@ -67,14 +67,18 @@ public class VideoDAO {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataVideo(?, ?, ?, ?, ?)}");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        try{
         for (VideoDTO videoDTO : listPage) {
             cs.setInt(1, videoDTO.getId());
             cs.setString(2, videoDTO.getTitle());
             cs.setString(3, videoDTO.getCategory());
             cs.setString(4, videoDTO.getUrl());
-            cs.setString(5, videoDTO.getDuration());
+            cs.setString(5, "Not found"); // duration
             cs.executeUpdate();
+        }
+        }catch(Exception ex)
+        {
+            System.out.print(ex.getMessage());
         }
         cs.close();
         cn.close();
