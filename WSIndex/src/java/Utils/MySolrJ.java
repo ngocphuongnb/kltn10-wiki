@@ -571,9 +571,9 @@ public class MySolrJ {
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("category", pagedto.getCategory());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+            doc.addField("category", pagedto.getCategory().trim());
+            doc.addField("category_index", pagedto.getCategory().trim());
+            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory().trim()));
 
             doc.addField("url", pagedto.getUrl());
             doc.addField("duration", pagedto.getDuration());
