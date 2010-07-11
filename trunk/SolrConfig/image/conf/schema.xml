@@ -142,9 +142,8 @@
 	<!-- Su dung trong luan van, quan trong
 		-->
 		
-		 <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+	<fieldType name="text" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
-		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <!-- in this example, we will only use synonyms at query time
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
@@ -160,15 +159,13 @@
 		<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
         <filter class="solr.LowerCaseFilterFactory"/>
 		<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
-        <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
 		<filter class="solr.ShingleFilterFactory" maxShingleSize="2" outputUnigrams="true"/>
       </analyzer>
     </fieldType>
 	
 	
-    <fieldType name="textImage" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="textMusic" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
-		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
 		<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <!-- in this example, we will only use synonyms at query time
@@ -182,10 +179,10 @@
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-		<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>		
+		<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
 		<filter class="solr.LowerCaseFilterFactory"/>
-		<filter class="solr.ShingleFilterFactory" maxShingleSize="2" outputUnigrams="true"/>
 		<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+		<filter class="solr.ShingleFilterFactory" maxShingleSize="2" outputUnigrams="true"/>
       </analyzer>
     </fieldType>
 	
@@ -233,28 +230,30 @@
 
  <fields>   
   <!-- general -->
-  <!-- Field danhnh cho search image --> 	
+  <!-- Field danhnh cho search wikipedia --> 	
 	<field name="id" type="string" indexed="true" stored="true" required="true" />
+	<field name="title" type="textMusic" indexed="true" stored="true" termVectors="true"/>
+	<field name="title_unsigned" type="textMusic" indexed="true" stored="false" />
+	<field name="album" type="string" indexed="true" stored="true"/>
+	<field name="album_index" type="textMusic" indexed="true" stored="false" />
+	<field name="album_index_unsigned" type="textMusic" indexed="true" stored="false"/>
+	<field name="artist" type="string" indexed="true" stored="true"/>
+	<field name="artist_index" type="textMusic" indexed="true" stored="true" />
+	<field name="artist_index_unsigned" type="textMusic" indexed="true" stored="false"/>
+	<field name="author" type="string" indexed="true" stored="true"/>
+	<field name="author_index" type="textMusic" indexed="true" stored="false"/>
+	<field name="author_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
-	<field name="category_index" type="text_ws" indexed="true" stored="false" multiValued="true"/>
-	<field name="category_index_unsigned" type="text_ws" indexed="true" stored="false"/>
+	<field name="category_index" type="textMusic" indexed="true" stored="false" />
+	<field name="category_index_unsigned" type="textMusic" indexed="true" stored="false"/>
 	<field name="url" type="string" indexed="false" stored="true"/>
-	<field name="url_local" type="string" indexed="false" stored="true"/>
-	<field name="website" type="string" indexed="false" stored="true"/>
-	
-	<field name="site_title" type="textImage" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-	<field name="site_title_unsigned" type="textImage" indexed="true" stored="false" multiValued="true"/>
-
-	<field name="site_body" type="textImage" indexed="true" stored="true" multiValued="true"/>
-	<field name="site_body_unsigned" type="textImage" indexed="true" stored="false" multiValued="true"/>
-	
-	<field name="fileType" type="string" indexed="false" stored="true"/>
-	<field name="width" type="sfloat" indexed="true" stored="true"/>
-	<field name="height" type="sfloat" indexed="true" stored="true"/>
-	<field name="size" type="string" indexed="true" stored="true"/>
-   <field name="keysearch" type="text_ws" indexed="true" stored="false"/>
+	<field name="lyric" type="textMusic" indexed="true" stored="true" />
+	<field name="lyric_unsigned" type="textMusic" indexed="true" stored="false" />
+	<field name="dateUpload" type="date" indexed="true" stored="true" default="NOW" />
+	<field name="keysearch" type="text_ws" indexed="true" stored="false"/>
    <field name="keysearch_unsigned" type="text_ws" indexed="true" stored="false"/>
-	
+   
+
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
         will be used if the name matches any of the patterns.
         RESTRICTION: the glob-like pattern in the name attribute must have
@@ -278,12 +277,16 @@
  <uniqueKey>id</uniqueKey>
 
  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
- <defaultSearchField>site_title</defaultSearchField>
+ <defaultSearchField>title</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="AND"/>
- <!--
- <copyField source="site_title_unsigned" dest="site_title"/>
-  <copyField source="site_body_unsigned" dest="site_body"/>  -->
+ <!-- <copyField source="title_unsigned" dest="title"/>
+  <copyField source="album_index_unsigned" dest="album_index"/>
+  <copyField source="artist_index_unsigned" dest="artist_index"/>
+  <copyField source="singer_index_unsigned" dest="singer_index"/>
+  <copyField source="category_index_unsigned" dest="category_index"/>
+  <copyField source="lyric_unsigned" dest="lyric"/>
+  -->
 </schema>
 
