@@ -81,7 +81,7 @@
             MDid = 'MediaPlayer'+id;
             document.getElementById(MDid).className="hidden";
 
-            // Button XemLoiNhac hide, button DongLoiNhac show
+            // Button XEM hide, button DONG show
             var btxem = 'BTViewMediaId'+id;
             document.getElementById(btxem).className="display";
             var  btDong = "BTCloseMediaId" + id;
