@@ -97,7 +97,7 @@ public class SearchVideoController extends HttpServlet {
                 sPaging += "&SortedType=" + sortedType;
             }
             
-            
+
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");

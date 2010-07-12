@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public class MySegmenter {
 
-    private static String modelDir = "models";
+    private static String modelDir = "webapps\\ViSearch\\models";
     private static JVnSegmenter ws;
     private static TaggingInputData taggerData;
     private static boolean bInit = false;
