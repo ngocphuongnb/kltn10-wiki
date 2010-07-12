@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,7 +103,7 @@ public class SearchVideoController extends HttpServlet {
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 
-                sPaging += "&KeySearch=" + keySearch;
+                sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
 
                 switch (type) {
                     case 0:
@@ -133,8 +134,8 @@ public class SearchVideoController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
-                    case 2:
-                        case 3:
+                    case 2: // facet
+                        case 3: // truy van theo thể loại
                         String facetName = "";
                         String facetValue = "";
                         if (request.getParameter("FacetName") != null) {
