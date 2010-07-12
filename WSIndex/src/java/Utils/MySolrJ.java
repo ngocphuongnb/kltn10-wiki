@@ -77,13 +77,13 @@ public class MySolrJ {
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         while (start < numOfRecords) {
             ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
-            list = bus.getDataList(0, 50);
-            lResult = ImportViwiki2Solr(list, "wikipedia");
+            list = bus.getDataList(0, 100);
             try {
+                lResult = ImportViwiki2Solr(list, "wikipedia");
                 ImportViwiki2SolrAll(list, "all");
+                bus.UpdateAfterIndex(lResult);
             } catch (Exception ex) {
             }
-            bus.UpdateAfterIndex(lResult);
             start += 100;
         }
 
@@ -356,7 +356,7 @@ public class MySolrJ {
             doc.addField("url", pagedto.getUrl());
             doc.addField("lyric", pagedto.getLyric());
             doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
-           // doc.addField("dateUpload", pagedto.getDayUpload().getTime());
+            // doc.addField("dateUpload", pagedto.getDayUpload().getTime());
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -411,6 +411,7 @@ public class MySolrJ {
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
         Iterator<ViwikiPageDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
+        SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
         try {
             while (iter.hasNext()) {
                 pagedto = iter.next();
@@ -435,10 +436,9 @@ public class MySolrJ {
                 listint.add(pagedto.getId());
             }
 
-
-            SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
             server.add(docs);
             server.commit();
+
 //            UpdateRequest req = new UpdateRequest();
 //            req.setAction(ACTION.COMMIT, false, false);
 //            req.add(docs);
@@ -456,6 +456,7 @@ public class MySolrJ {
         ViwikiPageDTO pagedto = new ViwikiPageDTO();
         Iterator<ViwikiPageDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
+        SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
         while (iter.hasNext()) {
             pagedto = iter.next();
             doc = new SolrInputDocument();
@@ -470,9 +471,6 @@ public class MySolrJ {
             docs.add(doc);
             listint.add(pagedto.getId());
         }
-
-
-        SolrServer server = getSolrServer(solrServer); // solrServer =wikipedia
         server.add(docs);
         server.commit();
 //        UpdateRequest req = new UpdateRequest();
