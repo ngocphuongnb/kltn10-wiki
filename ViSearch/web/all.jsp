@@ -18,7 +18,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Tổng hợp</title>
-               <link href="style.css"rel="stylesheet" type="text/css" />
+        <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/clock.js"></script>
@@ -36,6 +36,74 @@
                 if(keysearch=="")
                     document.getElementById('txtSearch').focus();
             }
+            function showMusic(id)
+            {
+                // showMusic and Close all other Music
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    MDid = 'MediaPlayerMusic'+i;
+                    if(i!=id) // Close others
+                    {
+                        hideMusic(i);
+                    }
+                    else // and open new
+                    {
+                        document.getElementById(MDid).className="display";
+                    }
+                }
+                // Show button CloseMusic and Close bt View
+                var  btDong = "BTCloseMusicId" + id;
+                document.getElementById(btDong).className="display";
+                var btxem = 'BTViewMusicId'+id;
+                document.getElementById(btxem).className="hidden";
+            }
+            function hideMusic(id)
+            {
+                // Hide media
+                MDid = 'MediaPlayerMusic'+id;
+                document.getElementById(MDid).className="hidden";
+
+                // Button XEM hide, button DONG show
+                var btxem = 'BTViewMusicId'+id;
+                document.getElementById(btxem).className="display";
+                var  btDong = "BTCloseMusicId" + id;
+                document.getElementById(btDong).className="hidden";
+            }
+
+            function showVideo(id)
+            {
+                // showVideo and Close all other Music
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    MDid = 'MediaPlayerVideo'+i;
+                    if(i!=id) // Close others
+                    {
+                        hideVideo(i);
+                    }
+                    else // and open new
+                    {
+                        document.getElementById(MDid).className="display";
+                    }
+                }
+                // Show button CloseMusic and Close bt View
+                var  btDong = "BTCloseVideoId" + id;
+                document.getElementById(btDong).className="display";
+                var btxem = 'BTViewVideoId'+id;
+                document.getElementById(btxem).className="hidden";
+            }
+            function hideVideo(id)
+            {
+                // Hide media
+                MDid = 'MediaPlayerVideo'+id;
+                document.getElementById(MDid).className="hidden";
+
+                // Button XEM hide, button DONG show
+                var btxem = 'BTViewVideoId'+id;
+                document.getElementById(btxem).className="display";
+                var  btDong = "BTCloseVideoId" + id;
+                document.getElementById(btDong).className="hidden";
+            }
+
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -50,6 +118,7 @@
                     window.location = url;
                 }
             }
+           
             function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
@@ -57,39 +126,7 @@
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
-            function showVideo(id)
-            {
-                // showVideo and Close all other Videos
-                count = document.getElementsByTagName('OBJECT').length;
-                for(var i=0; i < count; i++){
-                    MDid = 'MediaPlayer'+i;
-                    if(i!=id) // Close others
-                    {
-                        hideVideo(i);
-                    }
-                    else // and open new
-                    {
-                        document.getElementById(MDid).className="display";
-                    }
-                }
-                // Show button CloseVideo and Close bt View
-                var  btDong = "BTCloseMediaId" + id;
-                document.getElementById(btDong).className="display";
-                var btxem = 'BTViewMediaId'+id;
-                document.getElementById(btxem).className="hidden";
-            }
-            function hideVideo(id)
-            {
-                // Hide media
-                MDid = 'MediaPlayer'+id;
-                document.getElementById(MDid).className="hidden";
-
-                // Button XemLoiNhac hide, button DongLoiNhac show
-                var btxem = 'BTViewMediaId'+id;
-                document.getElementById(btxem).className="display";
-                var  btDong = "BTCloseMediaId" + id;
-                document.getElementById(btDong).className="hidden";
-            }
+           
 
             function ClickDetail(link)
             {
@@ -192,6 +229,8 @@
                                 String link = "";
                                 String stype = "";
                                 String subId = "";
+
+
                                 if (id.length() > 2 && id.substring(0, 2).equals("rv")) {
                                     subId = id.substring(2);
                                     link = "<a href=\"DetailRaoVatController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
@@ -231,52 +270,55 @@
                                     strBody = "<tr><td valign=\"bottom\"><a href=\"DetailImageController?id=" + subId + "&KeySearch=" + strQuery + "\"><img src='" + body + "' width=\"150\" align=\"left\"/></a></td></tr>";
                                     // Neu la music thì show window media lên
                                 } else if (stype.equals("ms")) {
-                                    strBody += "<tr><td>";
-                                    strBody += "<OBJECT CLASSID=\"CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95\" CODEBASE=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab# Version=5,1,52,70\" STANDBY=\"Loading Microsoft Windows® Media Player components...\" TYPE=\"application/x-oleobject\" width=\"280\" height=\"46\">";
-                                    strBody += "<param name=\"fileName\" value=\"\">";
-                                    strBody += "<param name=\"animationatStart\" value=\"false\">";
-                                    strBody += "<param name=\"transparentatStart\" value=\"true\">";
-                                    strBody += "<param name=\"autoStart\" value=\"false\">";
-                                    strBody += "<param name=\"showControls\" value=\"true\">";
-                                    strBody += "<param name=\"Volume\" value=\"-300\">";
-                                    strBody += "<embed type=\"application/x-mplayer2\" pluginspage=\"http://www.microsoft.com/Windows/MediaPlayer/\" src=\"E:\\Relax\\Music\\Nhac Viet Nam\\Tinh yeu lung linh.mp3\" name=\"MediaPlayer1\" width=280 height=46 autostart=0 showcontrols=1 volume=-300>";
-                                    strBody += "</OBJECT>";
-                                    strBody += "</td></tr>";
 
-                                } else if (stype.equals("video")) {
-                                    // Neu la video thì show window media lên
-                                    String BTViewMediaId = "BTViewMediaId" + i;
-                                    String BTCloseMediaId = "BTCloseMediaId" + i;
-                                    String mediaId = "MediaPlayer" + i;
-                                    strBody += "<tr><td><input type=\"button\" ID=\"" + BTViewMediaId + "\" value=\"Xem video\" onclick=\"showVideo('" + i + "');\" />";
-                                    strBody += "<input type=\"button\" ID=\"" + BTCloseMediaId + "\" class=\"hidden\" value=\"Đóng video\" onclick=\"hideVideo('" + i + "');\" />";
-                                    strBody += "</td></tr>";
-
+                                    String BTViewMusicId = "BTViewMusicId" + i;
+                                    String BTCloseMusicId = "BTCloseMusicId" + i;
+                                    String mediaId = "MediaPlayerMusic" + i;
                                     strBody += "<tr><td>";
-                                    strBody += "<span id='Tracking'></span>";
-                                    strBody += "<object class=\"hidden\" ID=\"" + mediaId + "\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\"608\" height=\"432\" id=\"FLVPlayer\">";
-                                    strBody += "<param name=\"movie\" value=\"FLVPlayer_Progressive.swf\" />";
-                                    strBody += "<param name=\"salign\" value=\"lt\" />";
-                                    strBody += "<param name=\"quality\" value=\"high\" />";
-                                    strBody += "<param name=\"scale\" value=\"noscale\" />";
-                                    strBody += "<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" />";
-                                    strBody += "<embed src=\"FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_3&streamName=Circus_Britney&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\"608\" height=\"432\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash\" />";
-                                    strBody += "</object>";
+                                    strBody += "<input type=\"button\" ID=\"" + BTViewMusicId + "\" value=\"Nghe\" onclick=\"showMusic('" + i + "');\" />";
+                                    strBody += "<input type=\"button\" ID=\"" + BTCloseMusicId + "\" class=\"hidden\" value=\"Đóng\" onclick=\"hideMusic('" + i + "');\" /></td>";
                                     strBody += "</td></tr>";
+                                    strBody += "<tr><td><div class=\"hidden\" ID=\"" + mediaId + "\">" + body + "</div></td></tr>";
+                                    // Tracking music
                                     %>
-                                    <script type="text/javascript">
-                                        $(document).ready(function(){
-                                            $("#<%=BTViewMediaId%>").click(function(){
-                                                var docID = <%=subId%>
-                                                var keySearch = $("#hfKeySearch").attr("value");
-                                                var Url = "TrackingController?KeySearch=" + keySearch;
-                                                Url += "&DocID=" + docID;
-                                                Url += "&searchType=7";
-                                                $("#Tracking").load(encodeURI(Url));
-                                            });
-                                        });
-                                    </script>
-                                    <%
+                                            <script type="text/javascript">
+                                                $(document).ready(function(){
+                                                    $("#<%=BTViewMusicId%>").click(function(){
+                                                        var docID = <%=subId%>
+                                                        var keySearch = $("#hfKeySearch").attr("value");
+                                                        var Url = "TrackingController?KeySearch=" + keySearch;
+                                                        Url += "&DocID=" + docID;
+                                                        Url += "&searchType=7";
+                                                        $("#Tracking").load(encodeURI(Url));
+                                                    });
+                                                });
+                                            </script>
+                                            <%
+
+                                        } else if (stype.equals("video")) {
+                                            // Neu la video thì show window media lên
+                                            String BTViewVideoId = "BTViewVideoId" + i;
+                                            String BTCloseVideoId = "BTCloseVideoId" + i;
+                                            String mediaId = "MediaPlayerVideo" + i;
+                                            strBody += "<tr><td>";
+                                            strBody += "<input type=\"button\" ID=\"" + BTViewVideoId + "\" value=\"Xem Video\" onclick=\"showVideo('" + i + "');\" />";
+                                            strBody += "<input type=\"button\" ID=\"" + BTCloseVideoId + "\" class=\"hidden\" value=\"Đóng\" onclick=\"hideVideo('" + i + "');\" /></td>";
+                                            strBody += "</td></tr>";
+                                            strBody += "<tr><td><div class=\"hidden\" ID=\"" + mediaId + "\">" + body + "</div></td></tr>";
+        %>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#<%=BTViewVideoId%>").click(function(){
+                    var docID = <%=subId%>
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    var Url = "TrackingController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&searchType=7";
+                    $("#Tracking").load(encodeURI(Url));
+                });
+            });
+        </script>
+        <%
                                 } else { // còn lại là rao vặt + news
                                     if (highlightBody != null && !highlightBody.isEmpty()) {
                                         body = highlightBody.get(0);
@@ -373,7 +415,7 @@
                                     </td>
                                 </tr>
                             </table>
-                                      
+
                         </td>
                     </tr>
                     <tr>
