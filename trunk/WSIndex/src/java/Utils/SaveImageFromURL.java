@@ -32,15 +32,16 @@ public class SaveImageFromURL {
             String ext = getExtension(list.get(i).getUrl());
             String localImage = "VSImageDownload\\" + filename + "." + ext;
             try {
-                save(list.get(i).getUrl(), "webapps\\ViSearch\\" + localImage);
-                Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
+                if (save(list.get(i).getUrl(), "webapps\\ViSearch\\" + localImage)) {
+                    Ibus.UpdateAfterSaveImage(list.get(i).getId(), localImage);
+                }
             } catch (Exception ex) {
             }
         }
 
     }
 
-    private void save(String strLink,
+    private boolean save(String strLink,
             String destination) throws MalformedURLException,
             IOException,
             URISyntaxException {
@@ -63,9 +64,8 @@ public class SaveImageFromURL {
 
                 while ((i = bis.read()) != -1) {
                     bos.write(i);
-
-
                 }
+                return true;
             } finally {
                 if (bis != null) {
                     try {
@@ -92,6 +92,7 @@ public class SaveImageFromURL {
             }
         } else {
             System.out.println("Input not available");
+            return false;
         }
     }
 

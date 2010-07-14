@@ -75,8 +75,9 @@ public class MySolrJ {
         int start = 0;
         //ierror = 0;
         ArrayList<Integer> lResult = new ArrayList<Integer>();
+        ArrayList<ViwikiPageDTO> list;
         while (start < numOfRecords) {
-            ArrayList<ViwikiPageDTO> list = new ArrayList<ViwikiPageDTO>();
+            list = new ArrayList<ViwikiPageDTO>();
             list = bus.getDataList(0, 100);
             try {
                 lResult = ImportViwiki2Solr(list, "wikipedia");
