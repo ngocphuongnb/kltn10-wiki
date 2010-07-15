@@ -37,10 +37,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        title^5 fulltext
+        title^5 body
      </str>
      <str name="pf">
-        title^5 fulltext
+        title^5 body
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -72,7 +72,7 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        title^5 fulltext
+        title^5 body
      </str>
      <str name="pf">
         title^5 body
@@ -133,7 +133,7 @@
       <str name="name">default</str>
       <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
-      <str name="spellcheckIndexDir">./spellcheckerAll</str>
+      <str name="spellcheckIndexDir">./spellcheckerNews</str>
     </lst>
 
     <!-- a spellchecker that uses a different distance measure -->
@@ -142,7 +142,7 @@
       <str name="field">title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
-      <str name="spellcheckIndexDir">./spellcheckerAll2</str>
+      <str name="spellcheckIndexDir">./spellcheckerNews2</str>
     </lst>
     
 

@@ -174,6 +174,7 @@
       <analyzer type="index">
 		<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+		<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <!-- in this example, we will only use synonyms at query time
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
 		<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
@@ -239,16 +240,16 @@
 	<field name="title" type="textNews" indexed="true" stored="true" multiValued="true" termVectors="true"/>
 	<field name="title_unsigned" type="textNews" indexed="true" stored="false"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
-	<field name="category_index" type="textNews" indexed="true" stored="false" multiValued="true"/>
-	<field name="category_index_unsigned" type="textNews" indexed="true" stored="false"/>
-	<field name="introtext" type="textNews" indexed="true" stored="true"/>
-	<field name="introtext_unsigned" type="textNews" indexed="false" stored="true"/>
-	<field name="fulltext" type="textNews" indexed="true" stored="true"/>
-	<field name="fulltext_unsigned" type="textNews" indexed="true" stored="false"/>
-	<field name="created" type="date" indexed="true" stored="true" default="NOW"/>
-	<field name="modified" type="date" indexed="true" stored="true" default="NOW"/>
-	<field name="keysearch" type="textNews" indexed="true" stored="false"/>
-   <field name="keysearch_unsigned" type="textNews" indexed="true" stored="false"/>
+	<field name="category_index" type="text_ws" indexed="true" stored="false" multiValued="true"/>
+	<field name="category_index_unsigned" type="text_ws" indexed="true" stored="false"/>
+	<field name="body" type="textNews" indexed="true" stored="true"/>
+	<field name="body_unsigned" type="textNews" indexed="true" stored="false"/>
+	<field name="site" type="string" indexed="false" stored="true"/>
+	<field name="url" type="string" indexed="false" stored="true"/>
+	<field name="photo" type="string" indexed="false" stored="true"/>
+	<field name="last_update" type="date" indexed="true" stored="true" default="NOW"/>
+	<field name="keysearch" type="text_ws" indexed="true" stored="false"/>
+   <field name="keysearch_unsigned" type="text_ws" indexed="true" stored="false"/>
 	
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
