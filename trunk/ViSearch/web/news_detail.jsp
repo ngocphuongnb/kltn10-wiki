@@ -128,7 +128,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -154,12 +154,13 @@
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("body")).toString();
-                                String site = (listdocs.get(i).getFirstValue("site")).toString();
+                                String url = (listdocs.get(i).getFirstValue("url")).toString();
                                 Date created = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String photo = (listdocs.get(i).getFirstValue("photo")).toString();
                                 String[] arrPhoto = photo.split("\n");
-                                if(arrPhoto.length>1)
-                                    photo=arrPhoto[0];
+                                if (arrPhoto.length > 1) {
+                                    photo = arrPhoto[0];
+                                }
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String title_hl = title;
 
@@ -179,15 +180,15 @@
                                 result.append("<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>");
                                 result.append("</tr>");
 
-                                 result.append("<tr>");
-                                result.append("<td>Nguồn: " + site + "</td>");
+                                result.append("<tr>");
+                                result.append("<td><b>Link bài viết: </b><a href='"+url+"' target='_blank'>" + url + "</a></td>");
                                 result.append("</tr>");
 
-                                 result.append("<tr>");
+                                result.append("<tr>");
                                 result.append("<td><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>");
                                 result.append("</tr>");
 
-                                 result.append("<tr>");
+                                result.append("<tr>");
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
                                 result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
                                 result.append("</tr>");
@@ -206,7 +207,7 @@
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     StringBuffer facet = new StringBuffer();
@@ -238,7 +239,7 @@
                         }
                     }
                     // End get Facet
-%>
+        %>
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -247,6 +248,7 @@
                         listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
                         result2.append("<div style=\"font-size:13px\">");
+                        result2.append("<hr>");
                         result2.append("Một số bài viết tương tự: <br>");
                         for (int i = 0; i < listdocs2.size(); i++) {
 
@@ -258,7 +260,7 @@
                         result2.append("</div>");
                     }
                     //end Cùng chuyên mục Category
-%>
+        %>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">

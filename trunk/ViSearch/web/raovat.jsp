@@ -19,48 +19,48 @@
         <script type="text/javascript" src="js/clock.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
 
-        <script type="" language="javascript">
+        <script  language="javascript">
             $(function(){
-            $.ajax({
-            type: "POST",
-            url: "TopSearch",
-            cache: false,
-            data: "SearchType=2",
-            success: function(html){
-            $("#tbTopSearch").append(html);
-            }
-            });
+                $.ajax({
+                    type: "POST",
+                    url: "TopSearch",
+                    cache: false,
+                    data: "SearchType=2",
+                    success: function(html){
+                        $("#tbTopSearch").append(html);
+                    }
+                });
             });
             function setText()
             {
-            var keysearch = document.getElementById('txtSearch').value;
-            if(keysearch=="")
-            document.getElementById('txtSearch').focus();
+                var keysearch = document.getElementById('txtSearch').value;
+                if(keysearch=="")
+                    document.getElementById('txtSearch').focus();
             }
 
             function CheckInput()
             {
-            var keysearch = document.getElementById('txtSearch').value;
-            var sortedtype = document.getElementById('slSortedType').value;
-            if(keysearch == "")
-            return;
-            else
-            {
-            var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
-            url += encodeURIComponent(keysearch);
-            url += "&SortedType=" + sortedtype;
-            window.location = url;
-            }
+                var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchRaoVatController?type=0&sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    window.location = url;
+                }
             }
             function SeachPVDC(strQuery){
-            var batdau = document.getElementById("divPVTC_BD").value;
-            var  kethuc = document.getElementById("divPVTC_KT").value;
-            strQuery =  encodeURIComponent(strQuery);
-            var url = "SearchRaoVatController?type=3&KeySearch=" + encodeURIComponent(strQuery) + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
-            window.location = url;
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                strQuery =  encodeURIComponent(strQuery);
+                var url = "SearchRaoVatController?type=3&KeySearch=" + encodeURIComponent(strQuery) + "&FacetName=last_update&sd="+batdau+"&ed="+kethuc;
+                window.location = url;
             }
             function showPVTC(){
-            document.getElementById("divPVTC").className="display";
+                document.getElementById("divPVTC").className="display";
             }
         </script>
         <script type="" language="javascript">
@@ -112,7 +112,7 @@
                     int numrow = 0;
                     int numpage = 0;
                     String strpaging = "";
-                    String result = "";
+                    StringBuffer result = new StringBuffer();
                     String search_stats = "";
                     String QTime;
                     if (request.getAttribute("QTime") != null) {
@@ -124,16 +124,17 @@
                             search_stats = String.format("Có %d kết quả (%s giây)", listdocs.getNumFound(), QTime);
                             if (request.getAttribute("Collation") != null) {
                                 String sCollation = (String) request.getAttribute("Collation");
-                                result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchRaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>";
+                                result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchRaoVatController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result += "<table style=\"font-size:13px\">";
+                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                String link = (listdocs.get(i).getFirstValue("url")).toString();
                                 Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String url;
                                 String title_hl = title;
@@ -166,28 +167,27 @@
                                 }
 
                                 url = "<td><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></b></td>";
-                                result += "<tr>";
-                                result += "<td rowspan=\"3\" width=\"150\"><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>";
-                                result += url;
-                                result += "</tr>";
+                                result.append("<tr>");
+                                result.append("<td rowspan=\"5\" width=\"150\"><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>");
+                                result.append(url);
+                                result.append("</tr>");
 
-                               
-                                result += "<tr>";
-                                result += "<td>" + body + "</td>";
-                                result += "</tr>";
+                                result.append("<tr><td>" + body + "</td></tr>");
 
-                                result += "<tr>";
+                                result.append("<tr>");
+                                 result.append("<td>Link bài viết: <a href='" + link + "' target='_blank'>" + link + "</a></td>");
+                                 result.append("</tr>");
+
+                                result.append("<tr>");
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                                result += "<td><b>Ngày cập nhật:</b> " + sdf.format(last_update) + "</td>";
-                                result += "</tr>";
+                                result.append("<td><b>Ngày cập nhật:</b> " + sdf.format(last_update) + "</td>");
+                                result.append("</tr>");
 
-                                result += "<tr>";
-                                result += "<td>";
-                                result += "<a href=\"SearchRaoVatController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>";
-                                result += "</td>";
-                                result += "</tr>";
-                                result += "<tr><td>&nbsp;</td></tr>";
-                                result += "</table>";
+                                result.append("<tr><td>");
+                                result.append("<a href=\"SearchRaoVatController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>");
+                                result.append("</td></tr>");
+                                result.append("<tr><td>&nbsp;</td></tr>");
+                                result.append("</table>");
                             }
 
 
@@ -200,9 +200,9 @@
                         }
                         //result += "Số kết quả tìm được là: " + numrow + "<br/>";
                         if (numpage > 1) {
-                            result += "Tổng số trang là: " + numpage + "<br/>";
+                            result.append("Tổng số trang là: " + numpage + "<br/>");
                         }
-                        result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
+                        result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>");
                     }
                     //get SolrDocumentList
 %>

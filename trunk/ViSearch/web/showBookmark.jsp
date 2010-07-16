@@ -118,14 +118,12 @@
                         result += "<table style=\"font-size:13px\">";
                         for (int i = 0; i < listdocs.size(); i++) {
 
-
                             // Lay noi dung cua moi field
                             String id = (listdocs.get(i).getFirstValue("id")).toString();
                             String docid = (listdocs.get(i).getFieldValue("docid")).toString();
                             String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
                             String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
                             Date date_created = (Date) (listdocs.get(i).getFieldValue("date_created"));
-                            String url = "";
 
                             if (request.getAttribute("HighLight") != null) {
                                 highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -165,7 +163,7 @@
                             }
 
                             result += "<tr>";
-                            result += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
+                            result += "<td><a href=\"" + link + "\" target='_blank'>" + bookmarkname + "</a></td>";
                             result += "</tr>";
 
 
@@ -224,7 +222,7 @@
                             }
 
                             result3.append("<tr>");
-                            result3.append("<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>");
+                            result3.append("<td><a href=\"" + link + "\" target='_blank'>" + bookmarkname + "</a></td>");
                             result3.append("</tr>");
                         }
                         result3.append("</table>");
@@ -308,7 +306,6 @@
                             String bookmarkname = dto.getNameBookmark();
                             Calendar dateCrt = dto.getDate_Create();
                             Date date_created = dateCrt.getTime();
-                            String url = "";
 
                             if (searchtype.equals("1")) {
                                 link = "DetailWikiController?id=" + docid + "&KeySearch=";
@@ -337,7 +334,7 @@
                             }
 
                             result4 += "<tr>";
-                            result4 += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
+                            result4 += "<td><a href=\"" + link + "\" target='_blank'>" + bookmarkname + "</a></td>";
                             result4 += "</tr>";
 
 
