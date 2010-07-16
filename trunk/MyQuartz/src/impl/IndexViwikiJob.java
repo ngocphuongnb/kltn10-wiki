@@ -5,8 +5,7 @@
 
 package impl;
 
-import IndexData.WSIndex;
-import IndexData.WSIndexService;
+import index.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;

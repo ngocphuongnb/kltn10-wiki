@@ -88,17 +88,23 @@
 <message name="SaveImageResponse">
 <part name="parameters" element="tns:SaveImageResponse" />
 </message>
+<message name="IndexDataBookmark">
+<part name="parameters" element="tns:IndexDataBookmark" />
+</message>
+<message name="IndexDataBookmarkResponse">
+<part name="parameters" element="tns:IndexDataBookmarkResponse" />
+</message>
 <message name="IndexDataLocation">
 <part name="parameters" element="tns:IndexDataLocation" />
 </message>
 <message name="IndexDataLocationResponse">
 <part name="parameters" element="tns:IndexDataLocationResponse" />
 </message>
-<message name="IndexDataBookmark">
-<part name="parameters" element="tns:IndexDataBookmark" />
+<message name="EmptyData">
+<part name="parameters" element="tns:EmptyData" />
 </message>
-<message name="IndexDataBookmarkResponse">
-<part name="parameters" element="tns:IndexDataBookmarkResponse" />
+<message name="EmptyDataResponse">
+<part name="parameters" element="tns:EmptyDataResponse" />
 </message>
 <portType name="WSIndex">
 <operation name="SyncDataWiki">
@@ -157,13 +163,17 @@
 <input wsam:Action="http://Index/WSIndex/SaveImageRequest" message="tns:SaveImage" />
 <output wsam:Action="http://Index/WSIndex/SaveImageResponse" message="tns:SaveImageResponse" />
 </operation>
+<operation name="IndexDataBookmark">
+<input wsam:Action="http://Index/WSIndex/IndexDataBookmarkRequest" message="tns:IndexDataBookmark" />
+<output wsam:Action="http://Index/WSIndex/IndexDataBookmarkResponse" message="tns:IndexDataBookmarkResponse" />
+</operation>
 <operation name="IndexDataLocation">
 <input wsam:Action="http://Index/WSIndex/IndexDataLocationRequest" message="tns:IndexDataLocation" />
 <output wsam:Action="http://Index/WSIndex/IndexDataLocationResponse" message="tns:IndexDataLocationResponse" />
 </operation>
-<operation name="IndexDataBookmark">
-<input wsam:Action="http://Index/WSIndex/IndexDataBookmarkRequest" message="tns:IndexDataBookmark" />
-<output wsam:Action="http://Index/WSIndex/IndexDataBookmarkResponse" message="tns:IndexDataBookmarkResponse" />
+<operation name="EmptyData">
+<input wsam:Action="http://Index/WSIndex/EmptyDataRequest" message="tns:EmptyData" />
+<output wsam:Action="http://Index/WSIndex/EmptyDataResponse" message="tns:EmptyDataResponse" />
 </operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
@@ -294,6 +304,15 @@
 <soap:body use="literal" />
 </output>
 </operation>
+<operation name="IndexDataBookmark">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
 <operation name="IndexDataLocation">
 <soap:operation soapAction="" />
 <input>
@@ -303,7 +322,7 @@
 <soap:body use="literal" />
 </output>
 </operation>
-<operation name="IndexDataBookmark">
+<operation name="EmptyData">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />

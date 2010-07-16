@@ -5,7 +5,7 @@
     <client name="WSIndex">
       <wsdl-url>http://localhost:8084/WSIndex/WSIndex?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8084/WSIndex/WSIndex.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">IndexData</package-name>
+      <package-name forceReplace="true">index</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -26,7 +26,7 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>IndexData</wsimport-option-value>
+          <wsimport-option-value>index</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

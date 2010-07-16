@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-. --><xs:schema xmlns:tns="http://Index/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Index/">
 
+<xs:element name="EmptyData" type="tns:EmptyData" />
+
+<xs:element name="EmptyDataResponse" type="tns:EmptyDataResponse" />
+
 <xs:element name="IndexDataAll" type="tns:IndexDataAll" />
 
 <xs:element name="IndexDataAllResponse" type="tns:IndexDataAllResponse" />
@@ -149,35 +153,16 @@
 
 <xs:complexType name="newsDTO">
 <xs:sequence>
-<xs:element name="access" type="xs:int" />
-<xs:element name="attribs" type="xs:string" minOccurs="0" />
+<xs:element name="body" type="xs:string" minOccurs="0" />
 <xs:element name="category" type="xs:string" minOccurs="0" />
-<xs:element name="catid" type="xs:int" />
-<xs:element name="checked_out" type="xs:int" />
-<xs:element name="checked_out_time" type="xs:dateTime" minOccurs="0" />
 <xs:element name="created" type="xs:dateTime" minOccurs="0" />
-<xs:element name="created_by" type="xs:int" />
-<xs:element name="created_by_alias" type="xs:string" minOccurs="0" />
-<xs:element name="fulltext" type="xs:string" minOccurs="0" />
-<xs:element name="hits" type="xs:int" />
 <xs:element name="id" type="xs:int" />
-<xs:element name="images" type="xs:string" minOccurs="0" />
-<xs:element name="introtext" type="xs:string" minOccurs="0" />
-<xs:element name="mask" type="xs:int" />
-<xs:element name="metadesc" type="xs:string" minOccurs="0" />
-<xs:element name="metakey" type="xs:string" minOccurs="0" />
-<xs:element name="modified" type="xs:dateTime" minOccurs="0" />
+<xs:element name="last_update" type="xs:dateTime" minOccurs="0" />
 <xs:element name="modified_by" type="xs:int" />
-<xs:element name="ordering" type="xs:int" />
-<xs:element name="parentid" type="xs:int" />
-<xs:element name="publish_down" type="xs:dateTime" minOccurs="0" />
-<xs:element name="publish_up" type="xs:dateTime" minOccurs="0" />
-<xs:element name="sectionid" type="xs:int" />
-<xs:element name="state" type="xs:int" />
+<xs:element name="photo" type="xs:string" minOccurs="0" />
+<xs:element name="site" type="xs:string" minOccurs="0" />
 <xs:element name="title" type="xs:string" minOccurs="0" />
-<xs:element name="title_alias" type="xs:string" minOccurs="0" />
-<xs:element name="urls" type="xs:string" minOccurs="0" />
-<xs:element name="version" type="xs:int" />
+<xs:element name="url" type="xs:string" minOccurs="0" />
 </xs:sequence>
 </xs:complexType>
 
@@ -195,11 +180,11 @@
 <xs:sequence>
 <xs:element name="album" type="xs:string" minOccurs="0" />
 <xs:element name="artist" type="xs:string" minOccurs="0" />
+<xs:element name="author" type="xs:string" minOccurs="0" />
 <xs:element name="category" type="xs:string" minOccurs="0" />
 <xs:element name="dayUpload" type="xs:dateTime" minOccurs="0" />
 <xs:element name="id" type="xs:int" />
 <xs:element name="lyric" type="xs:string" minOccurs="0" />
-<xs:element name="singer" type="xs:string" minOccurs="0" />
 <xs:element name="title" type="xs:string" minOccurs="0" />
 <xs:element name="url" type="xs:string" minOccurs="0" />
 </xs:sequence>
@@ -269,6 +254,20 @@
 </xs:complexType>
 
 <xs:complexType name="SaveImageResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EmptyData">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+<xs:element name="core" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EmptyDataResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>

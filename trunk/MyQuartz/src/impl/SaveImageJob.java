@@ -5,8 +5,7 @@
 
 package impl;
 
-import IndexData.WSIndex;
-import IndexData.WSIndexService;
+import index.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -25,7 +24,7 @@ public class SaveImageJob implements Job {
 
     public void execute(JobExecutionContext jec) throws JobExecutionException {
          try {
-            System.out.println("SaveImageJob...");
+            System.out.println("Start SaveImageJob...");
             Date d = new Date();
             GregorianCalendar gcal = new GregorianCalendar();
             gcal.setTime(d);
