@@ -136,9 +136,11 @@
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = "";
                                 if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
-                                    File file = new File(listdocs.get(i).getFieldValue("url_local").toString());
+                                    File file = new File("webapps\\ViSearch\\" + listdocs.get(i).getFieldValue("url_local").toString());
                                     if (file.exists()) {
                                         url = (listdocs.get(i).getFieldValue("url_local")).toString();
+										url = url.replace('\\', '/');
+										//out.print(url);
                                     }
                                 } else {
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
