@@ -67,7 +67,9 @@ public class DetailWikiController extends HttpServlet {
                     try {
                         TrackingBUS tbus = new TrackingBUS();
                         b = tbus.InsertTracking(tracking, "visearch");
-                        b = tbus.UpdateKeysearch(id, keysearch, "viwiki", "visearch");
+                        if (b == true) {
+                            tbus.UpdateKeysearch(id, keysearch, "viwiki", "visearch");
+                        }
                     } catch (Exception ex) {
                     }
                 }

@@ -92,7 +92,10 @@ public class DetailImageController extends HttpServlet {
                     tracking.setTimeSearch(Calendar.getInstance());
                     tracking.setSearchType(4);
                     TrackingBUS tbus = new TrackingBUS();
-                    tbus.InsertTracking(tracking, "visearch");
+
+                    if (tbus.InsertTracking(tracking, "visearch")) {
+                        tbus.UpdateKeysearch(Integer.parseInt(keySearchId), keysearch, "image", "visearch");
+                    }
                 }
                 // end tracking
 

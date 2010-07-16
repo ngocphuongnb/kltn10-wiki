@@ -162,7 +162,7 @@
                             }
                             if (listdocs.get(i).getFieldValue("price") != null) {
                                 price = (listdocs.get(i).getFieldValue("price")).toString();
-                                if (Float.parseFloat(price) == 0) {
+                                if (price.equals("")) {
                                     price = "Call";
                                 }
                             }

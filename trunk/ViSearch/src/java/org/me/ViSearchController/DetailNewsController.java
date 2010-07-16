@@ -93,7 +93,9 @@ public class DetailNewsController extends HttpServlet {
                     tracking.setTimeSearch(Calendar.getInstance());
                     tracking.setSearchType(6);
                     TrackingBUS tbus = new TrackingBUS();
-                    tbus.InsertTracking(tracking, "visearch");
+                    if (tbus.InsertTracking(tracking, "visearch")) {
+                        tbus.UpdateKeysearch(Integer.parseInt(keySearchId), keysearch, "news", "visearch");
+                    }
                 }
                 // end tracking
 

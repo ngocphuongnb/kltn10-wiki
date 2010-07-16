@@ -86,8 +86,9 @@ public class DetailRaoVatController extends HttpServlet {
                         tracking.setTimeSearch(Calendar.getInstance());
                         tracking.setSearchType(2);
                         TrackingBUS tbus = new TrackingBUS();
-                        tbus.InsertTracking(tracking, "visearch");
-                        tbus.UpdateKeysearch(Integer.parseInt(keySearchId), keysearch, "raovat","visearch");
+                        if (tbus.InsertTracking(tracking, "visearch")) {
+                            tbus.UpdateKeysearch(Integer.parseInt(keySearchId), keysearch, "raovat", "visearch");
+                        }
                     } catch (Exception ex) {
                     }
                 }
@@ -135,10 +136,9 @@ public class DetailRaoVatController extends HttpServlet {
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
-        } catch(Exception ex){
+        } catch (Exception ex) {
             out.print(ex.getMessage());
-        }
-        finally {
+        } finally {
             out.close();
         }
     }
