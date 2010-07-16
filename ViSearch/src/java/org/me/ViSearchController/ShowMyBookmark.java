@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.solr.common.SolrDocumentList;
+import org.me.Utils.Paging;
 import org.me.bus.BookMarkBUS;
 import org.me.dto.BookMarkDTO;
 import org.me.dto.MemberDTO;
@@ -35,6 +37,14 @@ public class ShowMyBookmark extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String sPaging = "/ViSearch/ShowMyBookmark?";
+        long numRow = 0;
+        int pagesize = 10;
+        int currentpage = 1;
+        if (request.getParameter("currentpage") != null) {
+            currentpage = Integer.parseInt(request.getParameter("currentpage"));
+        }
+        int start = (currentpage - 1) * pagesize;
         try {
             HttpSession session = request.getSession();
             MemberDTO mem = new MemberDTO();
@@ -44,9 +54,18 @@ public class ShowMyBookmark extends HttpServlet {
                 int memberId = mem.getId();
                 BookMarkBUS bmBUS = new BookMarkBUS();
                 ArrayList<BookMarkDTO> lstBM = new ArrayList<BookMarkDTO>();
-                lstBM = bmBUS.lstBookmark("visearch", memberId);
+                lstBM = bmBUS.lstBookmark("visearch", memberId, start, pagesize);
 
+                numRow = bmBUS.getNumRow("visearch", memberId);
+                int numpage = (int) (numRow / pagesize);
+                if (numRow % pagesize > 0) {
+                    numpage++;
+                }
+                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("lstBM", lstBM);
+                request.setAttribute("Pagging", sPaging);
+                request.setAttribute("NumRow", numRow);
+                request.setAttribute("NumPage", numpage);
 
                 String url = "/showBookmark.jsp";
                 ServletContext sc = getServletContext();
@@ -55,7 +74,7 @@ public class ShowMyBookmark extends HttpServlet {
             } else {
                 out.print("Bạn chưa đăng nhập");
             }
-       } catch (Exception e) {
+        } catch (Exception e) {
             out.print(e.getMessage());
         } finally {
             out.close();
