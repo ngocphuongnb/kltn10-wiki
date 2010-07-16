@@ -376,7 +376,7 @@ public class SearchBookmarkController extends HttpServlet {
         solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
-        solrQuery.set("fl", "docid, searchtype, bookmarkname");
+       // solrQuery.set("fl", "docid, searchtype, bookmarkname");
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
