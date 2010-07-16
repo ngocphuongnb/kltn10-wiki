@@ -56,6 +56,7 @@ public class ViwikiPageDAO {
             cl.setTime(d);
             page.setTimestamp(cl);
             page.setKeySearch(rs.getString("keysearch"));
+            page.setFrequency(rs.getInt("frequency"));
             list.add(page);
         }
 

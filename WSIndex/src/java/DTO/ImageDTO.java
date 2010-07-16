@@ -21,6 +21,8 @@ public class ImageDTO {
     private float _width;
     private float _height;
     private String _size;
+    private String _keySearch;
+    private int _frequency;
 
     public void setUrl_local(String _url_local) {
         this._url_local = _url_local;
@@ -110,6 +112,34 @@ public class ImageDTO {
 
     public void setWidth(float _width) {
         this._width = _width;
+    }
+
+    /**
+     * @return the _frequency
+     */
+    public int getFrequency() {
+        return _frequency;
+    }
+
+    /**
+     * @param frequency the _frequency to set
+     */
+    public void setFrequency(int frequency) {
+        this._frequency = frequency;
+    }
+
+    /**
+     * @return the _keySearch
+     */
+    public String getKeySearch() {
+        return _keySearch;
+    }
+
+    /**
+     * @param keySearch the _keySearch to set
+     */
+    public void setKeySearch(String keySearch) {
+        this._keySearch = keySearch;
     }
 
     

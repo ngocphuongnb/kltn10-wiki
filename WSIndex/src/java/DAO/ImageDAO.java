@@ -57,7 +57,8 @@ public class ImageDAO {
             page.setWidth(rs.getFloat("Width"));
             page.setHeight(rs.getFloat("Height"));
             page.setSize(rs.getString("Size"));
-
+            page.setKeySearch(rs.getString("keysearch"));
+            page.setFrequency(rs.getInt("frequency"));
             list.add(page);
         }
 

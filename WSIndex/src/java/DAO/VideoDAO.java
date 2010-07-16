@@ -38,7 +38,8 @@ public class VideoDAO {
             page.setCategory(rs.getString("Category"));
             page.setUrl(rs.getString("URL"));
             page.setDuration(rs.getString("Duration"));
-
+            page.setKeySearch(rs.getString("keysearch"));
+            page.setFrequency(rs.getInt("frequency"));
             list.add(page);
         }
 

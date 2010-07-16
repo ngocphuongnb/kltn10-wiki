@@ -40,6 +40,8 @@ public class MusicDAO {
             page.setUrl(rs.getString("URL"));
             page.setLyric(rs.getString("Lyric"));
             page.setArtist(rs.getString("Artist"));
+            page.setKeySearch(rs.getString("keysearch"));
+            page.setFrequency(rs.getInt("frequency"));
 
 //            Date d = new Date();
 //            d = rs.getDate("DateUpload");

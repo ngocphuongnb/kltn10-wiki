@@ -63,8 +63,8 @@ public class NewsDAO {
             Calendar cl = Calendar.getInstance();
             cl.setTime(d);
             page.setLast_update(cl);
-
-
+            page.setKeySearch(rs.getString("keysearch"));
+            page.setFrequency(rs.getInt("frequency"));
             list.add(page);
         }
 
