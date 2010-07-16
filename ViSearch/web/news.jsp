@@ -140,6 +140,7 @@
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
                                 String body = (listdocs.get(i).getFirstValue("body")).toString();
+                                String url = (listdocs.get(i).getFirstValue("url")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 Date created = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String title_hl = title;
@@ -182,6 +183,10 @@
                                 result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
                                 result.append("</tr>");
 
+                                result.append("<tr>");
+                                result.append("<td><b>Link bài viết: </b><a href='"+url+"' target='_blank'>" + url + "</a></td>");
+                                result.append("</tr>");
+                                
                                 result.append("<tr><td>");
                                 result.append("<a href=\"SearchNewsController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>");
                                 result.append("</td></tr>");
