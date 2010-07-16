@@ -4,6 +4,8 @@
  */
 package org.me.dto;
 
+import java.util.Calendar;
+
 /**
  *
  * @author VinhPham
@@ -16,7 +18,25 @@ public class BookMarkDTO {
     private int _searchType;
     private String _nameBookmark;
     private int _priority;
+    private String link;
+    private Calendar Date_Create;
 
+    public Calendar getDate_Create() {
+        return Date_Create;
+    }
+
+    public void setDate_Create(Calendar Date_Create) {
+        this.Date_Create = Date_Create;
+    }
+    
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+    
     public String getId() {
         return _Id;
     }

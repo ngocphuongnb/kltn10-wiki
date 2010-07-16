@@ -4,6 +4,8 @@
  */
 package org.me.bus;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import org.me.dao.BookMarkDAO;
 import org.me.dto.BookMarkDTO;
 
@@ -20,5 +22,13 @@ public class BookMarkBUS {
     public boolean DeleteBookmark(int id, String database) {
         BookMarkDAO bookMarkDAO = new BookMarkDAO();
         return bookMarkDAO.DeleteBookmark(id, database);
+    }
+    public ArrayList<BookMarkDTO> lstBookmark(String database, int memberId,  int start, int pagesize) {
+        BookMarkDAO bookMarkDAO = new BookMarkDAO();
+        return bookMarkDAO.lstBookmark(database, memberId,  start, pagesize);
+    }
+    public int getNumRow(String database, int memberId) {
+        BookMarkDAO bookMarkDAO = new BookMarkDAO();
+        return bookMarkDAO.getNumRow(database, memberId);
     }
 }
