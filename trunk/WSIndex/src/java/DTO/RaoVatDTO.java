@@ -11,6 +11,7 @@ import java.util.Calendar;
  * @author VinhPham
  */
 public class RaoVatDTO {
+
     private int _id;
     private String _title;
     private String _body;
@@ -23,6 +24,8 @@ public class RaoVatDTO {
     private String _location;
     private String _contact;
     private Calendar _lastUpdate;
+    private String _keySearch;
+    private int _frequency;
 
     /**
      * @return the _title
@@ -190,5 +193,33 @@ public class RaoVatDTO {
      */
     public void setId(int id) {
         this._id = id;
+    }
+
+    /**
+     * @return the _keySearch
+     */
+    public String getKeySearch() {
+        return _keySearch;
+    }
+
+    /**
+     * @param keySearch the _keySearch to set
+     */
+    public void setKeySearch(String keySearch) {
+        this._keySearch = keySearch;
+    }
+
+    /**
+     * @return the _frequency
+     */
+    public int getFrequency() {
+        return _frequency;
+    }
+
+    /**
+     * @param frequency the _frequency to set
+     */
+    public void setFrequency(int frequency) {
+        this._frequency = frequency;
     }
 }

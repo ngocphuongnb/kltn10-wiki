@@ -9,6 +9,7 @@ import BUS.RaoVatBUS;
 import BUS.ImageBUS;
 import BUS.MusicBUS;
 import BUS.NewsBUS;
+import BUS.TrackingBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
 import DTO.BookmarkDTO;
@@ -81,7 +82,7 @@ public class MySolrJ {
             list = bus.getDataList(0, 100);
             try {
                 lResult = ImportViwiki2Solr(list, "wikipedia");
-                ImportViwiki2SolrAll(list, "all");
+                //ImportViwiki2SolrAll(list, "all");
                 bus.UpdateAfterIndex(lResult);
             } catch (Exception ex) {
             }
@@ -357,7 +358,8 @@ public class MySolrJ {
             doc.addField("url", pagedto.getUrl());
             doc.addField("lyric", pagedto.getLyric());
             doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
-            // doc.addField("dateUpload", pagedto.getDayUpload().getTime());
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -390,7 +392,8 @@ public class MySolrJ {
 
             doc.addField("category", "Nhạc");
             doc.addField("body", pagedto.getUrl());
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -431,8 +434,8 @@ public class MySolrJ {
                 doc.addField("timestamp", sdf.format(pagedto.getTimestamp().getTime()));
                 doc.addField("username", pagedto.getUsername());
                 doc.addField("username_unsigned", RemoveSignVN(pagedto.getUsername()));
-                doc.addField("keysearch", pagedto.getKeySearch());
-                doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()));
+                doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+                doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
                 docs.add(doc);
                 listint.add(pagedto.getId());
             }
@@ -469,6 +472,9 @@ public class MySolrJ {
 
             doc.addField("body", pagedto.getText().replaceAll("\\<.*?\\>", ""));
             doc.addField("body_unsigned", RemoveSignVN(pagedto.getText().replaceAll("\\<.*?\\>", "")));
+
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -508,7 +514,8 @@ public class MySolrJ {
             doc.addField("site", pagedto.getSite().trim());
             doc.addField("rv_title", pagedto.getTitle());
             doc.addField("rv_title_unsigned", RemoveSignVN(pagedto.getTitle()));
-            doc.addField("url", pagedto.getUrl());
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -540,6 +547,8 @@ public class MySolrJ {
 
             doc.addField("title", pagedto.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -576,7 +585,8 @@ public class MySolrJ {
 
             doc.addField("url", pagedto.getUrl());
             doc.addField("duration", pagedto.getDuration());
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -607,7 +617,6 @@ public class MySolrJ {
             doc.addField("bookmarkname_unsigned", RemoveSignVN(pagedto.getBookmarkName()));
             doc.addField("date_created", pagedto.getDate_create().getTime());
             doc.addField("priority", pagedto.getPriority());
-
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -638,7 +647,8 @@ public class MySolrJ {
             doc.addField("category", "Video");
 
             doc.addField("body", pagedto.getUrl());
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -676,7 +686,8 @@ public class MySolrJ {
             doc.addField("width", Float.toString(pagedto.getWidth()));
             doc.addField("height", Float.toString(pagedto.getHeight()));
             doc.addField("size", pagedto.getSize());
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -708,7 +719,8 @@ public class MySolrJ {
             doc.addField("category", "Hình ảnh");
             doc.addField("title", pagedto.getSite_title());
             doc.addField("title_unsigned", RemoveSignVN(pagedto.getSite_title()));
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -749,7 +761,8 @@ public class MySolrJ {
             doc.addField("photo", pagedto.getPhoto());
 
             doc.addField("last_update", pagedto.getLast_update().getTime());
-
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }
@@ -789,6 +802,8 @@ public class MySolrJ {
 
             doc.addField("body", strBody);
             doc.addField("body_unsigned", RemoveSignVN(strBody));
+            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
             docs.add(doc);
             listint.add(pagedto.getId());
         }

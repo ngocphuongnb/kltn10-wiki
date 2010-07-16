@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package DTO;
 
 import java.util.Calendar;
@@ -22,6 +21,7 @@ public class ViwikiPageDTO {
     private String _username;
     private String _comment;
     private String _keySearch;
+    private int _frequency;
 
     /**
      * @return the _title
@@ -43,14 +43,12 @@ public class ViwikiPageDTO {
 //    public String getRedirect() {
 //        return _redirect;
 //    }
-
     /**
      * @param redirect the _redirect to set
      */
 //    public void setRedirect(String redirect) {
 //        this._redirect = redirect;
 //    }
-
     /**
      * @return the _timestamp
      */
@@ -127,14 +125,12 @@ public class ViwikiPageDTO {
 //    public String getMinor() {
 //        return _minor;
 //    }
-
     /**
      * @param minor the _minor to set
      */
 //    public void setMinor(String minor) {
 //        this._minor = minor;
 //    }
-
     /**
      * @return the _comment
      */
@@ -175,5 +171,19 @@ public class ViwikiPageDTO {
      */
     public void setKeySearch(String keySearch) {
         this._keySearch = keySearch;
+    }
+
+    /**
+     * @return the _frequency
+     */
+    public int getFrequency() {
+        return _frequency;
+    }
+
+    /**
+     * @param frequency the _frequency to set
+     */
+    public void setFrequency(int frequency) {
+        this._frequency = frequency;
     }
 }

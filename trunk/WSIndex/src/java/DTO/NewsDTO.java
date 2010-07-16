@@ -22,6 +22,8 @@ public class NewsDTO {
     private String photo;
     private String url;
     private String site;
+    private String _keySearch;
+    private int _frequency;
 
     public void setBody(String _body) {
         this._body = _body;
@@ -95,12 +97,39 @@ public class NewsDTO {
         this._id = _id;
     }
 
-
     public void setModified_by(int _modified_by) {
         this._modified_by = _modified_by;
     }
 
     public void setTitle(String _title) {
         this._title = _title;
+    }
+
+    /**
+     * @return the _frequency
+     */
+    public int getFrequency() {
+        return _frequency;
+    }
+
+    /**
+     * @param frequency the _frequency to set
+     */
+    public void setFrequency(int frequency) {
+        this._frequency = frequency;
+    }
+
+    /**
+     * @return the _keySearch
+     */
+    public String getKeySearch() {
+        return _keySearch;
+    }
+
+    /**
+     * @param keySearch the _keySearch to set
+     */
+    public void setKeySearch(String keySearch) {
+        this._keySearch = keySearch;
     }
 }

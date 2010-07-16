@@ -17,6 +17,8 @@ public class VideoDTO {
     private String _category;
     private String _url;
     private String _duration;
+    private String _keySearch;
+    private int _frequency;
 
 
 public void setId(int _id) {
@@ -61,5 +63,33 @@ public void setId(int _id) {
 
     public void setUrl(String _url) {
         this._url = _url;
+    }
+
+    /**
+     * @return the _frequency
+     */
+    public int getFrequency() {
+        return _frequency;
+    }
+
+    /**
+     * @param frequency the _frequency to set
+     */
+    public void setFrequency(int frequency) {
+        this._frequency = frequency;
+    }
+
+    /**
+     * @return the _keySearch
+     */
+    public String getKeySearch() {
+        return _keySearch;
+    }
+
+    /**
+     * @param keySearch the _keySearch to set
+     */
+    public void setKeySearch(String keySearch) {
+        this._keySearch = keySearch;
     }
 }
