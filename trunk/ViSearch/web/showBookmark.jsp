@@ -346,7 +346,9 @@
                             result4 += "</tr>";
 
                             result4 += "<tr>";
-                            result4 += "<td>Ngày tạo: " + date_created.toString() + "</td>";
+                           // result4 += "<td>Ngày tạo: " + date_created.toString() + "</td>";
+                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                            result4 += "<td>Ngày tạo: " + sdf.format(date_created) + "</td>";
                             result4 += "</tr>";
                             result4 += "<tr><td>&nbsp;</td></tr>";
                         }
