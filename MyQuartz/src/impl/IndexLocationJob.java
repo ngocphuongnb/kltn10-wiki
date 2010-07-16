@@ -4,9 +4,7 @@
  */
 package impl;
 
-import IndexData.LocationDTO;
-import IndexData.WSIndex;
-import IndexData.WSIndexService;
+import index.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;

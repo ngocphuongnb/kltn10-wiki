@@ -21,7 +21,7 @@
     <target name="wsimport-client-WSIndex" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/WSIndex"/>
         <property name="wsdl-WSIndex" location="xml-resources/web-service-references/WSIndex/wsdl/localhost_8084/WSIndex/WSIndex.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSIndex" destdir="${build.generated.dir}/jax-wsCache/WSIndex" wsdl="${wsdl-WSIndex}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8084/WSIndex/WSIndex?wsdl" xendorsed="true" package="IndexData">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/WSIndex" destdir="${build.generated.dir}/jax-wsCache/WSIndex" wsdl="${wsdl-WSIndex}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="http://localhost:8084/WSIndex/WSIndex?wsdl" xendorsed="true" package="index">
             <depends file="${wsdl-WSIndex}"/>
             <produces dir="${build.generated.dir}/jax-wsCache/WSIndex"/>
         </wsimport>
@@ -33,7 +33,7 @@
     </target>
     <target name="wsimport-client-clean-WSIndex" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/WSIndex"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/IndexData"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/index"/>
     </target>
     <target name="wsimport-client-generate" depends="wsimport-client-WSIndex"/>
 </project>
