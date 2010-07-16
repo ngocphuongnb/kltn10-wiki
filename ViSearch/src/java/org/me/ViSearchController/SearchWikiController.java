@@ -46,6 +46,7 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
+import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -317,13 +318,14 @@ public class SearchWikiController extends HttpServlet {
                 keySearch = seg.getwordBoundaryMark(keySearch);
                 break;
         }
-        solrQuery.setQuery(keySearch);
-
         solrQuery.setHighlight(true);
+        solrQuery.setHighlightSnippets(5);
         solrQuery.addHighlightField("wk_title");
         solrQuery.addHighlightField("wk_text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setQuery(keySearch);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
         QueryResponse rsp = server.query(solrQuery);

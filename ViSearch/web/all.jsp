@@ -135,12 +135,13 @@
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
             }
+
             function Tracking(docid){
                 var keySearch = document.getElementById('hfKeySearch').value;
                 var Url = "TrackingController?KeySearch=" + keySearch;
                 Url += "&DocID=" + docid;
                 Url += "&searchType=7";
-                alert(Url);
+                //alert(Url);
                 window.location = Url;
             }
             function Sort(type){
@@ -214,6 +215,7 @@
                                 String body = (listdocs.get(i).getFieldValue("body")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String title_hl = title;
+                                String url = title.replace(' ', '_');
 
                                 if (request.getAttribute("HighLight") != null) {
                                     highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
@@ -241,7 +243,7 @@
                                     stype = "news";
                                 } else if (id.length() > 4 && id.substring(0, 4).equals("wiki")) {
                                     subId = id.substring(4);
-                                    link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "\" onclick=\"Tracking('" + subId + "');\">" + title_hl + "</a>";
+                                    link = "<a href=\"DetailWikiController?id=" + subId + "&KeySearch=" + strQuery + "&url=" + url + "\">" + title_hl + "</a>";
                                     stype = "wiki";
                                 } else if (id.length() > 2 && id.substring(0, 2).equals("ms")) {
                                     subId = id.substring(2);

@@ -4,6 +4,8 @@
     Author     : tuandom
 --%>
 
+<%@page import="java.io.File"%>
+<%@page import="org.apache.tomcat.jni.FileInfo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.apache.solr.client.solrj.SolrQuery"%>
 <%@page import="org.apache.solr.client.solrj.SolrServer"%>
@@ -132,11 +134,15 @@
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String url="";
-                             //   if(listdocs.get(i).getFieldValue("url_local")!=null)
-                              //     url = "../../bin/"+(listdocs.get(i).getFieldValue("url_local")).toString();
-                             //  else
+                                String url = "";
+                                if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
+                                    File file = new File(listdocs.get(i).getFieldValue("url_local").toString());
+                                    if (file.exists()) {
+                                        url = (listdocs.get(i).getFieldValue("url_local")).toString();
+                                    }
+                                } else {
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
+                                }
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
                                 String size = (listdocs.get(i).getFieldValue("size")).toString();
@@ -154,7 +160,7 @@
                                     title_hl = title.substring(0, 20) + "...";
                                 }
 
-                           
+
 
                                 result += "<tr>";
                                 result += "<td width=\"150\" height=\"200\" valign=\"bottom\"><a href=\"DetailImageController?id=" + id + "&KeySearch=" + strQuery + "\"><img src=\"" + url + "\" width=\"150\" align=\"left\" /></a></td>";
@@ -220,7 +226,7 @@
 
                     // End get Facet
 %>
-        
+
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -230,7 +236,7 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td style="text-align:right; margin-bottom:8px; font-size:11px">
-                                         <%@include file="template/frm_login.jsp" %>
+                                        <%@include file="template/frm_login.jsp" %>
                                     </td></tr>
                                 <tr>
                                     <td width="974" valign="top">
@@ -239,7 +245,7 @@
                                 </tr>
                             </table>
                         </td>
-                        <tr>
+                    <tr>
                         <td style="font-size:12px;" width="30%" align="middle">
                             <script type="" language="javascript">goforit();</script>
                             <span id="clock"/></td>
@@ -250,7 +256,7 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                
+
                                 <% if (request.getAttribute("Docs") != null) {
                                                 out.print(facet);
                                                 out.print("<div class=\"mnu\">Kích thước</div>");

@@ -100,7 +100,7 @@ public class SearchMusicController extends HttpServlet {
                 switch (type) {
                     case 0:
                         // F = 8: search theo id, de sCollation se bi loi
-                        if (FieldId.equals("8")==false && request.getParameter("sp") != null) {
+                        if (FieldId.equals("6")&& request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
                             if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);

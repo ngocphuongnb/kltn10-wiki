@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.me.ViSearchController;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ import org.me.dto.TrackingDTO;
  * @author tuandom
  */
 public class TrackingController extends HttpServlet {
-   
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -34,53 +33,65 @@ public class TrackingController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String docId="";
+        String docId = "";
         int searchType = 0;
         searchType = Integer.parseInt(request.getParameter("searchType"));
-         if (request.getParameter("DocID") != null) {
-                docId = request.getParameter("DocID");
-         }
+        if (request.getParameter("DocID") != null) {
+            docId = request.getParameter("DocID");
+        }
         try {
             //Phan tracking
-                ParameterBUS par = new ParameterBUS();
-                int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
-                String sTime = String.format("%d:00:00", timeRange);
+            ParameterBUS par = new ParameterBUS();
+            int timeRange = Integer.parseInt(par.GetParameter("time_range", "visearch").toString());
+            String sTime = String.format("%d:00:00", timeRange);
 
-                TrackingDTO tracking = new TrackingDTO();
-                String keysearch = request.getParameter("KeySearch").toString();
+            TrackingDTO tracking = new TrackingDTO();
+            String keysearch = request.getParameter("KeySearch").toString();
 
-                request.setAttribute("KeySearch", keysearch);
-                tracking.setKeySearch(keysearch);
-                tracking.setDocId(docId);
-                tracking.setIp(request.getRemoteAddr());
-                HttpSession session = request.getSession();
-                if (session.getAttribute("Member") != null) {
-                    MemberDTO mem = (MemberDTO) session.getAttribute("Member");
-                    tracking.setMemberId(mem.getId());
-                } else {
-                    tracking.setMemberId(-1);
+            request.setAttribute("KeySearch", keysearch);
+            tracking.setKeySearch(keysearch);
+            tracking.setDocId(docId);
+            tracking.setIp(request.getRemoteAddr());
+            HttpSession session = request.getSession();
+            if (session.getAttribute("Member") != null) {
+                MemberDTO mem = (MemberDTO) session.getAttribute("Member");
+                tracking.setMemberId(mem.getId());
+            } else {
+                tracking.setMemberId(-1);
+            }
+            tracking.setTimeRange(sTime);
+            tracking.setTimeSearch(Calendar.getInstance());
+            tracking.setSearchType(searchType);
+            TrackingBUS tbus = new TrackingBUS();
+            boolean b = tbus.InsertTracking(tracking, "visearch");
+            if (b == true) {
+                switch (searchType) {
+                    case 3:
+                        tbus.UpdateKeysearch(Integer.parseInt(docId), keysearch, "music", "visearch");
+                        break;
+                    case 5:
+                        tbus.UpdateKeysearch(Integer.parseInt(docId), keysearch, "video", "visearch");
+                        break;
+                    default:
+                        break;
                 }
-                tracking.setTimeRange(sTime);
-                tracking.setTimeSearch(Calendar.getInstance());
-                tracking.setSearchType(searchType);
-                TrackingBUS tbus = new TrackingBUS();
-                tbus.InsertTracking(tracking, "visearch");
-                // end tracking
+            }
+            // end tracking
 
 
 //            ServletContext sc = getServletContext();
 //            RequestDispatcher rd = sc.getRequestDispatcher(urlFrom);
 //            rd.forward(request, response);
-        } finally { 
+        } finally {
             out.close();
         }
-    } 
+    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -89,9 +100,11 @@ public class TrackingController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+
+
+    }
 
     /** 
      * Handles the HTTP <code>POST</code> method.
@@ -102,8 +115,10 @@ public class TrackingController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
+
+
     }
 
     /** 
@@ -113,6 +128,6 @@ public class TrackingController extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
 
+    }// </editor-fold>
 }
