@@ -115,12 +115,12 @@
                             result += "<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchBookmarkController?KeySearch=" + sCollation + "&Filter=1_2\">" + sCollation + "</a></b></font></p>";
                         }
 
+                        result += "<table style=\"font-size:13px\">";
                         for (int i = 0; i < listdocs.size(); i++) {
-                            result += "<table style=\"font-size:13px\">";
+
 
                             // Lay noi dung cua moi field
                             String id = (listdocs.get(i).getFirstValue("id")).toString();
-                            String memberId = (listdocs.get(i).getFirstValue("memberid")).toString();
                             String docid = (listdocs.get(i).getFieldValue("docid")).toString();
                             String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
                             String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
@@ -179,9 +179,8 @@
                             result += "</tr>";
 
                             result += "<tr><td>&nbsp;</td></tr>";
-                            result += "</table>";
                         }
-
+                        result += "</table>";
                         // Phan trang
                         numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
                         if (request.getAttribute("NumPage") != null) {
@@ -193,7 +192,7 @@
                     if (numpage > 1) {
                         result += "Tổng số trang là: " + numpage + "<br/>";
                     }
-                    result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>";
+                    result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>";
                     //get SolrDocumentList
         %>
         <%                  //get Newest SolrDocumentList
@@ -206,9 +205,9 @@
                         for (int i = 0; i < NewestDocs.size(); i++) {
 
                             // Lay noi dung cua moi field
-                            String docid = (listdocs.get(i).getFieldValue("docid")).toString();
-                            String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
-                            String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
+                            String docid = (NewestDocs.get(i).getFieldValue("docid")).toString();
+                            String searchtype = (NewestDocs.get(i).getFieldValue("searchtype")).toString();
+                            String bookmarkname = (NewestDocs.get(i).getFieldValue("bookmarkname")).toString();
 
                             if (searchtype.equals("1")) {
                                 link = "DetailWikiController?id=" + docid + "&KeySearch=";
@@ -291,27 +290,25 @@
         %>
         <%
                     //START get Bookmark by user
-                    SolrDocumentList docsUser = new SolrDocumentList();
-                    String result2 = null;
-                    if (request.getAttribute("docsUser") != null) {
-                        docsUser = (SolrDocumentList) request.getAttribute("docsUser");
-
-                        link = "";
-                        String link1 = "";
+                    ArrayList<BookMarkDTO> lstBM = new ArrayList<BookMarkDTO>();
+                    String result4 = "";
+                    if (request.getAttribute("lstBM") != null) {
                         String category = "";
-                        for (int i = 0; i < docsUser.size(); i++) {
-                            result += "<table style=\"font-size:13px\">";
+                        String link1 = "";
+                        lstBM = (ArrayList<BookMarkDTO>) request.getAttribute("lstBM");
+                        BookMarkDTO dto = new BookMarkDTO();
+                        result4 += "<h2>Bookmark của tôi</h2>";
+                        result4 += "<table style=\"font-size:13px\">";
 
-                            // Lay noi dung cua moi field
-                            String id = (listdocs.get(i).getFirstValue("id")).toString();
-                            String memberId = (listdocs.get(i).getFirstValue("memberid")).toString();
-                            String docid = (listdocs.get(i).getFieldValue("docid")).toString();
-                            String searchtype = (listdocs.get(i).getFieldValue("searchtype")).toString();
-                            String bookmarkname = (listdocs.get(i).getFieldValue("bookmarkname")).toString();
-                            Date date_created = (Date) (listdocs.get(i).getFieldValue("date_created"));
+                        for (int i = 0; i < lstBM.size(); i++) {
+                            dto = lstBM.get(i);
+
+                            String docid = dto.getDocId();
+                            String searchtype = Integer.toString(dto.getSearchType());
+                            String bookmarkname = dto.getNameBookmark();
+                            Calendar dateCrt = dto.getDate_Create();
+                            Date date_created = dateCrt.getTime();
                             String url = "";
-
-
 
                             if (searchtype.equals("1")) {
                                 link = "DetailWikiController?id=" + docid + "&KeySearch=";
@@ -339,24 +336,33 @@
                                 category = "Tin tức";
                             }
 
-                            result2 += "<tr>";
-                            result2 += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
-                            result2 += "</tr>";
+                            result4 += "<tr>";
+                            result4 += "<td><a href=\"" + link + "\">" + bookmarkname + "</a></td>";
+                            result4 += "</tr>";
 
 
-                            result2 += "<tr>";
-                            result2 += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
-                            result2 += "</tr>";
+                            result4 += "<tr>";
+                            result4 += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
+                            result4 += "</tr>";
 
-                            result2 += "<tr>";
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                            result2 += "<td>Ngày tạo: " + sdf.format(date_created) + "</td>";
-                            result2 += "</tr>";
-
-                            result2 += "<tr><td>&nbsp;</td></tr>";
-                            result2 += "</table>";
+                            result4 += "<tr>";
+                            result4 += "<td>Ngày tạo: " + date_created.toString() + "</td>";
+                            result4 += "</tr>";
+                            result4 += "<tr><td>&nbsp;</td></tr>";
                         }
+
+                        result4 += "</table>";
                     }
+                    // phan trang
+                    numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                    numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
+                    strpaging = (String) request.getAttribute("Pagging");
+                    result4 += "Tổng số kết quả: " + numrow + "<br/>";
+                    if (numpage > 1) {
+                        result4 += "Tổng số trang là: " + numpage + "<br/>";
+                    }
+                    result4 += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>";
+                    // end
 
                     //END get Bookmark by user
 %>
@@ -394,12 +400,12 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                            <div class="mnu">Bookmark mới</div>
-                            
+                                <div class="mnu">Bookmark mới</div>
+
                                 <% if (request.getAttribute("NewestDocs") != null) {
                                                 out.print(result3);
                                             }%>
-                             </div>
+                            </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
 
@@ -421,7 +427,7 @@
                                                 <legend>Tìm kiếm trên:</legend>
                                                 <input type="checkbox" name="filter[]" value="1" id="private" checked/> bookmark cá nhân
                                                 <input type="checkbox" name="filter[]" value="2" id="public"/> bookmark chia sẻ
-                                                <br/><a href="SearchBookmarkController"> xem bookmark của tôi </a>
+                                                <a href="ShowMyBookmark"> xem bookmark của tôi </a>
                                             </fieldset>
                                             <hr/>
                                         </form>
@@ -431,6 +437,7 @@
                     <tr>
                         <td valign="top" id="content">
                             <% out.print(result);%>
+                            <% out.print(result4);%>
                         </td>
                     <tr>
                         <td>
