@@ -291,10 +291,10 @@ public class SearchVideoController extends HttpServlet {
         SolrQuery query = new SolrQuery();
 
         // Facet
-        query.setFacet(true);
-        query.addFacetField("category");
-        query.setFacetLimit(10);
-        query.setFacetMinCount(1);
+//        query.setFacet(true);
+//        query.addFacetField("category");
+//        query.setFacetLimit(10);
+//        query.setFacetMinCount(1);
         // End Facet
 
         query.setQueryType("/" + MoreLikeThisParams.MLT);
