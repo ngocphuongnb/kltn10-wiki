@@ -66,6 +66,11 @@
                     url += "&SortedType=1";
                     window.location = url;
                 }
+                if(ChuDe==2){ // rao vat
+                    var url = "SearchRaoVatController?type=5&sp=1"+query;
+                    url += "&SortedType=1";
+                    window.location = url;
+                }
                 if(ChuDe==3){
                     var url = "SearchMusicController?type=3&sp=1"+query;
                     url += "&SortedType=1";

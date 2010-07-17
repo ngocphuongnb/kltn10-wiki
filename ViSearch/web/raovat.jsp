@@ -63,7 +63,7 @@
                 document.getElementById("divPVTC").className="display";
             }
         </script>
-        <script type="" language="javascript">
+        <script  language="javascript">
             function Sort(type){
             var sortedtype = document.getElementById('slSortedType').value;
             //alert(sortedtype);

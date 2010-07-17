@@ -341,7 +341,7 @@ public class SearchNewsController extends HttpServlet {
                 + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
         solrQuery.setQuery(query);
 
-        // Facet
+         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
