@@ -128,7 +128,7 @@
                 </tr>
                 <tr>
                     <td style="background:url(images/banner_11.gif);">
-                        <font size="-2"><a href="advance_search.jsp">Tìm kiếm nâng cao</a></font></td>
+                        <font size="-2"><a href="advance_search.jsp"><b>Tìm kiếm nâng cao</b></a></font></td>
                     <td>
                         <img src="images/spacer.gif" width="1" height="22" alt=""></td>
                 </tr>
