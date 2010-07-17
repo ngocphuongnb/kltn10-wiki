@@ -523,7 +523,7 @@ public class SearchImageController extends HttpServlet {
                 }
                 keySearch += arrTextOneOf[i] + " ";
                 if (i == arrTextOneOf.length - 1) {
-                    keySearch += ")";
+                    keySearch += ") ";
                 }
             }
         }
