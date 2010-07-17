@@ -105,121 +105,118 @@ public class SearchWikiController extends HttpServlet {
                 sPaging += "SortedType=" + sortedType;
             }
 
-            //</get-parameter>
+            QueryResponse rsp;
+            Map<String, Map<String, List<String>>> highLight;
             if (request.getParameter("KeySearch") != null) {
-
-                QueryResponse rsp;
-                Map<String, Map<String, List<String>>> highLight;
-
                 keySearch = URLDecoder.decode(request.getParameter("KeySearch"), "UTF-8");
 //                out.print(keySearch);
 //                out.print(URLEncoder.encode(keySearch, "UTF-8"));
 //                out.print(URLDecoder.decode(keySearch, "UTF-8"));
                 sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
-
-                switch (type) {
-                    case 0:
-                        if (request.getParameter("sp") != null) {
-                            String sCollation = OnCheckSpelling(keySearch);
-
-                            if (sCollation != null && sCollation.equals("") == false) {
-                                request.setAttribute("Collation", sCollation);
-                            }
-                        }
-
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=0";
-                        break;
-                    case 1:
-                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        if (highLight != null) {
-                            request.setAttribute("HighLight", highLight);
-                        }
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=1";
-                        break;
-                    case 2:
-                        String facetName = "";
-                        String facetValue = "";
-                        sPaging += "&type=2";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            facetValue = request.getParameter("FacetValue");
-                            sPaging += "&FacetName=" + facetName;
-                            sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        break;
-                    case 3:
-                        facetName = "";
-                        facetValue = "";
-                        sPaging += "&type=3";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            sPaging += "&FacetName=" + facetName;
-                            String startDate = "";
-                            if (request.getParameter("sd") != null) {
-                                startDate = request.getParameter("sd");
-                            }
-                            String endDate = "";
-                            if (request.getParameter("ed") != null) {
-                                endDate = request.getParameter("ed");
-                            }
-                            facetValue = createFacetValue(startDate, endDate);
-                            sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
-
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        docs = rsp.getResults();
-                        QTime = rsp.getQTime();
-
-                        break;
-                    case 4:
-                        String TextAll = "";
-                        String TextExact = "";
-                        String TextOneOf = "";
-                        String TextNone = "";
-
-                        if (request.getParameter("ta") != null) {
-                            TextAll = request.getParameter("ta");
-                            sPaging += "&ta=" + TextAll;
-                        }
-                        if (request.getParameter("te") != null) {
-                            TextExact = request.getParameter("te");
-                            sPaging += "&te=" + TextExact;
-                        }
-                        if (request.getParameter("to") != null) {
-                            TextOneOf = request.getParameter("to");
-                            sPaging += "&to=" + TextOneOf;
-                        }
-                        if (request.getParameter("tn") != null) {
-                            TextNone = request.getParameter("tn");
-                            sPaging += "&tn=" + TextNone;
-                        }
-                        rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    default:
-                        break;
-                }
             }
+            switch (type) {
+                case 0:
+                    if (request.getParameter("sp") != null) {
+                        String sCollation = OnCheckSpelling(keySearch);
+
+                        if (sCollation != null && sCollation.equals("") == false) {
+                            request.setAttribute("Collation", sCollation);
+                        }
+                    }
+
+                    rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    sPaging += "&type=0";
+                    break;
+                case 1:
+                    rsp = OnMLT(keySearch, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    if (highLight != null) {
+                        request.setAttribute("HighLight", highLight);
+                    }
+                    QTime = rsp.getQTime();
+                    sPaging += "&type=1";
+                    break;
+                case 2:
+                    String facetName = "";
+                    String facetValue = "";
+                    sPaging += "&type=2";
+                    if (request.getParameter("FacetName") != null) {
+                        facetName = request.getParameter("FacetName");
+                        facetValue = request.getParameter("FacetValue");
+                        sPaging += "&FacetName=" + facetName;
+                        sPaging += "&FacetValue=" + facetValue;
+                    }
+                    rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    break;
+                case 3:
+                    facetName = "";
+                    facetValue = "";
+                    sPaging += "&type=3";
+                    if (request.getParameter("FacetName") != null) {
+                        facetName = request.getParameter("FacetName");
+                        sPaging += "&FacetName=" + facetName;
+                        String startDate = "";
+                        if (request.getParameter("sd") != null) {
+                            startDate = request.getParameter("sd");
+                        }
+                        String endDate = "";
+                        if (request.getParameter("ed") != null) {
+                            endDate = request.getParameter("ed");
+                        }
+                        facetValue = createFacetValue(startDate, endDate);
+                        sPaging += "&FacetValue=" + facetValue;
+                    }
+                    rsp = OnSearchSubmitStandard(keySearch, facetName, facetValue, start, pagesize, sortedType);
+
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    docs = rsp.getResults();
+                    QTime = rsp.getQTime();
+
+                    break;
+                case 4:
+                    String TextAll = "";
+                    String TextExact = "";
+                    String TextOneOf = "";
+                    String TextNone = "";
+
+                    if (request.getParameter("ta") != null) {
+                        TextAll = request.getParameter("ta");
+                        sPaging += "&ta=" + TextAll;
+                    }
+                    if (request.getParameter("te") != null) {
+                        TextExact = request.getParameter("te");
+                        sPaging += "&te=" + TextExact;
+                    }
+                    if (request.getParameter("to") != null) {
+                        TextOneOf = request.getParameter("to");
+                        sPaging += "&to=" + TextOneOf;
+                    }
+                    if (request.getParameter("tn") != null) {
+                        TextNone = request.getParameter("tn");
+                        sPaging += "&tn=" + TextNone;
+                    }
+                    rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                default:
+                    break;
+            }
+
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
@@ -741,30 +738,19 @@ public class SearchWikiController extends HttpServlet {
         }
         return keySearch;
     }
+
     QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-
-        String query = "";
         String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
-
-        query += "wk_title:(\"" + keySearch + "\")^30 || wk_text:(\"" + keySearch + "\")^8 || "
-                        + "wk_title:(" + keySearch + ")^7 || wk_text:(" + keySearch + ")^3 || "
-                        + "wk_title_unsigned:(\"" + keySearch + "\")^10 || wk_text_unsigned:(\"" + keySearch + "\")^2 || wk_title_unsigned:(" + keySearch + ")^1.5 || wk_text_unsigned:(" + keySearch + ")";
-        solrQuery.setQuery(query);
-
-        // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-        // End Facet
-
+        solrQuery.setQueryType("dismax_unsigned");
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSnippets(5);
+        solrQuery.addHighlightField("wk_title");
+        solrQuery.addHighlightField("wk_text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setQuery(keySearch);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
         QueryResponse rsp = server.query(solrQuery);

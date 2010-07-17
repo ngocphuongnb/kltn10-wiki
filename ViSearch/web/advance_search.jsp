@@ -20,10 +20,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>ViSearch - Tìm kiếm nâng cao</title>
-        <link href="style.css"rel="stylesheet" type="text/css" />
+                <link href="style.css"rel="stylesheet" type="text/css" />
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/clock.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+        <link type="text/css" href="css/visearchStyle.css" rel="stylesheet"/>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#tbTopSearch").load("TopSearch?SearchType=7");
+            });
+        </script>
 
         <script type="text/javascript">
             function CheckInput()
@@ -136,11 +143,9 @@
                     <tr>
                         <td width="200" height="33" valign="top">
                             <div class="subtable">
-                                <div class="mnu">Nhà tài trợ</div>
-
-                                <% if (request.getAttribute("NewestDocs") != null) {
-                                                out.print("result3");
-                                            }%>
+                                 <div class="mnu">Tìm kiếm nhiều</div>
+                                <table id="tbTopSearch">
+                                </table>
                             </div>
                         </td>
                         <td width="627" rowspan="2" valign="top">
@@ -189,13 +194,12 @@
                                                     <td><input type ="button" value="Tìm kiếm" onclick="AdvanceSearch()"></td>
                                                 </tr>
                                             </table>
-                                            <hr/>
                                         </form>
                                     </td>   
                     </tr>
                     <tr>
                         <td valign="top" id="content">
-                            <% out.print("result");%>
+                            <% %>
                         </td>
                     <tr>
                         <td>
