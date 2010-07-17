@@ -102,90 +102,90 @@ public class SearchVideoController extends HttpServlet {
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
-
                 sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
-
-                switch (type) {
-                    case 0:
-                        if (request.getParameter("sp") != null) {
-                            String sCollation = OnCheckSpelling(keySearch);
-                            if (sCollation.equals("") == false) {
-                                request.setAttribute("Collation", sCollation);
-                            }
-                        }
-
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, more, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 1:
-                        rsp = OnMLT(keySearch, start, pagesize);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        if (highLight != null) {
-                            request.setAttribute("HighLight", highLight);
-                        }
-                        QTime = rsp.getQTime();
-
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 2: // facet
-                    case 3: // truy van theo thể loại
-                        String facetName = "";
-                        String facetValue = "";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            facetValue = request.getParameter("FacetValue");
-                            sPaging += "&FacetName=" + facetName;
-                            sPaging += "&FacetValue=" + facetValue;
-                        }
-                        rsp = OnSearchSubmitStandard(type, keySearch, facetName, facetValue, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 4:
-                        String TextAll = "";
-                        String TextExact = "";
-                        String TextOneOf = "";
-                        String TextNone = "";
-
-                        if (request.getParameter("ta") != null) {
-                            TextAll = request.getParameter("ta");
-                            sPaging += "&ta=" + TextAll;
-                        }
-                        if (request.getParameter("te") != null) {
-                            TextExact = request.getParameter("te");
-                            sPaging += "&te=" + TextExact;
-                        }
-                        if (request.getParameter("to") != null) {
-                            TextOneOf = request.getParameter("to");
-                            sPaging += "&to=" + TextOneOf;
-                        }
-                        if (request.getParameter("tn") != null) {
-                            TextNone = request.getParameter("tn");
-                            sPaging += "&tn=" + TextNone;
-                        }
-                        rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    default:
-                        break;
-                }
             }
+
+            switch (type) {
+                case 0:
+                    if (request.getParameter("sp") != null) {
+                        String sCollation = OnCheckSpelling(keySearch);
+                        if (sCollation.equals("") == false) {
+                            request.setAttribute("Collation", sCollation);
+                        }
+                    }
+
+                    rsp = OnSearchSubmit(keySearch, start, pagesize, more, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 1:
+                    rsp = OnMLT(keySearch, start, pagesize);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    if (highLight != null) {
+                        request.setAttribute("HighLight", highLight);
+                    }
+                    QTime = rsp.getQTime();
+
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 2: // facet
+                case 3: // truy van theo thể loại
+                    String facetName = "";
+                    String facetValue = "";
+                    if (request.getParameter("FacetName") != null) {
+                        facetName = request.getParameter("FacetName");
+                        facetValue = request.getParameter("FacetValue");
+                        sPaging += "&FacetName=" + facetName;
+                        sPaging += "&FacetValue=" + facetValue;
+                    }
+                    rsp = OnSearchSubmitStandard(type, keySearch, facetName, facetValue, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 4:
+                    String TextAll = "";
+                    String TextExact = "";
+                    String TextOneOf = "";
+                    String TextNone = "";
+
+                    if (request.getParameter("ta") != null) {
+                        TextAll = request.getParameter("ta");
+                        sPaging += "&ta=" + TextAll;
+                    }
+                    if (request.getParameter("te") != null) {
+                        TextExact = request.getParameter("te");
+                        sPaging += "&te=" + TextExact;
+                    }
+                    if (request.getParameter("to") != null) {
+                        TextOneOf = request.getParameter("to");
+                        sPaging += "&to=" + TextOneOf;
+                    }
+                    if (request.getParameter("tn") != null) {
+                        TextNone = request.getParameter("tn");
+                        sPaging += "&tn=" + TextNone;
+                    }
+                    rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                default:
+                    break;
+            }
+
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
@@ -408,7 +408,7 @@ public class SearchVideoController extends HttpServlet {
                 + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         solrQuery.setQuery(query);
 
-          // Facet
+        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
@@ -456,7 +456,7 @@ public class SearchVideoController extends HttpServlet {
                 }
             }
         }
-         // Không có các từ này
+        // Không có các từ này
         if (TextNone != null && TextNone.trim().length() > 0) {
             String[] arrTextNone = TextNone.split(" ");
             for (int i = 0; i < arrTextNone.length; i++) {
