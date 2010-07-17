@@ -149,10 +149,9 @@
                                 <tr><td id="result_search"></td></tr><tr></tr>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
-                                <tr><form action="javascript:CheckInput();" method="GET">
-                                    <td>&nbsp;
-                                        <form frmSearch action="javascript:CheckInput()">
-                                            Tìm kết quả:<br>
+                                <tr>
+                                    <td><div class="title_content">&nbsp;Tìm kiếm nâng cao</div>
+                                        <form frmSearch action="javascript:AdvanceSearch()">
                                             <table style="font-size:13px">
                                                 <tr>
                                                     <td><b>Chủ đề</b>: </td>
@@ -192,8 +191,7 @@
                                             </table>
                                             <hr/>
                                         </form>
-                                    </td>
-                                </form>
+                                    </td>   
                     </tr>
                     <tr>
                         <td valign="top" id="content">

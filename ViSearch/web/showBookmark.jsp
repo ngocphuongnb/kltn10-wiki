@@ -106,7 +106,6 @@
                     String strpaging = "";
                     String result = "";
 
-
                     if (request.getAttribute("Docs") != null) {
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
 
@@ -360,7 +359,7 @@
                     if (numpage > 1) {
                         result4 += "Tổng số trang là: " + numpage + "<br/>";
                     }
-                    result4 += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>";
+                    result4 += strpaging;
                     // end
 
                     //END get Bookmark by user
@@ -412,10 +411,10 @@
                                 <tr><td id="result_search"></td></tr><tr></tr>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
-                                <tr><form action="javascript:CheckInput();" method="GET">
-                                    <td>&nbsp;
+                                <tr>
+                                    <td>&nbsp;Tên bookmark
                                         <form frmSearch action="javascript:CheckInput()">
-                                            <input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
+                                            &nbsp;<input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
                                                             out.print(strQuery);
                                                         }%>"/>
                                             <input id="hfKeySearch" type="hidden" value="<% if (strQuery != null) {
@@ -431,7 +430,7 @@
                                             <hr/>
                                         </form>
                                     </td>
-                                </form>
+                               
                     </tr>
                     <tr>
                         <td valign="top" id="content">
