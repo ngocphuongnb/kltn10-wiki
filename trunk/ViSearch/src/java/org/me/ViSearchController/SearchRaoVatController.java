@@ -39,7 +39,6 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
 import org.apache.solr.common.params.HighlightParams;
-import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MySegmenter;
@@ -200,6 +199,36 @@ public class SearchRaoVatController extends HttpServlet {
                         // Get Facet
                         listFacet = rsp.getFacetFields();
                         break;
+                          case 5:
+                    String TextAll = "";
+                    String TextExact = "";
+                    String TextOneOf = "";
+                    String TextNone = "";
+
+                    if (request.getParameter("ta") != null) {
+                        TextAll = request.getParameter("ta");
+                        sPaging += "&ta=" + TextAll;
+                    }
+                    if (request.getParameter("te") != null) {
+                        TextExact = request.getParameter("te");
+                        sPaging += "&te=" + TextExact;
+                    }
+                    if (request.getParameter("to") != null) {
+                        TextOneOf = request.getParameter("to");
+                        sPaging += "&to=" + TextOneOf;
+                    }
+                    if (request.getParameter("tn") != null) {
+                        TextNone = request.getParameter("tn");
+                        sPaging += "&tn=" + TextNone;
+                    }
+                    rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
                     default:
                         break;
                 }
@@ -324,8 +353,6 @@ public class SearchRaoVatController extends HttpServlet {
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
-
-    
 
     // Lay nhung bai viet moi nhat --> Test OK
     ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {
@@ -511,6 +538,78 @@ public class SearchRaoVatController extends HttpServlet {
         }
     }
 
+    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+         solrQuery.setQueryType("dismax_unsigned");
+         
+        String query = "";
+        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+
+        query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+       solrQuery.addFacetField("category");
+        solrQuery.addFacetField("site");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("rv_title");
+        solrQuery.addHighlightField("rv_body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        //solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        solrQuery.set("fl", "id, rv_title, rv_body, photo, url, site, category, last_update");
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+     private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        String keySearch = "";
+        // Có tất cả các từ
+        if (TextAll != null && TextAll.trim().length() > 0) {
+            String[] arrTextAll = TextAll.split(" ");
+            for (int i = 0; i < arrTextAll.length; i++) {
+                keySearch += "+" + arrTextAll[i] + " ";
+            }
+        }
+        // có chứa cụm từ này
+        if (TextExact != null && TextExact.trim().length() > 0) {
+            keySearch += "+\"" + TextExact + "\" ";
+        }
+
+        // Có ít nhất 1 trong các từ này
+        if (TextOneOf != null && TextOneOf.trim().length() > 0) {
+            String[] arrTextOneOf = TextOneOf.split(" ");
+            for (int i = 0; i < arrTextOneOf.length; i++) {
+                if (i == 0) {
+                    keySearch += "+(";
+                }
+                if (i >= 1) {
+                    keySearch += "OR ";
+                }
+                keySearch += arrTextOneOf[i] + " ";
+                if (i == arrTextOneOf.length - 1) {
+                    keySearch += ")";
+                }
+            }
+        }
+         // Không có các từ này
+        if (TextNone != null && TextNone.trim().length() > 0) {
+            String[] arrTextNone = TextNone.split(" ");
+            for (int i = 0; i < arrTextNone.length; i++) {
+                keySearch += "NOT " + arrTextNone[i] + " ";
+            }
+        }
+        return keySearch;
+    }
     public String convertStreamToString(InputStream is, String encode) throws IOException {
         if (is != null) {
             StringBuilder sb = new StringBuilder();

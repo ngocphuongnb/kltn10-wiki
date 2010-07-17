@@ -606,7 +606,6 @@ public class SearchMusicController extends HttpServlet {
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-        //solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);

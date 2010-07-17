@@ -408,7 +408,7 @@ public class SearchVideoController extends HttpServlet {
                 + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         solrQuery.setQuery(query);
 
-        // Facet
+          // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
@@ -417,7 +417,6 @@ public class SearchVideoController extends HttpServlet {
 
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);

@@ -476,16 +476,18 @@ public class SearchImageController extends HttpServlet {
                 + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
         solrQuery.setQuery(query);
 
-        // Facet
+       // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
+        //solrQuery.addFacetField("widdh");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
+
         solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("body");
+        solrQuery.addHighlightField("site_title");
+        solrQuery.addHighlightField("site_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
         solrQuery.setHighlightRequireFieldMatch(true);

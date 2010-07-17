@@ -398,13 +398,12 @@ public class SearchAllController extends HttpServlet {
                 + "title_unsigned:(\"" + keySearch + "\")^9 || body_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^4 || body_unsigned:(" + keySearch + ")";
         solrQuery.setQuery(query);
 
-        // Facet
-        solrQuery.setFacet(true);
+       solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
-        // End Facet
 
+        solrQuery.setQuery(query);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
         solrQuery.addHighlightField("body");
