@@ -56,19 +56,38 @@
             function AdvanceSearch()
             {
                 var ChuDe = document.getElementById('slChuDe').value;
-                var TextAll = document.getElementById('txtTextAll').value;
-                var TextExact = document.getElementById('txtTextExact').value;
-                var TextOneOf = document.getElementById('txtTextOneOf').value;
-                var TextNone = document.getElementById('txtTextNone').value;
+                var TextAll = encodeURIComponent(document.getElementById('txtTextAll').value);
+                var TextExact = encodeURIComponent(document.getElementById('txtTextExact').value);
+                var TextOneOf = encodeURIComponent(document.getElementById('txtTextOneOf').value);
+                var TextNone = encodeURIComponent(document.getElementById('txtTextNone').value);
                 var query = "&ta="+TextAll+"&te="+TextExact+"&to="+TextOneOf+"&tn="+TextNone;
-                
+                if(ChuDe==1){
+                    var url = "SearchWikiController?type=4&sp=1"+query;
+                    url += "&SortedType=1";
+                    window.location = url;
+                }
                 if(ChuDe==3){
-                    var url = "SearchMusicController?type=3&sp=1&KeySearch="+query;
+                    var url = "SearchMusicController?type=3&sp=1"+query;
+                    url += "&SortedType=1";
+                    window.location = url;
+                }
+                if(ChuDe==4){
+                    var url = "SearchImageController?type=4&sp=1"+query
+                    url += "&SortedType=1";
+                    window.location = url;
+                }
+                if(ChuDe==5){ // video
+                    var url = "SearchVideoController?type=4&sp=1"+query;
                     url += "&SortedType=1";
                     window.location = url;
                 }
                 if(ChuDe==6){
                     var url = "SearchNewsController?type=5&sp=1"+query;
+                    url += "&SortedType=1";
+                    window.location = url;
+                }
+                if(ChuDe==7){ // tong hop
+                    var url = "SearchAllController?type=3"+query;
                     url += "&SortedType=1";
                     window.location = url;
                 }

@@ -35,80 +35,80 @@
         <script language="javascript">
             function setText()
             {
-            var keysearch = document.getElementById('txtSearch').value;
-            if(keysearch=="")
-            document.getElementById('txtSearch').focus();
+                var keysearch = document.getElementById('txtSearch').value;
+                if(keysearch=="")
+                    document.getElementById('txtSearch').focus();
             }
             function CheckInput()
             {
-            var keysearch = document.getElementById('txtSearch').value;
-            var sortedtype = document.getElementById('slSortedType').value;
-            if(keysearch == "")
-            return;
-            else
-            {
-            var url = "SearchVideoController?type=0&sp=1&KeySearch=";
-            url += encodeURIComponent(keysearch);
-            url += "&SortedType=" + sortedtype;
-            //    alert(url);
-            window.location = url;
-            }
+                var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchVideoController?type=0&sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    //    alert(url);
+                    window.location = url;
+                }
             }
             function showVideo(id)
             {
-            // showVideo and Close all other Videos
-            count = document.getElementsByTagName('OBJECT').length;
-            for(var i=0; i < count; i++){
-            MDid = 'MediaPlayer'+i;
-            if(i!=id) // Close others
-            {
-            hideVideo(i);
-            }
-            else // and open new
-            {
-            document.getElementById(MDid).className="display";
-            }
-            }
-            // Show button CloseVideo and Close bt View
-            var  btDong = "BTCloseMediaId" + id;
-            document.getElementById(btDong).className="display";
-            var btxem = 'BTViewMediaId'+id;
-            document.getElementById(btxem).className="hidden";
+                // showVideo and Close all other Videos
+                count = document.getElementsByTagName('OBJECT').length;
+                for(var i=0; i < count; i++){
+                    MDid = 'MediaPlayer'+i;
+                    if(i!=id) // Close others
+                    {
+                        hideVideo(i);
+                    }
+                    else // and open new
+                    {
+                        document.getElementById(MDid).className="display";
+                    }
+                }
+                // Show button CloseVideo and Close bt View
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="display";
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="hidden";
             }
             function hideVideo(id)
             {
-            // Hide media
-            MDid = 'MediaPlayer'+id;
-            document.getElementById(MDid).className="hidden";
+                // Hide media
+                MDid = 'MediaPlayer'+id;
+                document.getElementById(MDid).className="hidden";
 
-            // Button XEM hide, button DONG show
-            var btxem = 'BTViewMediaId'+id;
-            document.getElementById(btxem).className="display";
-            var  btDong = "BTCloseMediaId" + id;
-            document.getElementById(btDong).className="hidden";
+                // Button XEM hide, button DONG show
+                var btxem = 'BTViewMediaId'+id;
+                document.getElementById(btxem).className="display";
+                var  btDong = "BTCloseMediaId" + id;
+                document.getElementById(btDong).className="hidden";
             }
             function Sort(type){
-            var sortedtype = document.getElementById('slSortedType').value;
-            var keysearch = document.getElementById('hfKeySearch').value;
-            if(keysearch == "")
-            return;
-            else
-            {
-            var url = "SearchMusicController?sp=1&KeySearch=";
-            url += encodeURIComponent(keysearch);
-            url += "&SortedType=" + sortedtype;
-            url += "&type=" + type;
-            window.location = url;
-            }
+                var sortedtype = document.getElementById('slSortedType').value;
+                var keysearch = document.getElementById('hfKeySearch').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchMusicController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
+                    window.location = url;
+                }
             }
             $.ajax({
-            type: "POST",
-            url: "TopSearch",
-            cache: false,
-            data: "SearchType=5",
-            success: function(html){
-            $("#tbTopSearch").append(html);
-            }
+                type: "POST",
+                url: "TopSearch",
+                cache: false,
+                data: "SearchType=5",
+                success: function(html){
+                    $("#tbTopSearch").append(html);
+                }
             });
         </script>
     </head>
@@ -133,7 +133,7 @@
                         sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // End Get strQuery
-        %>
+%>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -216,7 +216,7 @@
 
 
                                         // START Bookmark
-%>
+        %>
         <script type="text/javascript">
             $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
@@ -335,7 +335,7 @@
                     }
 
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -370,7 +370,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
 
         <div id="wrap_left" align="center">
