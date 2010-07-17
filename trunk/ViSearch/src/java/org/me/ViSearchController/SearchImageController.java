@@ -65,7 +65,7 @@ public class SearchImageController extends HttpServlet {
         String sPaging = "/ViSearch/SearchImageController?";
         int type = -1;
         int QTime = 0;
-         int sortedType = 0;
+        int sortedType = 0;
         try {
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
@@ -83,7 +83,7 @@ public class SearchImageController extends HttpServlet {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
                 sPaging += "&SortedType=" + sortedType;
             }
-            
+
             List<FacetField> listFacet = null;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
@@ -149,12 +149,12 @@ public class SearchImageController extends HttpServlet {
                             String w = "";
                             if (request.getParameter("w") != null) {
                                 w = request.getParameter("w");
-                                sPaging += "&w=" +w;
+                                sPaging += "&w=" + w;
                             }
                             String h = "";
                             if (request.getParameter("h") != null) {
                                 h = request.getParameter("h");
-                                sPaging += "&h=" +h;
+                                sPaging += "&h=" + h;
                             }
                             facetNameValue = createFacetValue(w, h);
                         }
@@ -164,7 +164,37 @@ public class SearchImageController extends HttpServlet {
                         request.setAttribute("HighLight", highLight);
                         docs = rsp.getResults();
                         QTime = rsp.getQTime();
+                        break;
+                    case 4:
+                        String TextAll = "";
+                        String TextExact = "";
+                        String TextOneOf = "";
+                        String TextNone = "";
 
+                        if (request.getParameter("ta") != null) {
+                            TextAll = request.getParameter("ta");
+                            sPaging += "&ta=" + TextAll;
+                        }
+                        if (request.getParameter("te") != null) {
+                            TextExact = request.getParameter("te");
+                            sPaging += "&te=" + TextExact;
+                        }
+                        if (request.getParameter("to") != null) {
+                            TextOneOf = request.getParameter("to");
+                            sPaging += "&to=" + TextOneOf;
+                        }
+                        if (request.getParameter("tn") != null) {
+                            TextNone = request.getParameter("tn");
+                            sPaging += "&tn=" + TextNone;
+                        }
+                        rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        break;
                     default:
                         break;
                 }
@@ -202,16 +232,16 @@ public class SearchImageController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -252,20 +282,19 @@ public class SearchImageController extends HttpServlet {
         return rsp;
     }
 
-
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -431,5 +460,78 @@ public class SearchImageController extends HttpServlet {
         String[] hh = h.split("-");
         result += " +(height:[" + hh[0] + " TO " + hh[1] + "])";
         return result;
+    }
+
+    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+
+        query += "site_title:(\"" + keySearch + "\")^10 || site_title:(" + keySearch + ")^8 || "
+                + "site_title_unsigned:(\"" + keySearch + "\")^9 || site_title_unsigned:(" + keySearch + ")^7 || "
+                + "site_body:(\"" + keySearch + "\")^5 || site_body:(" + keySearch + ")^3 || "
+                + "site_body_unsigned:(\"" + keySearch + "\")^4 || site_body_unsigned:(" + keySearch + ")^2 || "
+                + "category:(\"" + keySearch + "\")1.3 || category:(" + keySearch + ")^1.3 || "
+                + "category_index_unsigned:(\"" + keySearch + "\")^1.2 || category_index_unsigned:(" + keySearch + ")^1.2";
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        String keySearch = "";
+        // Có tất cả các từ
+        if (TextAll != null && TextAll.trim().length() > 0) {
+            String[] arrTextAll = TextAll.split(" ");
+            for (int i = 0; i < arrTextAll.length; i++) {
+                keySearch += "+" + arrTextAll[i] + " ";
+            }
+        }
+        // có chứa cụm từ này
+        if (TextExact != null && TextExact.trim().length() > 0) {
+            keySearch += "+\"" + TextExact + "\" ";
+        }
+
+        // Có ít nhất 1 trong các từ này
+        if (TextOneOf != null && TextOneOf.trim().length() > 0) {
+            String[] arrTextOneOf = TextOneOf.split(" ");
+            for (int i = 0; i < arrTextOneOf.length; i++) {
+                if (i == 0) {
+                    keySearch += "+(";
+                }
+                if (i >= 1) {
+                    keySearch += "OR ";
+                }
+                keySearch += arrTextOneOf[i] + " ";
+                if (i == arrTextOneOf.length - 1) {
+                    keySearch += ")";
+                }
+            }
+        }
+         // Không có các từ này
+        if (TextNone != null && TextNone.trim().length() > 0) {
+            String[] arrTextNone = TextNone.split(" ");
+            for (int i = 0; i < arrTextNone.length; i++) {
+                keySearch += "NOT " + arrTextNone[i] + " ";
+            }
+        }
+        return keySearch;
     }
 }

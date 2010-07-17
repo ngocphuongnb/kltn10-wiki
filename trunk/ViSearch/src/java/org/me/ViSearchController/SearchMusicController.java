@@ -645,9 +645,12 @@ public class SearchMusicController extends HttpServlet {
                 }
             }
         }
-        // Không có các từ này
+         // Không có các từ này
         if (TextNone != null && TextNone.trim().length() > 0) {
-            keySearch += "NOT\"" + TextNone + "\"";
+            String[] arrTextNone = TextNone.split(" ");
+            for (int i = 0; i < arrTextNone.length; i++) {
+                keySearch += "NOT " + arrTextNone[i] + " ";
+            }
         }
         return keySearch;
     }
