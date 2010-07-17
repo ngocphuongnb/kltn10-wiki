@@ -325,27 +325,7 @@ public class SearchRaoVatController extends HttpServlet {
         return rsp;
     }
 
-    void NewestDocument22(String keySearch, String numDays) throws SolrServerException {
-
-        ModifiableSolrParams params = new ModifiableSolrParams();
-        params.set("q", keySearch);
-        params.set("facet", true);
-        params.set("field", "last_update");
-        params.set("field", "site");
-        params.set("facet.date.start", "NOW/DAY-5DAYS");
-        params.set("facet.date.end", "NOW/DAY%2B1DAY");
-        params.set("facet.date.gap", "%2B1DAY");
-
-
-        QueryResponse rsp = server.query(params);
-
-        Map<String, Integer> sdl = rsp.getFacetQuery();
-        List<FacetField> lfc1 = rsp.getFacetFields();
-        List<FacetField> lfc = rsp.getFacetDates();
-        FacetField fc = rsp.getFacetDate("last_update");
-        SolrDocumentList dl = rsp.getResults();
-        int a = 8;
-    }
+    
 
     // Lay nhung bai viet moi nhat --> Test OK
     ArrayList<FacetDateDTO> NewestUpdateDocument(String keySearch, String numDays) throws SolrServerException, org.apache.commons.httpclient.URIException, IOException {

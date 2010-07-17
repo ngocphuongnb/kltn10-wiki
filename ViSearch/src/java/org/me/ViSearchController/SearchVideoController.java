@@ -74,7 +74,7 @@ public class SearchVideoController extends HttpServlet {
         QueryResponse rsp;
         Map<String, Map<String, List<String>>> highLight;
         String more = "";
-         int sortedType = 0;
+        int sortedType = 0;
         try {
 
             if (request.getParameter("type") != null) {
@@ -93,16 +93,16 @@ public class SearchVideoController extends HttpServlet {
                 more = request.getParameter("more");
             }
 
-             if (request.getParameter("SortedType") != null) {
+            if (request.getParameter("SortedType") != null) {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
                 sPaging += "&SortedType=" + sortedType;
             }
-            
+
 
 
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
-                
+
                 sPaging += "&KeySearch=" + URLEncoder.encode(keySearch, "UTF-8");
 
                 switch (type) {
@@ -135,7 +135,7 @@ public class SearchVideoController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 2: // facet
-                        case 3: // truy van theo thể loại
+                    case 3: // truy van theo thể loại
                         String facetName = "";
                         String facetValue = "";
                         if (request.getParameter("FacetName") != null) {
@@ -145,6 +145,36 @@ public class SearchVideoController extends HttpServlet {
                             sPaging += "&FacetValue=" + facetValue;
                         }
                         rsp = OnSearchSubmitStandard(type, keySearch, facetName, facetValue, start, pagesize, sortedType);
+                        docs = rsp.getResults();
+                        highLight = rsp.getHighlighting();
+                        request.setAttribute("HighLight", highLight);
+                        QTime = rsp.getQTime();
+                        // Get Facet
+                        listFacet = rsp.getFacetFields();
+                        break;
+                    case 4:
+                        String TextAll = "";
+                        String TextExact = "";
+                        String TextOneOf = "";
+                        String TextNone = "";
+
+                        if (request.getParameter("ta") != null) {
+                            TextAll = request.getParameter("ta");
+                            sPaging += "&ta=" + TextAll;
+                        }
+                        if (request.getParameter("te") != null) {
+                            TextExact = request.getParameter("te");
+                            sPaging += "&te=" + TextExact;
+                        }
+                        if (request.getParameter("to") != null) {
+                            TextOneOf = request.getParameter("to");
+                            sPaging += "&to=" + TextOneOf;
+                        }
+                        if (request.getParameter("tn") != null) {
+                            TextNone = request.getParameter("tn");
+                            sPaging += "&tn=" + TextNone;
+                        }
+                        rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         request.setAttribute("HighLight", highLight);
@@ -187,17 +217,17 @@ public class SearchVideoController extends HttpServlet {
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-         String query = "";
-        switch(sortedType)
-        {
+        String query = "";
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -239,16 +269,16 @@ public class SearchVideoController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -263,8 +293,9 @@ public class SearchVideoController extends HttpServlet {
                     + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         }
         query += ")";
-        if(type==2)
+        if (type == 2) {
             query += " +(" + facetName + ":\"" + ClientUtils.escapeQueryChars(facetValue) + "\")";
+        }
 
 
         solrQuery.setQuery(query);
@@ -363,6 +394,77 @@ public class SearchVideoController extends HttpServlet {
         } else {
             return "";
         }
+    }
+
+    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+
+        query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        String keySearch = "";
+        // Có tất cả các từ
+        if (TextAll != null && TextAll.trim().length() > 0) {
+            String[] arrTextAll = TextAll.split(" ");
+            for (int i = 0; i < arrTextAll.length; i++) {
+                keySearch += "+" + arrTextAll[i] + " ";
+            }
+        }
+        // có chứa cụm từ này
+        if (TextExact != null && TextExact.trim().length() > 0) {
+            keySearch += "+\"" + TextExact + "\" ";
+        }
+
+        // Có ít nhất 1 trong các từ này
+        if (TextOneOf != null && TextOneOf.trim().length() > 0) {
+            String[] arrTextOneOf = TextOneOf.split(" ");
+            for (int i = 0; i < arrTextOneOf.length; i++) {
+                if (i == 0) {
+                    keySearch += "+(";
+                }
+                if (i >= 1) {
+                    keySearch += "OR ";
+                }
+                keySearch += arrTextOneOf[i] + " ";
+                if (i == arrTextOneOf.length - 1) {
+                    keySearch += ")";
+                }
+            }
+        }
+         // Không có các từ này
+        if (TextNone != null && TextNone.trim().length() > 0) {
+            String[] arrTextNone = TextNone.split(" ");
+            for (int i = 0; i < arrTextNone.length; i++) {
+                keySearch += "NOT " + arrTextNone[i] + " ";
+            }
+        }
+        return keySearch;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -92,66 +92,94 @@ public class SearchAllController extends HttpServlet {
                 sPaging += "SortedType=" + sortedType;
             }
 
-            //</get-parameter>
+            QueryResponse rsp;
+            Map<String, Map<String, List<String>>> highLight;
             if (request.getParameter("KeySearch") != null) {
-
-                QueryResponse rsp;
-                Map<String, Map<String, List<String>>> highLight;
-
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
-
-                switch (type) {
-                    case 0:
-                        if (request.getParameter("sp") != null) {
-                            String sCollation = OnCheckSpelling(keySearch);
-
-                            if (sCollation != null && sCollation.equals("") == false) {
-                                request.setAttribute("Collation", sCollation);
-                            }
-                        }
-
-                        rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=0";
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    case 1:
-                        rsp = OnMLT(keySearch, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        if (highLight != null) {
-                            request.setAttribute("HighLight", highLight);
-                        }
-                        QTime = rsp.getQTime();
-                        sPaging += "&type=1";
-                        break;
-
-                    case 2:
-                        sPaging += "&type=2";
-                        String qf = "";
-                        String qv = "";
-                        if (request.getParameter("qf") != null) {
-                            qf = request.getParameter("qf");
-                            qv = request.getParameter("qv");
-                            sPaging += "&qf=" + qf;
-                            sPaging += "&qv=" + qv;
-                        }
-                        rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, sortedType);
-                        docs = rsp.getResults();
-                        highLight = rsp.getHighlighting();
-                        request.setAttribute("HighLight", highLight);
-                        QTime = rsp.getQTime();
-                        // Get Facet
-                        listFacet = rsp.getFacetFields();
-                        break;
-                    default:
-                        break;
-                }
             }
+
+            switch (type) {
+                case 0:
+                    if (request.getParameter("sp") != null) {
+                        String sCollation = OnCheckSpelling(keySearch);
+
+                        if (sCollation != null && sCollation.equals("") == false) {
+                            request.setAttribute("Collation", sCollation);
+                        }
+                    }
+
+                    rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    sPaging += "&type=0";
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 1:
+                    rsp = OnMLT(keySearch, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    if (highLight != null) {
+                        request.setAttribute("HighLight", highLight);
+                    }
+                    QTime = rsp.getQTime();
+                    sPaging += "&type=1";
+                    break;
+
+                case 2:
+                    sPaging += "&type=2";
+                    String qf = "";
+                    String qv = "";
+                    if (request.getParameter("qf") != null) {
+                        qf = request.getParameter("qf");
+                        qv = request.getParameter("qv");
+                        sPaging += "&qf=" + qf;
+                        sPaging += "&qv=" + qv;
+                    }
+                    rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                case 3:
+                    String TextAll = "";
+                    String TextExact = "";
+                    String TextOneOf = "";
+                    String TextNone = "";
+
+                    if (request.getParameter("ta") != null) {
+                        TextAll = request.getParameter("ta");
+                        sPaging += "&ta=" + TextAll;
+                    }
+                    if (request.getParameter("te") != null) {
+                        TextExact = request.getParameter("te");
+                        sPaging += "&te=" + TextExact;
+                    }
+                    if (request.getParameter("to") != null) {
+                        TextOneOf = request.getParameter("to");
+                        sPaging += "&to=" + TextOneOf;
+                    }
+                    if (request.getParameter("tn") != null) {
+                        TextNone = request.getParameter("tn");
+                        sPaging += "&tn=" + TextNone;
+                    }
+                    rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
+                    break;
+                default:
+                    break;
+            }
+
 
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
@@ -190,16 +218,16 @@ public class SearchAllController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -244,16 +272,16 @@ public class SearchAllController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -270,7 +298,7 @@ public class SearchAllController extends HttpServlet {
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
-        
+
         solrQuery.setQuery(query);
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
@@ -357,6 +385,76 @@ public class SearchAllController extends HttpServlet {
         } else {
             return "";
         }
+    }
+
+    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+
+        query += "title:(\"" + keySearch + "\")^10 || body:(\"" + keySearch + "\")^5 || "
+                + "title:(" + keySearch + ")^8 || body:(" + keySearch + ")^3 || "
+                + "title_unsigned:(\"" + keySearch + "\")^9 || body_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^4 || body_unsigned:(" + keySearch + ")";
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+    private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        String keySearch = "";
+        // Có tất cả các từ
+        if (TextAll != null && TextAll.trim().length() > 0) {
+            String[] arrTextAll = TextAll.split(" ");
+            for (int i = 0; i < arrTextAll.length; i++) {
+                keySearch += "+" + arrTextAll[i] + " ";
+            }
+        }
+        // có chứa cụm từ này
+        if (TextExact != null && TextExact.trim().length() > 0) {
+            keySearch += "+\"" + TextExact + "\" ";
+        }
+
+        // Có ít nhất 1 trong các từ này
+        if (TextOneOf != null && TextOneOf.trim().length() > 0) {
+            String[] arrTextOneOf = TextOneOf.split(" ");
+            for (int i = 0; i < arrTextOneOf.length; i++) {
+                if (i == 0) {
+                    keySearch += "+(";
+                }
+                if (i >= 1) {
+                    keySearch += "OR ";
+                }
+                keySearch += arrTextOneOf[i] + " ";
+                if (i == arrTextOneOf.length - 1) {
+                    keySearch += ")";
+                }
+            }
+        }
+        // Không có các từ này
+        if (TextNone != null && TextNone.trim().length() > 0) {
+            String[] arrTextNone = TextNone.split(" ");
+            for (int i = 0; i < arrTextNone.length; i++) {
+                keySearch += "NOT " + arrTextNone[i] + " ";
+            }
+        }
+        return keySearch;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
