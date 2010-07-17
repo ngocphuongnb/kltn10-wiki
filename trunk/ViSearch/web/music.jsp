@@ -364,7 +364,7 @@
                         // result.append("Số kết quả tìm được là: " + numrow + "<br/>";
                         result.append("Tổng số trang là: " + numpage + "<br/>");
                         if (numpage > 1) {
-                            result.append(strpaging + "<br/><br/>");
+                            result.append(strpaging + "<br/>");
                         }
                     }
                     // End get SolrDocumentList
