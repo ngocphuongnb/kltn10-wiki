@@ -134,8 +134,8 @@
                                 result.append("<p><font color=\"#CC3333\" size=\"+2\">Có phải bạn muốn tìm: <b><a href=\"SearchNewsController?type=0&KeySearch=" + sCollation + "\">" + sCollation + "</a></b></font></p>");
                             }
 
+                             result.append("<table style=\"font-size:13px\">");
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
@@ -191,8 +191,9 @@
                                 result.append("<a href=\"SearchNewsController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>");
                                 result.append("</td></tr>");
                                 result.append("<tr><td>&nbsp;</td></tr>");
-                                result.append("</table>");
+                               
                             }
+                              result.append("</table>");
 
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
@@ -205,7 +206,7 @@
                         if (numpage > 1) {
                             result.append("Tổng số trang là: " + numpage + "<br/>");
                         }
-                        result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>");
+                        result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>");
                     }
                     //get SolrDocumentList
 %>

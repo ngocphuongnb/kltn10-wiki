@@ -143,7 +143,6 @@
                             String link = (listdocs.get(i).getFirstValue("url")).toString();
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
-                            String site = (listdocs.get(i).getFieldValue("site")).toString();
                             String location = "";
                             String contact = "";
                             Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
@@ -292,7 +291,7 @@
                                             out.print(result);
                                             if (result2 != "") {
                                                 out.print("<hr>");
-                                                out.print("<div class=\"title_content\">Bài viết liên quan</div>");
+                                                out.print("<div class=\"title_content\">Một số bài viết liên quan</div>");
                                                 out.print(result2);
                                             }
                                 %>

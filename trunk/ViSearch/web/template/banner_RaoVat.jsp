@@ -99,8 +99,8 @@ function MM_swapImage() { //v3.0
                         <img src="images/spacer.gif" width="1" height="4" alt=""></td>
                 </tr>
                 <tr>
-                    <td>
-                        <img src="images/banner_11.gif" width="110" height="22" alt=""></td>
+                    <td style="background:url(images/banner_11.gif);">
+                        <font size="-2"><a href="advance_search.jsp">Tìm kiếm nâng cao</a></font></td>
                     <td>
                         <img src="images/spacer.gif" width="1" height="22" alt=""></td>
                 </tr>
