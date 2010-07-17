@@ -510,7 +510,7 @@ public class SearchNewsController extends HttpServlet {
         }
     }
 
-    private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
         String keySearch = "";
         // Có tất cả các từ
         if (TextAll != null && TextAll.trim().length() > 0) {
@@ -536,11 +536,11 @@ public class SearchNewsController extends HttpServlet {
                 }
                 keySearch += arrTextOneOf[i] + " ";
                 if (i == arrTextOneOf.length - 1) {
-                    keySearch += ")";
+                    keySearch += ") ";
                 }
             }
         }
-         // Không có các từ này
+        // Không có các từ này
         if (TextNone != null && TextNone.trim().length() > 0) {
             String[] arrTextNone = TextNone.split(" ");
             for (int i = 0; i < arrTextNone.length; i++) {

@@ -452,7 +452,7 @@ public class SearchVideoController extends HttpServlet {
                 }
                 keySearch += arrTextOneOf[i] + " ";
                 if (i == arrTextOneOf.length - 1) {
-                    keySearch += ")";
+                    keySearch += ") ";
                 }
             }
         }
