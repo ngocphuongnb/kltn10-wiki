@@ -69,7 +69,6 @@
                 var  btDong = "BTCloseMusicId" + id;
                 document.getElementById(btDong).className="hidden";
             }
-
             function showVideo(id)
             {
                 // showVideo and Close all other Music

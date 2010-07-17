@@ -79,7 +79,7 @@
                     return;
                 else
                 {
-                    var url = "SearchMusicController?sp=1&KeySearch=";
+                    var url = "SearchImageController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
                     url += "&type=" + type;
@@ -105,7 +105,7 @@
                         sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -135,16 +135,16 @@
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = "";
-                                if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
-                                    File file = new File("webapps\\ViSearch\\" + listdocs.get(i).getFieldValue("url_local").toString());
-                                    if (file.exists()) {
-                                        url = (listdocs.get(i).getFieldValue("url_local")).toString();
-										url = url.replace('\\', '/');
-										//out.print(url);
-                                    }
-                                } else {
+                              //  if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
+                               //     File file = new File("webapps\\ViSearch\\" + listdocs.get(i).getFieldValue("url_local").toString());
+                               //     if (file.exists()) {
+                                //        url = (listdocs.get(i).getFieldValue("url_local")).toString();
+                                //        url = url.replace('\\', '/');
+                                        //out.print(url);
+                                //    }
+                              //  } else {
                                     url = (listdocs.get(i).getFieldValue("url")).toString();
-                                }
+                             //   }
                                 String width = (listdocs.get(i).getFieldValue("width")).toString();
                                 String height = (listdocs.get(i).getFieldValue("height")).toString();
                                 String size = (listdocs.get(i).getFieldValue("size")).toString();
@@ -192,7 +192,7 @@
                         }
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -227,7 +227,7 @@
 
 
                     // End get Facet
-%>
+        %>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
