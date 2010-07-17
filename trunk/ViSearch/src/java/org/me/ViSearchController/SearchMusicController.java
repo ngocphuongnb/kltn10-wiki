@@ -82,10 +82,10 @@ public class SearchMusicController extends HttpServlet {
             }
             if (request.getParameter("f") != null) {
                 FieldId = request.getParameter("f");
-                 sPaging += "&f=" +FieldId;
+                sPaging += "&f=" + FieldId;
             }
 
-             if (request.getParameter("SortedType") != null) {
+            if (request.getParameter("SortedType") != null) {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
                 sPaging += "&SortedType=" + sortedType;
             }
@@ -100,7 +100,7 @@ public class SearchMusicController extends HttpServlet {
                 switch (type) {
                     case 0:
                         // F = 8: search theo id, de sCollation se bi loi
-                        if (FieldId.equals("6")&& request.getParameter("sp") != null) {
+                        if (FieldId.equals("6") && request.getParameter("sp") != null) {
                             String sCollation = OnCheckSpelling(keySearch);
                             if (sCollation.equals("") == false) {
                                 request.setAttribute("Collation", sCollation);
@@ -117,7 +117,7 @@ public class SearchMusicController extends HttpServlet {
                         break;
                     case 1:
                         rsp = OnMLT(keySearch, start, pagesize);
-                       // docs = rsp.getResults();
+                        docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
                         if (highLight != null) {
                             request.setAttribute("HighLight", highLight);
@@ -143,6 +143,36 @@ public class SearchMusicController extends HttpServlet {
                         QTime = rsp.getQTime();
                         // Get Facet
                         listFacet = rsp.getFacetFields();
+                        break;
+                    case 3:
+                       String TextAll = "";
+                    String TextExact = "";
+                    String TextOneOf = "";
+                    String TextNone = "";
+
+                    if (request.getParameter("ta") != null) {
+                        TextAll = request.getParameter("ta");
+                        sPaging += "&ta=" + TextAll;
+                    }
+                    if (request.getParameter("te") != null) {
+                        TextExact = request.getParameter("te");
+                        sPaging += "&te=" + TextExact;
+                    }
+                    if (request.getParameter("to") != null) {
+                        TextOneOf = request.getParameter("to");
+                        sPaging += "&to=" + TextOneOf;
+                    }
+                    if (request.getParameter("tn") != null) {
+                        TextNone = request.getParameter("tn");
+                        sPaging += "&tn=" + TextNone;
+                    }
+                    rsp = OnSearchAdvance(TextAll, TextExact, TextOneOf, TextNone, start, pagesize, sortedType);
+                    docs = rsp.getResults();
+                    highLight = rsp.getHighlighting();
+                    request.setAttribute("HighLight", highLight);
+                    QTime = rsp.getQTime();
+                    // Get Facet
+                    listFacet = rsp.getFacetFields();
                         break;
                     default:
                         break;
@@ -180,21 +210,21 @@ public class SearchMusicController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
         }
-  
+
         if (MyString.CheckSigned(keySearch)) {
             query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                     + "album:(\"" + keySearch + "\")^6 || album:(" + keySearch + ")^4 || "
@@ -246,16 +276,16 @@ public class SearchMusicController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-        switch(sortedType)
-        {
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -275,7 +305,7 @@ public class SearchMusicController extends HttpServlet {
                 query += "category:(\"" + keySearch + "\")^3 || category:(" + keySearch + ")^2";
             } else if (fieldId.equals("8")) {
                 query += "id:" + keySearch;
-            } else {
+            } else if (fieldId.equals("6")) {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
                         + "album_index:(\"" + keySearch + "\")^6 || album_index:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^2 || "
@@ -301,9 +331,9 @@ public class SearchMusicController extends HttpServlet {
                         + "lyric_unsigned:(\"" + keySearch + "\")^5 || lyric_unsigned:(" + keySearch + ")^3";
             } else if (fieldId.equals("8")) {
                 query += "id:" + keySearch;
-            } else { // 6
+            } else if (fieldId.equals("6")) {
                 query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
-                        + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ")^7 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ") || "
                         + "album_index:(\"" + keySearch + "\")^7 || album_index:(" + keySearch + ")^5 || "
                         + "album_index_unsigned:(\"" + keySearch + "\")^6 || album_index_unsigned:(" + keySearch + ")^4 || "
                         + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^1.8 || "
@@ -311,15 +341,15 @@ public class SearchMusicController extends HttpServlet {
                         + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")^1.3 || "
                         + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2 || "
                         + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")^1.3 || "
-                        + "author_index_unsigned:(\"" + keySearch + "\")^1.4 || author_index_unsigned:(" + keySearch + ")^1.2 || "
-                        + "id:" + keySearch;
+                        + "author_index_unsigned:(\"" + keySearch + "\")^1.4 || author_index_unsigned:(" + keySearch + ")^1.2";
+                //   + "";
             }
         }
         solrQuery.setQuery(query);
 
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        
+
         solrQuery.addFacetField("artist");
         solrQuery.addFacetField("author");
         solrQuery.setFacetLimit(10);
@@ -339,18 +369,18 @@ public class SearchMusicController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String fieldId, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-  
-        String query="";
-        switch(sortedType)
-        {
+
+        String query = "";
+        switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 2:
-                 if (MyString.CheckSigned(keySearch))
-                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
-                 else
-                     query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                if (MyString.CheckSigned(keySearch)) {
+                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                } else {
+                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                }
                 break;
             default:
                 break;
@@ -430,18 +460,16 @@ public class SearchMusicController extends HttpServlet {
         return rsp;
     }
 
-
-
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         SolrQuery query = new SolrQuery();
 
         // Facet
-        query.setFacet(true);
-        query.addFacetField("category");
-        query.addFacetField("artist");
-        query.addFacetField("author");
-        query.setFacetLimit(10);
-        query.setFacetMinCount(1);
+//        query.setFacet(true);
+//        query.addFacetField("category");
+//        query.addFacetField("artist");
+//        query.addFacetField("author");
+//        query.setFacetLimit(10);
+//        query.setFacetMinCount(1);
         // End Facet
 
         query.setQueryType("/" + MoreLikeThisParams.MLT);
@@ -460,6 +488,7 @@ public class SearchMusicController extends HttpServlet {
         QueryResponse rsp = server.query(query);
         return rsp;
     }
+
     String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
         String result = "";
         HttpClient client = new HttpClient();
@@ -544,4 +573,82 @@ public class SearchMusicController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+        String keySearch = "";
+        keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+        String query = "";
+        query += " +(";
+
+        // cho tim ko dau va co dau luon
+        query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8 || "
+                + "title_unsigned:(\"" + keySearch + "\")^9 || title_unsigned:(" + keySearch + ")^7 || "
+                + "album_index:(\"" + keySearch + "\")^7 || album_index:(" + keySearch + ")^5 || "
+                + "album_index_unsigned:(\"" + keySearch + "\")^6 || album_index_unsigned:(" + keySearch + ")^4 || "
+                + "lyric:(\"" + keySearch + "\")^3 || lyric:(" + keySearch + ")^1.8 || "
+                + "lyric_unsigned:(\"" + keySearch + "\")^2 || lyric_unsigned:(" + keySearch + ")^1.5 || "
+                + "artist_index:(\"" + keySearch + "\")^1.5 || artist_index:(" + keySearch + ")^1.3 || "
+                + "artist_index_unsigned:(\"" + keySearch + "\")^1.4 || artist_index_unsigned:(" + keySearch + ")^1.2 || "
+                + "author_index:(\"" + keySearch + "\")^1.5 || author_index:(" + keySearch + ")^1.3 || "
+                + "author_index_unsigned:(\"" + keySearch + "\")^1.4 || author_index_unsigned:(" + keySearch + ")^1.2";
+        query += ")";
+        solrQuery.setQuery(query);
+
+        // Facet
+        solrQuery.setFacet(true);
+        solrQuery.addFacetField("category");
+        solrQuery.addFacetField("artist");
+        solrQuery.addFacetField("author");
+        solrQuery.setFacetLimit(10);
+        solrQuery.setFacetMinCount(1);
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        //solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+        private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+        String keySearch = "";
+        // Có tất cả các từ
+        if (TextAll != null && TextAll.trim().length() > 0) {
+            String[] arrTextAll = TextAll.split(" ");
+            for (int i = 0; i < arrTextAll.length; i++) {
+                keySearch += "+" + arrTextAll[i] + " ";
+            }
+        }
+        // có chứa cụm từ này
+        if (TextExact != null && TextExact.trim().length() > 0) {
+            keySearch += "+\"" + TextExact + "\" ";
+        }
+
+        // Có ít nhất 1 trong các từ này
+        if (TextOneOf != null && TextOneOf.trim().length() > 0) {
+            String[] arrTextOneOf = TextOneOf.split(" ");
+            for (int i = 0; i < arrTextOneOf.length; i++) {
+                if (i == 0) {
+                    keySearch += "+(";
+                }
+                if (i >= 1) {
+                    keySearch += "OR ";
+                }
+                keySearch += arrTextOneOf[i] + " ";
+                if (i == arrTextOneOf.length - 1) {
+                    keySearch += ")";
+                }
+            }
+        }
+        // Không có các từ này
+        if (TextNone != null && TextNone.trim().length() > 0) {
+            keySearch += "NOT\"" + TextNone + "\"";
+        }
+        return keySearch;
+    }
 }
