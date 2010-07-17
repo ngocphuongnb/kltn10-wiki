@@ -163,7 +163,7 @@
                             }
 
                             result += "<tr>";
-                            result += "<td><a href=\"" + link + "\" target='_blank'>" + bookmarkname + "</a></td>";
+                            result += "<td><a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a></td>";
                             result += "</tr>";
 
 
@@ -334,7 +334,7 @@
                             }
 
                             result4 += "<tr>";
-                            result4 += "<td><a href=\"" + link + "\" target='_blank'>" + bookmarkname + "</a></td>";
+                            result4 += "<td><a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a></td>";
                             result4 += "</tr>";
 
 

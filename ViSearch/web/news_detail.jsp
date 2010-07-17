@@ -249,7 +249,9 @@
 
                         result2.append("<div style=\"font-size:13px\">");
                         result2.append("<hr>");
-                        result2.append("Một số bài viết tương tự: <br>");
+
+                       result2.append("<div class=\"title_content\">Một số bài viết liên quan</div>");
+                        
                         for (int i = 0; i < listdocs2.size(); i++) {
 
                             // Lay noi dung cua moi field

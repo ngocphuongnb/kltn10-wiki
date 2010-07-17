@@ -205,7 +205,7 @@
                         result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>");
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";

@@ -1,6 +1,6 @@
 
 <%--
-    Document   : video
+    Document   : music
     Created on : May 28, 2010, 9:22:53 PM
     Author     : tuandom
 --%>
@@ -122,9 +122,11 @@
                     String FieldId = "";
                     if (request.getAttribute("KeySearch") != null) {
                         strQuery = (String) request.getAttribute("KeySearch");
-                        FieldId = (String) request.getAttribute("FieldId");
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
+                    }
+                     if (request.getAttribute("FieldId") != null) {
+                        FieldId = (String) request.getAttribute("FieldId");
                     }
                     int sortedType = 0;
                     if (request.getAttribute("SortedType") != null) {
@@ -165,6 +167,8 @@
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
                                 String album = (listdocs.get(i).getFieldValue("album")).toString();
                                 String lyric = (listdocs.get(i).getFieldValue("lyric")).toString();
+                                if(lyric==null || lyric.trim().length()==0)
+                                    lyric = "Đang cập nhật";
                                 String author = (listdocs.get(i).getFieldValue("author")).toString();
 
                                 String title_hl = title;
@@ -340,7 +344,6 @@
                                 result.append("<div class=\"hidden\" ID=\"" + lyricId + "\" style=\"border:thin inset; padding:6px; height:175px; overflow:auto\">");
                                 result.append(lyric);
                                 result.append("</div>");
-
                                 result.append("</td></tr>");
 
                                 result.append("<tr>");
@@ -348,12 +351,10 @@
                                 result.append("<a href=\"SearchMusicController?type=1&KeySearch=" + URIUtil.encodeAll(title.trim()) + "\">Trang tương tự...</a>");
                                 result.append("</td>");
 
-
                                 result.append("</tr>");
                                 result.append("<tr><td>&nbsp;</td></tr>");
                                 result.append("</table>");
                             }
-
 
                             // Phan trang
                             numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
@@ -366,14 +367,12 @@
                             result.append(strpaging + "<br/><br/>");
                         }
                     }
-
                     // End get SolrDocumentList
 %>
 
         <%
 // Get Facet
                     String facet = "";
-
 
                     List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
                     if (listFacet != null) {
@@ -415,7 +414,6 @@
 
                     // End Get Facet
 %>
-
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -470,7 +468,6 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
                                 <tr>
-
                                     <td valign="top" id="content">
                                         <% out.print(result);%>
 
@@ -494,8 +491,5 @@
                 </table>
             </div>
         </div>
-
     </body>
 </html>
-
-
