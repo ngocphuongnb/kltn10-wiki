@@ -65,7 +65,6 @@
                         $("#tbTopSearch").append(html);
                     }
                 }), 10000);
-
             });
 
             function CheckInput()
@@ -126,7 +125,6 @@
                 window.location = url;
             }
 
-            
             function SeachPVDC(strQuery){
                 var batdau = document.getElementById("divPVTC_BD").value;
                 var  kethuc = document.getElementById("divPVTC_KT").value;
@@ -233,7 +231,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URIUtil.encodePath(fieldText)  + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -268,15 +266,15 @@
 
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URIUtil.encodePath("[" + str24hqua + " TO NOW]") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URIUtil.encodePath("[" + str1tuanqua + " TO NOW]") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=timestamp&FacetValue=" + URIUtil.encodePath("[" + str1thangqua + " TO NOW]") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
@@ -413,7 +411,7 @@
 
                                                         out.print("<tr>");
                                                         out.print("<td>");
-                                                        out.print("<a href=\"javascript:MoreLikeThis('" + URLEncoder.encode(title, "UTF-8") + "');\">Trang tương tự...</a>");
+                                                        out.print("<a href=\"javascript:MoreLikeThis('" + URIUtil.encodePath(title) + "');\">Trang tương tự...</a>");
                                                         out.print("</td>");
 
                                                         //  START Bookmark
