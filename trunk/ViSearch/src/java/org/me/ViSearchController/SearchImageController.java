@@ -124,18 +124,18 @@ public class SearchImageController extends HttpServlet {
                     listFacet = rsp.getFacetFields();
                     break;
                 case 2: // facet
-                    String facetName = "";
-                    String facetValue = "";
-                    if (request.getParameter("FacetName") != null) {
-                        facetName = request.getParameter("FacetName");
-                        facetValue = request.getParameter("FacetValue");
-                        sPaging += "&FacetName=" + facetName;
-                        sPaging += "&FacetValue=" + facetValue;
+                    String qf = "";
+                    String qv = "";
+                    if (request.getParameter("qf") != null) {
+                        qf = request.getParameter("qf");
+                        qv = request.getParameter("qv");
+                        sPaging += "&qf=" + qf;
+                        sPaging += "&qv=" + qv;
                     }
-                    String facetNameValue = " +(" + facetName + ":" + facetValue + ")";
-                    if (facetName.equals("category")) {
+                    String facetNameValue = " +(" + qf + ":" + qv + ")";
+                    if (qf.equals("category")) {
                         // Neu la text thi them ""
-                        facetNameValue = " +(" + facetName + ":\"" + ClientUtils.escapeQueryChars(facetValue) + "\")";
+                        facetNameValue = " +(" + qf + ":\"" + ClientUtils.escapeQueryChars(qv) + "\")";
                     }
                     rsp = OnSearchSubmitStandard(keySearch, facetNameValue, start, pagesize, sortedType);
                     docs = rsp.getResults();
@@ -147,7 +147,7 @@ public class SearchImageController extends HttpServlet {
                     break;
                 case 3: // search theo kich thuoc anh
                     facetNameValue = "";
-                    facetValue = "";
+                   // String facetValue = "";
                     sPaging += "&type=3";
                     if (request.getParameter("w") != null) {
                         String w = "";
@@ -301,19 +301,18 @@ public class SearchImageController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
-        String query = "";
+        String query = " +(";
         keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
-                query = "";
                 break;
             case 1: // ko co date
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
                 break;
 
@@ -321,15 +320,14 @@ public class SearchImageController extends HttpServlet {
                 MySegmenter myseg = new MySegmenter();
                 String seg = myseg.getwordBoundaryMark(keySearch);
                 seg = seg.replaceAll("[\\[\\]]", "\"");
-                query = "site_title:(\"" + keySearch + "\")^20 || site_body:(\"" + keySearch + "\")^10 || category_index:(\"" + keySearch + "\")^3"; //  tuyet doi
-                query += String.format(" || site_title:(%s)^10 || site_body:(%s)^5 || category_index:(%s)^2", seg, seg, seg); // tach tu tieng viet
+                query = "+(site_title:(\"" + keySearch + "\")^20 || site_body:(\"" + keySearch + "\")^10 || category_index:(\"" + keySearch + "\")^3"; //  tuyet doi
+                query += String.format(" || site_title:(%s)^10 || site_body:(%s)^5 || category_index:(%s)^2)", seg, seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
 
         if (sortedType != 3) {
-            query += " +(";
             if (MyString.CheckSigned(keySearch)) {
                 query += "site_title:(\"" + keySearch + "\")^5 || site_title:(" + keySearch + ")^4 || "
                         + "site_body:(\"" + keySearch + "\")^2 || site_body:(" + keySearch + ")^1.7 || "

@@ -266,7 +266,7 @@ public class SearchVideoController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
+        //solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 
@@ -329,7 +329,7 @@ public class SearchVideoController extends HttpServlet {
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
+        //solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
 

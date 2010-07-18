@@ -32,6 +32,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -130,17 +131,17 @@ public class SearchMusicController extends HttpServlet {
                         listFacet = rsp.getFacetFields();
                         break;
                     case 2: // facet
-                        String facetName = "";
-                        String facetValue = "";
-                        if (request.getParameter("FacetName") != null) {
-                            facetName = request.getParameter("FacetName");
-                            sPaging += "&FacetName=" + facetName;
+                        String qf = "";
+                        String qv = "";
+                        if (request.getParameter("qf") != null) {
+                            qf = request.getParameter("qf");
+                            sPaging += "&qf=" + qf;
                         }
-                        if (request.getParameter("FacetValue") != null) {
-                            facetValue = request.getParameter("FacetValue");
-                            sPaging += "&FacetValue=" + facetValue;
+                        if (request.getParameter("qv") != null) {
+                            qv = request.getParameter("qv");
+                            sPaging += "&qv=" + qv;
                         }
-                        String facetNameValue = " +(" + facetName + ":\"" + facetValue + "\")";
+                        String facetNameValue = " +(" + qf + ":\"" + ClientUtils.escapeQueryChars(qv) + "\")";
                         rsp = OnSearchSubmitByField(keySearch, FieldId, facetNameValue, start, pagesize, sortedType);
                         docs = rsp.getResults();
                         highLight = rsp.getHighlighting();
@@ -216,50 +217,62 @@ public class SearchMusicController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
-        keySearch = keySearch.replaceAll("\"", "\\\"");
+        if (facetNameValue.equals("") == false) { // Khi facet
+            query = " +(";
+        }
         switch (sortedType) {
             case 0:
-                query = "";
                 break;
             case 1: // ko co date
                 break;
             case 2:
-                if (MyString.CheckSigned(keySearch)) {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                if (facetNameValue.equals("") == false) { // Khi facet
+                    if (MyString.CheckSigned(keySearch)) {
+                        query += "keysearch:(\"" + keySearch + "\")^100 || ";
+                    } else {
+                        query += "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    }
                 } else {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    if (MyString.CheckSigned(keySearch)) {
+                        query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                    } else {
+                        query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    }
                 }
                 break;
             case 3: // chi ap dung cho có dấu
                 MySegmenter myseg = new MySegmenter();
                 String seg = myseg.getwordBoundaryMark(keySearch);
                 seg = seg.replaceAll("[\\[\\]]", "\"");
-                // query = "title:(\"" + keySearch + "\")^20 || album_index:(\"" + keySearch + "\")^10 || lyric:(\"" + keySearch + "\")^13 || author_index:(\"" + keySearch + "\")^3 || artist_index:(\"" + keySearch + "\")^16"; //  tuyet doi
-                // query += String.format(" || title:(%s)^10 || album_index:(%s)^5 || lyric:(%s)^6 || author_index:(%s)^2 || artist_index:(%s)^8", seg, seg, seg, seg, seg); // tach tu tieng viet
-
+                if (facetNameValue.equals("") == false) { // Khi facet
+                    query = " +(";
+                }
                 if (fieldId.equals("1")) {
-                    query = "title:(\"" + keySearch + "\")^10"; //  tuyet doi
+                    query += "title:(\"" + keySearch + "\")^10"; //  tuyet doi
                     query += String.format(" || title:(%s)^8", seg); // tach tu tieng viet
                 } else if (fieldId.equals("2")) {
-                    query = "album_index:(\"" + keySearch + "\")^6"; //  tuyet doi
+                    query += "album_index:(\"" + keySearch + "\")^6"; //  tuyet doi
                     query += String.format(" || album_index:(%s)^5", seg); // tach tu tieng viet
                 } else if (fieldId.equals("3")) {
-                    query = "artist_index:(\"" + keySearch + "\")^6"; //  tuyet doi
+                    query += "artist_index:(\"" + keySearch + "\")^6"; //  tuyet doi
                     query += String.format(" || artist_index:(%s)^5", seg); // tach tu tieng viet
                 } else if (fieldId.equals("4")) {
-                    query = "author_index:(\"" + keySearch + "\")^6"; //  tuyet doi
+                    query += "author_index:(\"" + keySearch + "\")^6"; //  tuyet doi
                     query += String.format(" || author_index:(%s)^5", seg); // tach tu tieng viet
                 } else if (fieldId.equals("5")) {
-                    query = "lyric:(\"" + keySearch + "\")^6"; //  tuyet doi
+                    query += "lyric:(\"" + keySearch + "\")^6"; //  tuyet doi
                     query += String.format(" || lyric:(%s)^5", seg); // tach tu tieng viet
                 } else if (fieldId.equals("7")) {
-                    query = "category_index:(\"" + keySearch + "\")^6"; //  tuyet doi
+                    query += "category_index:(\"" + keySearch + "\")^6"; //  tuyet doi
                     query += String.format(" || category_index:(%s)^5", seg); // tach tu tieng viet
                 } else if (fieldId.equals("8")) {
                     query += "id:" + keySearch;
                 } else if (fieldId.equals("6")) {
-                    query = "title:(\"" + keySearch + "\")^20 || album_index:(\"" + keySearch + "\")^10 || lyric:(\"" + keySearch + "\")^13 || author_index:(\"" + keySearch + "\")^3 || artist_index:(\"" + keySearch + "\")^16"; //  tuyet doi
+                    query += "title:(\"" + keySearch + "\")^20 || album_index:(\"" + keySearch + "\")^10 || lyric:(\"" + keySearch + "\")^13 || author_index:(\"" + keySearch + "\")^3 || artist_index:(\"" + keySearch + "\")^16"; //  tuyet doi
                     query += String.format(" || title:(%s)^10 || album_index:(%s)^5 || lyric:(%s)^6 || author_index:(%s)^2 || artist_index:(%s)^8", seg, seg, seg, seg, seg); // tach tu tieng viet
+                }
+                if (facetNameValue.equals("") == false) { // Khi facet
+                    query += ")";
                 }
                 break;
             default:
@@ -267,9 +280,6 @@ public class SearchMusicController extends HttpServlet {
         }
 
         if (sortedType != 3) {
-            if (facetNameValue.equals("") == false) { // Khi facet
-                query += " +(";
-            }
             if (MyString.CheckSigned(keySearch)) {
                 if (fieldId.equals("1")) {
                     query += "title:(\"" + keySearch + "\")^10 || title:(" + keySearch + ")^8";
@@ -355,7 +365,6 @@ public class SearchMusicController extends HttpServlet {
         QueryResponse rsp = server.query(solrQuery);
         return rsp;
     }
-
 
     QueryResponse OnMLT(String q, int start, int pagesize) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
         SolrQuery query = new SolrQuery();
