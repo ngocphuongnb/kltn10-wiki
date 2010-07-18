@@ -177,7 +177,7 @@
                                 }
 
                                 result.append("<tr>");
-                                result.append("<td><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a><b></td>");
+                                result.append("<td class=\"title_content\"><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></td>");
                                 result.append("</tr>");
 
                                 result.append("<tr>");
@@ -185,7 +185,7 @@
                                 result.append("</tr>");
 
                                 result.append("<tr>");
-                                result.append("<td><img src=\"" + photo + "\" width=\"150\" align=\"left\" /></td>");
+                                result.append("<td><img src=\"" + photo + "\" width=\"250\" align=\"left\" /></td>");
                                 result.append("</tr>");
 
                                 result.append("<tr>");
@@ -208,38 +208,7 @@
                     }
                     //get SolrDocumentList
 %>
-        <%
-                    // Get Facet
-                    StringBuffer facet = new StringBuffer();
-                    List<FacetField> listFacet = (List<FacetField>) request.getAttribute("ListFacet");
-                    if (listFacet != null) {
-                        facet.append("<div class=\"mnu\">Bộ lọc</div>");
-                        for (int i = 0; i < listFacet.size(); i++) {
-                            facet.append("<table id=\"table_left\" width=\"100%\" border=\"0\">");
-                            facet.append("<tr>");
-                            facet.append("<td>");
-                            String fieldName = listFacet.get(i).getName();
-                            if (fieldName.equals("category")) {
-                                facet.append("<b>Chuyên mục</b>");
-                            }
-                            facet.append("<br>");
-                            List<FacetField.Count> listCount = listFacet.get(i).getValues();
-                            if (listCount != null) {
-                                for (int j = 0; j < listCount.size(); j++) {
-                                    String fieldText = listCount.get(j).getName();
-                                    facet.append("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>");
-                                    facet.append(" (" + listCount.get(j).getCount() + ")");
-                                    facet.append("<br>");
-                                }
-                            } else {
-                                facet.append("Không tìm ra dữ liệu<br>");
-                            }
-                            facet.append("</td></tr>");
-                            facet.append("</table>");
-                        }
-                    }
-                    // End get Facet
-        %>
+       
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();

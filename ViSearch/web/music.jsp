@@ -61,10 +61,19 @@
                     var url = "SearchMusicController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
-                    url += "&type=" + type;
-                    var keysearch = document.getElementById('txtSearch').value;
+                    if(document.getElementById('hdqf')!=null)
+                    {
+                        url+="&qf="+document.getElementById('hdqf').value;
+                        type = 2; //facet
+                    }
+                    if(document.getElementById('hdqv')!=null)
+                        url+="&qv="+encodeURIComponent(document.getElementById('hdqv').value);
+                    //if(document.getElementById('hdsorttype')!=null)
+                    //    url+="&SortedType="+document.getElementById('hdsorttype').value;
+
                     f = document.getElementById('field').value;
                     url += "&f=" + f;
+                    url += "&type=" + type;
                     window.location = url;
                 }
             }
@@ -191,20 +200,20 @@
 
 
                                 result.append("<tr>");
-                                result.append("<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + CaSi + "\"'>" + CaSi + "</a></td>");
+                                result.append("<td>Ca sĩ: " + "<a href = 'SearchMusicController?type=0&f=3&KeySearch=\"" + URIUtil.encodePath(CaSi) + "\"'>" + CaSi + "</a></td>");
                                 result.append("</tr>");
 
                                 result.append("<tr>");
-                                result.append("<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + author + "\"'>" + author + "</a></td>");
+                                result.append("<td>Nhạc sĩ: " + "<a href = 'SearchMusicController?type=0&f=4&KeySearch=\"" + URIUtil.encodePath(author) + "\"'>" + author + "</a></td>");
                                 result.append("</tr>");
 
                                 result.append("<tr>");
-                                result.append("<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + category + "\"'>" + category + "</a></td>");
+                                result.append("<td>Thể Loại: " + "<a href = 'SearchMusicController?type=0&f=7&KeySearch=\"" + URIUtil.encodePath(category) + "\"'>" + category + "</a></td>");
                                 result.append("</tr>");
 
 
                                 result.append("<tr>");
-                                result.append("<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + album + "\"'>" + album + "</a></td>");
+                                result.append("<td>Album: " + "<a href = 'SearchMusicController?type=0&f=2&KeySearch=\"" + URIUtil.encodePath(album) + "\"'>" + album + "</a></td>");
                                 result.append("</tr>");
 
                                 String mediaId = "MediaPlayer" + i;
@@ -403,7 +412,7 @@
                                     String fieldText = listCount.get(j).getName();
 
                                     if (fieldText != null && fieldText.equals("") == false && fieldText.equals("\n") == false) {
-                                        facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                        facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&qf=" + fieldName + "&qv=" + URIUtil.encodePath(fieldText) + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                         facet += " (" + listCount.get(j).getCount() + ")";
                                         facet += "<br>";
                                     }
@@ -468,6 +477,23 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                                <%  if (request.getParameter("qf") != null) {
+                                                out.print("<tr><td id=\"top-header\">");
+                                                if (request.getParameter("qf").toString().equals("category")) {
+                                                    out.print(">> Thể loại: " + request.getParameter("qv"));
+                                                } else if (request.getParameter("qf").toString().equals("artist")) {
+                                                    out.print(">> Ca sĩ: " + request.getParameter("qv"));
+                                                } else if (request.getParameter("qf").toString().equals("author")) {
+                                                    out.print(">> Tác giả: " + request.getParameter("qv"));
+                                                } else {
+                                                    out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
+                                                }
+                                                out.print("</td></tr>");
+                                                out.print("<input type='hidden' id='hdqf' value='" + request.getParameter("qf") + "'>");
+                                                out.print("<input type='hidden' id='hdqv' value='" + request.getParameter("qv") + "'>");
+                                                out.print("<input type='hidden' id='hdsorttype' value='" + request.getAttribute("SortedType") + "'>");
+                                            }
+                                %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
