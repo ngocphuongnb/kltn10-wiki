@@ -133,7 +133,7 @@
 
             function Tracking(docid){
                 var keySearch = document.getElementById('hfKeySearch').value;
-                var Url = "TrackingController?KeySearch=" + keySearch;
+                var Url = "TrackingController?KeySearch=" + encodeURIComponent(keySearch);
                 Url += "&DocID=" + docid;
                 Url += "&searchType=7";
                 //alert(Url);
@@ -157,9 +157,9 @@
                         type = 2; //facet
                     }
                     if(document.getElementById('hdqv')!=null)
-                        url+="&qv="+document.getElementById('hdqv').value;
-                    if(document.getElementById('hdsorttype')!=null)
-                        url+="&SortedType="+document.getElementById('hdsorttype').value;
+                        url+="&qv="+encodeURIComponent(document.getElementById('hdqv').value);
+                   // if(document.getElementById('hdsorttype')!=null)
+                    //    url+="&SortedType="+document.getElementById('hdsorttype').value;
 
                     url += "&type=" + type;
                     window.location = url;
@@ -387,7 +387,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchAllController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchAllController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" +URIUtil.encodePath(fieldText) + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -458,7 +458,7 @@
                                 <%  if (request.getParameter("qf") != null) {
                                                 out.print("<tr><td id=\"top-header\">");
                                                 if (request.getParameter("qf").toString().equals("category")) {
-                                                    out.print(">> Thể loại: " + request.getParameter("qv"));
+                                                    out.print(">> Chuyên mục: " + request.getParameter("qv"));
                                                 } else {
                                                     out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
                                                 }
