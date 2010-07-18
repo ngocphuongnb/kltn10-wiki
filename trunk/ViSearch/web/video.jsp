@@ -94,7 +94,7 @@
                     return;
                 else
                 {
-                    var url = "SearchMusicController?sp=1&KeySearch=";
+                    var url = "SearchVideoController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
                     url += "&type=" + type;
@@ -399,7 +399,7 @@
                         <td style="font-size:12px;" width="30%" align="middle">
                             <script type="" language="javascript">goforit();</script>
                             <span id="clock"/></td>
-                        <td width="70%" align="middle"><%@include file="template/sortedtype.jsp"%></td>
+                        <td width="70%" align="middle"><%@include file="template/sortedtype1.jsp"%></td>
                     </tr>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>

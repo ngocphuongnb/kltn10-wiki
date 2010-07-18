@@ -148,8 +148,8 @@ public class SearchNewsController extends HttpServlet {
                     // Get Facet
                     //listFacet = rsp.getFacetFields();
                     break;
-                case 2:
-                case 4:
+                case 2: // facet
+                case 4: // query date
                     String qf = "";
                     String qv = "";
                     if (request.getParameter("qf") != null) {
@@ -282,15 +282,13 @@ public class SearchNewsController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
 
-        //
-
         String query = "";
         switch (sortedType) {
             case 0:
                 query = "";
                 break;
             case 1:
-                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+                query = "{!boost b=recip(rord(last_update),1,1000,1000)}";
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
@@ -373,7 +371,7 @@ public class SearchNewsController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
@@ -382,29 +380,41 @@ public class SearchNewsController extends HttpServlet {
                 query = "";
                 break;
             case 1:
-                query = "{!boost b=recip(rord(timestamp),1,1000,1000)}";
+                query = "{!boost b=recip(rord(last_update),1,1000,1000)}";
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
+                break;
+
+            case 3: // chi ap dung cho có dấu
+                MySegmenter myseg = new MySegmenter();
+                String seg = myseg.getwordBoundaryMark(keySearch);
+                seg = seg.replaceAll("[\\[\\]]", "\"");
+                query = "title:(\"" + keySearch + "\")^20 || body:(\"" + keySearch + "\")^15"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || body:(%s)^5 ", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
-        query += "+(";
-        if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
-        } else {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
-                    + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+
+        if (sortedType != 3) {
+            query += "+(";
+            if (MyString.CheckSigned(keySearch)) {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
+            } else {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                        + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                        + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+            }
+
+            query += ") ";
         }
 
-        query += ") ";
 
         if (type == 2) // seach chuoi facet, can ""
         {

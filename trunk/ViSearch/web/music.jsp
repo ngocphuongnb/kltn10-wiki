@@ -62,6 +62,9 @@
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
                     url += "&type=" + type;
+                    var keysearch = document.getElementById('txtSearch').value;
+                    f = document.getElementById('field').value;
+                    url += "&f=" + f;
                     window.location = url;
                 }
             }
@@ -125,7 +128,7 @@
                         //strQuery = URLDecoder.decode(strQuery, "UTF-8");
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
-                     if (request.getAttribute("FieldId") != null) {
+                    if (request.getAttribute("FieldId") != null) {
                         FieldId = (String) request.getAttribute("FieldId");
                     }
                     int sortedType = 0;
@@ -133,7 +136,7 @@
                         sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // End Get strQuery
-%>
+        %>
         <%
                     // Get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -167,8 +170,9 @@
                                 String category = (listdocs.get(i).getFieldValue("category")).toString();
                                 String album = (listdocs.get(i).getFieldValue("album")).toString();
                                 String lyric = (listdocs.get(i).getFieldValue("lyric")).toString();
-                                if(lyric==null || lyric.trim().length()==0)
+                                if (lyric == null || lyric.trim().length() == 0) {
                                     lyric = "Đang cập nhật";
+                                }
                                 String author = (listdocs.get(i).getFieldValue("author")).toString();
 
                                 String title_hl = title;
@@ -240,7 +244,7 @@
                                         //  END Phan tracking
 
                                         //  START Bookmark
-        %>
+%>
         <script type="text/javascript">
             $(function() {
                 $("#datepicker").datepicker({dateFormat: 'dd-mm-yy'});
@@ -368,7 +372,7 @@
                         }
                     }
                     // End get SolrDocumentList
-%>
+        %>
 
         <%
 // Get Facet
@@ -398,7 +402,7 @@
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
 
-                                    if (fieldText!=null && fieldText.equals("")==false && fieldText.equals("\n")==false) {
+                                    if (fieldText != null && fieldText.equals("") == false && fieldText.equals("\n") == false) {
                                         facet += "<a href = 'SearchMusicController?type=2&KeySearch=" + strQuery + "&f=" + FieldId + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
                                         facet += " (" + listCount.get(j).getCount() + ")";
                                         facet += "<br>";
@@ -413,7 +417,7 @@
                     }
 
                     // End Get Facet
-%>
+        %>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
