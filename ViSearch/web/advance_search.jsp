@@ -33,33 +33,6 @@
         </script>
 
         <script type="text/javascript">
-            function CheckInput()
-            {
-                var filter = document.getElementsByName("filter[]");
-                var arrcheck = new Array;
-                var idem = 0;
-                for (i = 0; i < filter.length; i++)
-                    if( filter[i].checked == true){
-                        arrcheck[idem] = filter[i].value;
-                        idem ++;
-                    }
-
-                if(arrcheck.length == 0)
-                {
-                    alert("Vui lòng chọn bộ lọc tìm kiếm bookmark");
-                    return false;
-                }
-                var keysearch = document.getElementById('txtSearchBM').value;
-                if(keysearch == "")
-                    return;
-                else
-                {
-                    var url = "SearchBookmarkController?type=0&sp=1&KeySearch=";
-                    url += encodeURIComponent(keysearch);
-                    url += "&Filter=" + arrcheck.join("_");
-                    window.location = url;
-                }
-            }
             function AdvanceSearch()
             {
                 var ChuDe = document.getElementById('slChuDe').value;
@@ -156,7 +129,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td><div class="title_content">&nbsp;Tìm kiếm nâng cao</div>
-                                        <form frmSearch action="javascript:AdvanceSearch()">
+                                        <form id="frmSearch" action="javascript:AdvanceSearch()">
                                             <table style="font-size:13px">
                                                 <tr>
                                                     <td><b>Chủ đề</b>: </td>
@@ -191,7 +164,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td></td>
-                                                    <td><input type ="button" value="Tìm kiếm" onclick="AdvanceSearch()"></td>
+                                                    <td><input type="submit" value="Tìm kiếm"></td>
                                                 </tr>
                                             </table>
                                         </form>

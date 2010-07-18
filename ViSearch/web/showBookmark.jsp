@@ -413,7 +413,7 @@
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>&nbsp;Tên bookmark
-                                        <form frmSearch action="javascript:CheckInput()">
+                                        <form id="frmSearch" action="javascript:CheckInput()">
                                             &nbsp;<input class="textForm" onfocus="this.className='textForm_Hover';" onblur="this.className='textForm';" id="txtSearchBM" size="30px" type="text" value="<% if (strQuery != null) {
                                                             out.print(strQuery);
                                                         }%>"/>
