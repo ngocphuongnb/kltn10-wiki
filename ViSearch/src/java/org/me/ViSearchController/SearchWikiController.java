@@ -335,7 +335,7 @@ public class SearchWikiController extends HttpServlet {
                     solrQuery.setQueryType("dismax_unsigned_boosting");
                 }
                 break;
-            case 3:
+            case 3: 
                 if (MyString.CheckSigned(keySearch)) {
                     solrQuery.setQueryType("dismax");
                 } else {
