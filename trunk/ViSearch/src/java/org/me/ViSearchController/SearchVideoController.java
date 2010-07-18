@@ -138,15 +138,15 @@ public class SearchVideoController extends HttpServlet {
                     break;
                 case 2: // facet
                 case 3: // truy van theo thể loại
-                    String facetName = "";
-                    String facetValue = "";
-                    if (request.getParameter("FacetName") != null) {
-                        facetName = request.getParameter("FacetName");
-                        facetValue = request.getParameter("FacetValue");
-                        sPaging += "&FacetName=" + facetName;
-                        sPaging += "&FacetValue=" + facetValue;
+                    String qf = "";
+                    String qv = "";
+                    if (request.getParameter("qf") != null) {
+                        qf = request.getParameter("qf");
+                        qv = request.getParameter("qv");
+                        sPaging += "&qf=" + qf;
+                        sPaging += "&qv=" + qv;
                     }
-                    rsp = OnSearchSubmitStandard(type, keySearch, facetName, facetValue, start, pagesize, sortedType);
+                    rsp = OnSearchSubmitStandard(type, keySearch, qf, qv, start, pagesize, sortedType);
                     docs = rsp.getResults();
                     highLight = rsp.getHighlighting();
                     request.setAttribute("HighLight", highLight);
@@ -282,18 +282,17 @@ public class SearchVideoController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
-        String query = "";
+        String query = " +(";
         switch (sortedType) {
             case 0:
-                query = "";
                 break;
             case 1: // ko co date
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
                 break;
 
@@ -301,15 +300,14 @@ public class SearchVideoController extends HttpServlet {
                 MySegmenter myseg = new MySegmenter();
                 String seg = myseg.getwordBoundaryMark(keySearch);
                 seg = seg.replaceAll("[\\[\\]]", "\"");
-                query = "title:(\"" + keySearch + "\")^20 || category_index:(\"" + keySearch + "\")^5"; //  tuyet doi
-                query += String.format(" || title:(%s)^10 || category_index:(%s)^3 ", seg, seg); // tach tu tieng viet
+                query = "+(title:(\"" + keySearch + "\")^20 || category_index:(\"" + keySearch + "\")^5"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || category_index:(%s)^3)", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
 
         if (sortedType != 3) {
-            query += " +(";
             if (MyString.CheckSigned(keySearch)) {
                 query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1";
             } else {

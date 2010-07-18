@@ -102,7 +102,6 @@
                 var  btDong = "BTCloseVideoId" + id;
                 document.getElementById(btDong).className="hidden";
             }
-
             function CheckInput()
             {
                 var keysearch = document.getElementById('txtSearch').value;
@@ -117,16 +116,13 @@
                     window.location = url;
                 }
             }
-           
             function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
                 var url = "DetailWikiController?url=" + link;
                 url += "&KeySearch=" + keysearch;
                 window.location = url;
-            }
-           
-
+            }   
             function ClickDetail(link)
             {
                 var keysearch = document.getElementById('hfKeySearch').value;
@@ -154,6 +150,17 @@
                     var url = "SearchAllController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
+                    
+                    if(document.getElementById('hdqf')!=null)
+                    {
+                        url+="&qf="+document.getElementById('hdqf').value;
+                        type = 2; //facet
+                    }
+                    if(document.getElementById('hdqv')!=null)
+                        url+="&qv="+document.getElementById('hdqv').value;
+                    if(document.getElementById('hdsorttype')!=null)
+                        url+="&SortedType="+document.getElementById('hdsorttype').value;
+
                     url += "&type=" + type;
                     window.location = url;
                 }
@@ -281,20 +288,20 @@
                                     strBody += "</td></tr>";
                                     strBody += "<tr><td><div class=\"hidden\" ID=\"" + mediaId + "\">" + body + "</div></td></tr>";
                                     // Tracking music
-                                    %>
-                                            <script type="text/javascript">
-                                                $(document).ready(function(){
-                                                    $("#<%=BTViewMusicId%>").click(function(){
-                                                        var docID = <%=subId%>
-                                                        var keySearch = $("#hfKeySearch").attr("value");
-                                                        var Url = "TrackingController?KeySearch=" + keySearch;
-                                                        Url += "&DocID=" + docID;
-                                                        Url += "&searchType=7";
-                                                        $("#Tracking").load(encodeURI(Url));
-                                                    });
-                                                });
-                                            </script>
-                                            <%
+%>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#<%=BTViewMusicId%>").click(function(){
+                    var docID = <%=subId%>
+                    var keySearch = $("#hfKeySearch").attr("value");
+                    var Url = "TrackingController?KeySearch=" + keySearch;
+                    Url += "&DocID=" + docID;
+                    Url += "&searchType=7";
+                    $("#Tracking").load(encodeURI(Url));
+                });
+            });
+        </script>
+        <%
 
                                         } else if (stype.equals("video")) {
                                             // Neu la video thì show window media lên
@@ -356,7 +363,7 @@
                         }
                     }
                     // End get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -380,7 +387,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchAllController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchAllController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -392,7 +399,7 @@
                         }
                     }
                     // End get Facet
-        %>
+%>
 
 
         <div id="wrap_left" align="center">
@@ -448,6 +455,19 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                                <%  if (request.getParameter("qf") != null) {
+                                                out.print("<tr><td id=\"top-header\">");
+                                                if (request.getParameter("qf").toString().equals("category")) {
+                                                    out.print(">> Thể loại: " + request.getParameter("qv"));
+                                                } else {
+                                                    out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
+                                                }
+                                                out.print("</td></tr>");
+                                                out.print("<input type='hidden' id='hdqf' value='" + request.getParameter("qf") + "'>");
+                                                out.print("<input type='hidden' id='hdqv' value='" + request.getParameter("qv") + "'>");
+                                                out.print("<input type='hidden' id='hdsorttype' value='" + request.getAttribute("SortedType") + "'>");
+                                            }
+                                %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
