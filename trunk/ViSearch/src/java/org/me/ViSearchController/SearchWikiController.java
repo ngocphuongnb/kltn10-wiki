@@ -363,6 +363,7 @@ public class SearchWikiController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
         String str = "";
         String trackingboost = "";
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 str = "";

@@ -298,7 +298,6 @@ public class SearchRaoVatController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         //keySearch = MyString.cleanQueryTerm(keySearch);
         SolrQuery solrQuery = new SolrQuery();
-
         switch (sortedType) {
             case 0:
                 if (MyString.CheckSigned(keySearch)) {
