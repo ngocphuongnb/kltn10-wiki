@@ -82,6 +82,17 @@
                     var url = "SearchImageController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
+
+                    if(document.getElementById('hdqf')!=null)
+                    {
+                        url+="&qf="+document.getElementById('hdqf').value;
+                        type = 2; //facet
+                    }
+                    if(document.getElementById('hdqv')!=null)
+                        url+="&qv="+encodeURIComponent(document.getElementById('hdqv').value);
+                    //if(document.getElementById('hdsorttype')!=null)
+                    //    url+="&SortedType="+document.getElementById('hdsorttype').value;
+
                     url += "&type=" + type;
                     window.location = url;
                 }
@@ -105,7 +116,7 @@
                         sortedType = Integer.parseInt(request.getAttribute("SortedType").toString());
                     }
                     // end get String query
-%>
+        %>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -135,20 +146,32 @@
                                 String title = (listdocs.get(i).getFirstValue("site_title")).toString();
                                 String id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String url = "";
-                              //  if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
-                               //     File file = new File("webapps\\ViSearch\\" + listdocs.get(i).getFieldValue("url_local").toString());
-                               //     if (file.exists()) {
+                                //  if (!listdocs.get(i).getFieldValue("url_local").equals("") && listdocs.get(i).getFieldValue("url_local") != null) {
+                                //     File file = new File("webapps\\ViSearch\\" + listdocs.get(i).getFieldValue("url_local").toString());
+                                //     if (file.exists()) {
                                 //        url = (listdocs.get(i).getFieldValue("url_local")).toString();
                                 //        url = url.replace('\\', '/');
-                                        //out.print(url);
+                                //out.print(url);
                                 //    }
-                              //  } else {
-                                    url = (listdocs.get(i).getFieldValue("url")).toString();
-                             //   }
-                                String width = (listdocs.get(i).getFieldValue("width")).toString();
-                                String height = (listdocs.get(i).getFieldValue("height")).toString();
-                                String size = (listdocs.get(i).getFieldValue("size")).toString();
-                                String fileType = (listdocs.get(i).getFieldValue("fileType")).toString();
+                                //  } else {
+                                url = (listdocs.get(i).getFieldValue("url")).toString();
+                                //   }
+                                String width = "";
+                                if ((listdocs.get(i).getFieldValue("width")) != null) {
+                                    width = listdocs.get(i).getFieldValue("width").toString();
+                                }
+                                String height = "";
+                                if ((listdocs.get(i).getFieldValue("height")) != null) {
+                                    height = listdocs.get(i).getFieldValue("height").toString();
+                                }
+                                String size = "";
+                                 if ((listdocs.get(i).getFieldValue("size")) != null) {
+                                     size = listdocs.get(i).getFieldValue("size").toString();
+                                 }
+                                String fileType = "";
+                                if ((listdocs.get(i).getFieldValue("fileType")) != null) {
+                                    fileType = listdocs.get(i).getFieldValue("fileType").toString();
+                                }
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
@@ -192,7 +215,7 @@
                         }
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -213,7 +236,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URIUtil.encodePath(fieldText) + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + URIUtil.encodePath(fieldText) + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -227,7 +250,7 @@
 
 
                     // End get Facet
-        %>
+%>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -265,17 +288,17 @@
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[1001 TO *]", "UTF-8") + "'>" + "Lớn" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&qf=width&qv=" + URIUtil.encodePath("[1001 TO *]") + "'>" + "Lớn" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[501 TO 1000]", "UTF-8") + "'>" + "Trung bình" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&qf=width&qv=" + URIUtil.encodePath("[501 TO 1000]") + "'>" + "Trung bình" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<table id=\"table_left\" width=\"100%\" border=\"0\">");
                                                 out.print("<tr><td>");
-                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&FacetName=width&FacetValue=" + URLEncoder.encode("[1 TO 500]", "UTF-8") + "'>" + "Nhỏ" + "</a>");
+                                                out.print("<a href = 'SearchImageController?type=2&KeySearch=" + strQuery + "&qf=width&qv=" + URIUtil.encodePath("[* TO 500]") + "'>" + "Nhỏ" + "</a>");
                                                 out.print("</td></tr>");
 
                                                 out.print("<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>");
@@ -301,6 +324,27 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                                <%  if (request.getParameter("qf") != null) {
+                                                out.print("<tr><td id=\"top-header\">");
+                                                if (request.getParameter("qf").toString().equals("category")) {
+                                                    out.print(">> Chuyên mục: " + request.getParameter("qv"));
+                                                } else if (request.getParameter("qf").toString().equals("width")) {
+                                                    if (request.getParameter("qv").equals("[1001 TO *]")) {
+                                                        out.print(">> Kích thước: Lớn");
+                                                    }
+                                                    else if (request.getParameter("qv").equals("[* TO 500]")) {
+                                                        out.print(">> Kích thước: Nhỏ");
+                                                    }
+                                                    else out.print(">> Kích thước: Trung bình");
+                                                } else {
+                                                    out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
+                                                }
+                                                out.print("</td></tr>");
+                                                out.print("<input type='hidden' id='hdqf' value='" + request.getParameter("qf") + "'>");
+                                                out.print("<input type='hidden' id='hdqv' value='" + request.getParameter("qv") + "'>");
+                                                out.print("<input type='hidden' id='hdsorttype' value='" + request.getAttribute("SortedType") + "'>");
+                                            }
+                                %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
