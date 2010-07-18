@@ -39,65 +39,67 @@
                     $("#tbTopSearch").append(html);
                 }
             });
-        function setText()
-        {
-            var keysearch = document.getElementById('txtSearch').value;
-            if(keysearch=="")
-                document.getElementById('txtSearch').focus();
-        }
-
-        function CheckInput()
-        {
-            var keysearch = document.getElementById('txtSearch').value;
-            var sortedtype = document.getElementById('slSortedType').value;
-            if(keysearch == "")
-                return;
-            else
+            function setText()
             {
-                var url = "SearchNewsController?type=0&sp=1&KeySearch=";
-                url += encodeURIComponent(keysearch);
-                url += "&SortedType=" + sortedtype;
+                var keysearch = document.getElementById('txtSearch').value;
+                if(keysearch=="")
+                    document.getElementById('txtSearch').focus();
+            }
+
+            function CheckInput()
+            {
+                var keysearch = document.getElementById('txtSearch').value;
+                var sortedtype = document.getElementById('slSortedType').value;
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchNewsController?type=0&sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    window.location = url;
+                }
+            }
+            function SeachPVDC(strQuery){
+                var batdau = document.getElementById("divPVTC_BD").value;
+                var  kethuc = document.getElementById("divPVTC_KT").value;
+                strQuery =  encodeURIComponent(strQuery);
+                var url = "SearchNewsController?type=3&KeySearch=" + strQuery + "&qf=created&sd="+batdau+"&ed="+kethuc;
                 window.location = url;
             }
-        }
-        function SeachPVDC(strQuery){
-            var batdau = document.getElementById("divPVTC_BD").value;
-            var  kethuc = document.getElementById("divPVTC_KT").value;
-            strQuery =  encodeURIComponent(strQuery);
-            var url = "SearchNewsController?type=3&KeySearch=" + strQuery + "&qf=created&sd="+batdau+"&ed="+kethuc;
-            window.location = url;
-        }
-        function showPVTC(){
-            document.getElementById("divPVTC").className="display";
-        }
+            function showPVTC(){
+                document.getElementById("divPVTC").className="display";
+            }
         </script>
         <script language="javascript">
-        function Sort(type){
-            var sortedtype = document.getElementById('slSortedType').value;
-            //alert(sortedtype);
-            var keysearch = document.getElementById('hfKeySearch').value;
-            if(keysearch == "")
-                return;
-            else
-            {
-                var url = "SearchNewsController?sp=1&KeySearch=";
-                url += encodeURIComponent(keysearch);
-                url += "&SortedType=" + sortedtype;
+            function Sort(type){
+                var sortedtype = document.getElementById('slSortedType').value;
+                //alert(sortedtype);
+                var keysearch = document.getElementById('hfKeySearch').value;
 
-                if(document.getElementById('hdqf')!=null)
+                if(keysearch == "")
+                    return;
+                else
                 {
-                    url+="&qf="+document.getElementById('hdqf').value;
-                    type = 2;
-                }
-                if(document.getElementById('hdqv')!=null)
-                    url+="&qv="+document.getElementById('hdqv').value;
-                if(document.getElementById('hdsorttype')!=null)
-                    url+="&SortedType="+document.getElementById('hdsorttype').value;
+                    var url = "SearchNewsController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
 
-                url += "&type=" + type;
-                window.location = url;
+                    url += "&SortedType=" + sortedtype;
+                    if(document.getElementById('hdqf')!=null)
+                    {
+                        url+="&qf="+document.getElementById('hdqf').value;
+                        type = 2;
+                    }
+                    if(document.getElementById('hdqv')!=null)
+                        url+="&qv="+encodeURIComponent(document.getElementById('hdqv').value);
+                    if(document.getElementById('hdsorttype')!=null)
+                    {
+                       //url+="&SortedType="+document.getElementById('hdsorttype').value;
+                    }
+                    url += "&type=" + type;
+                    window.location = url;
+                }
             }
-        }
         </script>
     </head>
 
@@ -220,7 +222,7 @@
                         result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>");
                     }
                     //get SolrDocumentList
-%>
+        %>
         <%
                     // Get Facet
                     String facet = "";
@@ -244,7 +246,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + fieldText + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchNewsController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + URIUtil.encodePath(fieldText) + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -257,7 +259,7 @@
                     }
 
                     // End get Facet
-        %>
+%>
         <%
                     // Get query date
                     String facetD = "";
@@ -279,15 +281,15 @@
 
                     // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URIUtil.encodePath("[" + str24hqua + " TO NOW]") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URIUtil.encodePath("[" + str1tuanqua + " TO NOW]") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchNewsController?type=4&KeySearch=" + strQuery + "&qv=" +URIUtil.encodePath("[" + str1thangqua + " TO NOW]") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
@@ -303,7 +305,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -331,10 +333,10 @@
                     </tr>
                     </tr>
                     <script type="text/javascript">
-                    $(function(){
-                        $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
-                        $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
-                    });
+                        $(function(){
+                            $("#divPVTC_KT").datepicker({dateFormat: 'dd-mm-yy'});
+                            $("#divPVTC_BD").datepicker({dateFormat: 'dd-mm-yy'});
+                        });
                     </script>
                     <tr><td height="20" colspan="2" align="center" valign="bottom"><div align="center" class="nav"></div></td></tr>
                     <tr>
@@ -357,7 +359,7 @@
                                 <%  if (request.getParameter("qf") != null) {
                                                 out.print("<tr><td id=\"top-header\">");
                                                 if (request.getParameter("qf").toString().equals("category")) {
-                                                    out.print(">> Thể loại: " + request.getParameter("qv"));
+                                                    out.print(">> Chuyên mục: " + request.getParameter("qv"));
                                                 } else {
                                                     out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
                                                 }

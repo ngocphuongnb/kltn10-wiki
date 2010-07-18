@@ -175,10 +175,10 @@
                             result.append("<div id='divleft'>");
                             result.append("<table style=\"font-size:13px\">");
                             if (contact != null && contact.trim() != "") {
-                                result.append("<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>");
+                                result.append("<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + URIUtil.encodePath(category) + "\"'>" + category + "</a></td></tr>");
                             }
                             if (location != null && location.trim() != "") {
-                                result.append("<tr><td>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + location + "'>" + location + "</a></td></tr>");
+                                result.append("<tr><td>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + URIUtil.encodePath(location) + "'>" + location + "</a></td></tr>");
                             }
                             //result += "<tr><td>" + "Score: " + score + "</td></tr>";
                             // result.append("<tr><td>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></td></tr>");

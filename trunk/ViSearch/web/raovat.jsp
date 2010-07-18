@@ -65,20 +65,20 @@
         </script>
         <script  language="javascript">
             function Sort(type){
-            var sortedtype = document.getElementById('slSortedType').value;
-            //alert(sortedtype);
-            var keysearch = document.getElementById('hfKeySearch').value;
-            //alert(keysearch);
-            if(keysearch == "")
-            return;
-            else
-            {
-            var url = "SearchRaoVatController?sp=1&KeySearch=";
-            url += encodeURIComponent(keysearch);
-            url += "&SortedType=" + sortedtype;
-            url += "&type=" + type;
-            window.location = url;
-            }
+                var sortedtype = document.getElementById('slSortedType').value;
+                //alert(sortedtype);
+                var keysearch = document.getElementById('hfKeySearch').value;
+                //alert(keysearch);
+                if(keysearch == "")
+                    return;
+                else
+                {
+                    var url = "SearchRaoVatController?sp=1&KeySearch=";
+                    url += encodeURIComponent(keysearch);
+                    url += "&SortedType=" + sortedtype;
+                    url += "&type=" + type;
+                    window.location = url;
+                }
             }
         </script>
     </head>
@@ -175,8 +175,8 @@
                                 result.append("<tr><td>" + body + "</td></tr>");
 
                                 result.append("<tr>");
-                                 result.append("<td>Link bài viết: <a href='" + link + "' target='_blank'>" + link + "</a></td>");
-                                 result.append("</tr>");
+                                result.append("<td>Link bài viết: <a href='" + link + "' target='_blank'>" + link + "</a></td>");
+                                result.append("</tr>");
 
                                 result.append("<tr>");
                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
@@ -205,7 +205,7 @@
                         result.append("<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p><br/><br/>");
                     }
                     //get SolrDocumentList
-        %>
+%>
         <%
                     // Get Facet
                     String facet = "";
@@ -229,7 +229,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + fieldText + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" +URIUtil.encodePath(fieldText)  + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -242,7 +242,7 @@
                     }
 
                     // End get Facet
-        %>
+%>
         <%
                     // Get query date
                     String facetD = "";
@@ -264,15 +264,15 @@
 
                     // 1976-03-06T23:59:59.999Z
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str24hqua + " TO NOW]", "UTF-8") + "'>" + "24 giờ qua" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URIUtil.encodePath("[" + str24hqua + " TO NOW]") + "'>" + "24 giờ qua" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1tuanqua + " TO NOW]", "UTF-8") + "'>" + "1 tuần trước" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URIUtil.encodePath("[" + str1tuanqua + " TO NOW]") + "'>" + "1 tuần trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td>";
-                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URLEncoder.encode("[" + str1thangqua + " TO NOW]", "UTF-8") + "'>" + "1 tháng trước" + "</a>";
+                    facetD += "<a href = 'SearchRaoVatController?type=4&KeySearch=" + strQuery + "&FacetName=last_update&FacetValue=" + URIUtil.encodePath("[" + str1thangqua + " TO NOW]") + "'>" + "1 tháng trước" + "</a>";
                     facetD += "</td></tr>";
 
                     facetD += "<tr><td><a style=\"cursor:pointer\" onclick=\"showPVTC();\" />Phạm vi tùy chỉnh</a></td></tr>";
@@ -288,7 +288,7 @@
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
 
         <div id="wrap_left" align="center">
             <div id="wrap_right">
@@ -343,7 +343,7 @@
                             <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
                             <%  if (request.getParameter("FacetValue") != null) {
                                             out.print("<tr><td id=\"top-header\">");
-                                            out.print(">> " + request.getParameter("FacetName")+": "+request.getParameter("FacetValue"));
+                                            out.print(">> " + request.getParameter("FacetName") + ": " + request.getParameter("FacetValue"));
                                             out.print("</td></tr>");
                                         }
                             %>
