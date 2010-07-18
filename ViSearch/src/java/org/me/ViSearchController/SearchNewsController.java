@@ -374,19 +374,18 @@ public class SearchNewsController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int type, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
 
-        String query = "";
+        String query = " +(";
         switch (sortedType) {
             case 0:
-                query = "";
                 break;
             case 1:
-                query = "{!boost b=recip(rord(last_update),1,1000,1000)}";
+                query += "{!boost b=recip(rord(last_update),1,1000,1000)}"; // coi lai cho nay
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query += "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
                 break;
 
@@ -394,15 +393,14 @@ public class SearchNewsController extends HttpServlet {
                 MySegmenter myseg = new MySegmenter();
                 String seg = myseg.getwordBoundaryMark(keySearch);
                 seg = seg.replaceAll("[\\[\\]]", "\"");
-                query = "title:(\"" + keySearch + "\")^20 || body:(\"" + keySearch + "\")^15"; //  tuyet doi
-                query += String.format(" || title:(%s)^10 || body:(%s)^5 ", seg, seg); // tach tu tieng viet
+                query = "+(title:(\"" + keySearch + "\")^20 || body:(\"" + keySearch + "\")^15"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || body:(%s)^5)", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
 
         if (sortedType != 3) {
-            query += "+(";
             if (MyString.CheckSigned(keySearch)) {
                 query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
             } else {

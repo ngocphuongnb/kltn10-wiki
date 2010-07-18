@@ -341,10 +341,9 @@
                         <table>
 
                             <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
-                            <%  if (request.getParameter(
-                                                "FacetValue") != null) {
+                            <%  if (request.getParameter("FacetValue") != null) {
                                             out.print("<tr><td id=\"top-header\">");
-                                            out.print(">> " + request.getParameter("FacetValue"));
+                                            out.print(">> " + request.getParameter("FacetName")+": "+request.getParameter("FacetValue"));
                                             out.print("</td></tr>");
                                         }
                             %>

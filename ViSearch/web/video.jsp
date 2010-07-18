@@ -97,6 +97,17 @@
                     var url = "SearchVideoController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
+
+                    if(document.getElementById('hdqf')!=null)
+                    {
+                        url+="&qf="+document.getElementById('hdqf').value;
+                        type = 2; //facet
+                    }
+                    if(document.getElementById('hdqv')!=null)
+                        url+="&qv="+document.getElementById('hdqv').value;
+                    if(document.getElementById('hdsorttype')!=null)
+                        url+="&SortedType="+document.getElementById('hdsorttype').value;
+
                     url += "&type=" + type;
                     window.location = url;
                 }
@@ -357,7 +368,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URLEncoder.encode(fieldText, "UTF-8") + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + URLEncoder.encode(fieldText, "UTF-8") + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -420,6 +431,19 @@
                             <table>
 
                                 <tr><td id="result_search"><% out.print(search_stats);%></td></tr><tr></tr>
+                           <%  if (request.getParameter("qf") != null) {
+                                                out.print("<tr><td id=\"top-header\">");
+                                                if (request.getParameter("qf").toString().equals("category")) {
+                                                    out.print(">> Thể loại: " + request.getParameter("qv"));
+                                                } else {
+                                                    out.print(">> " + request.getParameter("qf") + ": " + request.getParameter("qv"));
+                                                }
+                                                out.print("</td></tr>");
+                                                out.print("<input type='hidden' id='hdqf' value='" + request.getParameter("qf") + "'>");
+                                                out.print("<input type='hidden' id='hdqv' value='" + request.getParameter("qv") + "'>");
+                                                out.print("<input type='hidden' id='hdsorttype' value='" + request.getAttribute("SortedType") + "'>");
+                                            }
+                                %>
                             </table>
                             <table id="table_right" width="100%" cellpadding="0" cellspacing="0">
 
