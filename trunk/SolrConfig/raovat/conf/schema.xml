@@ -261,7 +261,7 @@
 	<field name="body" type="string" indexed="false" stored="true" multiValued="true"/>
 	<field name="rv_body" type="textRaoVat" indexed="true" stored="true" multiValued="true"/>
 	<field name="rv_body_unsigned" type="textRaoVat" indexed="true" stored="false" multiValued="true"/>
-	<field name="price"  type="sfloat" indexed="true" stored="true"/>
+	<field name="price"  type="string" indexed="true" stored="true"/>
 	<field name="category" type="string" indexed="true" stored="true"/>
 	<field name="category_index" type="textRaoVat" indexed="true" stored="false"/>
 	<field name="category_index_unsigned" type="textRaoVat" indexed="true" stored="false"/>

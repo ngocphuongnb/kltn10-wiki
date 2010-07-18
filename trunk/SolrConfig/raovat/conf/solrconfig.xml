@@ -38,32 +38,24 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-       keysearch^100  rv_title^2.5 rv_body^2 category_index
+       keysearch^50  rv_title^2.5 rv_body^2 category_index
      </str>
      <str name="pf">
-        rv_title^2.5 rv_body category_index^0.6
+       keysearch^100 rv_title^10 rv_body^5 category_index^2
      </str>
-     <!--<str name="bf">
-        popularity^0.5 recip(price,1,1000,1000)^0.3
-     </str>-->
      <str name="fl">
-        id, rv_title, rv_body, last_update
+        id, rv_title, rv_body, last_update, photo
      </str>
-     <str name="mm">
-        2&lt;-25%
-     </str>
-     <int name="qs">100</int>
-	 <int name="ps">10</int>
+     <int name="qs">0</int>
+	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
      <str name="hl.fl">rv_title rv_body</str>
-     <!-- for this field, we want no fragmenting, just highlighting -->
-     <str name="f.name.hl.fragsize">0</str>
-     <!-- instructs Solr to return the field itself if no query terms are
-          found -->
-     <str name="f.name.hl.alternateField">rv_title</str>
-     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_title.hl.alternateField">rv_title</str>
+     <str name="f.rv_body.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_body.hl.snippets">5</str>
+	 <str name="f.rv_body.hl.mergeContiguous">true</str>
     </lst>
 	
   </requestHandler>
@@ -77,29 +69,24 @@
        rv_title^2.5 rv_body^2 category_index
      </str>
      <str name="pf">
-        rv_title^2.5 rv_body category_index^0.6
+        rv_title^10 rv_body^5 category_index^2
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
      </str>-->
      <str name="fl">
-        id, rv_title, rv_body, last_update
+        id, rv_title, rv_body, last_update, photo
      </str>
-     <str name="mm">
-        2&lt;-25%
-     </str>
-     <int name="qs">100</int>
-	 <int name="ps">10</int>
+     <int name="qs">0</int>
+	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
      <str name="hl.fl">rv_title rv_body</str>
-     <!-- for this field, we want no fragmenting, just highlighting -->
-     <str name="f.name.hl.fragsize">0</str>
-     <!-- instructs Solr to return the field itself if no query terms are
-          found -->
-     <str name="f.name.hl.alternateField">rv_title</str>
-     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_title.hl.alternateField">rv_title</str>
+     <str name="f.rv_body.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_body.hl.snippets">5</str>
+	 <str name="f.rv_body.hl.mergeContiguous">true</str>
     </lst>
 	
   </requestHandler>
@@ -110,29 +97,24 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-       keysearch^100 keysearch_unsigned^50 rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
+       keysearch^60 keysearch_unsigned^30 rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
      </str>
      <str name="pf">
-       rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned category_index_unsigned^0.5
+       keysearch^100 keysearch_unsigned^50 rv_title^20 rv_body^12 category_index^3 rv_title_unsigned^14 rv_body_unsigned^3 category_index_unsigned
      </str>
      <str name="fl">
-        id, rv_title, rv_body, last_update
+        id, rv_title, rv_body, last_update, photo
      </str>
-     <str name="mm">
-        2&lt;-25%
-     </str>
-     <int name="qs">100</int>
-	 <int name="ps">10</int>
+     <int name="qs">0</int>
+	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
      <str name="hl.fl">rv_title rv_body</str>
-     <!-- for this field, we want no fragmenting, just highlighting -->
-     <str name="f.name.hl.fragsize">0</str>
-     <!-- instructs Solr to return the field itself if no query terms are
-          found -->
-     <str name="f.name.hl.alternateField">rv_title</str>
-     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_title.hl.alternateField">rv_title</str>
+     <str name="f.rv_body.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_body.hl.snippets">5</str>
+	 <str name="f.rv_body.hl.mergeContiguous">true</str>
     </lst>
 	
   </requestHandler>
@@ -146,40 +128,54 @@
        rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
      </str>
      <str name="pf">
-       rv_title^10 rv_body^6 category_index^1.5 rv_title_unsigned^7 rv_body_unsigned^1.5 category_index_unsigned^0.5
+       rv_title^20 rv_body^12 category_index^3 rv_title_unsigned^14 rv_body_unsigned^3 category_index_unsigned
      </str>
      <str name="fl">
-        id, rv_title, rv_body, last_update
+        id, rv_title, rv_body, last_update, photo
      </str>
-     <str name="mm">
-        2&lt;-25%
-     </str>
-     <int name="qs">100</int>
-	 <int name="ps">10</int>
+     <int name="qs">0</int>
+	 <int name="ps">0</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
      <str name="hl.fl">rv_title rv_body</str>
-     <!-- for this field, we want no fragmenting, just highlighting -->
-     <str name="f.name.hl.fragsize">0</str>
-     <!-- instructs Solr to return the field itself if no query terms are
-          found -->
-     <str name="f.name.hl.alternateField">rv_title</str>
-     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_title.hl.alternateField">rv_title</str>
+     <str name="f.rv_body.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.rv_body.hl.snippets">5</str>
+	 <str name="f.rv_body.hl.mergeContiguous">true</str>
     </lst>
 	
   </requestHandler>
   
-  <fragmenter name="regex" class="org.apache.solr.highlight.RegexFragmenter">
+<highlighting>
+   <!-- Configure the standard fragmenter -->
+   <!-- This could most likely be commented out in the "default" case -->
+   <fragmenter name="gap" class="org.apache.solr.highlight.GapFragmenter" default="true">
+    <lst name="defaults">
+     <int name="hl.fragsize">100</int>
+    </lst>
+   </fragmenter>
+
+   <!-- A regular-expression-based fragmenter (f.i., for sentence extraction) -->
+   <fragmenter name="regex" class="org.apache.solr.highlight.RegexFragmenter">
     <lst name="defaults">
       <!-- slightly smaller fragsizes work better because of slop -->
-      <int name="hl.fragsize">70</int>
+      <int name="hl.fragsize">100</int>
       <!-- allow 50% slop on fragment sizes -->
-      <float name="hl.regex.slop">0.5</float>
+      <float name="hl.regex.slop">0.6</float>
       <!-- a basic sentence pattern -->
       <str name="hl.regex.pattern">[-\w ,/\n\"']{20,200}</str>
     </lst>
    </fragmenter>
+
+   <!-- Configure the standard formatter -->
+   <formatter name="html" class="org.apache.solr.highlight.HtmlFormatter" default="true">
+    <lst name="defaults">
+     <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+     <str name="hl.simple.post"><![CDATA[</em>]]></str>
+    </lst>
+   </formatter>
+  </highlighting>
   <!-- config for the admin interface --> 
   
   <requestHandler name="/spell" class="solr.SearchHandler" lazy="true">
