@@ -151,7 +151,7 @@
                     return;
                 else
                 {
-                    var url = "SearchNewsController?sp=1&KeySearch=";
+                    var url = "SearchAllController?sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch);
                     url += "&SortedType=" + sortedtype;
                     url += "&type=" + type;

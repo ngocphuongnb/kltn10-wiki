@@ -37,6 +37,7 @@ import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MySegmenter;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 import org.me.dto.FacetDateDTO;
@@ -96,6 +97,7 @@ public class SearchVideoController extends HttpServlet {
             if (request.getParameter("SortedType") != null) {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
                 sPaging += "&SortedType=" + sortedType;
+                request.setAttribute("SortedType", sortedType);
             }
 
 
@@ -152,7 +154,7 @@ public class SearchVideoController extends HttpServlet {
                     // Get Facet
                     listFacet = rsp.getFacetFields();
                     break;
-                case 4:
+                case 4: // advance
                     String TextAll = "";
                     String TextExact = "";
                     String TextOneOf = "";
@@ -215,35 +217,47 @@ public class SearchVideoController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
         switch (sortedType) {
             case 0:
                 query = "";
                 break;
+            case 1: // ko co date
+                break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
+                break;
+
+            case 3: // chi ap dung cho có dấu
+                MySegmenter myseg = new MySegmenter();
+                String seg = myseg.getwordBoundaryMark(keySearch);
+                seg = seg.replaceAll("[\\[\\]]", "\"");
+                query = "title:(\"" + keySearch + "\")^20 || category_index:(\"" + keySearch + "\")^5"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || category_index:(%s)^3 ", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
 
-        if (more.equals("detail") == false) {
-            if (MyString.CheckSigned(keySearch)) {
-                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
+        if (sortedType != 3) {
+            if (more.equals("detail") == false) {
+                if (MyString.CheckSigned(keySearch)) {
+                    query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1";
+                } else {
+                    query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                            + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                            + "category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1.3 || "
+                            + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+                }
             } else {
-                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                        + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
-                        + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+                query += "id:" + keySearch;
             }
-        } else {
-            query += "id:" + keySearch;
         }
 
         solrQuery.setQuery(query);
@@ -266,37 +280,50 @@ public class SearchVideoController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
         switch (sortedType) {
             case 0:
                 query = "";
                 break;
+            case 1: // ko co date
+                break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
+                break;
+
+            case 3: // chi ap dung cho có dấu
+                MySegmenter myseg = new MySegmenter();
+                String seg = myseg.getwordBoundaryMark(keySearch);
+                seg = seg.replaceAll("[\\[\\]]", "\"");
+                query = "title:(\"" + keySearch + "\")^20 || category_index:(\"" + keySearch + "\")^5"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || category_index:(%s)^3 ", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
-        query += " +(";
-        if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1";
-        } else {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1.3 || "
-                    + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
-        }
-        query += ")";
-        if (type == 2) {
-            query += " +(" + facetName + ":\"" + ClientUtils.escapeQueryChars(facetValue) + "\")";
+
+        if (sortedType != 3) {
+            query += " +(";
+            if (MyString.CheckSigned(keySearch)) {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^4 || category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1";
+            } else {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                        + "category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1.3 || "
+                        + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
+            }
+            query += ")";
         }
 
+        if (type == 2) {// facet
+            query += " +(" + facetName + ":\"" + ClientUtils.escapeQueryChars(facetValue) + "\")";
+        }
 
         solrQuery.setQuery(query);
         // Facet
@@ -404,7 +431,7 @@ public class SearchVideoController extends HttpServlet {
 
         query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
                 + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                + "category:(\"" + keySearch + "\")^1.5 || category:(" + keySearch + ")^1.3 || "
+                + "category_index:(\"" + keySearch + "\")^1.5 || category_index:(" + keySearch + ")^1.3 || "
                 + "category_index_unsigned:(\"" + keySearch + "\")^1.4 || category_index_unsigned:(" + keySearch + ")^1.2";
         solrQuery.setQuery(query);
 
