@@ -190,6 +190,7 @@
                         result += "Tổng số trang là: " + numpage + "<br/>";
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>";
+                    
                     //get SolrDocumentList
         %>
         <%                  //get Newest SolrDocumentList
@@ -355,11 +356,13 @@
                     numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
                     numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
                     strpaging = (String) request.getAttribute("Pagging");
-                    result4 += "Tổng số kết quả: " + numrow + "<br/>";
+                    
                     if (numpage > 1) {
+                        result4 += "Tổng số kết quả: " + numrow + "<br/>";
                         result4 += "Tổng số trang là: " + numpage + "<br/>";
+                        result4 += strpaging;
                     }
-                    result4 += strpaging;
+                    
                     // end
 
                     //END get Bookmark by user

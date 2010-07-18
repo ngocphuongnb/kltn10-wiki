@@ -36,6 +36,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
+import org.me.Utils.MySegmenter;
 import org.me.Utils.MyString;
 import org.me.Utils.Paging;
 
@@ -278,8 +279,10 @@ public class SearchNewsController extends HttpServlet {
         return result;
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
+
+        //
 
         String query = "";
         switch (sortedType) {
@@ -293,23 +296,33 @@ public class SearchNewsController extends HttpServlet {
                 if (MyString.CheckSigned(keySearch)) {
                     query = "keysearch:(\"" + keySearch + "\")^100 || ";
                 } else {
-                    query = "keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
+                    query = "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
                 }
+                break;
+
+            case 3: // chi ap dung cho có dấu
+                MySegmenter myseg = new MySegmenter();
+                String seg = myseg.getwordBoundaryMark(keySearch);
+                seg = seg.replaceAll("[\\[\\]]", "\"");
+                query = "title:(\"" + keySearch + "\")^20 || body:(\"" + keySearch + "\")^15"; //  tuyet doi
+                query += String.format(" || title:(%s)^10 || body:(%s)^5 ", seg, seg); // tach tu tieng viet
                 break;
             default:
                 break;
         }
 
-        if (MyString.CheckSigned(keySearch)) {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
-        } else {
-            query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                    + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
-                    + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
-                    + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+        if (sortedType != 3) {
+            if (MyString.CheckSigned(keySearch)) {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
+            } else {
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                        + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                        + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+            }
         }
-        solrQuery.setQuery(query);
 
+        solrQuery.setQuery(query);
         // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
@@ -341,7 +354,7 @@ public class SearchNewsController extends HttpServlet {
                 + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
         solrQuery.setQuery(query);
 
-         // Facet
+        // Facet
         solrQuery.setFacet(true);
         solrQuery.addFacetField("category");
         solrQuery.setFacetLimit(10);
@@ -510,7 +523,7 @@ public class SearchNewsController extends HttpServlet {
         }
     }
 
-        private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
+    private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
         String keySearch = "";
         // Có tất cả các từ
         if (TextAll != null && TextAll.trim().length() > 0) {
