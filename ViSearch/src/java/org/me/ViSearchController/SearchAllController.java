@@ -35,6 +35,7 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -256,7 +257,7 @@ public class SearchAllController extends HttpServlet {
         }
 
         // seach chuoi facet, can ""
-        query += " +(" + queryField + ":\"" + queryValue + "\")";
+        query += " +(" + queryField + ":\"" + ClientUtils.escapeQueryChars(queryValue) + "\")";
 
         solrQuery.setQuery(query);
 
