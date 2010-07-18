@@ -100,7 +100,7 @@
                 $("#tbTopSearch").load("TopSearch?SearchType=4");
             });
         </script>
-        <script type="" language="javascript">
+        <script  language="javascript">
             function setText()
             {
                 var keysearch = document.getElementById('txtSearch').value;
