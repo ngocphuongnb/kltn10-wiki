@@ -343,6 +343,7 @@ public class SearchWikiController extends HttpServlet {
                 }
                 MySegmenter seg = new MySegmenter();
                 keySearch = seg.getwordBoundaryMark(keySearch);
+                keySearch = keySearch.replaceAll("[\\[\\]]", "\"");
                 break;
         }
         solrQuery.setHighlight(true);
