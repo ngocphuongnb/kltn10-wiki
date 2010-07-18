@@ -220,6 +220,7 @@ public class SearchVideoController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, String more, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 query = "";
@@ -282,6 +283,7 @@ public class SearchVideoController extends HttpServlet {
 
     QueryResponse OnSearchSubmitStandard(int type, String keySearch, String facetName, String facetValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         String query = " +(";
         switch (sortedType) {
             case 0:

@@ -216,6 +216,7 @@ public class SearchMusicController extends HttpServlet {
         SolrQuery solrQuery = new SolrQuery();
 
         String query = "";
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 query = "";

@@ -236,6 +236,7 @@ public class SearchImageController extends HttpServlet {
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 query = "";
@@ -301,6 +302,7 @@ public class SearchImageController extends HttpServlet {
     QueryResponse OnSearchSubmitStandard(String keySearch, String facetNameValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
         String query = "";
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 query = "";
