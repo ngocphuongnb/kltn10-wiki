@@ -336,9 +336,9 @@ public class SearchRaoVatController extends HttpServlet {
 
         // Facet
         solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
+        solrQuery.set("facet.field", "category");
+        //solrQuery.addFacetField("category");
         solrQuery.addFacetField("site");
-        //solrQuery.addFacetField("location");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);
         // End Facet
@@ -349,7 +349,7 @@ public class SearchRaoVatController extends HttpServlet {
         solrQuery.addHighlightField("rv_body");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
-        //solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
         solrQuery.set("fl", "id, rv_title, rv_body, photo, url, site, category, last_update");
@@ -410,6 +410,7 @@ public class SearchRaoVatController extends HttpServlet {
         String str = "";
         String trackingboost = "";
         SolrQuery solrQuery = new SolrQuery();
+        keySearch = keySearch.replaceAll("\"", "\\\"");
         switch (sortedType) {
             case 0:
                 str = "";
@@ -431,7 +432,13 @@ public class SearchRaoVatController extends HttpServlet {
                 break;
         }
         if (!facetName.equals("") && facetName != null) {
-            keySearch = "+(" + trackingboost + "rv_title:(" + keySearch + ") rv_body:(" + keySearch + ") category_index:(" + keySearch + ")) ";
+            if (MyString.CheckSigned(keySearch)) {
+                keySearch = "+(" + trackingboost + "rv_title:(\"" + keySearch + "\")^3 || rv_body:(\"" + keySearch + "\")^2 || category_index:(\"" + keySearch + "\")^1.5 || rv_title:(" + keySearch + ")^1.5 || rv_body:(" + keySearch + ") || category_index:(" + keySearch + ")^0.5)";
+            } else {
+                keySearch = "+(" + trackingboost + "rv_title:(\"" + keySearch + "\")^10 || rv_body:(\"" + keySearch + "\")^8 || category_index:(\"" + keySearch + "\")^5 || rv_title:(" + keySearch + ")^7 || rv_body:(" + keySearch + ")^6 || category_index:(" + keySearch + ")^4"
+                        + " rv_title_unsigned:(\"" + keySearch + "\")^4 || rv_body_unsigned:(\"" + keySearch + "\")^3 || category_index_unsigned:(\"" + keySearch + "\")^2 || rv_title_unsigned:(" + keySearch + ")^2.5 || "
+                        + "rv_body_unsigned:(" + keySearch + ")^1.5 || category_index_unsigned:(" + keySearch + "))";
+            }
             if (type == 2) // seach chuoi facet, can ""
             {
                 keySearch += " +(" + facetName + ":\"" + facetValue + "\")";
