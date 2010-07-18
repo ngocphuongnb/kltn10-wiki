@@ -104,9 +104,9 @@
                         type = 2; //facet
                     }
                     if(document.getElementById('hdqv')!=null)
-                        url+="&qv="+document.getElementById('hdqv').value;
-                    if(document.getElementById('hdsorttype')!=null)
-                        url+="&SortedType="+document.getElementById('hdsorttype').value;
+                        url+="&qv="+encodeURIComponent(document.getElementById('hdqv').value);
+                    //if(document.getElementById('hdsorttype')!=null)
+                    //    url+="&SortedType="+document.getElementById('hdsorttype').value;
 
                     url += "&type=" + type;
                     window.location = url;
@@ -187,7 +187,7 @@
                                 }
 
                                 result.append("<tr><td><b>" + title_hl + "</b></td></tr>");
-                                result.append("<tr><td>Thể Loại: " + "<a href = 'SearchVideoController?type=3&KeySearch=category:\"" + category + "\"'>" + category + "</a></td></tr>");
+                                result.append("<tr><td>Thể Loại: " + "<a href = 'SearchVideoController?type=3&KeySearch=category:\"" + URIUtil.encodePath(category) + "\"'>" + category + "</a></td></tr>");
 
                                 String mediaId = "MediaPlayer" + i;
                                 String BTViewMediaId = "BTViewMediaId" + i;
@@ -368,7 +368,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + URLEncoder.encode(fieldText, "UTF-8") + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchVideoController?type=2&KeySearch=" + strQuery + "&qf=" + fieldName + "&qv=" + URIUtil.encodePath(fieldText) + "&SortedType=" + sortedType + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
