@@ -135,21 +135,25 @@ public class ImageDAO {
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataImage(?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        for (ImageDTO imageDTO : listPage) {
-            cs.setInt(1, imageDTO.getId());
-            cs.setString(2, imageDTO.getCategory());
-            cs.setString(3, imageDTO.getUrl());
-            cs.setString(4, imageDTO.getWebsite());
-            cs.setString(5, imageDTO.getSite_title());
-            cs.setString(6, imageDTO.getSite_body());
-            cs.setString(7, imageDTO.getFileType());
-            cs.setFloat(8, imageDTO.getWidth());
-            cs.setFloat(9, imageDTO.getHeight());
-            cs.setString(10, imageDTO.getSize());
-            cs.executeUpdate();
+        try {
+            for (ImageDTO imageDTO : listPage) {
+                cs.setInt(1, imageDTO.getId());
+                cs.setString(2, imageDTO.getCategory());
+                cs.setString(3, imageDTO.getUrl());
+                cs.setString(4, imageDTO.getWebsite());
+                cs.setString(5, imageDTO.getSite_title());
+                cs.setString(6, imageDTO.getSite_body());
+                cs.setString(7, imageDTO.getFileType());
+                cs.setFloat(8, imageDTO.getWidth());
+                cs.setFloat(9, imageDTO.getHeight());
+                cs.setString(10, imageDTO.getSize());
+                cs.executeUpdate();
+            }
+            cs.close();
+            cn.close();
+        } catch (Exception ex) {
+            String s = ex.getMessage();
         }
-        cs.close();
-        cn.close();
     }
 
     public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {

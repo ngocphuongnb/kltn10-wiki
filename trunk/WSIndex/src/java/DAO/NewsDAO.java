@@ -78,6 +78,7 @@ public class NewsDAO {
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataNews(?, ?, ?, ?, ?, ?, ?, ?)}");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
         for (NewsDTO newsDTO : listPage) {
             cs.setInt(1, newsDTO.getId());
             cs.setString(2, newsDTO.getTitle());
@@ -88,6 +89,10 @@ public class NewsDAO {
             cs.setString(7, newsDTO.getPhoto());
             cs.setString(8, sdf.format(newsDTO.getLast_update().getTime()));
             cs.executeUpdate();
+        }
+        }catch(Exception ex)
+        {
+            String message = ex.getMessage();
         }
         cs.close();
     }

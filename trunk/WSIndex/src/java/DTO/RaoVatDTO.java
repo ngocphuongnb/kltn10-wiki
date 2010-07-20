@@ -22,11 +22,37 @@ public class RaoVatDTO {
     private int _score;
     private String _site;
     private String _location;
-    private String _contact;
+    //private String _contact;
     private Calendar _lastUpdate;
     private String _keySearch;
     private int _frequency;
+    private String _contact_name;
+    private String _contact_phone;
+    private String _contact_nickname;
 
+    public String getContact_name() {
+        return _contact_name;
+    }
+
+    public String getContact_nickname() {
+        return _contact_nickname;
+    }
+
+    public String getContact_phone() {
+        return _contact_phone;
+    }
+
+    public void setContact_name(String _contact_name) {
+        this._contact_name = _contact_name;
+    }
+
+    public void setContact_nickname(String _contact_nickname) {
+        this._contact_nickname = _contact_nickname;
+    }
+
+    public void setContact_phone(String _contact_phone) {
+        this._contact_phone = _contact_phone;
+    }
     /**
      * @return the _title
      */
@@ -156,16 +182,16 @@ public class RaoVatDTO {
     /**
      * @return the _contact
      */
-    public String getContact() {
-        return _contact;
-    }
-
-    /**
-     * @param contact the _contact to set
-     */
-    public void setContact(String contact) {
-        this._contact = contact;
-    }
+//    public String getContact() {
+//        return _contact;
+//    }
+//
+//    /**
+//     * @param contact the _contact to set
+//     */
+//    public void setContact(String contact) {
+//        this._contact = contact;
+//    }
 
     /**
      * @return the _lastUpdate
