@@ -14,10 +14,12 @@ import BUS.MusicBUS;
 import DTO.MusicDTO;
 import BUS.ImageBUS;
 import BUS.NewsBUS;
+import BUS.PageBUS;
 import BUS.VideoBUS;
 import DTO.ImageDTO;
 import DTO.LocationDTO;
 import DTO.NewsDTO;
+import DTO.PageDTO;
 import DTO.VideoDTO;
 import Utils.SaveImageFromURL;
 import java.sql.SQLException;
@@ -186,6 +188,24 @@ public class WSIndex {
         }
     }
 
+    @WebMethod(operationName = "SyncDataAll")
+    public void SyncDataAll(@WebParam(name = "listPage") ArrayList<PageDTO> listPage) {
+        try {
+            PageBUS bus = new PageBUS();
+            bus.SyncDataAll(listPage);
+            //TODO write your implementation code here:
+        } catch (SQLException ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        MySolrJ mSolr = new MySolrJ();
+        try {
+            mSolr.IndexDataAll();
+        } catch (Exception ex) {
+            Logger.getLogger(WSIndex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Web service operation
      */
@@ -292,12 +312,7 @@ public class WSIndex {
             MySolrJ ms = new MySolrJ();
             try {
                 //ms.IndexAll(ALL);
-                ms.IndexImage();
-                ms.IndexMusic();
-                ms.IndexNews();
-                ms.IndexRaoVat();
-                ms.IndexVideo();
-                ms.IndexViwiki();
+               
                 return true;
             } catch (Exception ex) {
                 return false;
@@ -344,21 +359,6 @@ public class WSIndex {
         return false;
     }
 
-    @WebMethod(operationName = "IndexDataLocation")
-    public boolean IndexDataLocation(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "listLocation") ArrayList<LocationDTO> listLocation) {
-        AdminBUS bus = new AdminBUS();
-        if (bus.CheckSecurity(code, dateRequest.getTime())) {
-            MySolrJ ms = new MySolrJ();
-            try {
-                ms.IndexLocation(listLocation);
-                return true;
-            } catch (Exception ex) {
-                return false;
-            }
-        }
-        return false;
-    }
-
     @WebMethod(operationName = "EmptyData")
     public boolean EmptyData(@WebParam(name = "code") String code, @WebParam(name = "dateRequest") Calendar dateRequest, @WebParam(name = "core") String core) {
         AdminBUS bus = new AdminBUS();
@@ -373,8 +373,4 @@ public class WSIndex {
         }
         return false;
     }
-//    @WebMethod(operationName = "Cong2So")
-//    public int Cong2So(@WebParam(name = "x") int x, @WebParam(name = "y") int y) {
-//        return x + y;
-//    }
 }
