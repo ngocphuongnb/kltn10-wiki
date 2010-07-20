@@ -23,6 +23,7 @@ public class MusicDAO {
 
     public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
+        try{
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
          String query = String.format("SELECT * FROM data_music where tracking_updated=1 LIMIT %d, %d", start, end);
@@ -54,6 +55,9 @@ public class MusicDAO {
 
         rs.close();
         cn.close();
+        }catch(Exception ex){
+            String s = ex.getMessage();
+        }
         return list;
     }
 
@@ -61,7 +65,7 @@ public class MusicDAO {
         int iCount = 0;
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
-        String query = "SELECT count(*) as NumRow FROM data_music";
+        String query = "SELECT count(*) as NumRow FROM data_music where tracking_updated=1";
         ResultSet rs = st.executeQuery(query);
 
         if (rs.next()) {

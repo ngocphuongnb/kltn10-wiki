@@ -82,7 +82,7 @@ public class MySolrJ {
             list = bus.getDataList(0, 100);
             try {
                 lResult = ImportViwiki2Solr(list, "wikipedia");
-                //ImportViwiki2SolrAll(list, "all");
+                ImportViwiki2SolrAll(list, "all");
                 bus.UpdateAfterIndex(lResult);
             } catch (Exception ex) {
             }
@@ -101,6 +101,7 @@ public class MySolrJ {
         RaoVatBUS bus = new RaoVatBUS();
         int numOfRecords = bus.CountRecord();
         int start = 0;
+        try{
         while (start < numOfRecords) {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             list = bus.getDataList(0, 100);
@@ -108,6 +109,11 @@ public class MySolrJ {
             ImportRaoVat2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
+        }
+        }
+        catch(Exception ex)
+        {
+            String s = ex.getMessage();
         }
     }
 
@@ -330,6 +336,7 @@ public class MySolrJ {
         MusicDTO pagedto = new MusicDTO();
         Iterator<MusicDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
+        try{
         while (iter.hasNext()) {
 
             pagedto = iter.next();
@@ -367,6 +374,10 @@ public class MySolrJ {
         SolrServer server = getSolrServer(solrServer); // solrServer = music
         server.add(docs);
         server.commit();
+        }catch(Exception ex)
+        {
+            String s = ex.getMessage();
+        }
 
 //        UpdateRequest req = new UpdateRequest();
 //        req.setAction(ACTION.COMMIT, false, false);
@@ -381,6 +392,7 @@ public class MySolrJ {
         MusicDTO pagedto = new MusicDTO();
         Iterator<MusicDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
+        try{
         while (iter.hasNext()) {
 
             pagedto = iter.next();
@@ -401,6 +413,10 @@ public class MySolrJ {
         SolrServer server = getSolrServer(solrServer); // solrServer = music
         server.add(docs);
         server.commit();
+        }catch(Exception ex)
+        {
+            String s = ex.getMessage();
+        }
 
 //        UpdateRequest req = new UpdateRequest();
 //        req.setAction(ACTION.COMMIT, false, false);
@@ -504,10 +520,12 @@ public class MySolrJ {
             doc.addField("category", pagedto.getCategory().trim());
             doc.addField("category_index", pagedto.getCategory());
             doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
-            doc.addField("contact", pagedto.getContact());
+            doc.addField("contact_name", pagedto.getContact_name().trim());
+            doc.addField("contact_phone", pagedto.getContact_phone().trim());
+            doc.addField("contact_nickname", pagedto.getContact_nickname().trim());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             doc.addField("last_update", sdf.format(pagedto.getLastUpdate().getTime()));
-            doc.addField("location", pagedto.getLocation());
+            doc.addField("location", pagedto.getLocation().trim());
             doc.addField("photo", pagedto.getPhoto());
             doc.addField("price", pagedto.getPrice());
             doc.addField("score", pagedto.getScore());
