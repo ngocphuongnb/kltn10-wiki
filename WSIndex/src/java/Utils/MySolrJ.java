@@ -9,6 +9,7 @@ import BUS.RaoVatBUS;
 import BUS.ImageBUS;
 import BUS.MusicBUS;
 import BUS.NewsBUS;
+import BUS.PageBUS;
 import BUS.TrackingBUS;
 import BUS.VideoBUS;
 import BUS.ViwikiPageBUS;
@@ -18,6 +19,7 @@ import DTO.ImageDTO;
 import DTO.LocationDTO;
 import DTO.MusicDTO;
 import DTO.NewsDTO;
+import DTO.PageDTO;
 import DTO.VideoDTO;
 import DTO.ViwikiPageDTO;
 import java.io.IOException;
@@ -53,7 +55,7 @@ public class MySolrJ {
 
     public void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException {
         SolrServer server = getSolrServer(core);
-        server.deleteByQuery("*:*");
+        server.deleteByQuery("category:\"Hình ảnh\"");
         //server.commit();
         UpdateRequest req = new UpdateRequest();
         req.setAction(ACTION.COMMIT, false, false);
@@ -92,6 +94,24 @@ public class MySolrJ {
 //        FileWriter writer = new FileWriter(new File("error.txt"));
 //        writer.write("Num of records error:" + ierror);
 //        writer.close();
+    }
+
+    public void IndexDataAll() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
+        PageBUS bus = new PageBUS();
+        int numOfRecords = bus.CountRecord();
+        int start = 0;
+        ArrayList<Integer> lResult = new ArrayList<Integer>();
+        ArrayList<PageDTO> list;
+        while (start < numOfRecords) {
+            list = new ArrayList<PageDTO>();
+            list = bus.getDataList(0, 100);
+            try {
+                lResult = ImportAll2Solr(list);
+                bus.UpdateAfterIndex(lResult);
+            } catch (Exception ex) {
+            }
+            start += 100;
+        }
     }
 
     public void IndexRaoVat() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
@@ -836,24 +856,26 @@ public class MySolrJ {
         return listint;
     }
 
-    public void IndexLocation(ArrayList<LocationDTO> listLocation) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
-        EmptyData("location");
+    private ArrayList<Integer> ImportAll2Solr(ArrayList<PageDTO> listPage) throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
         Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+        ArrayList<Integer> listint = new ArrayList<Integer>();
         SolrInputDocument doc;
-        for (LocationDTO loc : listLocation) {
+        for (PageDTO page : listPage) {
             doc = new SolrInputDocument();
-            doc.addField("id", loc.getId());
-            doc.addField("location", loc.getLocation());
-            doc.addField("location_unsigned", RemoveSignVN(loc.getLocation()));
+            doc.addField("id", page.getId());
+            doc.addField("title", page.getTitle());
+            doc.addField("title_unsigned", RemoveSignVN(page.getTitle()));
+            doc.addField("body", page.getBody());
+            doc.addField("body_unsigned", RemoveSignVN(page.getBody()));
+            doc.addField("keysearch", page.getKeySearch(), (float) Math.pow(2, page.getFrequency()));
+            doc.addField("keysearch_unsigned", RemoveSignVN(page.getKeySearch()), (float) Math.pow(2, page.getFrequency()));
             docs.add(doc);
+            listint.add(page.getId());
         }
-        SolrServer server = getSolrServer("location"); // solrServer = music
+        SolrServer server = getSolrServer("all"); // solrServer = music
         server.add(docs);
         server.commit();
-//        UpdateRequest req = new UpdateRequest();
-//        req.setAction(ACTION.COMMIT, false, false);
-//        req.add(docs);
-//        UpdateResponse rsp = req.process(server);
+        return listint;
     }
 
     public void SaveImage() throws SQLException, ParseException, MalformedURLException, SolrServerException, IOException, URISyntaxException {
