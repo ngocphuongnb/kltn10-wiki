@@ -30,4 +30,8 @@ public class BookmarkBUS {
         BookmarkDAO dao = new BookmarkDAO();
         dao.UpdateAfterIndex(list);
     }
+     public ArrayList<Integer> GetList2Del() throws SQLException {
+        BookmarkDAO dao = new BookmarkDAO();
+        return dao.GetList2Del();
+    }
 }
