@@ -16,10 +16,6 @@
 
 <xs:element name="IndexDataImageResponse" type="tns:IndexDataImageResponse" />
 
-<xs:element name="IndexDataLocation" type="tns:IndexDataLocation" />
-
-<xs:element name="IndexDataLocationResponse" type="tns:IndexDataLocationResponse" />
-
 <xs:element name="IndexDataMusic" type="tns:IndexDataMusic" />
 
 <xs:element name="IndexDataMusicResponse" type="tns:IndexDataMusicResponse" />
@@ -43,6 +39,10 @@
 <xs:element name="SaveImage" type="tns:SaveImage" />
 
 <xs:element name="SaveImageResponse" type="tns:SaveImageResponse" />
+
+<xs:element name="SyncDataAll" type="tns:SyncDataAll" />
+
+<xs:element name="SyncDataAllResponse" type="tns:SyncDataAllResponse" />
 
 <xs:element name="SyncDataImage" type="tns:SyncDataImage" />
 
@@ -77,6 +77,7 @@
 <xs:complexType name="viwikiPageDTO">
 <xs:sequence>
 <xs:element name="comment" type="xs:string" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="id" type="xs:int" />
 <xs:element name="ip" type="xs:string" minOccurs="0" />
 <xs:element name="keySearch" type="xs:string" minOccurs="0" />
@@ -115,8 +116,12 @@
 <xs:sequence>
 <xs:element name="body" type="xs:string" minOccurs="0" />
 <xs:element name="category" type="xs:string" minOccurs="0" />
-<xs:element name="contact" type="xs:string" minOccurs="0" />
+<xs:element name="contact_name" type="xs:string" minOccurs="0" />
+<xs:element name="contact_nickname" type="xs:string" minOccurs="0" />
+<xs:element name="contact_phone" type="xs:string" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
 <xs:element name="lastUpdate" type="xs:dateTime" minOccurs="0" />
 <xs:element name="location" type="xs:string" minOccurs="0" />
 <xs:element name="photo" type="xs:string" minOccurs="0" />
@@ -156,7 +161,9 @@
 <xs:element name="body" type="xs:string" minOccurs="0" />
 <xs:element name="category" type="xs:string" minOccurs="0" />
 <xs:element name="created" type="xs:dateTime" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
 <xs:element name="last_update" type="xs:dateTime" minOccurs="0" />
 <xs:element name="modified_by" type="xs:int" />
 <xs:element name="photo" type="xs:string" minOccurs="0" />
@@ -168,6 +175,19 @@
 
 <xs:complexType name="SyncDataNewsResponse">
 <xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="IndexDataAll">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataAllResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="SyncDataMusic">
@@ -183,7 +203,9 @@
 <xs:element name="author" type="xs:string" minOccurs="0" />
 <xs:element name="category" type="xs:string" minOccurs="0" />
 <xs:element name="dayUpload" type="xs:dateTime" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
 <xs:element name="lyric" type="xs:string" minOccurs="0" />
 <xs:element name="title" type="xs:string" minOccurs="0" />
 <xs:element name="url" type="xs:string" minOccurs="0" />
@@ -204,8 +226,10 @@
 <xs:sequence>
 <xs:element name="category" type="xs:string" minOccurs="0" />
 <xs:element name="fileType" type="xs:string" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="height" type="xs:float" />
 <xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
 <xs:element name="site_body" type="xs:string" minOccurs="0" />
 <xs:element name="site_title" type="xs:string" minOccurs="0" />
 <xs:element name="size" type="xs:string" minOccurs="0" />
@@ -220,19 +244,6 @@
 <xs:sequence />
 </xs:complexType>
 
-<xs:complexType name="IndexDataAll">
-<xs:sequence>
-<xs:element name="code" type="xs:string" minOccurs="0" />
-<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IndexDataAllResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean" />
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="IndexDataViwiki">
 <xs:sequence>
 <xs:element name="code" type="xs:string" minOccurs="0" />
@@ -244,6 +255,28 @@
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SyncDataAll">
+<xs:sequence>
+<xs:element name="listPage" type="tns:pageDTO" minOccurs="0" maxOccurs="unbounded" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="pageDTO">
+<xs:sequence>
+<xs:element name="body" type="xs:string" minOccurs="0" />
+<xs:element name="category" type="xs:string" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
+<xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
+<xs:element name="title" type="xs:string" minOccurs="0" />
+<xs:element name="url" type="xs:string" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SyncDataAllResponse">
+<xs:sequence />
 </xs:complexType>
 
 <xs:complexType name="SaveImage">
@@ -283,7 +316,9 @@
 <xs:sequence>
 <xs:element name="category" type="xs:string" minOccurs="0" />
 <xs:element name="duration" type="xs:string" minOccurs="0" />
+<xs:element name="frequency" type="xs:int" />
 <xs:element name="id" type="xs:int" />
+<xs:element name="keySearch" type="xs:string" minOccurs="0" />
 <xs:element name="title" type="xs:string" minOccurs="0" />
 <xs:element name="url" type="xs:string" minOccurs="0" />
 </xs:sequence>
@@ -327,27 +362,6 @@
 </xs:complexType>
 
 <xs:complexType name="IndexDataBookmarkResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IndexDataLocation">
-<xs:sequence>
-<xs:element name="code" type="xs:string" minOccurs="0" />
-<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
-<xs:element name="listLocation" type="tns:locationDTO" minOccurs="0" maxOccurs="unbounded" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="locationDTO">
-<xs:sequence>
-<xs:element name="id" type="xs:int" />
-<xs:element name="location" type="xs:string" minOccurs="0" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IndexDataLocationResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" />
 </xs:sequence>
