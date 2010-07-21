@@ -51,8 +51,8 @@ public class Main {
                 Calendar cl = Calendar.getInstance();
                 cl.setTime(d);
                 cl.add(Calendar.SECOND, 10);
-                String fd = String.format("%d %d %d ? * %s", cl.get(Calendar.SECOND), cl.get(Calendar.MINUTE),
-                        cl.get(Calendar.HOUR_OF_DAY), cl.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US));
+                String fd = String.format("%d %d %d ? * *", cl.get(Calendar.SECOND), cl.get(Calendar.MINUTE),
+                        cl.get(Calendar.HOUR_OF_DAY));
                 CronTrigger trigger = new CronTrigger("wiki trigger", null, fd);//s m h dom m dow
                 sched.scheduleJob(jobDetail, trigger);
             }
@@ -148,6 +148,20 @@ public class Main {
                 sched.scheduleJob(jobDetail, trigger);
             }
 
+            if (args[0].equals("image")) {
+                SchedulerFactory schedFac = new StdSchedulerFactory();
+                Scheduler sched = schedFac.getScheduler();
+                sched.start();
+                JobDetail jobDetail = new JobDetail("imageJob", null, IndexImageJob.class);
+                Date d = new Date();
+                Calendar cl = Calendar.getInstance();
+                cl.setTime(d);
+                cl.add(Calendar.SECOND, 10);
+                String fd = String.format("%d %d %d ? * %s", cl.get(Calendar.SECOND), cl.get(Calendar.MINUTE),
+                        cl.get(Calendar.HOUR_OF_DAY), cl.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.US));
+                CronTrigger trigger = new CronTrigger("image trigger", null, fd);//s m h dom m dow
+                sched.scheduleJob(jobDetail, trigger);
+            }
             if (args[0].equals("saveimage")) {
                 SchedulerFactory schedFac = new StdSchedulerFactory();
                 Scheduler sched = schedFac.getScheduler();
