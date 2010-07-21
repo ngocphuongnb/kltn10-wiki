@@ -34,4 +34,9 @@ public class BookmarkBUS {
         BookmarkDAO dao = new BookmarkDAO();
         return dao.GetList2Del();
     }
+
+     public void EmptyDataSetDel() throws SQLException {
+         BookmarkDAO dao = new BookmarkDAO();
+        dao.EmptyDataSetDel();
+     }
 }
