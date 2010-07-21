@@ -53,7 +53,7 @@ public class BookMarkDAO {
         Connection cn = DataProvider.getConnection(database);
         try {
             CallableStatement cs;
-            cs = cn.prepareCall("{CALL Delete_Bookmark(?)}");
+            cs = cn.prepareCall("{CALL Delete_Bookmark2(?)}");
             cs.setInt(1, id);
 
             int n = cs.executeUpdate();
@@ -137,7 +137,7 @@ public class BookMarkDAO {
         Connection cn = DataProvider.getConnection(database);
         try {
             Statement st = (Statement) cn.createStatement();
-            String query = String.format("select * from bookmark where member_ID = %d limit %d, %d", memberid, start, pagesize);
+            String query = String.format("select * from bookmark where member_ID = %d and deleted=b'0' limit %d, %d", memberid, start, pagesize);
             ResultSet rs = st.executeQuery(query);
             ArrayList<BookMarkDTO> lstBm = new ArrayList<BookMarkDTO>();
             BookMarkDTO dto;

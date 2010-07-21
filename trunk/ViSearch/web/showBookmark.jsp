@@ -26,6 +26,10 @@
         <script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
 
         <script type="text/javascript">
+            function DeleteBM(id){
+                url = "DeleteBookmark?id="+id
+                window.location = url;
+            }
             function CheckInput()
             {
                 var filter = document.getElementsByName("filter[]");
@@ -164,7 +168,7 @@
                             result += "<tr>";
                             result += "<td><a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a></td>";
                             result += "</tr>";
-                            
+
 
                             result += "<tr>";
                             result += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
@@ -190,7 +194,7 @@
                         result += "Tổng số trang là: " + numpage + "<br/>";
                     }
                     result += "<p><font color=\"#CC3333\" size=\"+1\">" + strpaging + "</font></p>";
-                    
+
                     //get SolrDocumentList
         %>
         <%                  //get Newest SolrDocumentList
@@ -332,29 +336,37 @@
                                 link1 = "SearchBookmarkController?type=4&f=6";
                                 category = "Tin tức";
                             }
+                            result4 += "<tr><td>";
 
                             result4 += "<li>";
                             result4 += "<a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a><br>";
                             result4 += "Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a><br>";
-                             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
                             result4 += "Ngày tạo: " + sdf.format(date_created);
                             result4 += "<br><br><br></li>";
-                           // result4 += "<tr><td>&nbsp;</td></tr>";
+
+                            result4 += "</td><td><input type=button name='DeleteBM' value='Xóa' onclick=\"DeleteBM('" + dto.getId() + "')\"></td></tr>";
                         }
 
                         result4 += "</table>";
                     }
                     // phan trang
-                    numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
-                    numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
-                    strpaging = (String) request.getAttribute("Pagging");
-                    
+                    if (request.getAttribute("NumPage") != null) {
+                        numpage = Integer.parseInt(request.getAttribute("NumPage").toString());
+                    }
+                    if (request.getAttribute("NumRow") != null) {
+                        numrow = Integer.parseInt(request.getAttribute("NumRow").toString());
+                    }
+                    if (request.getAttribute("Pagging") != null) {
+                        strpaging = (String) request.getAttribute("Pagging");
+                    }
+
                     if (numpage > 1) {
                         result4 += "Tổng số kết quả: " + numrow + "<br/>";
                         result4 += "Tổng số trang là: " + numpage + "<br/>";
                         result4 += strpaging;
                     }
-                    
+
                     // end
 
                     //END get Bookmark by user
@@ -425,18 +437,18 @@
                                             <hr/>
                                         </form>
                                     </td>
-                                
-                    </tr>
-                    <tr>
-                        <td valign="top" id="content">
-                            <% out.print(result);%>
-                            <% out.print(result4);%>
-                        </td>
-                    <tr>
-                        <td>
-                            <table><tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr></table>
-                        </td>
-                    </tr>
+
+                                </tr>
+                                <tr>
+                                    <td valign="top" id="content">
+                                        <% out.print(result);%>
+                                        <% out.print(result4);%>
+                                    </td>
+                                <tr>
+                                    <td>
+                                        <table><tr><td align="left" ><a href="index.jsp">Về trang chủ</a></td></tr></table>
+                                    </td>
+                                </tr>
                     </tr>
                 </table>
                 </td>

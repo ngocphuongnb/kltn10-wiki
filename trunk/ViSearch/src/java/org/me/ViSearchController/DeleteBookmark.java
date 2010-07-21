@@ -36,7 +36,7 @@ public class DeleteBookmark extends HttpServlet {
             BookMarkBUS bmbus = new BookMarkBUS();
             bmbus.DeleteBookmark(id, "visearch");
         } finally {
-           String url = "/showBookmark.jsp";
+           String url = "/ShowMyBookmark";
             ServletContext sc = getServletContext();
             RequestDispatcher rd = sc.getRequestDispatcher(url);
             rd.forward(request, response);
