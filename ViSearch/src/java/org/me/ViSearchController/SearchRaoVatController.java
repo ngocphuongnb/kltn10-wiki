@@ -335,8 +335,7 @@ public class SearchRaoVatController extends HttpServlet {
 
         // Facet
         solrQuery.setFacet(true);
-        solrQuery.set("facet.field", "category");
-        //solrQuery.addFacetField("category");
+        solrQuery.addFacetField("category");
         solrQuery.addFacetField("site");
         solrQuery.setFacetLimit(10);
         solrQuery.setFacetMinCount(1);

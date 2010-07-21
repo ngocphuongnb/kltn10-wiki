@@ -25,7 +25,6 @@
             <option value="0">Ưu tiên độ liên quan</option>
             <option value="1">Ưu tiên ngày gần hơn</option>
             <option value="2">Ưu tiên lịch sử tìm kiếm</option>
-            <option value="3">Sử dụng tách từ tiếng Việt</option>
         </select>
         <input id="hfSortedType" type="hidden" value="<%
                     out.print(sortedType);
