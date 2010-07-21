@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -121,18 +122,16 @@ public class MySolrJ {
         RaoVatBUS bus = new RaoVatBUS();
         int numOfRecords = bus.CountRecord();
         int start = 0;
-        try{
-        while (start < numOfRecords) {
-            ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
-            list = bus.getDataList(0, 100);
-            lResult = ImportRaoVat2Solr(list, "raovat");
-            //ImportRaoVat2SolrAll(list, "all");
-            bus.UpdateAfterIndex(lResult);
-            start += 100;
-        }
-        }
-        catch(Exception ex)
-        {
+        try {
+            while (start < numOfRecords) {
+                ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
+                list = bus.getDataList(0, 100);
+                lResult = ImportRaoVat2Solr(list, "raovat");
+                //ImportRaoVat2SolrAll(list, "all");
+                bus.UpdateAfterIndex(lResult);
+                start += 100;
+            }
+        } catch (Exception ex) {
             String s = ex.getMessage();
         }
     }
@@ -174,10 +173,24 @@ public class MySolrJ {
     public void IndexBookmark() throws SQLException, ParseException, SolrServerException, MalformedURLException, IOException {
 
         //EmptyData("bookmark");
+
+        //server.commit();
         ArrayList<Integer> lResult = new ArrayList<Integer>();
         BookmarkBUS bus = new BookmarkBUS();
         int numOfRecords = bus.CountRecord();
         int start = 0;
+        SolrServer server = getSolrServer("bookmark");
+        List<Integer> listID = bus.GetList2Del();
+        try {
+            for (int i : listID) {
+                server.deleteByQuery("id:" + i);
+                server.commit();
+            }
+            bus.EmptyDataSetDel();
+        } catch (Exception ex) {
+        }
+
+
         while (start < numOfRecords) {
             ArrayList<BookmarkDTO> list = new ArrayList<BookmarkDTO>();
             list = bus.getDataList(0, 100);
@@ -356,46 +369,45 @@ public class MySolrJ {
         MusicDTO pagedto = new MusicDTO();
         Iterator<MusicDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
-        try{
-        while (iter.hasNext()) {
+        try {
+            while (iter.hasNext()) {
 
-            pagedto = iter.next();
-            doc = new SolrInputDocument();
+                pagedto = iter.next();
+                doc = new SolrInputDocument();
 
-            doc.addField("id", pagedto.getId());
-            doc.addField("title", pagedto.getTitle());
-            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+                doc.addField("id", pagedto.getId());
+                doc.addField("title", pagedto.getTitle());
+                doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("album", pagedto.getAlbum().trim());
-            doc.addField("album_index", pagedto.getAlbum());
-            doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
+                doc.addField("album", pagedto.getAlbum().trim());
+                doc.addField("album_index", pagedto.getAlbum());
+                doc.addField("album_index_unsigned", RemoveSignVN(pagedto.getAlbum()));
 
-            doc.addField("artist", pagedto.getArtist().trim());
-            doc.addField("artist_index", pagedto.getArtist());
-            doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
+                doc.addField("artist", pagedto.getArtist().trim());
+                doc.addField("artist_index", pagedto.getArtist());
+                doc.addField("artist_index_unsigned", RemoveSignVN(pagedto.getArtist()));
 
-            doc.addField("author", pagedto.getAuthor().trim());
-            doc.addField("author_index", pagedto.getAuthor());
-            doc.addField("author_index_unsigned", RemoveSignVN(pagedto.getAuthor()));
+                doc.addField("author", pagedto.getAuthor().trim());
+                doc.addField("author_index", pagedto.getAuthor());
+                doc.addField("author_index_unsigned", RemoveSignVN(pagedto.getAuthor()));
 
-            doc.addField("category", pagedto.getCategory().trim());
-            doc.addField("category_index", pagedto.getCategory());
-            doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
+                doc.addField("category", pagedto.getCategory().trim());
+                doc.addField("category_index", pagedto.getCategory());
+                doc.addField("category_index_unsigned", RemoveSignVN(pagedto.getCategory()));
 
-            doc.addField("url", pagedto.getUrl());
-            doc.addField("lyric", pagedto.getLyric());
-            doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
-            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
-            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
-            docs.add(doc);
-            listint.add(pagedto.getId());
-        }
+                doc.addField("url", pagedto.getUrl());
+                doc.addField("lyric", pagedto.getLyric());
+                doc.addField("lyric_unsigned", RemoveSignVN(pagedto.getLyric()));
+                doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+                doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
+                docs.add(doc);
+                listint.add(pagedto.getId());
+            }
 
-        SolrServer server = getSolrServer(solrServer); // solrServer = music
-        server.add(docs);
-        server.commit();
-        }catch(Exception ex)
-        {
+            SolrServer server = getSolrServer(solrServer); // solrServer = music
+            server.add(docs);
+            server.commit();
+        } catch (Exception ex) {
             String s = ex.getMessage();
         }
 
@@ -412,29 +424,28 @@ public class MySolrJ {
         MusicDTO pagedto = new MusicDTO();
         Iterator<MusicDTO> iter = listpage.iterator();
         ArrayList<Integer> listint = new ArrayList<Integer>();
-        try{
-        while (iter.hasNext()) {
+        try {
+            while (iter.hasNext()) {
 
-            pagedto = iter.next();
-            doc = new SolrInputDocument();
+                pagedto = iter.next();
+                doc = new SolrInputDocument();
 
-            doc.addField("id", "ms" + pagedto.getId());
-            doc.addField("title", pagedto.getTitle());
-            doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
+                doc.addField("id", "ms" + pagedto.getId());
+                doc.addField("title", pagedto.getTitle());
+                doc.addField("title_unsigned", RemoveSignVN(pagedto.getTitle()));
 
-            doc.addField("category", "Nhạc");
-            doc.addField("body", pagedto.getUrl());
-            doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
-            doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
-            docs.add(doc);
-            listint.add(pagedto.getId());
-        }
+                doc.addField("category", "Nhạc");
+                doc.addField("body", pagedto.getUrl());
+                doc.addField("keysearch", pagedto.getKeySearch(), (float) Math.pow(2, pagedto.getFrequency()));
+                doc.addField("keysearch_unsigned", RemoveSignVN(pagedto.getKeySearch()), (float) Math.pow(2, pagedto.getFrequency()));
+                docs.add(doc);
+                listint.add(pagedto.getId());
+            }
 
-        SolrServer server = getSolrServer(solrServer); // solrServer = music
-        server.add(docs);
-        server.commit();
-        }catch(Exception ex)
-        {
+            SolrServer server = getSolrServer(solrServer); // solrServer = music
+            server.add(docs);
+            server.commit();
+        } catch (Exception ex) {
             String s = ex.getMessage();
         }
 

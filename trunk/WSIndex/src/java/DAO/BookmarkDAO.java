@@ -85,7 +85,7 @@ public class BookmarkDAO {
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         Statement st = (Statement) cn.createStatement();
         ArrayList<Integer> list = new ArrayList<Integer>();
-        String query = "Select id from where deleted = 1";
+        String query = "Select id from bookmark where deleted = 1";
         ResultSet rs = st.executeQuery(query);
 
         while (rs.next()) {
@@ -96,5 +96,14 @@ public class BookmarkDAO {
         st.close();
         cn.close();
         return list;
+    }
+
+    public void EmptyDataSetDel() throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Statement st = (Statement) cn.createStatement();
+        String query = "delete from bookmark where deleted = 1";
+        st.executeUpdate(query);
+        st.close();
+        cn.close();
     }
 }
