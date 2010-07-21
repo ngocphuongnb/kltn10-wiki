@@ -37,10 +37,10 @@
      <str name="echoParams">explicit</str>
      <float name="tie">0.01</float>
      <str name="qf">
-        title^10 album^7 singer^5 lyric^3 artist
+        site_title^2 site_body
      </str>
      <str name="pf">
-        title^10 album^7 singer^5 lyric^3 artist
+        site_title^2 site_body
      </str>
      <!--<str name="bf">
         popularity^0.5 recip(price,1,1000,1000)^0.3
@@ -55,47 +55,12 @@
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
-     <str name="hl.fl">title</str>
+     <str name="hl.fl">site_title site_body</str>
      <!-- for this field, we want no fragmenting, just highlighting -->
      <str name="f.name.hl.fragsize">0</str>
      <!-- instructs Solr to return the field itself if no query terms are
           found -->
-     <str name="f.name.hl.alternateField">title</str>
-     <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
-    </lst>
-	
-  </requestHandler>
-  
-  <requestHandler name="dismax2" class="solr.SearchHandler" >
-    <lst name="defaults">
-     <str name="defType">dismax</str>
-     <str name="echoParams">explicit</str>
-     <float name="tie">0.01</float>
-     <str name="qf">
-        title^10 title_unsigned^8 album^7 album_index_unsigned^6 singer^5 singer_index_unsigned^4 lyric^3 lyric_unsigned^ artist^2 artist_index_unsigned
-     </str>
-     <str name="pf">
-        title^10 title_unsigned^8 album^7 album_index_unsigned^6 singer^5 singer_index_unsigned^4 lyric^3 lyric_unsigned^ artist^2 artist_index_unsigned
-     </str>
-     <!--<str name="bf">
-        popularity^0.5 recip(price,1,1000,1000)^0.3
-     </str>-->
-     <str name="fl">
-        *
-     </str>
-     <str name="mm">
-        2&lt;-25%
-     </str>
-     <int name="ps">100</int>
-	 <str name="q.alt">*:*</str>
-     <!-- 
-	 example highlighter config, enable per-query with hl=true -->
-     <str name="hl.fl">title</str>
-     <!-- for this field, we want no fragmenting, just highlighting -->
-     <str name="f.name.hl.fragsize">0</str>
-     <!-- instructs Solr to return the field itself if no query terms are
-          found -->
-     <str name="f.name.hl.alternateField">title</str>
+     <str name="f.name.hl.alternateField">site_title</str>
      <str name="f.text.hl.fragmenter">regex</str> <!-- defined below -->
     </lst>
 	
@@ -127,22 +92,22 @@
     </arr>
   </requestHandler>
 	<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">textMusic</str>
+    <str name="queryAnalyzerFieldType">textImage</str>
 
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">title</str>
+      <str name="field">site_title</str>
 	  <str name="buildOnOptimize">true</str>
-      <str name="spellcheckIndexDir">./spellcheckerMusic</str>
+      <str name="spellcheckIndexDir">./spellcheckerImage</str>
     </lst>
 
     <!-- a spellchecker that uses a different distance measure -->
     <lst name="spellchecker">
       <str name="name">jarowinkler</str>
-      <str name="field">title</str>
+      <str name="field">site_title</str>
 	  <str name="buildOnOptimize">true</str>
       <str name="distanceMeasure">org.apache.lucene.search.spell.JaroWinklerDistance</str>
-      <str name="spellcheckIndexDir">./spellcheckerMusic2</str>
+      <str name="spellcheckIndexDir">./spellcheckerImage2</str>
     </lst>
     
 
@@ -152,7 +117,7 @@
       <str name="name">file</str>
       <str name="sourceLocation">spellings.txt</str>
       <str name="characterEncoding">UTF-8</str>
-      <str name="spellcheckIndexDir">./spellcheckerFileMusic</str>
+      <str name="spellcheckIndexDir">./spellcheckerFileImage</str>
     </lst>
   </searchComponent>
   <admin>

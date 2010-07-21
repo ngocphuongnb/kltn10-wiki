@@ -44,10 +44,10 @@
        keysearch^100 rv_title^10 rv_body^5 category_index^2
      </str>
      <str name="fl">
-        id, rv_title, rv_body, last_update, photo
+        id, rv_title, rv_body, last_update, photo, url
      </str>
      <int name="qs">0</int>
-	 <int name="ps">0</int>
+	 <int name="ps">1</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -75,10 +75,10 @@
         popularity^0.5 recip(price,1,1000,1000)^0.3
      </str>-->
      <str name="fl">
-        id, rv_title, rv_body, last_update, photo
+        id, rv_title, rv_body, last_update, photo, url
      </str>
      <int name="qs">0</int>
-	 <int name="ps">0</int>
+	 <int name="ps">1</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -103,10 +103,10 @@
        keysearch^100 keysearch_unsigned^50 rv_title^20 rv_body^12 category_index^3 rv_title_unsigned^14 rv_body_unsigned^3 category_index_unsigned
      </str>
      <str name="fl">
-        id, rv_title, rv_body, last_update, photo
+        id, rv_title, rv_body, last_update, photo, url
      </str>
      <int name="qs">0</int>
-	 <int name="ps">0</int>
+	 <int name="ps">1</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
@@ -131,10 +131,10 @@
        rv_title^20 rv_body^12 category_index^3 rv_title_unsigned^14 rv_body_unsigned^3 category_index_unsigned
      </str>
      <str name="fl">
-        id, rv_title, rv_body, last_update, photo
+        id, rv_title, rv_body, last_update, photo, url
      </str>
      <int name="qs">0</int>
-	 <int name="ps">0</int>
+	 <int name="ps">1</int>
 	 <str name="q.alt">*:*</str>
      <!-- 
 	 example highlighter config, enable per-query with hl=true -->
