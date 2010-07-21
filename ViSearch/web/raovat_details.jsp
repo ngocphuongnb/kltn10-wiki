@@ -114,6 +114,7 @@
     <body>
 
         <%
+        String id = "";
                     if (request.getQueryString() != null) {
                         String currentPage = "/DetailRaoVatController?";
                         currentPage += request.getQueryString().toString();
@@ -127,7 +128,7 @@
                         strQuery = strQuery.replaceAll("\"", "&quot;");
                     }
                     // end get String query
-        %>
+%>
         <%
                     //get SolrDocumentList
                     SolrDocumentList listdocs = new SolrDocumentList();
@@ -137,22 +138,22 @@
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
                         for (int i = 0; i < listdocs.size(); i++) {
                             // Lay noi dung cua moi field
-                             String title = "";
-                                if (listdocs.get(i).getFirstValue("rv_title") != null) {
-                                    title = (listdocs.get(i).getFirstValue("rv_title")).toString();
-                                }
-                                String body = "";
-                                if ((listdocs.get(i).getFirstValue("rv_body")) != null) {
-                                    body = (listdocs.get(i).getFirstValue("rv_body")).toString();
-                                }
-                                String id = "";
-                                if (listdocs.get(i).getFieldValue("id") != null) {
-                                    id = (listdocs.get(i).getFieldValue("id")).toString();
-                                }
-                                String link = "";
-                                if (listdocs.get(i).getFirstValue("url") != null) {
-                                    link = (listdocs.get(i).getFirstValue("url")).toString();
-                                }
+                            String title = "";
+                            if (listdocs.get(i).getFirstValue("rv_title") != null) {
+                                title = (listdocs.get(i).getFirstValue("rv_title")).toString();
+                            }
+                            String body = "";
+                            if ((listdocs.get(i).getFirstValue("rv_body")) != null) {
+                                body = (listdocs.get(i).getFirstValue("rv_body")).toString();
+                            }
+                            
+                            if (listdocs.get(i).getFieldValue("id") != null) {
+                                id = (listdocs.get(i).getFieldValue("id")).toString();
+                            }
+                            String link = "";
+                            if (listdocs.get(i).getFirstValue("url") != null) {
+                                link = (listdocs.get(i).getFirstValue("url")).toString();
+                            }
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
                             String location = "";
@@ -182,49 +183,81 @@
                                 location = (listdocs.get(i).getFieldValue("location")).toString();
                             }
 
-                            url = "<div class=\"title_content\" id='divtop'>" + title + "</div>";
-                            result.append(url);
-                            result.append("<div id='divleft'>");
-                            result.append("<table style=\"font-size:13px\">");
+                            //  url = "<div class=\"title_content\" id='divtop'>" + title + "</div>";
+                            //result.append(url);
+                            //result.append("<div id='divleft'>");
+
+                            result.append("<div class=\"mycode\"><table class=\"html4strict\">");
+
+                            result.append("<tr><td>");
+                            result.append("<div class=\"head\">" + title + "</div>");
+                            result.append("</td></tr>");
+
                             if (contact != null && contact.trim() != "") {
                                 result.append("<tr><td>" + "Thể loại: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=category:\"" + URIUtil.encodePath(category) + "\"'>" + category + "</a></td></tr>");
                             }
                             if (location != null && location.trim() != "") {
-                                result.append("<tr><td>" + "Location: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + URIUtil.encodePath(location) + "'>" + location + "</a></td></tr>");
+                                result.append("<tr><td style=\"font-size:11px\">" + "Nơi rao: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=location:" + URIUtil.encodePath(location) + "'>" + location + "</a></td></tr>");
                             }
-                            //result += "<tr><td>" + "Score: " + score + "</td></tr>";
-                            // result.append("<tr><td>" + "Nguồn: " + "<a href = 'SearchRaoVatController?type=2&KeySearch=site:" + site + "'>" + site + "</a></td></tr>");
-                            result.append("<tr>");
-                            result.append("<td>Link bài viết: <a href='" + link + "' target='_blank'>" + link + "</a></td>");
-                            result.append("</tr>");
-                            result.append("<tr><td>" + "Giá: " + price + "</td></tr>");
-                            result.append("<tr><td>" + "Ngày cập nhật : " + sf.format(last_update) + "</td></tr>");
-                            result.append("</table>");
 
-                            result.append("</div>");
+                            result.append("<tr>");
+                            result.append("<td style=\"font-size:11px\">Link bài viết: <a href='" + link + "' target='_blank'>" + link + "</a></td>");
+                            result.append("</tr>");
+                            result.append("<tr><td style=\"font-size:11px\">" + "Giá: " + price + "</td></tr>");
+                            result.append("<tr><td style=\"font-size:11px\">" + "Ngày cập nhật : " + sf.format(last_update) + "</td></tr>");
+                            result.append("<tr><td>&nbsp;</td></tr>");
+
+
                             photo = "<div id='divright'><img src='" + photo + "' alt='No image' width='200'/><br/>";
-                            if (session.getAttribute("Member") != null) {
-                                photo += "<span id='Bookmark'>"
-                                        + "<input id='hdIdValue' type='hidden' value='" + id + "'/>"
-                                        + "<input id='btBookmark' type='button' value='Thêm vào bookmark'/></span>";
-                            }
+                            //   if (session.getAttribute("Member") != null) {
+                            //       photo += "<span id='Bookmark'>"
+                            ///               + "<input id='hdIdValue' type='hidden' value='" + id + "'/>"
+                            //               + "<input id='btBookmark' type='button' value='Thêm vào bookmark'/></span>";
+                            //    }
                             photo += "</div>";
-                            result.append(photo);
-                            result.append("<div id='divbottom'>" + body + "</div>");
+                            //   result.append(photo);
+                            //result.append("<div id='divbottom'>" + body + "</div>");
+
+                            result.append("<tr><td>");
+                            result.append("<span class=\"kw2\">" + photo + "</span>");
+                            result.append("</td></tr>");
+
+
+                            result.append("<tr><td>");
+                            result.append("<span class=\"kw2\">" + body + "</span>");
+                            result.append("</td></tr>");
+
+                            result.append("<tr><td><div class=\"foot\">Bài viết này được tự động quét trên mạng. Chúng tôi không chịu trách nhiệm về nội dung bài viết này.</div></td></tr>");
+                            result.append("</table></div>");
                         }
                     }
 
                     //get SolrDocumentList
-        %>
+%>
         <%
+                    StringBuffer result2 = new StringBuffer();
+                    result2.append("</div><table>");
+                    result2.append("<tr><td>");
+                    if (session.getAttribute("Member") != null) {
+                        String bm = "<span id='Bookmark'>"
+                                + "<input id='hdIdValue' type='hidden' value='" + id + "'/>"
+                                + "<input id='btBookmark' type='button' value='Thêm vào bookmark'/></span>";
+                    result2.append(bm);
+                    }
+                    
+                    result2.append("</td></tr>");
+                    result2.append("</table></div>");
+
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
-                    String result2 = "";
 
+
+                    
                     if (request.getAttribute("Docs_MoreLikeThis") != null) {
                         listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
-                        result2 += "<div style=\"font-size:13px\">";
+                        result2.append("<div style=\"font-size:13px\">");
+                        result2.append("<div class=\"title_content\">Một số bài viết liên quan</div>");
                         for (int i = 0; i < listdocs2.size(); i++) {
                             // Lay noi dung cua moi field
                             String title = "";
@@ -232,21 +265,21 @@
                                 title = listdocs2.get(i).getFirstValue("rv_title").toString();
                             }
 
-                            String id = (listdocs2.get(i).getFieldValue("id")).toString();
+                            id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String url;
 
                             url = "<li><b><a href=\"DetailRaoVatController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></b></li>";
-                            result2 += url;
+                            result2.append(url);
                         }
-                        result2 += "</div>";
+                        result2.append("</div>");
                     }
                     //end Cùng chuyên mục Category
-        %>
+%>
         <%
                     // Get Facet
 
                     // End get Facet
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -301,10 +334,10 @@
                             <div  valign="top" id="content">
                                 <%
                                             out.print(result);
-                                            if (result2 != "") {
-                                                out.print("<hr>");
-                                                out.print("<div class=\"title_content\">Một số bài viết liên quan</div>");
-                                                out.print(result2);
+                                            if (result2 != null) {
+                                                out.print("<hr style=\"color:#f00; height:5px; background-color: #f00; margin-top:40px\" />");
+                                                
+                                                out.print(result2.toString());
                                             }
                                 %>
                             </div>

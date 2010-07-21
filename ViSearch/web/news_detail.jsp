@@ -131,6 +131,7 @@
 %>
         <%
                     //get SolrDocumentList
+        String id="";
                     SolrDocumentList listdocs = new SolrDocumentList();
                     Map<String, Map<String, List<String>>> highLight = null;
 
@@ -149,7 +150,7 @@
                             }
 
                             for (int i = 0; i < listdocs.size(); i++) {
-                                result.append("<table style=\"font-size:13px\">");
+                                result.append("<div class=\"mycode\"><table class=\"html4strict\">");
 
                                 // Lay noi dung cua moi field
                                 String title = (listdocs.get(i).getFirstValue("title")).toString();
@@ -161,7 +162,7 @@
                                 if (arrPhoto.length > 1) {
                                     photo = arrPhoto[0];
                                 }
-                                String id = (listdocs.get(i).getFieldValue("id")).toString();
+                                id = (listdocs.get(i).getFieldValue("id")).toString();
                                 String title_hl = title;
 
                                 if (request.getAttribute("HighLight") != null) {
@@ -176,39 +177,37 @@
                                     }
                                 }
 
-                                result.append("<tr>");
-                                result.append("<td class=\"title_content\"><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title_hl + "</a></td>");
-                                result.append("</tr>");
+                                result.append("<tr><td>");
+                                result.append("<div class=\"head\">" + title_hl + "</div>");
+                                result.append("</td></tr>");
+
+                                result.append("<tr><td>");
+                                result.append("<span class=\"kw2\">" + body + "</span>");
+                                result.append("</td></tr>");
+
 
                                 result.append("<tr>");
-                                result.append("<td><b>Link bài viết: </b><a href='"+url+"' target='_blank'>" + url + "</a></td>");
+                                result.append("<td><b>Link bài viết: </b><a href='" + url + "' target='_blank'>" + url + "</a></td>");
                                 result.append("</tr>");
 
-                                result.append("<tr>");
-                                result.append("<td><img src=\"" + photo + "\" width=\"250\" align=\"left\" /></td>");
-                                result.append("</tr>");
 
-                                result.append("<tr>");
-                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                                result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
-                                result.append("</tr>");
+                                //  result.append("<tr>");
+                                //  SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                                //  result.append("<td><b>Ngày cập nhật: </b> " + sdf.format(created) + "</td>");
+                                //  result.append("</tr>");
 
-                                result.append("<tr>");
-                                result.append("<td>" + body + "</td>");
-                                result.append("</tr>");
 
-                                if (session.getAttribute("Member") != null) {
-                                    result.append("<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>");
-                                    result.append("<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>");
-                                }
-                                result.append("<tr><td>&nbsp;</td></tr>");
-                                result.append("</table>");
+
+                                result.append("<tr><td><div class=\"foot\">Bài viết này được tự động quét trên mạng. Chúng tôi không chịu trách nhiệm về nội dung bài viết này.</div></td></tr>");
+                                result.append("</table></div>"); // het noi dung bai viet
+
+
                             }
                         }
                     }
                     //get SolrDocumentList
 %>
-       
+
         <%
                     //get Cùng chuyên mục Category
                     SolrDocumentList listdocs2 = new SolrDocumentList();
@@ -217,14 +216,23 @@
                         listdocs2 = (SolrDocumentList) request.getAttribute("Docs_MoreLikeThis");
 
                         result2.append("<div style=\"font-size:13px\">");
-                        result2.append("<hr>");
+                        result2.append("<hr style=\"color:#f00; height:5px; background-color: #f00; margin-top:40px\" />");
 
-                       result2.append("<div class=\"title_content\">Một số bài viết liên quan</div>");
-                        
+
+                        result2.append("</div><table>");
+                        result2.append("<tr><td>");
+                        if (session.getAttribute("Member") != null) {
+                            result2.append("<tr><td><span id='Bookmark'><input id='hdIdValue' type='hidden' value='" + id + "'>");
+                            result2.append("<input id='btBookmark' type='button' value='Thêm vào bookmark'></span></td></tr>");
+                        }
+                        result2.append("</td></tr>");
+                        result2.append("</table></div>");
+
+                        result2.append("<div class=\"title_content\">Một số bài viết liên quan</div>");
+
                         for (int i = 0; i < listdocs2.size(); i++) {
-
                             // Lay noi dung cua moi field
-                            String id = (listdocs2.get(i).getFieldValue("id")).toString();
+                            id = (listdocs2.get(i).getFieldValue("id")).toString();
                             String title = (listdocs2.get(i).getFieldValue("title")).toString();
                             result2.append("<li><b><a href=\"DetailNewsController?id=" + id + "&KeySearch=" + strQuery + "\">" + title + "</a></li>");
                         }
@@ -290,7 +298,9 @@
                                 <tr>
                                     <td  valign="top" id="content">
                                         <% out.print(result);%>
-                                        <% out.print(result2);%>
+                                        <%  out.print(result2);%>
+
+
 
                                     </td>
                                 </tr>

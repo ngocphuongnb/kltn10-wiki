@@ -164,7 +164,7 @@
                             result += "<tr>";
                             result += "<td><a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a></td>";
                             result += "</tr>";
-
+                            
 
                             result += "<tr>";
                             result += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
@@ -333,21 +333,13 @@
                                 category = "Tin tức";
                             }
 
-                            result4 += "<tr>";
-                            result4 += "<td><a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a></td>";
-                            result4 += "</tr>";
-
-
-                            result4 += "<tr>";
-                            result4 += "<td>Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a></td>";
-                            result4 += "</tr>";
-
-                            result4 += "<tr>";
-                           // result4 += "<td>Ngày tạo: " + date_created.toString() + "</td>";
+                            result4 += "<li>";
+                            result4 += "<a href=\"" + link + "\" target='_blank'><b>" + bookmarkname + "</b></a><br>";
+                            result4 += "Chuyên mục: " + "<a href = '" + link1 + "'>" + category + "</a><br>";
                              SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                            result4 += "<td>Ngày tạo: " + sdf.format(date_created) + "</td>";
-                            result4 += "</tr>";
-                            result4 += "<tr><td>&nbsp;</td></tr>";
+                            result4 += "Ngày tạo: " + sdf.format(date_created);
+                            result4 += "<br><br><br></li>";
+                           // result4 += "<tr><td>&nbsp;</td></tr>";
                         }
 
                         result4 += "</table>";
@@ -433,7 +425,7 @@
                                             <hr/>
                                         </form>
                                     </td>
-                               
+                                
                     </tr>
                     <tr>
                         <td valign="top" id="content">

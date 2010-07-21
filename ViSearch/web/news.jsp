@@ -204,6 +204,7 @@
                                 result.append("<a href=\"SearchNewsController?type=1&KeySearch=" + title.replaceAll("\\<.*?\\>", "") + "\">Trang tương tự...</a>");
                                 result.append("</td></tr>");
                                 result.append("<tr><td>&nbsp;</td></tr>");
+                                result.append("<tr><td>&nbsp;</td></tr>");
 
                             }
                             result.append("</table>");

@@ -226,3 +226,28 @@ border:none;
 }
  .tableBM_off{
 }
+
+.html4strict {
+background-color:#F5F5F5;
+border:1px solid #D0D0D0;
+color:#000066;
+}
+.head  {
+background-color:#F0F0FF;
+border-bottom:1px solid #D0D0D0;
+padding:2px;
+color:#FF6600;
+font-size:18px;
+background-position: center center;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+text-align:left;
+}
+.foot  {
+background-color:#F0F0FF;
+border-top:1px solid #D0D0D0;
+color:#808080;
+font-family:Verdana,Arial,sans-serif;
+font-size:10px;
+font-weight:bold;
+padding:2px;
+}
