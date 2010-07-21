@@ -24,9 +24,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public class NewsDAO {
 
+    String database = "thao1807";
+    String table = "news_parsecontent";
     public  int CountRecord() throws SQLException {
         int iCount = 0;
-        Connection cn = (Connection) DataProvider.getConnection("kltn");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
         String query = "SELECT count(*) as NumRow FROM news_parsecontent";
         ResultSet rs = st.executeQuery(query);
@@ -42,7 +44,7 @@ public class NewsDAO {
 
     public ArrayList<NewsDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
         ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
-        Connection cn = (Connection) DataProvider.getConnection("kltn");
+        Connection cn = (Connection) DataProvider.getConnection(database);
         Statement st = (Statement) cn.createStatement();
         String query = String.format("SELECT * FROM news_parsecontent LIMIT %d, %d", start, end);
         ResultSet rs = st.executeQuery(query);
@@ -68,8 +70,6 @@ public class NewsDAO {
             page.setLastUpdate(date);
 
             page.setCategory(rs.getString("category"));
-
-
 
             list.add(page);
         }

@@ -70,7 +70,7 @@ public class frmMain extends javax.swing.JDialog {
             }
         });
 
-        btnGenerateSynonyms.setText("Import Location");
+        btnGenerateSynonyms.setText("Import Data All");
         btnGenerateSynonyms.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerateSynonymsActionPerformed(evt);
@@ -174,7 +174,20 @@ public class frmMain extends javax.swing.JDialog {
     }                                               
 
     private void btnGenerateSynonymsActionPerformed(java.awt.event.ActionEvent evt) {                                                    
-        
+        try {
+            System.out.println("starting Syns All...");
+            AllBUS bus = new AllBUS();
+            int numOfRecords = bus.CountRecord();
+            System.out.println("Num or row to sync: " + numOfRecords);
+            importDataAll(numOfRecords);
+            System.out.println("Import finished.");
+            JOptionPane.showMessageDialog(null, "Finish...");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error Syns ALL");
+        } finally {
+            btnSyncDataRaovat.setEnabled(true);
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
     }                                                   
 
     private void btnSyncDataRaovatActionPerformed(java.awt.event.ActionEvent evt) {                                                  
@@ -189,7 +202,7 @@ public class frmMain extends javax.swing.JDialog {
             System.out.println("Import finished.");
             JOptionPane.showMessageDialog(null, "Finish...");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error...");
+            JOptionPane.showMessageDialog(null, "Error Syns RV");
         } finally {
             btnSyncDataRaovat.setEnabled(true);
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -300,12 +313,12 @@ public class frmMain extends javax.swing.JDialog {
         WSIndex port = service.getWSIndexPort();
         int start = 0;
         while (start < numRecord) {
-            System.out.println(String.format("importing rows from %d to %d", start, start + 2000));
+            System.out.println(String.format("importing rows from %d to %d", start, start + 100));
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             RaoVatBUS bus = new RaoVatBUS();
-            list = bus.getDataList(start, 2000);
+            list = bus.getDataList(start, 100);
             port.syncDataRaovat(list);
-            start += 2000;
+            start += 100;
         }
     }
 
@@ -313,7 +326,7 @@ public class frmMain extends javax.swing.JDialog {
         WSIndexService service = new WSIndexService();
         WSIndex port = service.getWSIndexPort();
         int start = 0;
-        System.out.println("Num found: " + numRecord);
+        System.out.println("Image: Num found: " + numRecord);
         while (start < numRecord) {
             System.out.println("Sync form " + start + " to " + (start + 100));
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
@@ -369,6 +382,20 @@ public class frmMain extends javax.swing.JDialog {
             NewsBUS bus = new NewsBUS();
             list = bus.getDataList(start, 100);
             port.syncDataNews(list);
+            start += 100;
+        }
+    }
+     public void importDataAll(int numRecord) throws SQLException, MalformedURLException, SolrServerException, IOException, ParseException, DatatypeConfigurationException {
+        WSIndexService service = new WSIndexService();
+        WSIndex port = service.getWSIndexPort();
+        int start = 0;
+        System.out.println(String.format("Syns %d data All", numRecord));
+        while (start < numRecord) {
+            System.out.println(String.format("importing rows from %d to %d", start, start + 100));
+            ArrayList<PageDTO> list = new ArrayList<PageDTO>();
+            AllBUS bus = new AllBUS();
+            list = bus.getDataList(start, 100);
+            port.syncDataAll(list);
             start += 100;
         }
     }

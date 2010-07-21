@@ -21,7 +21,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
  */
 public class MusicDAO {
 
-    String database = "kltn";
+    String database = "thao1807";
     String table = "media_parsecontent";
     public ArrayList<MusicDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
         ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();

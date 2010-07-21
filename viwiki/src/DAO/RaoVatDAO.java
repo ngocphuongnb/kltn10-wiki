@@ -25,7 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 public class RaoVatDAO {
 
-    String database = "kltn";
+    String database = "thao1807";
     String table = "ads_parsecontent";
 
     public  ArrayList<RaoVatDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException, DatatypeConfigurationException {
@@ -42,7 +42,6 @@ public class RaoVatDAO {
             page.setId(rs.getInt("id"));
             page.setBody(rs.getString("body"));
             page.setCategory(rs.getString("category"));
-            page.setContact(rs.getString("contact"));
             page.setLocation(rs.getString("location"));
             page.setPhoto(rs.getString("photo"));
             page.setPrice(rs.getString("price"));
@@ -50,6 +49,9 @@ public class RaoVatDAO {
             page.setSite(rs.getString("site"));
             page.setTitle(rs.getString("title"));
             page.setUrl(rs.getString("url"));
+            page.setContactName(rs.getString("contact_name"));
+            page.setContactPhone(rs.getString("contact_phone"));
+            page.setContactNickname(rs.getString("contact_nickname"));
             String last_update = rs.getString("last_update");
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d = sdf.parse(last_update);
