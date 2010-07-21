@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import sun.security.krb5.internal.PAEncTSEnc;
 
 /**
  *
@@ -80,5 +79,22 @@ public class BookmarkDAO {
         }
         cs.close();
         cn.close();
+    }
+
+    public ArrayList<Integer> GetList2Del() throws SQLException {
+        Connection cn = (Connection) DataProvider.getConnection("visearch");
+        Statement st = (Statement) cn.createStatement();
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        String query = "Select id from where deleted = 1";
+        ResultSet rs = st.executeQuery(query);
+
+        while (rs.next()) {
+            list.add(rs.getInt("Id"));
+        }
+
+        rs.close();
+        st.close();
+        cn.close();
+        return list;
     }
 }
