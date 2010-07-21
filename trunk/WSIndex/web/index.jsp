@@ -17,8 +17,8 @@
     <body>
         <h1>Hello World!</h1>
         <%
-        MySolrJ ms = new MySolrJ();
-        ms.EmptyData("all");
+        //MySolrJ ms = new MySolrJ();
+        //ms.EmptyData("all");
         %>
     </body>
 </html>

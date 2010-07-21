@@ -55,7 +55,7 @@ public class MySolrJ {
 
     public void EmptyData(String core) throws MalformedURLException, SolrServerException, IOException {
         SolrServer server = getSolrServer(core);
-        server.deleteByQuery("category:\"Hình ảnh\"");
+        server.deleteByQuery("*:*");
         //server.commit();
         UpdateRequest req = new UpdateRequest();
         req.setAction(ACTION.COMMIT, false, false);
@@ -84,7 +84,7 @@ public class MySolrJ {
             list = bus.getDataList(0, 100);
             try {
                 lResult = ImportViwiki2Solr(list, "wikipedia");
-                ImportViwiki2SolrAll(list, "all");
+                //ImportViwiki2SolrAll(list, "all");
                 bus.UpdateAfterIndex(lResult);
             } catch (Exception ex) {
             }
@@ -126,7 +126,7 @@ public class MySolrJ {
             ArrayList<RaoVatDTO> list = new ArrayList<RaoVatDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportRaoVat2Solr(list, "raovat");
-            ImportRaoVat2SolrAll(list, "all");
+            //ImportRaoVat2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -148,7 +148,7 @@ public class MySolrJ {
             ArrayList<MusicDTO> list = new ArrayList<MusicDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportMusic2Solr(list, "music");
-            ImportMusic2SolrAll(list, "all");
+            //ImportMusic2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -165,7 +165,7 @@ public class MySolrJ {
             ArrayList<ImageDTO> list = new ArrayList<ImageDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportImage2Solr(list, "image");
-            ImportImage2SolrAll(list, "all");
+            //ImportImage2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -198,7 +198,7 @@ public class MySolrJ {
             ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportVideo2Solr(list, "video");
-            ImportVideo2SolrAll(list, "all");
+            //ImportVideo2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -215,7 +215,7 @@ public class MySolrJ {
             ArrayList<NewsDTO> list = new ArrayList<NewsDTO>();
             list = bus.getDataList(0, 100);
             lResult = ImportNews2Solr(list, "news");
-            ImportNews2SolrAll(list, "all");
+            //ImportNews2SolrAll(list, "all");
             bus.UpdateAfterIndex(lResult);
             start += 100;
         }
@@ -546,6 +546,7 @@ public class MySolrJ {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             doc.addField("last_update", sdf.format(pagedto.getLastUpdate().getTime()));
             doc.addField("location", pagedto.getLocation().trim());
+            doc.addField("url", pagedto.getUrl());
             doc.addField("photo", pagedto.getPhoto());
             doc.addField("price", pagedto.getPrice());
             doc.addField("score", pagedto.getScore());
@@ -865,8 +866,10 @@ public class MySolrJ {
             doc.addField("id", page.getId());
             doc.addField("title", page.getTitle());
             doc.addField("title_unsigned", RemoveSignVN(page.getTitle()));
-            doc.addField("body", page.getBody());
-            doc.addField("body_unsigned", RemoveSignVN(page.getBody()));
+            String strBody = page.getBody().replaceAll("\\<.*?\\>", "");
+            doc.addField("body", strBody);
+            doc.addField("body_unsigned", RemoveSignVN(strBody));
+            doc.addField("url", page.getUrl());
             doc.addField("keysearch", page.getKeySearch(), (float) Math.pow(2, page.getFrequency()));
             doc.addField("keysearch_unsigned", RemoveSignVN(page.getKeySearch()), (float) Math.pow(2, page.getFrequency()));
             docs.add(doc);
