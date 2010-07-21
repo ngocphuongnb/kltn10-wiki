@@ -71,6 +71,9 @@
             {
                 var keysearch = $("#txtSearch");
                 var sortedtype = $("#slSortedType");
+                var bCheckSyn = $("#chkSyn").attr("checked");
+                var bCheckVN = $("#chkVN").attr("checked");
+                //alert(bCheckVN);
                 if(keysearch.val() == "")
                     return;
                 else
@@ -78,6 +81,8 @@
                     var url = "SearchWikiController?type=0&sp=1&KeySearch=";
                     url += encodeURIComponent(keysearch.val());
                     url += "&SortedType=" + sortedtype.val();
+                    url += "&bVN=" + bCheckVN;
+                    url += "&bSyn=" + bCheckSyn;
                     window.location = url;
                 }
             }
@@ -166,6 +171,16 @@
                     }
                     session.setAttribute("CurrentPage", currentPage);
 
+                    boolean bVN = false;
+                    boolean bSyn = false;
+
+                    if (request.getParameter("bVN") != null) {
+                        bVN = Boolean.parseBoolean(request.getAttribute("bVN").toString());
+                    }
+
+                    if (request.getParameter("bSyn") != null) {
+                        bSyn = Boolean.parseBoolean(request.getAttribute("bSyn").toString());
+                    }
                     // Get strQuery
                     String strQuery = "";
                     if (request.getAttribute("KeySearch") != null) {
@@ -210,7 +225,7 @@
                         result += strpaging + "<br/><br/>";
                     }
                     // End get SolrDocumentList
-        %>
+%>
 
         <%
 // Get Facet
@@ -231,7 +246,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URIUtil.encodePath(fieldText)  + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchWikiController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URIUtil.encodePath(fieldText) + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -244,7 +259,7 @@
                     }
 
                     // End Get Facet
-        %>
+%>
 
         <%
                     // Get Facet date
@@ -281,24 +296,24 @@
 
                     facetD += "<tr><td>";
                     facetD += "<div id=\"divPVTC\" class=\"hidden\">";
-                    facetD +="<table style=\"font-size:13px\">";
-                    facetD +="<tr><td>Bắt đầu:</td>";
-                    facetD +="<td><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></td></tr>";
-                    facetD +="<tr><td>Kết thúc:</td>";
-                    facetD +="<td><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></td></tr>";
-                    facetD +="<tr><td>(dd-mm-yyyy)</td>";
-                    facetD +="<td><input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></td></tr>";
-                    facetD +="</table>";
+                    facetD += "<table style=\"font-size:13px\">";
+                    facetD += "<tr><td>Bắt đầu:</td>";
+                    facetD += "<td><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></td></tr>";
+                    facetD += "<tr><td>Kết thúc:</td>";
+                    facetD += "<td><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></td></tr>";
+                    facetD += "<tr><td>(dd-mm-yyyy)</td>";
+                    facetD += "<td><input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></td></tr>";
+                    facetD += "</table>";
                     //facetD += "<div style=\"float:left\"> Bắt đầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
-                   // facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
-                   // facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";
+                    // facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
+                    // facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";
                     facetD += "</div>";
 
                     facetD += "</td></tr>";
                     // }
                     facetD += "</table>";
                     // End get Query Date
-        %>
+%>
         <div id="wrap_left" align="center">
             <div id="wrap_right">
                 <table id="wrap" width="974" border="0" cellpadding="0" cellspacing="0">
@@ -326,7 +341,36 @@
                         <td style="font-size:12px;" width="30%" align="middle">
                             <script type="" language="javascript">goforit();</script>
                             <span id="clock"/></td>
-                        <td width="70%" align="middle"><%@include file="template/sortedtype.jsp"%></td>
+                        <td width="100%">
+                            <table>
+                                <tr>
+                                    <td width="60px"></td>
+                                    <td align="left" style="font-size: 12px">
+                                        <%
+                                                    if (bSyn) {
+                                        %>
+                                        <input type="checkbox" id="chkSyn" checked/><label for="chkSyn">Sử dụng thư viện từ đồng nghĩa</label><br/>
+                                        <%} else {%>
+                                        <input type="checkbox" id="chkSyn"/><label for="chkSyn">Sử dụng thư viện từ đồng nghĩa</label><br/>
+
+                                        <%}%>
+
+                                        <%
+                                                    if (bVN) {
+                                        %>
+                                        <input type="checkbox" id="chkVN" checked/><label for="chkVN">Sử dụng tách từ tiếng Việt</label>
+                                        <%} else {%>
+                                        <input type="checkbox" id="chkVN"/><label for="chkVN">Sử dụng tách từ tiếng Việt</label>
+
+                                        <%}%>
+                                    </td>
+                                    <td width="60px"></td>
+                                    <td align="right">
+                                        <%@include file="template/sortedtype2.jsp"%>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
                     </tr>
                     <tr>
                         <td height="20" colspan="2" align="center" valign="bottom">
@@ -385,8 +429,17 @@
 
                                                         if (request.getAttribute("HighLight") != null) {
                                                             highLight = (Map<String, Map<String, List<String>>>) request.getAttribute("HighLight");
-                                                            List<String> highlightText = highLight.get(id).get("wk_text");
-                                                            List<String> highlightTitle = highLight.get(id).get("wk_title");
+                                                            List<String> highlightTitle = null;
+                                                            List<String> highlightText = null;
+                                                            if (bSyn) {
+                                                                highlightText = highLight.get(id).get("wk_text_syn");
+                                                                 highlightTitle = highLight.get(id).get("wk_title_syn");
+                                                            }
+                                                            else
+                                                                {
+                                                                highlightText = highLight.get(id).get("wk_text");
+                                                                highlightTitle = highLight.get(id).get("wk_title");
+                                                            }
                                                             if (highlightText != null && !highlightText.isEmpty()) {
                                                                 text = highlightText.get(0) + "...";
                                                             } else {

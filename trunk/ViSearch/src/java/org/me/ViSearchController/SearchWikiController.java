@@ -43,10 +43,8 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FieldStatsInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.DisMaxParams;
-import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.apache.solr.common.params.StatsParams;
 import org.me.SolrConnection.SolrJConnection;
@@ -83,6 +81,8 @@ public class SearchWikiController extends HttpServlet {
         int type = -1;
         int QTime = 0;
         long numRow = 0;
+        boolean bSyn = false;
+        boolean bVN = false;
         String sPaging = "/ViSearch/SearchWikiController?";
         List<FacetField> listFacet = null;
         ArrayList<FacetDateDTO> listFacetDate = null;
@@ -105,6 +105,18 @@ public class SearchWikiController extends HttpServlet {
                 sPaging += "SortedType=" + sortedType;
             }
 
+            if (request.getParameter("bVN") != null) {
+                bVN = Boolean.parseBoolean(request.getParameter("bVN"));
+                sPaging += "&bVN=" + bVN;
+                request.setAttribute("bVN", bVN);
+            }
+
+            if (request.getParameter("bSyn") != null) {
+                bSyn = Boolean.parseBoolean(request.getParameter("bSyn"));
+                sPaging += "&bSyn=" + bSyn;
+                request.setAttribute("bSyn", bSyn);
+            }
+
             QueryResponse rsp;
             Map<String, Map<String, List<String>>> highLight;
             if (request.getParameter("KeySearch") != null) {
@@ -124,7 +136,7 @@ public class SearchWikiController extends HttpServlet {
                         }
                     }
 
-                    rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
+                    rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType, bSyn, bVN);
                     docs = rsp.getResults();
                     highLight = rsp.getHighlighting();
                     request.setAttribute("HighLight", highLight);
@@ -252,7 +264,7 @@ public class SearchWikiController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, IOException {
+    QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType, boolean bSyn, boolean bVN) throws SolrServerException, MalformedURLException, IOException {
 //        SolrQuery solrQuery = new SolrQuery();
 //        keySearch = MyString.cleanQueryTerm(keySearch);
 //        //keySearch = keySearch.trim().replaceAll(" ", " +");
@@ -312,47 +324,73 @@ public class SearchWikiController extends HttpServlet {
 
         SolrQuery solrQuery = new SolrQuery();
 
-        switch (sortedType) {
-            case 0:
-                if (MyString.CheckSigned(keySearch)) {
-                    solrQuery.setQueryType("dismax");
-                } else {
-                    solrQuery.setQueryType("dismax_unsigned");
-                }
-                break;
-            case 1:
-                if (MyString.CheckSigned(keySearch)) {
-                    solrQuery.setQueryType("dismax");
-                } else {
-                    solrQuery.setQueryType("dismax_unsigned");
-                }
-                solrQuery.set(DisMaxParams.BF, "recip(rord(timestamp),1,1000,1000)");
-                break;
-            case 2:
-                if (MyString.CheckSigned(keySearch)) {
-                    solrQuery.setQueryType("dismax_boosting");
-                } else {
-                    solrQuery.setQueryType("dismax_unsigned_boosting");
-                }
-                break;
-            case 3: 
-                if (MyString.CheckSigned(keySearch)) {
-                    solrQuery.setQueryType("dismax");
-                } else {
-                    solrQuery.setQueryType("dismax_unsigned");
-                }
-                MySegmenter seg = new MySegmenter();
-                keySearch = seg.getwordBoundaryMark(keySearch);
-                keySearch = keySearch.replaceAll("[\\[\\]]", "\"");
-                break;
+        if(keySearch.contains("\""))
+        {
+            bSyn = false;
+            bVN = false;
+        }
+
+        if (bVN) {
+            MySegmenter seg = new MySegmenter();
+            keySearch = seg.getwordBoundaryMark(keySearch);
+            keySearch = keySearch.replaceAll("[\\[\\]]", "\"");
+        }
+
+        if (bSyn) {
+
+            switch (sortedType) {
+                case 0:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax_syn");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned_syn");
+                    }
+                    break;
+                case 1:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax_syn");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned_syn");
+                    }
+                    solrQuery.set(DisMaxParams.BF, "recip(rord(timestamp),1,1000,1000)");
+                    break;
+                case 2:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax_boosting_syn");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned_boosting_syn");
+                    }
+                    break;
+            }
+        } else {
+            switch (sortedType) {
+                case 0:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned");
+                    }
+                    break;
+                case 1:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned");
+                    }
+                    solrQuery.set(DisMaxParams.BF, "recip(rord(timestamp),1,1000,1000)");
+                    break;
+                case 2:
+                    if (MyString.CheckSigned(keySearch)) {
+                        solrQuery.setQueryType("dismax_boosting");
+                    } else {
+                        solrQuery.setQueryType("dismax_unsigned_boosting");
+                    }
+                    break;
+            }
         }
         solrQuery.setHighlight(true);
-        solrQuery.setHighlightSnippets(5);
-        solrQuery.addHighlightField("wk_title");
-        solrQuery.addHighlightField("wk_text");
         solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
         solrQuery.setQuery(keySearch);
         solrQuery.setStart(start);
         solrQuery.setRows(pagesize);
