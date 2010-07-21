@@ -18,7 +18,7 @@ import ViSearchSyncDataService.VideoDTO;
  * @author tuandom
  */
 public class VideoDAO {
-String database = "kltn";
+String database = "thao1807";
 String table = "video_parsecontent";
     public  ArrayList<VideoDTO> getDataList(int start, int end) throws SQLException, ParseException, java.text.ParseException {
         ArrayList<VideoDTO> list = new ArrayList<VideoDTO>();
