@@ -4,12 +4,6 @@
 <xsd:import namespace="http://Index/" schemaLocation="http://localhost:8084/WSIndex/WSIndex?xsd=1" />
 </xsd:schema>
 </types>
-<message name="getStringQuery">
-<part name="parameters" element="tns:getStringQuery" />
-</message>
-<message name="getStringQueryResponse">
-<part name="parameters" element="tns:getStringQueryResponse" />
-</message>
 <message name="SyncDataWiki">
 <part name="parameters" element="tns:SyncDataWiki" />
 </message>
@@ -112,11 +106,13 @@
 <message name="EmptyDataResponse">
 <part name="parameters" element="tns:EmptyDataResponse" />
 </message>
+<message name="getStringQuery">
+<part name="parameters" element="tns:getStringQuery" />
+</message>
+<message name="getStringQueryResponse">
+<part name="parameters" element="tns:getStringQueryResponse" />
+</message>
 <portType name="WSIndex">
-<operation name="getStringQuery">
-<input wsam:Action="http://Index/WSIndex/getStringQueryRequest" message="tns:getStringQuery" />
-<output wsam:Action="http://Index/WSIndex/getStringQueryResponse" message="tns:getStringQueryResponse" />
-</operation>
 <operation name="SyncDataWiki">
 <input wsam:Action="http://Index/WSIndex/SyncDataWikiRequest" message="tns:SyncDataWiki" />
 <output wsam:Action="http://Index/WSIndex/SyncDataWikiResponse" message="tns:SyncDataWikiResponse" />
@@ -185,18 +181,13 @@
 <input wsam:Action="http://Index/WSIndex/EmptyDataRequest" message="tns:EmptyData" />
 <output wsam:Action="http://Index/WSIndex/EmptyDataResponse" message="tns:EmptyDataResponse" />
 </operation>
+<operation name="getStringQuery">
+<input wsam:Action="http://Index/WSIndex/getStringQueryRequest" message="tns:getStringQuery" />
+<output wsam:Action="http://Index/WSIndex/getStringQueryResponse" message="tns:getStringQueryResponse" />
+</operation>
 </portType>
 <binding name="WSIndexPortBinding" type="tns:WSIndex">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-<operation name="getStringQuery">
-<soap:operation soapAction="" />
-<input>
-<soap:body use="literal" />
-</input>
-<output>
-<soap:body use="literal" />
-</output>
-</operation>
 <operation name="SyncDataWiki">
 <soap:operation soapAction="" />
 <input>
@@ -342,6 +333,15 @@
 </output>
 </operation>
 <operation name="EmptyData">
+<soap:operation soapAction="" />
+<input>
+<soap:body use="literal" />
+</input>
+<output>
+<soap:body use="literal" />
+</output>
+</operation>
+<operation name="getStringQuery">
 <soap:operation soapAction="" />
 <input>
 <soap:body use="literal" />

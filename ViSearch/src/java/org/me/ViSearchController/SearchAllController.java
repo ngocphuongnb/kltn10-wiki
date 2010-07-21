@@ -13,8 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -26,17 +24,14 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.util.ClientUtils;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.params.HighlightParams;
 import org.apache.solr.common.params.MoreLikeThisParams;
 import org.me.SolrConnection.SolrJConnection;
 import org.me.Utils.MySegmenter;
@@ -59,8 +54,7 @@ public class SearchAllController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SolrServerException {
-
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
@@ -68,16 +62,13 @@ public class SearchAllController extends HttpServlet {
         String keySearch = "";
         int pagesize = 10;
         int currentpage = 1;
+        long numRow = 0;
         int type = -1;
         int QTime = 0;
-        long numRow = 0;
-        String sPaging = "/ViSearch/SearchAllController?";
         int sortedType = 0;
+        String sPaging = "/ViSearch/SearchAllController?";
 
-        List<FacetField> listFacet = null;
         try {
-
-            //<get-parameter defaultstate="collapsed">
             if (request.getParameter("currentpage") != null) {
                 currentpage = Integer.parseInt(request.getParameter("currentpage"));
             }
@@ -87,28 +78,29 @@ public class SearchAllController extends HttpServlet {
 
             if (request.getParameter("type") != null) {
                 type = Integer.parseInt(request.getParameter("type"));
+                sPaging += "type=" + type;
             }
 
             if (request.getParameter("SortedType") != null) {
                 sortedType = Integer.parseInt(request.getParameter("SortedType"));
-                sPaging += "SortedType=" + sortedType;
+                sPaging += "&SortedType=" + sortedType;
             }
 
-            QueryResponse rsp;
-            Map<String, Map<String, List<String>>> highLight;
             if (request.getParameter("KeySearch") != null) {
                 keySearch = request.getParameter("KeySearch");
                 sPaging += "&KeySearch=" + keySearch;
             }
+            QueryResponse rsp;
+            Map<String, Map<String, List<String>>> highLight;
 
             switch (type) {
                 case 0:
                     if (request.getParameter("sp") != null) {
                         String sCollation = OnCheckSpelling(keySearch);
-
-                        if (sCollation != null && sCollation.equals("") == false) {
+                        if (!sCollation.equals("")) {
                             request.setAttribute("Collation", sCollation);
                         }
+                        sPaging += "&sp=" + request.getParameter("sp").toString();
                     }
 
                     rsp = OnSearchSubmit(keySearch, start, pagesize, sortedType);
@@ -116,39 +108,51 @@ public class SearchAllController extends HttpServlet {
                     highLight = rsp.getHighlighting();
                     request.setAttribute("HighLight", highLight);
                     QTime = rsp.getQTime();
-                    sPaging += "&type=0";
-                    listFacet = rsp.getFacetFields();
+                    // Get Facet
                     break;
                 case 1:
-                    rsp = OnMLT(keySearch, start, pagesize, sortedType);
+                    rsp = OnMLT(keySearch, pagesize, sortedType);
                     docs = rsp.getResults();
                     highLight = rsp.getHighlighting();
                     if (highLight != null) {
                         request.setAttribute("HighLight", highLight);
                     }
                     QTime = rsp.getQTime();
-                    sPaging += "&type=1";
-                    break;
 
-                case 2:
-                    sPaging += "&type=2";
-                    String qf = "";
-                    String qv = "";
-                    if (request.getParameter("qf") != null) {
-                        qf = request.getParameter("qf");
-                        qv = request.getParameter("qv");
-                        sPaging += "&qf=" + qf;
-                        sPaging += "&qv=" + qv;
+//                    for (int i = 0; i < docs.size() - 1; i++) {
+//                        for (int j = i + 1; j < docs.size(); j++) {
+//                            String title1 = docs.get(i).getFirstValue("title").toString();
+//                            String title2 = docs.get(j).getFirstValue("title").toString();
+//                            if (title1.trim().equals(title2.trim())) {
+//                                Date date1 = (Date) docs.get(i).getFieldValue("last_update");
+//                                Date date2 = (Date) docs.get(j).getFieldValue("last_update");
+//                                if (date1.compareTo(date2) >= 0) {
+//                                    docs.remove(j);
+//                                    j--;
+//                                } else {
+//                                    docs.remove(i);
+//                                    i--;
+//                                    break;
+//                                }
+//                            }
+//                        }
+//                    }
+
+                    int idem = Math.min(20, docs.size());
+                    while (docs.size() > idem) {
+                        docs.remove(idem);
                     }
-                    rsp = OnSearchSubmitStandard(keySearch, qf, qv, start, pagesize, sortedType);
-                    docs = rsp.getResults();
-                    highLight = rsp.getHighlighting();
-                    request.setAttribute("HighLight", highLight);
-                    QTime = rsp.getQTime();
                     // Get Facet
-                    listFacet = rsp.getFacetFields();
+                    //listFacet = rsp.getFacetFields();
+                    break;
+                case 2: // facet
+                case 4: // query date
+
                     break;
                 case 3:
+
+                    break;
+                case 5:
                     String TextAll = "";
                     String TextExact = "";
                     String TextOneOf = "";
@@ -176,7 +180,6 @@ public class SearchAllController extends HttpServlet {
                     request.setAttribute("HighLight", highLight);
                     QTime = rsp.getQTime();
                     // Get Facet
-                    listFacet = rsp.getFacetFields();
                     break;
                 default:
                     break;
@@ -186,22 +189,22 @@ public class SearchAllController extends HttpServlet {
             request.setAttribute("QTime", String.valueOf(1.0 * QTime / 1000));
             request.setAttribute("KeySearch", keySearch);
             request.setAttribute("SortedType", sortedType);
-            request.setAttribute("Type", type);
             if (docs != null) {
                 numRow = docs.getNumFound();
-                //numRow = docs.size();
                 int numpage = (int) (numRow / pagesize);
 
                 if (numRow % pagesize > 0) {
                     numpage++;
                 }
-
-                sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
                 request.setAttribute("Docs", docs);
+                if (type != 1) {
+                    sPaging = Paging.getPaging(numpage, pagesize, currentpage, sPaging);
+                    request.setAttribute("NumPage", numpage);
+                } else {
+                    sPaging = "20 kết quả tốt nhất trong " + numRow + " kết quả tìm được";
+                }
                 request.setAttribute("Pagging", sPaging);
                 request.setAttribute("NumRow", numRow);
-                request.setAttribute("NumPage", numpage);
-                request.setAttribute("ListFacet", listFacet);
             }
             String url = "/all.jsp";
             ServletContext sc = getServletContext();
@@ -216,80 +219,18 @@ public class SearchAllController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchSubmitStandard(String keySearch, String queryField, String queryValue, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
-        SolrQuery solrQuery = new SolrQuery();
-        keySearch = keySearch.replaceAll("\"", "\\\"");
-        String query = " +(";
-        switch (sortedType) {
-            case 0:
-                break;
-            case 1: // ko co date
-                break;
-            case 2:
-                if (MyString.CheckSigned(keySearch)) {
-                    query += "keysearch:(\"" + keySearch + "\")^100 || ";
-                } else {
-                    query += "keysearch:(\"" + keySearch + "\")^100 || keysearch_unsigned:(\"" + keySearch + "\")^100 || ";
-                }
-                break;
 
-            case 3: // chi ap dung cho có dấu
-                MySegmenter myseg = new MySegmenter();
-                String seg = myseg.getwordBoundaryMark(keySearch);
-                seg = seg.replaceAll("[\\[\\]]", "\"");
-                query = "+(title:(\"" + keySearch + "\")^20 || body:(\"" + keySearch + "\")^15"; //  tuyet doi
-                query += String.format(" || title:(%s)^10 || body:(%s)^5)", seg, seg); // tach tu tieng viet
-                break;
-            default:
-                break;
-        }
-
-        if (sortedType != 3) {
-            if (MyString.CheckSigned(keySearch)) {
-                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
-            } else {
-                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
-                        + "title_unsigned:(\"" + keySearch + "\")^4 || body_unsigned:(" + keySearch + ")^2 || "
-                        + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
-                        + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
-            }
-            query += ") ";
-        }
-
-        // seach chuoi facet, can ""
-        query += " +(" + queryField + ":\"" + ClientUtils.escapeQueryChars(queryValue) + "\")";
-
-        solrQuery.setQuery(query);
-
-        // Facet
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-        // End Facet
-
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("body");
-        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
-        solrQuery.setStart(start);
-        solrQuery.setRows(pagesize);
-        QueryResponse rsp = server.query(solrQuery);
-        return rsp;
-    }
 
     QueryResponse OnSearchSubmit(String keySearch, int start, int pagesize, int sortedType) throws SolrServerException, IOException {
         SolrQuery solrQuery = new SolrQuery();
-
-        String query = "";
         keySearch = keySearch.replaceAll("\"", "\\\"");
+        String query = "";
         switch (sortedType) {
             case 0:
                 query = "";
                 break;
-            case 1: // ko co date
+            case 1:
+               // ko su dung
                 break;
             case 2:
                 if (MyString.CheckSigned(keySearch)) {
@@ -312,21 +253,19 @@ public class SearchAllController extends HttpServlet {
 
         if (sortedType != 3) {
             if (MyString.CheckSigned(keySearch)) {
-                query += "title:(\"" + keySearch + "\")^10 || body:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^8 || body:(" + keySearch + ")^3";
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^2";
             } else {
-                query += "title:(\"" + keySearch + "\")^10 || body:(\"" + keySearch + "\")^5 || "
-                        + "title:(" + keySearch + ")^8 || body:(" + keySearch + ")^3 || "
-                        + "title_unsigned:(\"" + keySearch + "\")^9 || body_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^4 || body_unsigned:(" + keySearch + ")";
+                query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                        + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                        + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                        + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
             }
         }
 
-
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-
         solrQuery.setQuery(query);
+        // Facet
+        // End Facet
+
         solrQuery.setHighlight(true);
         solrQuery.addHighlightField("title");
         solrQuery.addHighlightField("body");
@@ -339,33 +278,75 @@ public class SearchAllController extends HttpServlet {
         return rsp;
     }
 
-    QueryResponse OnMLT(String q, int start, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
-        //boost b= }";
+    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = "";
+        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
+
+        query += "title:(\"" + keySearch + "\")^5 || title:(" + keySearch + ")^3 || "
+                + "title_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^2 || "
+                + "body:(\"" + keySearch + "\")^2.5 || body:(" + keySearch + ")^1.6 || "
+                + "body_unsigned:(\"" + keySearch + "\")^2 || body_unsigned:(" + keySearch + ")^1.4";
+        solrQuery.setQuery(query);
+
+        // Facet
+        // End Facet
+
+        solrQuery.setHighlight(true);
+        solrQuery.addHighlightField("title");
+        solrQuery.addHighlightField("body");
+        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
+        solrQuery.setHighlightSimplePost("</em>");
+        solrQuery.setHighlightRequireFieldMatch(true);
+        solrQuery.setStart(start);
+        solrQuery.setRows(pagesize);
+        QueryResponse rsp = server.query(solrQuery);
+        return rsp;
+    }
+
+
+    QueryResponse OnMLT(String q, int pagesize, int sortedType) throws SolrServerException, MalformedURLException, UnsupportedEncodingException {
+        //q = URLDecoder.decode(q, "UTF-8");
         SolrQuery query = new SolrQuery();
+
+        // Facet
+        query.setFacet(true);
+        query.addFacetField("category");
+
+        query.setFacetLimit(10);
+        query.setFacetMinCount(1);
+        // End Facet
+
         query.setQueryType("/" + MoreLikeThisParams.MLT);
         query.set(MoreLikeThisParams.MATCH_INCLUDE, false);
         query.set(MoreLikeThisParams.MIN_DOC_FREQ, 1);
         query.set(MoreLikeThisParams.MIN_TERM_FREQ, 1);
+        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
         if (sortedType == 1) {
             query.set(MoreLikeThisParams.BOOST, true);
-            //query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
+          // query.set(MoreLikeThisParams.QF, "{!boost b= recip(rord(timestamp),1,1000,1000)}");
         }
-        query.set(MoreLikeThisParams.SIMILARITY_FIELDS, "title");
+
         query.setQuery("title:" + MyString.cleanQueryTerm(q));
         //query.setQuery(ClientUtils.escapeQueryChars(q));
-        query.setStart(start);
-        query.setRows(pagesize);
+        query.setStart(0);
+        query.setRows(100);
         query.setHighlight(true);
         query.addHighlightField("title");
         query.addHighlightField("body");
         query.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
         query.setHighlightSimplePost("</em>");
-        query.setHighlightRequireFieldMatch(true);
+        //query.set(HighlightParams.ALTERNATE_FIELD, "wk_title");
+        query.set(HighlightParams.FRAGMENTER, "regex");
+        query.setHighlightFragsize(70);
+        query.set(HighlightParams.SLOP, "0.5");
+        query.set(HighlightParams.REGEX, "[-,/\n\"']{20,200}");
         QueryResponse rsp = server.query(query);
         return rsp;
     }
 
-    String OnCheckSpelling(String q) throws SolrServerException, URIException, HttpException, IOException {
+    String OnCheckSpelling(String q) throws org.apache.commons.httpclient.URIException, IOException {
         String result = "";
         HttpClient client = new HttpClient();
         //&spellcheck.build=true
@@ -414,35 +395,6 @@ public class SearchAllController extends HttpServlet {
         }
     }
 
-    QueryResponse OnSearchAdvance(String TextAll, String TextExact, String TextOneOf, String TextNone, int start, int pagesize, int sortedType) throws SolrServerException {
-        SolrQuery solrQuery = new SolrQuery();
-
-        String query = "";
-        String keySearch = genKeySearch(TextAll, TextExact, TextOneOf, TextNone);
-
-        query += "title:(\"" + keySearch + "\")^10 || body:(\"" + keySearch + "\")^5 || "
-                + "title:(" + keySearch + ")^8 || body:(" + keySearch + ")^3 || "
-                + "title_unsigned:(\"" + keySearch + "\")^9 || body_unsigned:(\"" + keySearch + "\")^4 || title_unsigned:(" + keySearch + ")^4 || body_unsigned:(" + keySearch + ")";
-        solrQuery.setQuery(query);
-
-        solrQuery.setFacet(true);
-        solrQuery.addFacetField("category");
-        solrQuery.setFacetLimit(10);
-        solrQuery.setFacetMinCount(1);
-
-        solrQuery.setQuery(query);
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("title");
-        solrQuery.addHighlightField("body");
-        solrQuery.setHighlightSimplePre("<em style=\"background-color:#FF0\">");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightRequireFieldMatch(true);
-        solrQuery.setStart(start);
-        solrQuery.setRows(pagesize);
-        QueryResponse rsp = server.query(solrQuery);
-        return rsp;
-    }
-
     private String genKeySearch(String TextAll, String TextExact, String TextOneOf, String TextNone) {
         String keySearch = "";
         // Có tất cả các từ
@@ -482,9 +434,9 @@ public class SearchAllController extends HttpServlet {
         }
         return keySearch;
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+
+    /**
      * Handles the HTTP <code>GET</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -494,14 +446,10 @@ public class SearchAllController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SolrServerException ex) {
-            Logger.getLogger(SearchAllController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
      * @param response servlet response
@@ -511,14 +459,10 @@ public class SearchAllController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SolrServerException ex) {
-            Logger.getLogger(SearchAllController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
      * @return a String containing servlet description
      */

@@ -137,10 +137,22 @@
                         listdocs = (SolrDocumentList) request.getAttribute("Docs");
                         for (int i = 0; i < listdocs.size(); i++) {
                             // Lay noi dung cua moi field
-                            String id = (listdocs.get(i).getFieldValue("id")).toString();
-                            String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
-                            String body = (listdocs.get(i).getFirstValue("body")).toString();
-                            String link = (listdocs.get(i).getFirstValue("url")).toString();
+                             String title = "";
+                                if (listdocs.get(i).getFirstValue("rv_title") != null) {
+                                    title = (listdocs.get(i).getFirstValue("rv_title")).toString();
+                                }
+                                String body = "";
+                                if ((listdocs.get(i).getFirstValue("rv_body")) != null) {
+                                    body = (listdocs.get(i).getFirstValue("rv_body")).toString();
+                                }
+                                String id = "";
+                                if (listdocs.get(i).getFieldValue("id") != null) {
+                                    id = (listdocs.get(i).getFieldValue("id")).toString();
+                                }
+                                String link = "";
+                                if (listdocs.get(i).getFirstValue("url") != null) {
+                                    link = (listdocs.get(i).getFirstValue("url")).toString();
+                                }
                             String price = "";
                             String category = (listdocs.get(i).getFieldValue("category")).toString();
                             String location = "";

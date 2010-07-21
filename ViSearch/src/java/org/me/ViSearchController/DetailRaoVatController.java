@@ -102,28 +102,30 @@ public class DetailRaoVatController extends HttpServlet {
                         String title = (docs.get(0).getFirstValue("rv_title")).toString();
                         rsp = OnMoreLikeThis(title);
                         docs_MoreLikeThis = rsp.getResults();
-                        for (int i = 0; i < docs_MoreLikeThis.size() - 1; i++) {
-                            for (int j = i + 1; j < docs_MoreLikeThis.size(); j++) {
-                                String title1 = docs_MoreLikeThis.get(i).getFirstValue("rv_title").toString();
-                                String title2 = docs_MoreLikeThis.get(j).getFirstValue("rv_title").toString();
-                                if (title1.trim().equals(title2.trim())) {
-                                    Date date1 = (Date) docs_MoreLikeThis.get(i).getFieldValue("last_update");
-                                    Date date2 = (Date) docs_MoreLikeThis.get(j).getFieldValue("last_update");
-                                    if (date1.compareTo(date2) >= 0) {
-                                        docs_MoreLikeThis.remove(j);
-                                        j--;
-                                    } else {
-                                        docs_MoreLikeThis.remove(i);
-                                        i--;
-                                        break;
+                        if (docs_MoreLikeThis != null) {
+                            for (int i = 0; i < docs_MoreLikeThis.size() - 1; i++) {
+                                for (int j = i + 1; j < docs_MoreLikeThis.size(); j++) {
+                                    String title1 = docs_MoreLikeThis.get(i).getFirstValue("rv_title").toString();
+                                    String title2 = docs_MoreLikeThis.get(j).getFirstValue("rv_title").toString();
+                                    if (title1.trim().equals(title2.trim())) {
+                                        Date date1 = (Date) docs_MoreLikeThis.get(i).getFieldValue("last_update");
+                                        Date date2 = (Date) docs_MoreLikeThis.get(j).getFieldValue("last_update");
+                                        if (date1.compareTo(date2) >= 0) {
+                                            docs_MoreLikeThis.remove(j);
+                                            j--;
+                                        } else {
+                                            docs_MoreLikeThis.remove(i);
+                                            i--;
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        int idem = Math.min(10, docs_MoreLikeThis.size());
-                        while (docs_MoreLikeThis.size() > idem) {
-                            docs_MoreLikeThis.remove(idem);
+                            int idem = Math.min(10, docs_MoreLikeThis.size());
+                            while (docs_MoreLikeThis.size() > idem) {
+                                docs_MoreLikeThis.remove(idem);
+                            }
                         }
                     }
                 } catch (SolrServerException ex) {
