@@ -61,6 +61,35 @@
 	
   </requestHandler>
   
+  <requestHandler name="dismax_boosting_syn" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.1</float>
+     <str name="qf">
+       keysearch^50 wk_title_syn^3 wk_text_syn
+     </str>
+     <str name="pf">
+       keysearch^100 wk_title_syn^5 wk_text_syn^3
+     </str>
+     <!--<str name="bf">
+        popularity^0.5 recip(price,1,1000,1000)^0.3
+     </str>-->
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+	 <int name="ps">1</int>
+	 <int name="qs">0</int>
+	 <str name="q.alt">*:*</str>
+	<str name="hl.fl">wk_title_syn wk_text_syn</str>
+	 <str name="f.wk_title_syn.hl.alternateField">wk_title</str>
+     <str name="f.wk_text_syn.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.wk_text_syn.hl.snippets">5</str>
+	 <str name="f.wk_text_syn.hl.mergeContiguous">true</str>
+    </lst>
+	
+  </requestHandler>
+  
   <requestHandler name="dismax" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
@@ -91,6 +120,36 @@
 	
   </requestHandler>
   
+   <requestHandler name="dismax_syn" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.1</float>
+     <str name="qf">
+       wk_title_syn^3 wk_text_syn
+     </str>
+     <str name="pf">
+        wk_title_syn^9 wk_text_syn^7
+     </str>
+     <!--<str name="bf">
+        popularity^0.5 recip(price,1,1000,1000)^0.3
+     </str>-->
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+     
+	<int name="ps">1</int>
+	 <int name="qs">0</int>
+	 <str name="q.alt">*:*</str>
+     <str name="hl.fl">wk_title_syn wk_text_syn</str>
+	 <str name="f.wk_title_syn.hl.alternateField">wk_title</str>
+     <str name="f.wk_text_syn.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.wk_text_syn.hl.snippets">5</str>
+	 <str name="f.wk_text_syn.hl.mergeContiguous">true</str>
+    </lst>
+	
+  </requestHandler>
+  
   <requestHandler name="dismax_unsigned_boosting" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
@@ -117,6 +176,32 @@
 	
   </requestHandler>
   
+  <requestHandler name="dismax_unsigned_boosting_syn" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.1</float>
+     <str name="qf">
+       keysearch^50 keysearch_unsigned^20 wk_title_syn^3 wk_text_syn^1.5 wk_title_syn_unsigned^2 wk_body_syn_unsigned
+     </str>
+     <str name="pf">
+       keysearch^100 keysearch_unsigned^50 wk_title_syn^10 wk_text_syn^3 wk_title_syn_unsigned^10 wk_body_syn_unsigned^3
+     </str>
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>     
+	 <int name="ps">1</int>
+	 <int name="qs">0</int>
+	 <str name="q.alt">*:*</str>
+    <str name="hl.fl">wk_title_syn wk_text_syn</str>
+	 <str name="f.wk_title_syn.hl.alternateField">wk_title</str>
+     <str name="f.wk_text_syn.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.wk_text_syn.hl.snippets">5</str>
+	 <str name="f.wk_text_syn.hl.mergeContiguous">true</str>
+    </lst>
+	
+  </requestHandler>
+  
    <requestHandler name="dismax_unsigned" class="solr.SearchHandler" >
     <lst name="defaults">
      <str name="defType">dismax</str>
@@ -126,7 +211,7 @@
        wk_title wk_text^0.5 wk_title_unsigned^0.8 wk_text_unsigned^0.5
      </str>
      <str name="pf">
-       wk_title^2 wk_text^1.5 
+       wk_title^2 wk_text wk_title_unsigned^1.5 wk_text_unsigned
      </str>
      <str name="fl">
         id, wk_title, wk_text, timestamp
@@ -141,6 +226,33 @@
      <str name="f.wk_text.hl.fragmenter">regex</str> <!-- defined below -->
 	 <str name="f.wk_text.hl.snippets">5</str>
 	 <str name="f.wk_text.hl.mergeContiguous">true</str>
+    </lst>
+  </requestHandler>
+  
+   <requestHandler name="dismax_unsigned_syn" class="solr.SearchHandler" >
+    <lst name="defaults">
+     <str name="defType">dismax</str>
+     <str name="echoParams">explicit</str>
+     <float name="tie">0.1</float>
+     <str name="qf">
+       wk_title_syn wk_text_syn^0.5 wk_title_syn_unsigned^0.8 wk_text_syn_unsigned^0.5
+     </str>
+     <str name="pf">
+       wk_title_syn^2 wk_text_syn wk_title_syn_unsigned^1.5 wk_text_syn_unsigned
+     </str>
+     <str name="fl">
+        id, wk_title, wk_text, timestamp
+     </str>
+	 <int name="qs">0</int>
+	 <int name="ps">0</int>
+	 <str name="q.alt">*:*</str>
+     <!-- 
+	 example highlighter config, enable per-query with hl=true -->
+     <str name="hl.fl">wk_title_syn wk_text_syn</str>
+	 <str name="f.wk_title_syn.hl.alternateField">wk_title</str>
+     <str name="f.wk_text_syn.hl.fragmenter">regex</str> <!-- defined below -->
+	 <str name="f.wk_text_syn.hl.snippets">5</str>
+	 <str name="f.wk_text_syn.hl.mergeContiguous">true</str>
     </lst>
   </requestHandler>
   

@@ -1,4 +1,4 @@
-﻿a lịch sơn đắc lộ, alexandre de rhodes, alịchsơn đắc lộ, giáo sĩ đắc lộ, đắc lộ
+a lịch sơn đắc lộ, alexandre de rhodes, alịchsơn đắc lộ, giáo sĩ đắc lộ, đắc lộ
 ca li, california, us ca, califonia, tiểu bang california
 nước mỹ, hoa kỳ, mỹ, hoa kì, mĩ, hợp chủng quốc hoa kỳ, usa, hiệp chủng quốc hoa kỳ, huê kỳ, hợp chúng quốc hoa kỳ, cộng hòa liên bang mỹ, cộng hoà liên bang mỹ, hợp chủng quốc hoa kì, hiệp chúng quốc hoa kỳ, mỹ quốc, mĩ quốc, u.s.a, united states, united states of america, us
 sea games, đại hội thể thao đông nam á
@@ -20,7 +20,7 @@ hình vuông, tứ giác đều
 mạng riêng ảo, mạng riêng ảo, vpn, virtual private network
 hơ mông, h'mông, người mông, h'mong, hmông, người h'mông, người hmông, dân tộc mông, người hmong, người mèo, dân tộc miêu, h’mông, miêu tộc, người miêu, người h’mông, hmong
 my an ma, myanma, myanmar, mianma, miến điện, diến điện, liên bang myanma
-TPHCM,Thành phố Hồ Chí Minh, Sài gòn
+TPHCM, Sài gòn, Sài Thành
 Hồ Chí Minh,Nguyễn Sinh Cung,Nguyễn Tất Thành,Nguyễn ái Quốc,Bác Hồ, Nguyễn Sinh Côn,Hồ Chủ tịch,Già Thu,Chủ tịch Hồ Chí Minh,Bác hồ,Lý Thụy,Văn Ba,Tống Văn Sơ
 Vi Tính,Máy tính,Máy vi tính,Vi tính,Điện toán,Máy tính điện tử
 Da ua,Sữa chua,Yaourt
