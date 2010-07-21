@@ -205,19 +205,6 @@
 <xs:sequence />
 </xs:complexType>
 
-<xs:complexType name="IndexDataAll">
-<xs:sequence>
-<xs:element name="code" type="xs:string" minOccurs="0" />
-<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IndexDataAllResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:boolean" />
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="SyncDataMusic">
 <xs:sequence>
 <xs:element name="listMusic" type="tns:musicDTO" minOccurs="0" maxOccurs="unbounded" />
@@ -266,6 +253,19 @@
 
 <xs:complexType name="SyncDataImageResponse">
 <xs:sequence />
+</xs:complexType>
+
+<xs:complexType name="IndexDataAll">
+<xs:sequence>
+<xs:element name="code" type="xs:string" minOccurs="0" />
+<xs:element name="dateRequest" type="xs:dateTime" minOccurs="0" />
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IndexDataAllResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" />
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="IndexDataViwiki">

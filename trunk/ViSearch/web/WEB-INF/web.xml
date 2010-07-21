@@ -132,6 +132,10 @@
         <servlet-name>ShowMyBookmark</servlet-name>
         <servlet-class>org.me.ViSearchController.ShowMyBookmark</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailAllController</servlet-name>
+        <servlet-class>org.me.ViSearchController.DetailAllController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>jcaptcha</servlet-name>
         <url-pattern>/jcaptcha.jpg</url-pattern>
@@ -263,6 +267,10 @@
     <servlet-mapping>
         <servlet-name>ShowMyBookmark</servlet-name>
         <url-pattern>/ShowMyBookmark</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailAllController</servlet-name>
+        <url-pattern>/DetailAllController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

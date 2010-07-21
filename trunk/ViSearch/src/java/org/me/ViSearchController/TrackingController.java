@@ -75,6 +75,9 @@ public class TrackingController extends HttpServlet {
                     case 5:
                         tbus.UpdateKeysearch(Integer.parseInt(docId), keysearch, "video", "visearch");
                         break;
+                    case 7:
+                        tbus.UpdateKeysearch(Integer.parseInt(docId), keysearch, "all", "visearch");
+                        break;
                     default:
                         break;
                 }

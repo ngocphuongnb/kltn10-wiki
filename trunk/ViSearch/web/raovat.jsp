@@ -131,10 +131,22 @@
                                 result.append("<table style=\"font-size:13px\">");
 
                                 // Lay noi dung cua moi field
-                                String title = (listdocs.get(i).getFirstValue("rv_title")).toString();
-                                String body = (listdocs.get(i).getFirstValue("rv_body")).toString();
-                                String id = (listdocs.get(i).getFieldValue("id")).toString();
-                                String link = (listdocs.get(i).getFirstValue("url")).toString();
+                                String title = "";
+                                if (listdocs.get(i).getFirstValue("rv_title") != null) {
+                                    title = (listdocs.get(i).getFirstValue("rv_title")).toString();
+                                }
+                                String body = "";
+                                if ((listdocs.get(i).getFirstValue("rv_body")) != null) {
+                                    body = (listdocs.get(i).getFirstValue("rv_body")).toString();
+                                }
+                                String id = "";
+                                if (listdocs.get(i).getFieldValue("id") != null) {
+                                    id = (listdocs.get(i).getFieldValue("id")).toString();
+                                }
+                                String link = "";
+                                if (listdocs.get(i).getFirstValue("url") != null) {
+                                    link = (listdocs.get(i).getFirstValue("url")).toString();
+                                }
                                 Date last_update = (Date) (listdocs.get(i).getFieldValue("last_update"));
                                 String url;
                                 String title_hl = title;
@@ -229,7 +241,7 @@
                             if (listCount != null) {
                                 for (int j = 0; j < listCount.size(); j++) {
                                     String fieldText = listCount.get(j).getName();
-                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" +URIUtil.encodePath(fieldText)  + "'>" + fieldText + "</a>";
+                                    facet += "<a href = 'SearchRaoVatController?type=2&KeySearch=" + strQuery + "&FacetName=" + fieldName + "&FacetValue=" + URIUtil.encodePath(fieldText) + "'>" + fieldText + "</a>";
                                     facet += " (" + listCount.get(j).getCount() + ")";
                                     facet += "<br>";
                                 }
@@ -279,14 +291,14 @@
 
                     facetD += "<tr><td>";
                     facetD += "<div id=\"divPVTC\" class=\"hidden\">";
-                    facetD +="<table style=\"font-size:13px\">";
-                    facetD +="<tr><td>Bắt đầu:</td>";
-                    facetD +="<td><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></td></tr>";
-                    facetD +="<tr><td>Kết thúc:</td>";
-                    facetD +="<td><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></td></tr>";
-                    facetD +="<tr><td>(dd-mm-yyyy)</td>";
-                    facetD +="<td><input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></td></tr>";
-                    facetD +="</table>";
+                    facetD += "<table style=\"font-size:13px\">";
+                    facetD += "<tr><td>Bắt đầu:</td>";
+                    facetD += "<td><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></td></tr>";
+                    facetD += "<tr><td>Kết thúc:</td>";
+                    facetD += "<td><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></td></tr>";
+                    facetD += "<tr><td>(dd-mm-yyyy)</td>";
+                    facetD += "<td><input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></td></tr>";
+                    facetD += "</table>";
                     //facetD += "<div style=\"float:left\"> Bắt dầu: </div><div style=\"float:right\"><input type=\"text\" class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_BD\" /></div>";
                     //facetD += "<div style=\"float:left\"> Kết thúc: </div><div style=\"float:right\"><input type=\"text\"  class=\"textForm\" onfocus=\"this.className='textForm_Hover';\" onblur=\"this.className='textForm';\" id=\"divPVTC_KT\" /></div>";
                     //facetD += "<div style=\"float:left\">&nbsp;&nbsp;</div><div style=\"float:right\">(dd-mm-yyyy)&nbsp;&nbsp;<input type=\"button\" name=\"btSearch\" value=\"Tìm kiếm\" onclick=\"SeachPVDC('" + strQuery + "');\" /></div>";

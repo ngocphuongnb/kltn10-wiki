@@ -6,7 +6,6 @@ package org.me.ViSearchController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Calendar;
