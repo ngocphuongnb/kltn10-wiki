@@ -61,10 +61,12 @@ public class PageDAO {
     }
 
     public void SyncDataAll(ArrayList<PageDTO> listPage) throws SQLException {
+
         Connection cn = (Connection) DataProvider.getConnection("visearch");
         CallableStatement cs;
         cs = (CallableStatement) cn.prepareCall("{Call SyncDataAll(?, ?, ?, ?)}");
         //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
         for (PageDTO PageDTO : listPage) {
             cs.setInt(1, PageDTO.getId());
             cs.setString(2, PageDTO.getTitle());
@@ -74,6 +76,9 @@ public class PageDAO {
         }
         cs.close();
         cn.close();
+        }catch(Exception ex){
+            String s = ex.getMessage();
+        }
     }
 
     public void UpdateAfterIndex(ArrayList<Integer> list) throws SQLException {
