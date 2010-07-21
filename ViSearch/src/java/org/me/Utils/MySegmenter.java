@@ -26,7 +26,7 @@ public class MySegmenter {
         }
         taggerData.readOriginalDataFromString(strSrc);
         strSrc = ws.wordBoundaryMark(taggerData);
-        strSrc = strSrc.replaceAll(" ", " +");
+        //strSrc = strSrc.replaceAll(" ", " +");
         return strSrc;
     }
 

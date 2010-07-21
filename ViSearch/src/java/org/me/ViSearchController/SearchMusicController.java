@@ -243,6 +243,8 @@ public class SearchMusicController extends HttpServlet {
             case 3: // chi ap dung cho có dấu
                 MySegmenter myseg = new MySegmenter();
                 String seg = myseg.getwordBoundaryMark(keySearch);
+                if(seg.length() > 0 && seg.charAt(0) != '[')
+                    seg = "[" + seg;
                 seg = seg.replaceAll("[\\[\\]]", "\"");
                 if (facetNameValue.equals("") == false) { // Khi facet
                     query = " +(";
